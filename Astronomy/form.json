@@ -1,0 +1,71 @@
+{
+    "elements":
+            [
+				{ "type": "Label", "label": "IP adress FireTV" },
+                {
+                    "name": "IPFireTV",
+                    "type": "ValidationTextBox",
+                    "caption": "IP FireTV"
+                },
+				{ "type": "Label", "label": "operation system from the IP-Symcon computer" },
+				{ "type": "Select", "name": "system", "caption": "operation system",
+					"options": [
+						{ "label": "Linux (Raspberry)", "value": 0 },
+						{ "label": "Windows", "value": 1 }
+					]
+				},
+				{ "type": "Label", "label": "only for windows computers:" },
+				{ "type": "Label", "label": "folder adbtools" },
+				{ "type": "ValidationTextBox", "name": "folder", "caption": "adbtools" }
+            ],
+	"actions":
+			[
+				{ "type": "Label", "label": "Start ADB Server and connect to FireTV" },
+				{ "type": "Button", "label": "Connect FireTV", "onClick": "FireTV_StartADB($id);" },
+				{ "type": "Label", "label": "Test commands" },
+				{ "type": "Button", "label": "Up", "onClick": "FireTV_Up($id);" },
+				{ "type": "Button", "label": "Down", "onClick": "FireTV_Down($id);" },
+				{ "type": "Button", "label": "Left", "onClick": "FireTV_Left($id);" },
+				{ "type": "Button", "label": "Right", "onClick": "FireTV_Right($id);" },
+				{ "type": "Button", "label": "Enter", "onClick": "FireTV_Enter($id);" },
+				{ "type": "Button", "label": "Back", "onClick": "FireTV_Back($id);" },
+				{ "type": "Button", "label": "Home", "onClick": "FireTV_Home($id);" },
+				{ "type": "Button", "label": "Menu", "onClick": "FireTV_Menu($id);" },
+				{ "type": "Button", "label": "Play", "onClick": "FireTV_Play($id);" },
+				{ "type": "Button", "label": "Previous", "onClick": "FireTV_Previous($id);" },
+				{ "type": "Button", "label": "Next", "onClick": "FireTV_Next($id);" }
+			],		
+    "status":
+            [
+                {
+                    "code": 101,
+                    "icon": "inactive",
+                    "caption": "Creating instance."
+                },
+				{
+                    "code": 102,
+                    "icon": "active",
+                    "caption": "FireTV ok"
+                },
+                {
+                    "code": 104,
+                    "icon": "inactive",
+                    "caption": "interface closed."
+                },
+                {
+                    "code": 202,
+                    "icon": "error",
+                    "caption": "FireTV IP adress must not empty."
+                },
+				{
+                    "code": 203,
+                    "icon": "error",
+                    "caption": "No valid IP adress."
+                },
+                {
+                    "code": 204,
+                    "icon": "error",
+                    "caption": "connection to ADB lost."
+                }
+            ]
+}

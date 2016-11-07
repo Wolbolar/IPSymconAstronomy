@@ -1,0 +1,37 @@
+{
+	"translations": {
+		"de": { 
+			"IP adress FireTV": "IP Adresse FireTV",
+			"IP FireTV": "IP FireTV",
+			"operation system from the IP-Symcon computer": "Betriebssystem des Rechners mit IP-Symcon",
+			"operation system": "Betriebssystem",
+			"Linux (Raspberry)": "Linux (Raspberry)",
+			"Windows": "Windows",
+			"only for windows computers:": "Nur für Windows Rechner:",
+			"folder adbtools": "Arbeitsverzeichnis adbtools",
+			"adbtools": "adbtools",
+			"Start ADB Server and connect to FireTV": "ADB Server starten und Verbindung zu FireTV herstellen",
+			"Connect FireTV": "Verbinde FireTV",
+			"Test commands": "Befehle testen",
+			"Up": "Hoch",
+			"Down": "Runter",
+			"Left": "Left",
+			"Right": "Rechts",
+			"Enter": "Enter",
+			"Back": "Zurück",
+			"Home": "Startseite",
+			"Menu": "Menü",
+			"Play": "Play",
+			"Previous": "Zurück",
+			"Next": "Vor",
+			"Creating instance.": "Die Instanz wird erstellt.",
+			"FireTV ok": "FireTV ok",
+			"interface closed.": "Interface geschlossen.",
+			"FireTV IP adress must not empty.": "FireTV IP Adresse darf nicht leer sein.",
+			"No valid IP adress.": "Keine gültige IP Adresse.",
+			"connection to ADB lost.": "Verbindung zum ADB verloren.",
+			"field must not be empty.": "Felder dürfen nicht leer sein."		
+			
+		}
+	}
+}
