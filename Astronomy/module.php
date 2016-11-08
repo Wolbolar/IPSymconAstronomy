@@ -480,9 +480,9 @@ class Astronomy extends IPSModule
 		{
 			SetValue($this->GetIDForIdent("moondistance"), $MoonDist);
 		}
-		if($this->ReadPropertyBoolean("moonphase") == true) // float
+		if($this->ReadPropertyBoolean("moonvisibility") == true) // float
 		{
-			SetValue($this->GetIDForIdent("moonphase"), $Moonphase);
+			SetValue($this->GetIDForIdent("moonvisibility"), $Moonphase);
 		}
 		if($this->ReadPropertyBoolean("moonbrightlimbangle") == true) // float
 		{
