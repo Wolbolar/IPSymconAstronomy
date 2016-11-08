@@ -1610,7 +1610,7 @@ class Astronomy extends IPSModule
 			$X = cos($DM) * sin($DDS) - sin($DM) * cos($DDS) * cos($RAS - $RAM);
 			$CHI = atan2($Y, $X);
 
-			$MoonPABL = Degrees($CHI);
+			$MoonPABL = $this->Degrees($CHI);
 		return ($MoonPABL);
 	}
 
