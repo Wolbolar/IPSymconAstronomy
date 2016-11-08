@@ -14,9 +14,9 @@
                     "caption": "moon distance"
                 },	
 				{
-                    "name": "moonheight",
+                    "name": "moonaltitude",
                     "type": "CheckBox",
-                    "caption": "moon height"
+                    "caption": "moonaltitude"
                 },	
 				{
                     "name": "moonbrightlimbangle",

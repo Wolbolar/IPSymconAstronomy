@@ -16,7 +16,7 @@ class Astronomy extends IPSModule
 		
         $this->RegisterPropertyBoolean("moonazimut", false);
 		$this->RegisterPropertyBoolean("moondistance", false);
-		$this->RegisterPropertyBoolean("moonheight", false);
+		$this->RegisterPropertyBoolean("moonaltitude", false);
 		$this->RegisterPropertyBoolean("moonbrightlimbangle", false);
 		$this->RegisterPropertyBoolean("moondirection", false);
 		$this->RegisterPropertyBoolean("moondirectionangle", false);
@@ -76,15 +76,15 @@ class Astronomy extends IPSModule
 		{
 			$this->SetupVariable("moondistance", "Mond Entfernung", "Astronomie.Mond_Entfernung", 2, IPSVarType::vtFloat, false);
 		}
-		if($this->ReadPropertyBoolean("moonheight") == true) // float
+		if($this->ReadPropertyBoolean("moonaltitude") == true) // float
 		{
 			$associations =  Array(	);
 			$this->SetupProfile(IPSVarType::vtFloat, "Astronomie.Mond_Hoehe", "Moon", "", "°", 0, 0, 0, 2, $associations);
-			$this->SetupVariable("moonheight", "Mond Höhe", "Astronomie.Mond_Hoehe", 3, IPSVarType::vtFloat, true);
+			$this->SetupVariable("moonaltitude", "Mond Höhe", "Astronomie.Mond_Hoehe", 3, IPSVarType::vtFloat, true);
 		}
 		else
 		{
-			$this->SetupVariable("moonheight", "Mond Höhe", "Astronomie.Mond_Hoehe", 3, IPSVarType::vtFloat, false);
+			$this->SetupVariable("moonaltitude", "Mond Höhe", "Astronomie.Mond_Hoehe", 3, IPSVarType::vtFloat, false);
 		}
 		if($this->ReadPropertyBoolean("moonbrightlimbangle") == true) // float
 		{
@@ -492,7 +492,7 @@ class Astronomy extends IPSModule
 		}
 		if($this->ReadPropertyBoolean("moonaltitude") == true) // float
 		{
-			SetValue($this->GetIDForIdent("moonazimut"), $moonaltitude);
+			SetValue($this->GetIDForIdent("moonaltitude"), $moonaltitude);
 		}
 		if($this->ReadPropertyBoolean("moondirection") == true) // float
 		{
