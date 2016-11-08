@@ -1719,7 +1719,7 @@ class Astronomy extends IPSModule
 			$M4 = 29.53058868;
 			  $M5 = 27.21222039;
 			  $M6 = 6798.363307;
-			$Q = CDJD($GD, $GM, $GY) - 2415020 + ($UT / 24);
+			$Q = $this->CDJD($GD, $GM, $GY) - 2415020 + ($UT / 24);
 			$M1 = $Q / $M1;
 			  $M2 = $Q / $M2;
 			  $M3 = $Q / $M3;
