@@ -1022,7 +1022,7 @@ class Astronomy extends IPSModule
 	//Conversion of right ascension to hour angle
 	//RH Right Ascension in HMS, LH Local Civil Time in HMS, DS Daylight saving, ZC Zonecorrection,
 	//LD Local Calender Date in DMY, L geographical Longitude in Degrees
-	protected function RAHA($RH, $degreeM, $RS, $LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY, $L)
+	protected function RAHA($RH, $RM, $RS, $LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY, $L)
 	{
 		$A = $this->LctUT($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY)[0];
 		$B = $this->LctGDay($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
@@ -1700,7 +1700,7 @@ class Astronomy extends IPSModule
 			$L = $L + $E2 * 0.000717 * sin($MD - 2 * $MS);
 			$MM = $this->Unwind($ML + $this->Radians($L));
 
-			$MoonLong = Degrees($MM);
+			$MoonLong = $this->Degrees($MM);
 		return ($MoonLong);
 		}
 
