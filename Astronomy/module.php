@@ -1137,7 +1137,7 @@ class Astronomy extends IPSModule
 		$C = ($B / 36525) - 1;
 		$D = $C * (46.815 + $C * (0.0006 - ($C * 0.00181)));
 		$E = $D / 3600;
-		$Obliq = 23.43929167 - $E + NutatObl($GD, $GM, $GY);
+		$Obliq = 23.43929167 - $E + $this->NutatObl($GD, $GM, $GY);
 		return ($Obliq);
 	}
 
