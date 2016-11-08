@@ -320,7 +320,7 @@ class Astronomy extends IPSModule
 		$mondphase = $this->moon_phase(date('Y', $timestamp), date('n', $timestamp), date('j', $timestamp));
 		$this->Mondaufgang();
 		$this->Monduntergang();
-
+		$this->Mondphase();
 		
 		$HMSDec = $this->HMSDH($Hour, $Minute, $Second); //Local Time HMS in Decimal Hours
 		$UTDec = $this->LctUT($Hour, $Minute, $Second, $DS, $ZC, $day, $month, $year)[0];
@@ -460,7 +460,7 @@ class Astronomy extends IPSModule
 		$MoonHs = $this->DHSec($MoonH);
 
 		$moonazimut = $this->EQAz($MoonHh, $MoonHm, $MoonHs, $MoonDECd, $MoonDECm, $MoonDECs, $P);
-		$moonaltidude = $this->EQAlt($MoonHh, $MoonHm, $MoonHs, $MoonDECd, $MoonDECm, $MoonDECs, $P);
+		$moonaltitude = $this->EQAlt($MoonHh, $MoonHm, $MoonHs, $MoonDECd, $MoonDECm, $MoonDECs, $P);
 
 		$dazimut = $this->direction($moonazimut);
 
@@ -2224,7 +2224,7 @@ class Astronomy extends IPSModule
 				return 'Error';
 		}
 	}
-
+	
 	public function Mondphase()
 	{
 		// Formel nach http://www.die-seite.eu/wm-mondphasen.php
@@ -2247,7 +2247,7 @@ class Astronomy extends IPSModule
 			   $pic_n = "0".$pic_n;}
 			else{$pic_n = $pic_n;}
 		$path = '<IMG src="user'.DIRECTORY_SEPARATOR.'mond'.DIRECTORY_SEPARATOR.'mond'.$pic_n.'.gif">';
-		setvalue(29650 /*[Info\Astronomie\Mond\Mondansicht]*/, $path);
+		//setvalue(29650 /*[Info\Astronomie\Mond\Mondansicht]*/, $path);
 		}
 		elseif ($mondphase > 1 && $mondphase < 49){  //--abnehmender Mond
 			$phase_text = 'abnehmender Mond';
@@ -2259,7 +2259,7 @@ class Astronomy extends IPSModule
 			   $pic_n = "0".$pic_n;}
 			else{$pic_n = $pic_n;}
 		$path = '<IMG src="user'.DIRECTORY_SEPARATOR.'mond'.DIRECTORY_SEPARATOR.'mond'.$pic_n.'.gif">';
-		setvalue(29650 /*[Info\Astronomie\Mond\Mondansicht]*/, $path);
+		//setvalue(29650 /*[Info\Astronomie\Mond\Mondansicht]*/, $path);
 		}
 		elseif ($mondphase >= 49 && $mondphase <= 51){  //--Neumond
 			$phase_text = 'Neumond';
@@ -2271,7 +2271,7 @@ class Astronomy extends IPSModule
 			   $pic_n = "0".$pic_n;}
 			else{$pic_n = $pic_n;}
 		$path = '<IMG src="user'.DIRECTORY_SEPARATOR.'mond'.DIRECTORY_SEPARATOR.'mond'.$pic_n.'.gif">';
-		setvalue(29650 /*[Info\Astronomie\Mond\Mondansicht]*/, $path);
+		//setvalue(29650 /*[Info\Astronomie\Mond\Mondansicht]*/, $path);
 		}
 		else{  //--zunehmender Mond
 			$phase_text = 'zunehmender Mond';
@@ -2283,8 +2283,190 @@ class Astronomy extends IPSModule
 			   $pic_n = "0".$pic_n;}
 			else{$pic_n = $pic_n;}
 		$path = '<IMG src="user'.DIRECTORY_SEPARATOR.'mond'.DIRECTORY_SEPARATOR.'mond'.$pic_n.'.gif">';
-		setvalue(29650 /*[Info\Astronomie\Mond\Mondansicht]*/, $path);
+		//setvalue(29650 /*[Info\Astronomie\Mond\Mondansicht]*/, $path);
 		}
+		
+		// ============================================================
+		//
+		// Phasen:    phase = 0 für Neumond
+		//            phase = 0.25 für erstes Viertel
+		//            phase = 0.5 für Vollmond
+		//            phase = 0.75 für letztes Viertel
+		//            Für Werte anders als 0, 0.25, 0.5 oder 0.75 ist nachstehendes Script ungültig.
+		// Angabe des Zeitpunktes als Fließkomma-Jahreszahl
+		// Bsp.: 1.8.2006 = ca. 2006.581
+		//
+		// Ergebnis: $JDE
+		// ============================================================
+
+		// aktuelles Datum in Jahre umrechnen
+		$year = ((((((date("s") / 60)+ date("i")) / 60)+date("G")) / 24) + date("z") - 1) / (365 + (date("L"))) + date("Y");
+		//print_r(date("z"));
+		$rads = 3.14159265359/180;
+
+		$table = "";
+		$name = "";
+
+		for ($phase = 0; $phase < 1; $phase += 0.25){
+		   // Anzahl der Mondphasen seit 2000
+		   $k = floor(($year-2000)*12.36853087)+$phase;
+		   // Mittlerer JDE Wert des Ereignisses
+		   $JDE = 2451550.09766+29.530588861*$k;
+		   // Relevante Winkelwerte in [Radiant]
+		   $M = (2.5534+29.10535670*$k)*$rads;
+		   $Ms = (201.5643+385.81693528*$k)*$rads;
+		   $F = (160.7108+390.67050284*$k)*$rads;
+
+		   if ($phase == 0){
+		   // Korrekturterme JDE für Neumond
+			  $JDE += -0.40720*Sin($Ms);
+			  $JDE += 0.17241*Sin($M);
+			  $JDE += 0.01608*Sin(2*$Ms);
+			  $JDE += 0.01039*Sin(2*$F);
+			  $JDE += 0.00739*Sin($Ms-$M);
+			  $JDE += -0.00514*Sin($Ms+$M);
+			  $JDE += 0.00208*Sin(2*$M);
+			  $JDE += -0.00111*Sin($Ms-2*$F);
+			  }
+		   elseif ($phase == 0.5) {
+		   // Korrekturterme JDE für Vollmond
+			  $JDE += -0.40614*Sin($Ms);
+			  $JDE += 0.17302*Sin($M);
+			  $JDE += 0.01614*Sin(2*$Ms);
+			  $JDE += 0.01043*Sin(2*$F);
+			  $JDE += 0.00734*Sin($Ms-$M);
+			  $JDE += -0.00515*Sin($Ms+$M);
+			  $JDE += 0.00209*Sin(2*$M);
+			  $JDE += -0.00111*Sin($Ms-2*$F);
+			  }
+
+		   if ($phase == 0.25 || $phase == 0.75){
+		   // Korrekturterme für JDE für das  1. bzw. letzte Viertel
+			  $JDE += -0.62801*Sin($Ms);
+			  $JDE += 0.17172*Sin($M);
+			  $JDE += -0.01183*Sin($Ms+$M);
+			  $JDE += 0.00862*Sin(2*$Ms);
+			  $JDE += 0.00804*Sin(2*$F);
+			  $JDE += 0.00454*Sin($Ms-$M);
+			  $JDE += 0.00204*Sin(2*$M);
+			  $JDE += -0.00180*Sin($Ms-2*$F);
+
+		   // Weiterer Korrekturterm für Viertelphasen
+		   if ($phase == 0.25){
+			  $JDE += 0.00306;
+			  } else {
+				$JDE += -0.00306;
+				}
+		   }
+
+		   // Konvertierung von Julianischem Datum auf Gregorianisches Datum
+		   $z = floor($JDE + 0.5);
+		   $f = ($JDE + 0.5) - floor($JDE + 0.5);
+		   if ($z < 2299161){
+			  $a = $z;
+			  }
+			  else {
+				 $g = floor(($z - 1867216.25) / 36524.25);
+				 $a = $z + 1 + $g - floor($g / 4);
+				 }
+		   $b = $a + 1524;
+		   $c = floor(($b - 122.1) / 365.25);
+		   $d = floor(365.25 * $c);
+		   $e = floor(($b - $d) / 30.6001);
+
+		   $tag_temp = $b - $d - floor(30.6001 * $e) + $f; //Tag incl. Tagesbruchteilen
+		   $stunde_temp = ($tag_temp - floor($tag_temp)) * 24;
+		   $minute_temp = ($stunde_temp - floor($stunde_temp)) * 60;
+
+		   $stunde = floor($stunde_temp);
+		   $minute = floor($minute_temp);
+		   $sekunde = round(($minute_temp - floor($minute_temp)) * 60);
+
+		   $tag = floor($tag_temp);
+
+		   if ($e < 14) {
+			  $monat = $e -1;
+			  }
+			  else {
+			  $monat = $e - 13;
+			  }
+		   if ($monat > 2) {
+			  $jahr = $c - 4716;
+			  }
+			  else {
+			  $jahr = $c - 4715;
+			  }
+
+			$sommerzeit = date("I");
+		   if($sommerzeit == 0){
+			  $datum = mktime($stunde,$minute,$sekunde+3600,$monat,$tag,$jahr);
+			  }
+				else{
+				 $datum = mktime($stunde,$minute,$sekunde+7200,$monat,$tag,$jahr);
+			  }
+
+		   switch ($phase){
+			  case 0:
+			  $ausgabe = 'Neumond';
+			  break;
+			  case 0.25:
+			  $ausgabe = 'erstes Viertel';
+			  break;
+			  case 0.5:
+			  $ausgabe = 'Vollmond';
+			  break;
+			  case 0.75:
+			  $ausgabe = 'letztes Viertel';
+			  break;
+			  }
+			  
+			$date = date("D",($datum));
+			if($date == "Mon"){
+				  $wt = "Mo";}
+				 elseif ($date == "Tue"){
+				  $wt = "Di";}
+				  elseif ($date == "Wed"){
+				  $wt = "Mi";}
+				  elseif ($date == "Thu"){
+				  $wt = "Do";}
+				  elseif ($date == "Fri"){
+				  $wt = "Fr";}
+				  elseif ($date == "Sat"){
+				  $wt = "Sa";}
+				  elseif ($date == "Sun"){
+				  $wt = "So";}
+		  
+		   $table .= ($wt.", ".date("d.m.Y H:i",($datum)).";");
+		   $name .= ($ausgabe.";");
+		   }
+
+		if($this->ReadPropertyBoolean("moonphase") == true)
+		{
+			SetValue($this->GetIDForIdent("moonphase"), $phase_text." - ".$mondphase."%");
+		}
+		$var = explode(";",$table);
+		$var_name = explode(";",$name);
+		if($this->ReadPropertyBoolean("newmoon") == true)
+		{
+			//IPS_SetName($this->GetIDForIdent("newmoon"), $var_name[0]);
+			SetValue($this->GetIDForIdent("newmoon"), $var[0]);
+		}
+		if($this->ReadPropertyBoolean("firstquarter") == true)
+		{
+			//IPS_SetName($this->GetIDForIdent("firstquarter"), $var_name[1]);
+			SetValue($this->GetIDForIdent("firstquarter"), $var[1]);
+		}
+		if($this->ReadPropertyBoolean("fullmoon") == true)
+		{
+			//IPS_SetName($this->GetIDForIdent("fullmoon"), $var_name[2]);
+			SetValue($this->GetIDForIdent("fullmoon"), $var[2]);
+		}
+		if($this->ReadPropertyBoolean("lastquarter") == true)
+		{
+			//IPS_SetName($this->GetIDForIdent("lastquarter"), $var_name[3]);
+			SetValue($this->GetIDForIdent("lastquarter"), $var[3]);
+		}
+		
 		
 		return $mondphase;
 	}
