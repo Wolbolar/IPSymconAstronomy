@@ -655,8 +655,8 @@ class Astronomy extends IPSModule
 	// Julian date to Greenwich calendar date conversion
 	public function JDCD(float $JD)
 	{
-		$day = $this->JDCDay(float $JD);
-		$month = $this->JDCMonth(float $JD);
+		$day = $this->JDCDay($JD);
+		$month = $this->JDCMonth($JD);
 		$year = $this->JDCYear($JD);
 		$dateCD = array ("day" => $day, "month" => $month, "year" => $year);
 		return $dateCD;
