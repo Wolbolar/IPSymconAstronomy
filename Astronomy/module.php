@@ -262,7 +262,7 @@ class Astronomy extends IPSModule
 	protected function UpdateMedia($picid)
 	{
 		//testen ob im Medienpool existent
-			$modulid = GetValue($this->InstanceID);
+			$modulid = $this->InstanceID;
 			$ImageFile = IPS_GetKernelDir()."modules".DIRECTORY_SEPARATOR."ipsymconastronomy".DIRECTORY_SEPARATOR."Astronomy".DIRECTORY_SEPARATOR."images".DIRECTORY_SEPARATOR."mond".DIRECTORY_SEPARATOR."mond".$picid.".gif";  // Image-Datei
 			$Content = @Sys_GetURLContent($ImageFile); 
 			$MediaID = @$this->GetIDForIdent('picturemoon');
@@ -2429,8 +2429,7 @@ class Astronomy extends IPSModule
 
 		$ursprung = mktime(19,19,54,02,22,2016);
 		$akt_date = time(); //mktime(18,19,54,04,24,2016);//
-		define('ZYCLUS', floor(29.530588861 * 86400));
-		$mondphase = round(((($akt_date - $ursprung) / ZYCLUS) - floor(($akt_date - $ursprung) / ZYCLUS)) * 100, 0);
+		$mondphase = round(((($akt_date - $ursprung) / (floor(29.530588861 * 86400))) - floor(($akt_date - $ursprung) / (floor(29.530588861 * 86400)))) * 100, 0);
 		
 		if ($mondphase <= 1 || $mondphase >= 99 ){  //--Vollmond
 		$phase_text = 'Vollmond';
