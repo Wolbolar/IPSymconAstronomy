@@ -94,7 +94,6 @@ class Astronomy extends IPSModule
 		{
 			$this->SetupVariable("moonbrightlimbangle", "Mond Positionswinkel der beleuchteten Fläche", "Astronomie.Mond_Positionswinkel", 4, IPSVarType::vtFloat, false);
 		}
-		
 		if($this->ReadPropertyBoolean("moondirection") == true) // string
 		{
 			$associations =  Array(	);
@@ -103,7 +102,7 @@ class Astronomy extends IPSModule
 		}
 		else
 		{
-			$this->SetupVariable("moondirection", "Mond Richtung", "Astronomie.Mond_Himmelsrichtung", 5, IPSVarType::vtString, true);
+			$this->SetupVariable("moondirection", "Mond Richtung", "Astronomie.Mond_Himmelsrichtung", 5, IPSVarType::vtString, false);
 		}
 		if($this->ReadPropertyBoolean("moonvisibility") == true) // float
 		{
@@ -216,12 +215,12 @@ class Astronomy extends IPSModule
 		if($this->ReadPropertyBoolean("sundirection") == true) // string
 		{
 			$associations =  Array(	);
-			$this->SetupProfile(IPSVarType::vtString, "Astronomie.Sonne_Richtung", "Sun", "", "", 0, 0, 0, 0, $associations);
-			$this->SetupVariable("sundirection", "Sonne Richtung", "Astronomie.Sonne_Richtung", 18, IPSVarType::vtString, true);
+			$this->SetupProfile(IPSVarType::vtString, "Astronomie.Sonne_Himmelsrichtung", "Sun", "", "", 0, 0, 0, 0, $associations);
+			$this->SetupVariable("sundirection", "Sonne Richtung", "Astronomie.Sonne_Himmelsrichtung", 18, IPSVarType::vtString, true);
 		}
 		else
 		{
-			$this->SetupVariable("sundirection", "Sonne Richtung", "Astronomie.Sonne_Richtung", 18, IPSVarType::vtString, false);
+			$this->SetupVariable("sundirection", "Sonne Richtung", "Astronomie.Sonne_Himmelsrichtung", 18, IPSVarType::vtString, false);
 		}
 		if($this->ReadPropertyBoolean("season") == true) // string
 		{
