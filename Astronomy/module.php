@@ -486,7 +486,7 @@ class Astronomy extends IPSModule
 		}
 	}
 	
-	protected function SetAstronomyValues()
+	public function SetAstronomyValues()
 	{
 		$location = $this->getlocation();
 		$Latitude = $location["Latitude"];
