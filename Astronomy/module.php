@@ -96,6 +96,7 @@ class Astronomy extends IPSModule
 		{
 			$this->SetupVariable("moonbrightlimbangle", "Mond Positionswinkel der beleuchteten Fläche", "Astronomie.Mond_Positionswinkel", 4, IPSVarType::vtFloat, false);
 		}
+		/*
 		if($this->ReadPropertyBoolean("moondirection") == true) // string
 		{
 			$associations =  Array(	);
@@ -106,6 +107,7 @@ class Astronomy extends IPSModule
 		{
 			$this->SetupVariable("moondirection", "Mond Richtung", "Astronomie.Mond_Richtung", 5, IPSVarType::vtString, true);
 		}
+		*/
 		if($this->ReadPropertyBoolean("moondirectionangle") == true) // float
 		{
 			$associations =  Array(	);
