@@ -749,7 +749,7 @@ class Astronomy extends IPSModule
 	// Converting decimal hours to hours, minutes and seconds
 	public function DHHMS(float $DH)
 	{
-		$hours = $this->DHHour(float $DH);
+		$hours = $this->DHHour($DH);
 		$minutes = $this->DHMin($DH);
 		$seconds = $this->DHSec($DH);
 		$HMS = array ("hours" => $hours, "minutes" => $minutes, "seconds" => $seconds);
