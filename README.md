@@ -48,7 +48,26 @@ In IP-Symcon unter Kern Instanzen Instanz hinzufügen auswählen und Astronomie 
 ## 4. Funktionsreferenz
 
 ### Astronomische Daten:
-* 
+* Mond Azimut
+* Mond Entfernung
+* Mond Höhe
+* Mond Positionswinkel der beleuchteten Fläche
+* Mond Himmelsrichtung 
+* Mond Richtung (Grad)
+* Mond Sichtbarkeit
+* Mond Aufgang
+* Mond Untergang
+* Mond Phase
+* Zeitpunkt Neumond
+* Zeitpunkt Erstes Viertel
+* Zeitpunkt Vollmond
+* Zeitpunkt Letztes Viertel
+* Sonne Azimut
+* Sonne Entfernung
+* Sonne Höhe
+* Sonne Richtung
+* Sonne Richtung (Grad)
+* Jahreszeit
 	
 
 
