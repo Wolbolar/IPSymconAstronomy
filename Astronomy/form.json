@@ -27,12 +27,7 @@
                     "name": "moondirection",
                     "type": "CheckBox",
                     "caption": "moon direction"
-                },	
-				{
-                    "name": "moondirectionangle",
-                    "type": "CheckBox",
-                    "caption": "moon direction (angle)"
-                },	
+                },		
 				{
                     "name": "moonvisibility",
                     "type": "CheckBox",
@@ -92,11 +87,6 @@
                     "name": "sundirection",
                     "type": "CheckBox",
                     "caption": "sun direction"
-                },
-				{
-                    "name": "sundirectionangle",
-                    "type": "CheckBox",
-                    "caption": "sun direction (angle)"
                 },
 				{
                     "name": "season",

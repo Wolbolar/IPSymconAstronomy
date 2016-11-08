@@ -19,7 +19,6 @@ class Astronomy extends IPSModule
 		$this->RegisterPropertyBoolean("moonaltitude", false);
 		$this->RegisterPropertyBoolean("moonbrightlimbangle", false);
 		$this->RegisterPropertyBoolean("moondirection", false);
-		$this->RegisterPropertyBoolean("moondirectionangle", false);
 		$this->RegisterPropertyBoolean("moonvisibility", false);
 		$this->RegisterPropertyBoolean("moonrise", false);
 		$this->RegisterPropertyBoolean("moonset", false);
@@ -32,7 +31,6 @@ class Astronomy extends IPSModule
 		$this->RegisterPropertyBoolean("sundistance", false);
 		$this->RegisterPropertyBoolean("sunaltitude", false);
 		$this->RegisterPropertyBoolean("sundirection", false);
-		$this->RegisterPropertyBoolean("sundirectionangle", false);
 		$this->RegisterPropertyBoolean("season", false);
     }
 
@@ -100,23 +98,12 @@ class Astronomy extends IPSModule
 		if($this->ReadPropertyBoolean("moondirection") == true) // string
 		{
 			$associations =  Array(	);
-			$this->SetupProfile(IPSVarType::vtString, "Astronomie.Mond_Richtung", "Moon", "", "", 0, 0, 0, 0, $associations);
-			$this->SetupVariable("moondirection", "Mond Richtung", "Astronomie.Mond_Richtung", 5, IPSVarType::vtString, true);
+			$this->SetupProfile(IPSVarType::vtString, "Astronomie.Mond_Himmelsrichtung", "Moon", "", "", 0, 0, 0, 0, $associations);
+			$this->SetupVariable("moondirection", "Mond Richtung", "Astronomie.Mond_Himmelsrichtung", 5, IPSVarType::vtString, true);
 		}
 		else
 		{
-			$this->SetupVariable("moondirection", "Mond Richtung", "Astronomie.Mond_Richtung", 5, IPSVarType::vtString, true);
-		}
-		
-		if($this->ReadPropertyBoolean("moondirectionangle") == true) // float
-		{
-			$associations =  Array(	);
-			$this->SetupProfile(IPSVarType::vtFloat, "Astronomie.Mond_RichtungGrad", "Moon", "", "°", 0, 0, 0, 2, $associations);
-			$this->SetupVariable("moondirectionangle", "Mond Richtung (Grad)", "Astronomie.Mond_RichtungGrad", 6, IPSVarType::vtFloat, true);
-		}
-		else
-		{
-			$this->SetupVariable("moondirectionangle", "Mond Richtung (Grad)", "Astronomie.Mond_RichtungGrad", 6, IPSVarType::vtFloat, false);
+			$this->SetupVariable("moondirection", "Mond Richtung", "Astronomie.Mond_Himmelsrichtung", 5, IPSVarType::vtString, true);
 		}
 		if($this->ReadPropertyBoolean("moonvisibility") == true) // float
 		{
@@ -236,16 +223,6 @@ class Astronomy extends IPSModule
 		{
 			$this->SetupVariable("sundirection", "Sonne Richtung", "Astronomie.Sonne_Richtung", 18, IPSVarType::vtString, false);
 		}
-		if($this->ReadPropertyBoolean("sundirectionangle") == true) // float
-		{
-			$associations =  Array(	);
-			$this->SetupProfile(IPSVarType::vtFloat, "Astronomie.Sonne_RichtungGrad", "Sun", "", "°", 0, 0, 0, 2, $associations);
-			$this->SetupVariable("sundirectionangle", "Sonne Richtung (Grad)", "Astronomie.Sonne_RichtungGrad", 19, IPSVarType::vtFloat, true);
-		}
-		else
-		{
-			$this->SetupVariable("sundirectionangle", "Sonne Richtung (Grad)", "Astronomie.Sonne_RichtungGrad", 19, IPSVarType::vtFloat, false);
-		}
 		if($this->ReadPropertyBoolean("season") == true) // string
 		{
 			$associations =  Array(	);
@@ -342,6 +319,8 @@ class Astronomy extends IPSModule
 	
 		$timestamp = time();
 		$mondphase = $this->moon_phase(date('Y', $timestamp), date('n', $timestamp), date('j', $timestamp));
+		$this->Mondaufgang();
+		$this->Monduntergang();
 
 		
 		$HMSDec = $this->HMSDH($Hour, $Minute, $Second); //Local Time HMS in Decimal Hours
@@ -2351,7 +2330,10 @@ class Astronomy extends IPSModule
 		$data = (Moon::calculateMoonTimes($month, $day, $year, $latitude, $longitude));
 
 		$moonrise = $data->{'moonrise'}; //Aufgang
-		setvalue(23748 /*[Info\Astronomie\Mond\Mondaufgang]*/,$moonrise);
+		if($this->ReadPropertyBoolean("moonrise") == true) // float
+		{
+			SetValue($this->GetIDForIdent("moonrise"), $moonrise); 
+		}
 	}
 	
 	public function Monduntergang()
@@ -2369,7 +2351,10 @@ class Astronomy extends IPSModule
 		$data = (Moon::calculateMoonTimes($month, $day, $year, $latitude, $longitude));
 
 		$moonset = $data->{'moonset'}; //Untergang
-		setvalue(34785 /*[Info\Astronomie\Mond\Monduntergang]*/,$moonset);
+		if($this->ReadPropertyBoolean("moonset") == true) // float
+		{
+			SetValue($this->GetIDForIdent("moonset"), $moonset); 
+		}
 	}	
 	
 	// ------------------------------
