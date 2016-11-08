@@ -265,7 +265,7 @@ class Astronomy extends IPSModule
 	// Profil anlegen
 	protected function SetupProfile($vartype, $name, $icon, $prefix, $suffix, $minvalue, $maxvalue, $stepsize, $digits, $associations)
 	{
-		if (IPS_VariableProfileExists($name) == false)
+		if (!IPS_VariableProfileExists($name))
 		{
 			switch ($vartype)
 			{
@@ -276,7 +276,7 @@ class Astronomy extends IPSModule
 					$this->RegisterProfileIntegerAss($name, $icon, $prefix, $suffix, $minvalue, $maxvalue, $stepsize, $digits, $associations);
 					break;
 				case IPSVarType::vtFloat:
-					RegisterProfileFloatAss($name, $icon, $prefix, $suffix, $minvalue, $maxvalue, $stepsize, $digits, $associations);
+					$this->RegisterProfileFloatAss($name, $icon, $prefix, $suffix, $minvalue, $maxvalue, $stepsize, $digits, $associations);
 					break;
 				case IPSVarType::vtString:
 					$this->RegisterProfileString($name, $icon);
