@@ -1602,10 +1602,10 @@ class Astronomy extends IPSModule
 			$LLS = $this->SunLong($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
 			$LLM = $this->MoonLong($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
 			$BM = $this->MoonLat($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
-			$RAS = $this->Radians(ECRA($LLS, 0, 0, 0, 0, 0, $GD, $GM, $GY));
-			$RAM = $this->Radians(ECRA($LLM, 0, 0, $BM, 0, 0, $GD, $GM, $GY));
-			$DDS = $this->Radians(ECDec($LLS, 0, 0, 0, 0, 0, $GD, $GM, $GY));
-			$DM = $this->Radians(ECDec($LLM, 0, 0, $BM, 0, 0, $GD, $GM, $GY));
+			$RAS = $this->Radians($this->ECRA($LLS, 0, 0, 0, 0, 0, $GD, $GM, $GY));
+			$RAM = $this->Radians($this->ECRA($LLM, 0, 0, $BM, 0, 0, $GD, $GM, $GY));
+			$DDS = $this->Radians($this->ECDec($LLS, 0, 0, 0, 0, 0, $GD, $GM, $GY));
+			$DM = $this->Radians($this->ECDec($LLM, 0, 0, $BM, 0, 0, $GD, $GM, $GY));
 			$Y = cos($DDS) * sin($RAS - $RAM);
 			$X = cos($DM) * sin($DDS) - sin($DM) * cos($DDS) * cos($RAS - $RAM);
 			$CHI = atan2($Y, $X);
