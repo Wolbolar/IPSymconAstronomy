@@ -2275,7 +2275,7 @@ class Astronomy extends IPSModule
 		}
 		else{  //--zunehmender Mond
 			$phase_text = 'zunehmender Mond';
-			$pic = rescale([52,98],[008,171]);
+			$pic = $this->rescale([52,98],[008,171]);
 			$pic_n = floor($pic($mondphase));
 			if($pic_n<10){
 			   $pic_n = "00".$pic_n;}
