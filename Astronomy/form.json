@@ -92,11 +92,23 @@
                     "name": "season",
                     "type": "CheckBox",
                     "caption": "season"
-                }	
+                },
+				{
+                    "name": "picturemoon",
+                    "type": "CheckBox",
+                    "caption": "picture moon"
+                },
+				{
+                    "name": "sunmoonview",
+                    "type": "CheckBox",
+                    "caption": "view position sun and moon"
+                },
+				{ "type": "Label", "label": "____________________________________________________________________" }
             ],
 	"actions":
 			[
-				{ "type": "Label", "label": "Blablub" }
+				{ "type": "Label", "label": "update values" },
+				{ "type": "Button", "label": "update", "onClick": "Astronomy_SetAstronomyValues($id);" }
 			],		
     "status":
             [

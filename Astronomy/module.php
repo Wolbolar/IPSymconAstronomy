@@ -32,6 +32,8 @@ class Astronomy extends IPSModule
 		$this->RegisterPropertyBoolean("sunaltitude", false);
 		$this->RegisterPropertyBoolean("sundirection", false);
 		$this->RegisterPropertyBoolean("season", false);
+		$this->RegisterPropertyBoolean("picturemoon", false);
+		$this->RegisterPropertyBoolean("sunmoonview", false);
     }
 
     public function ApplyChanges()
@@ -232,10 +234,55 @@ class Astronomy extends IPSModule
 		{
 			$this->SetupVariable("season", "Jahreszeit", "Astronomie.Jahreszeit", 20, IPSVarType::vtString, false);
 		}
+		if($this->ReadPropertyBoolean("picturemoon") == true) // string
+		{
+			$picid = $this->Mondphase();
+			$this->UpdateMedia($picid);
+		}
+		else
+		{
+			$MediaID = @$this->GetIDForIdent('picturemoon');
+			if($MediaID > 0)
+				IPS_DeleteMedia($MediaID, true);
+		}
+		if($this->ReadPropertyBoolean("sunmoonview") == true) // string
+		{
+			$this->SetupVariable("sunmoonview", "Position Sonne und Mond", "~HTMLBox", 22, IPSVarType::vtString, true);
+		}
+		else
+		{
+			$this->SetupVariable("sunmoonview", "Position Sonne und Mond", "~HTMLBox", 22, IPSVarType::vtString, false);
+		}
 				
 		// Status Aktiv
 		$this->SetStatus(102);	
 		
+	}
+	
+	protected function UpdateMedia($picid)
+	{
+		//testen ob im Medienpool existent
+			$modulid = GetValue($this->InstanceID);
+			$ImageFile = IPS_GetKernelDir()."modules".DIRECTORY_SEPARATOR."ipsymconastronomy".DIRECTORY_SEPARATOR."Astronomy".DIRECTORY_SEPARATOR."images".DIRECTORY_SEPARATOR."mond".DIRECTORY_SEPARATOR."mond".$picid.".gif";  // Image-Datei
+			$Content = @Sys_GetURLContent($ImageFile); 
+			$MediaID = @$this->GetIDForIdent('picturemoon');
+			if ($MediaID === false)
+				{
+					$MediaID = IPS_CreateMedia(1);                  // Image im MedienPool anlegen
+					IPS_SetParent($MediaID, $modulid); // Medienobjekt einsortieren unter dem Modul
+					IPS_SetIdent ($MediaID, "picturemoon");
+					IPS_SetPosition($MediaID, 21);
+					IPS_SetMediaCached($MediaID, true);
+					// Das Cachen für das Mediaobjekt wird aktiviert.
+					// Beim ersten Zugriff wird dieses von der Festplatte ausgelesen
+					// und zukünftig nur noch im Arbeitsspeicher verarbeitet.
+					IPS_SetName($MediaID, "Mond Ansicht"); // Medienobjekt benennen
+				}
+			
+			IPS_SetMediaFile($MediaID, $ImageFile, False);    // Image im MedienPool mit Image-Datei verbinden
+			IPS_SetInfo ($MediaID, $picid);
+			IPS_SetMediaContent($MediaID, base64_encode($Content));  //Bild Base64 codieren und ablegen
+			IPS_SendMediaEvent($MediaID); //aktualisieren
 	}
 	
 	// Profil anlegen
@@ -290,6 +337,154 @@ class Astronomy extends IPSModule
 		
 	}
 	
+	protected function SunMoonView($sunazimut, $sunaltitude, $moonazimut, $moonaltitude)
+	{
+		// Anzeige der Position von Sonne und Mond im WF
+		// Erstellung der Grafik mit "Canvas" (HTML-Element)
+		// siehe https://de.wikipedia.org/wiki/Canvas_(HTML-Element)
+		// 2016-04-25 Bernd Hoffmann
+
+		//Daten für Nullpunkt usw.------------------------------------------------------
+		$npx = 50;        //Nullpunkt x-achse
+		$npy = 50;        //Nullpunkt y-achse
+		$z = 40;           //Offset y-achse
+
+		$lWt = 2;         //Linienstärke Teilstriche
+		$lWh = 2;         //Linienstärke Horizontlinie
+
+		//Waagerechte Linie-------------------------------------------------------------
+		$l1 = 360;        //Länge der Horizontlinie
+
+		$x1 = $npx;            //Nullpunkt waagerecht
+		$y1 = $npy+$z;        //Nullpunkt senkrecht
+		$x2 = $x1+$l1;        //Nullpunkt + Länge = waagerechte Linie
+		$y2 = $npy+$z;
+
+		//Teilstriche-------------------------------------------------------------------
+		$l2 = 10;         //Länge der Teilstriche
+		//N 0°
+		$x3 = $npx;           //Nullpunkt waagerecht
+		$y3 = $y1-$l2/2;    //Nullpunkt senkrecht
+		$x4 = $x3;
+		$y4 = $y3+$l2;        //Nullpunkt + Länge = senkrechte Linie
+		//O
+		$x5 = $npx+90;
+		$y5 = $y1-$l2/2;
+		$x6 = $x5;
+		$y6 = $y5+$l2;
+		//S
+		$x7 = $npx+180;
+		$y7 = $y1-$l2/2;
+		$x8 = $x7;
+		$y8 = $y7+$l2;
+		//W
+		$x9 = $npx+270;
+		$y9 = $y1-$l2/2;
+		$x10 = $x9;
+		$y10 = $y9+$l2;
+		//N 360°
+		$x11 = $npx+360;
+		$y11 = $y1-$l2/2;
+		$x12 = $x11;
+		$y12 = $y11+$l2;
+
+		//Daten von Sonne und Mond holen------------------------------------------------
+		$xsun = $npx + $sunazimut;
+		$ysun = $npy + $z - $sunaltitude;
+
+		$xmoon = $npx + $moonazimut;
+		$ymoon = $npy + $z - $moonaltitude;
+
+		//Erstellung der Html Datei-----------------------------------------------------
+		$html =
+		'<html>
+
+		<head>
+		<script type="text/javascript">
+
+		function draw(){
+		var canvas = document.getElementById("canvas1");
+		if(canvas.getContext){
+			var ctx = canvas.getContext("2d");
+
+			ctx.lineWidth = '.$lWt.'; //Teilstriche
+			ctx.strokeStyle = "rgb(51,102,255)";
+			ctx.beginPath();
+			ctx.moveTo('.$x3.','.$y3.');
+			ctx.lineTo('.$x4.','.$y4.');
+			ctx.stroke();
+			ctx.beginPath();
+			ctx.moveTo('.$x5.','.$y5.');
+			ctx.lineTo('.$x6.','.$y6.');
+			ctx.stroke();
+			ctx.beginPath();
+			ctx.moveTo('.$x7.','.$y7.');
+			ctx.lineTo('.$x8.','.$y8.');
+			ctx.stroke();
+			ctx.beginPath();
+			ctx.moveTo('.$x9.','.$y9.');
+			ctx.lineTo('.$x10.','.$y10.');
+			ctx.stroke();
+			ctx.beginPath();
+			ctx.moveTo('.$x11.','.$y11.');
+			ctx.lineTo('.$x12.','.$y12.');
+			ctx.stroke();
+			
+			ctx.lineWidth = 2; //Text
+			ctx.fillStyle = "rgb(139,115,85)";
+			ctx.beginPath();
+			ctx.font = "18px calibri";
+		   ctx.fillText("N", '.$x4.'-6,'.$y4.'+15);
+		   ctx.fillText("O", '.$x6.'-6,'.$y6.'+15);
+		   ctx.fillText("S", '.$x8.'-5,'.$y8.'+15);
+		   ctx.fillText("W", '.$x10.'-8,'.$y10.'+15);
+		   ctx.fillText("N", '.$x12.'-6,'.$y12.'+15);
+		   ctx.font = "16px calibri";
+		   ctx.fillText("Horizont", '.$x1.'+368,'.$y1.'+5);
+		   
+			ctx.lineWidth = '.$lWh.'; //Horizontlinie
+			ctx.strokeStyle = "rgb(51,102,255)";
+			ctx.beginPath();
+			ctx.moveTo('.$x1.','.$y1.');
+			ctx.lineTo('.$x2.','.$y2.');
+			ctx.stroke();
+			
+			ctx.lineWidth = 1; //Mond
+			ctx.fillStyle = "rgb(255,255,255)";
+			ctx.beginPath();
+		   ctx.arc('.$xmoon.','.$ymoon.',10,0,Math.PI*2,true);
+		   ctx.fill();
+		   
+		   ctx.lineWidth = 1; //Sonne
+			ctx.fillStyle = "rgb(255,255,102)";
+			ctx.beginPath();
+		   ctx.arc('.$xsun.','.$ysun.',18,0,Math.PI*2,true);
+		   ctx.fill();
+			}
+		}
+
+		</script>
+		</head>
+
+		<body onload="draw()">
+		<canvas id="canvas1" width="800" height="180" > //style="border:1px solid yellow;"
+		</canvas>
+		</body>
+
+		</html>';
+
+		//Erstellen des Dateinamens, abspeichern und Aufruf in <iframe>-----------------
+		$filename = "sunmoonline.php";
+		$fullFilename = IPS_GetKernelDir()."webfront".DIRECTORY_SEPARATOR."user".DIRECTORY_SEPARATOR."neo".DIRECTORY_SEPARATOR.$filename;
+		$handle = fopen($fullFilename, "w");
+		fwrite($handle, $html);
+		fclose($handle);
+		$HTMLData = '<iframe src="user'.DIRECTORY_SEPARATOR.'neo'.DIRECTORY_SEPARATOR.'sunmoonline.php" border="0" frameborder="0" style= "width: 100%; height: 200px;"/></iframe>';
+		if($this->ReadPropertyBoolean("sunmoonview") == true)
+		{
+			SetValue($this->GetIDForIdent("sunmoonview"), $HTMLData);
+		}
+	}
 	
 	protected function SetAstronomyValues()
 	{
@@ -320,7 +515,9 @@ class Astronomy extends IPSModule
 		$mondphase = $this->moon_phase(date('Y', $timestamp), date('n', $timestamp), date('j', $timestamp));
 		$this->Mondaufgang();
 		$this->Monduntergang();
-		$this->Mondphase();
+		$picid = $this->Mondphase();
+		$this->UpdateMedia($picid);
+		
 		
 		$HMSDec = $this->HMSDH($Hour, $Minute, $Second); //Local Time HMS in Decimal Hours
 		$UTDec = $this->LctUT($Hour, $Minute, $Second, $DS, $ZC, $day, $month, $year)[0];
@@ -382,9 +579,9 @@ class Astronomy extends IPSModule
 
 		//Equatorial to Horizon coordinate conversion (Az)
 		//HH HourAngle in HMS, DD Declination in DMS, P Latitude in decimal Degrees
-		$Sun_az = $this->EQAz($SunHh, $SunHm, $SunHs, $SunDecd, $SunDecm, $SunDecs, $P);
-		$Sun_alt = $this->EQAlt($SunHh, $SunHm, $SunHs, $SunDecd, $SunDecm, $SunDecs, $P);
-		$SunDazimut = $this->direction($Sun_az);
+		$sunazimut = $this->EQAz($SunHh, $SunHm, $SunHs, $SunDecd, $SunDecm, $SunDecs, $P);
+		$sunaltitude = $this->EQAlt($SunHh, $SunHm, $SunHs, $SunDecd, $SunDecm, $SunDecs, $P);
+		$SunDazimut = $this->direction($sunazimut);
 
 
 		$SunDist = $this->SunDist($Hour, $Minute, $Second, $DS, $ZC, $day, $month, $year);
@@ -395,7 +592,7 @@ class Astronomy extends IPSModule
 
 		if($this->ReadPropertyBoolean("sunazimut") == true) // float
 		{
-			SetValue($this->GetIDForIdent("sunazimut"), $Sun_az); 
+			SetValue($this->GetIDForIdent("sunazimut"), $sunazimut); 
 		}
 		if($this->ReadPropertyBoolean("sundirection") == true) // float
 		{
@@ -403,7 +600,7 @@ class Astronomy extends IPSModule
 		}
 		if($this->ReadPropertyBoolean("sunaltitude") == true) // float
 		{
-			SetValue($this->GetIDForIdent("sunaltitude"), $Sun_alt);
+			SetValue($this->GetIDForIdent("sunaltitude"), $sunaltitude);
 		}
 		if($this->ReadPropertyBoolean("sundistance") == true) // float
 		{
@@ -463,6 +660,7 @@ class Astronomy extends IPSModule
 		$moonaltitude = $this->EQAlt($MoonHh, $MoonHm, $MoonHs, $MoonDECd, $MoonDECm, $MoonDECs, $P);
 
 		$dazimut = $this->direction($moonazimut);
+		$this->SunMoonView($sunazimut, $sunaltitude, $moonazimut, $moonaltitude);
 
 		if($this->ReadPropertyBoolean("moonazimut") == true) // float
 		{
@@ -2468,7 +2666,7 @@ class Astronomy extends IPSModule
 		}
 		
 		
-		return $mondphase;
+		return $pic_n;
 	}
 
 
