@@ -248,15 +248,13 @@ class Astronomy extends IPSModule
 		}
 		if($this->ReadPropertyBoolean("season") == true) // string
 		{
-			$lightass =  Array(
-				Array(0, "Licht einschalten",  "Light", -1)
-				);
-			$this->RegisterProfileIntegerAss("Astronomie.Mond_Azimut", "Moon", "", "", 0, 0, 0, 0, $lightass);
-			$this->RegisterVariableInteger("DoorbirdButtonLight", "Doorbird IR Beleuchtung", "Astronomie.Mond_Azimut", 1);
+			$associations =  Array(	);
+			$this->SetupProfile(IPSVarType::vtString, "Astronomie.Jahreszeit", "Sun", "", "", 0, 0, 0, 0, $associations);
+			$this->SetupVariable("season", "Jahreszeit", "Astronomie.Jahreszeit", 20, IPSVarType::vtString, true);
 		}
 		else
 		{
-			$this->SetupVariable($ident, $name, $profile, $position, $vartype, $visible);
+			$this->SetupVariable("season", "Jahreszeit", "Astronomie.Jahreszeit", 20, IPSVarType::vtString, false);
 		}
 				
 		// Status Aktiv
@@ -1157,7 +1155,7 @@ class Astronomy extends IPSModule
 	{
 		$A = $this->Radians($this->DMSDD($ELD, $ELM, $ELS));       //eclon
 		$B = $this->Radians($this->DMSDD($BD, $BM, $BS));          //eclat
-		$C = $this->Radians(Obliq($GD, $GM, $GY));          //obliq
+		$C = $this->Radians($this->Obliq($GD, $GM, $GY));          //obliq
 		$D = sin($A) * cos($C) - tan($B) * sin($C); //y
 		$E = cos($A);                                //x
 		$F = $this->Degrees(atan2($D, $E));                //RA Deg
@@ -1169,7 +1167,7 @@ class Astronomy extends IPSModule
 	{
 		$A = $this->Radians($this->DHDD($this->HMSDH($RAH, $RAM, $RAS)));
 		$B = $this->Radians($this->DMSDD($DD, $DM, $DS));
-		$C = $this->Radians(Obliq($GD, $GM, $GY));
+		$C = $this->Radians($this->Obliq($GD, $GM, $GY));
 		$D = sin($B) * cos($C) - cos($B) * sin($C) * sin($A);
 		$EQElat = $this->Degrees(asin($D));
 		return ($EQElat);
@@ -1179,7 +1177,7 @@ class Astronomy extends IPSModule
 	{
 		$A = $this->Radians($this->DHDD($this->HMSDH($RAH, $RAM, $RAS)));
 		$B = $this->Radians($this->DMSDD($DD, $DM, $DS));
-		$C = $this->Radians(Obliq($GD, $GM, $GY));
+		$C = $this->Radians($this->Obliq($GD, $GM, $GY));
 		$D = sin($A) * cos($C) + tan($B) * sin($C);
 		$E = cos($A);
 		$F = $this->Degrees(atan2($D, $E));
