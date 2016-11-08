@@ -389,11 +389,11 @@ class Astronomy extends IPSModule
 		$y12 = $y11+$l2;
 
 		//Daten von Sonne und Mond holen------------------------------------------------
-		$xsun = $npx + $sunazimut;
-		$ysun = $npy + $z - $sunaltitude;
+		$xsun = round($npx + $sunazimut);
+		$ysun = round($npy + $z - $sunaltitude);
 
-		$xmoon = $npx + $moonazimut;
-		$ymoon = $npy + $z - $moonaltitude;
+		$xmoon = round($npx + $moonazimut);
+		$ymoon = round($npy + $z - $moonaltitude);
 
 		//Erstellung der Html Datei-----------------------------------------------------
 		$html =
@@ -479,7 +479,7 @@ class Astronomy extends IPSModule
 		$handle = fopen($fullFilename, "w");
 		fwrite($handle, $html);
 		fclose($handle);
-		$HTMLData = '<iframe src="user'.DIRECTORY_SEPARATOR.'neo'.DIRECTORY_SEPARATOR.'sunmoonline.php" border="0" frameborder="0" style= "width: 100%; height: 200px;"/></iframe>';
+		$HTMLData = '<iframe src="user'.DIRECTORY_SEPARATOR.'neo'.DIRECTORY_SEPARATOR.'sunmoonline.php" border="0" frameborder="0" style= "width: 100%; height: 500px;"/></iframe>';
 		if($this->ReadPropertyBoolean("sunmoonview") == true)
 		{
 			SetValue($this->GetIDForIdent("sunmoonview"), $HTMLData);
