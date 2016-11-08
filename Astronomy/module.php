@@ -30,7 +30,7 @@ class Astronomy extends IPSModule
 		$this->RegisterPropertyBoolean("lastquarter", false);
 		$this->RegisterPropertyBoolean("sunazimut", false);
 		$this->RegisterPropertyBoolean("sundistance", false);
-		$this->RegisterPropertyBoolean("sunheight", false);
+		$this->RegisterPropertyBoolean("sunaltitude", false);
 		$this->RegisterPropertyBoolean("sundirection", false);
 		$this->RegisterPropertyBoolean("sundirectionangle", false);
 		$this->RegisterPropertyBoolean("season", false);
@@ -96,7 +96,7 @@ class Astronomy extends IPSModule
 		{
 			$this->SetupVariable("moonbrightlimbangle", "Mond Positionswinkel der beleuchteten Fläche", "Astronomie.Mond_Positionswinkel", 4, IPSVarType::vtFloat, false);
 		}
-		/*
+		
 		if($this->ReadPropertyBoolean("moondirection") == true) // string
 		{
 			$associations =  Array(	);
@@ -107,7 +107,7 @@ class Astronomy extends IPSModule
 		{
 			$this->SetupVariable("moondirection", "Mond Richtung", "Astronomie.Mond_Richtung", 5, IPSVarType::vtString, true);
 		}
-		*/
+		
 		if($this->ReadPropertyBoolean("moondirectionangle") == true) // float
 		{
 			$associations =  Array(	);
@@ -209,22 +209,22 @@ class Astronomy extends IPSModule
 		if($this->ReadPropertyBoolean("sundistance") == true) // float
 		{
 			$associations =  Array(	);
-			$this->SetupProfile(IPSVarType::vtFloat, "Astronomie.Sonne_Azimut", "Sun", "", " km", 0, 0, 0, 0, $associations);
-			$this->SetupVariable("sunazimut", "Sonne Azimut", "Astronomie.Sonne_Azimut", 16, IPSVarType::vtFloat, true);
+			$this->SetupProfile(IPSVarType::vtFloat, "Astronomie.Sonne_Entfernung", "Sun", "", " km", 0, 0, 0, 0, $associations);
+			$this->SetupVariable("sundistance", "Sonne Entfernung", "Astronomie.Sonne_Entfernung", 16, IPSVarType::vtFloat, true);
 		}
 		else
 		{
-			$this->SetupVariable("sunazimut", "Sonne Azimut", "Astronomie.Sonne_Azimut", 16, IPSVarType::vtFloat, false);
+			$this->SetupVariable("sundistance", "Sonne Entfernung", "Astronomie.Sonne_Entfernung", 16, IPSVarType::vtFloat, false);
 		}
-		if($this->ReadPropertyBoolean("sunheight") == true) // float
+		if($this->ReadPropertyBoolean("sunaltitude") == true) // float
 		{
 			$associations =  Array(	);
 			$this->SetupProfile(IPSVarType::vtFloat, "Astronomie.Sonne_Hoehe", "Sun", "", "°", 0, 0, 0, 2, $associations);
-			$this->SetupVariable("sunheight", "Sonne Höhe", "Astronomie.Sonne_Hoehe", 17, IPSVarType::vtFloat, true);
+			$this->SetupVariable("sunaltitude", "Sonne Höhe", "Astronomie.Sonne_Hoehe", 17, IPSVarType::vtFloat, true);
 		}
 		else
 		{
-			$this->SetupVariable("sunheight", "Sonne Höhe", "Astronomie.Sonne_Hoehe", 17, IPSVarType::vtFloat, false);
+			$this->SetupVariable("sunaltitude", "Sonne Höhe", "Astronomie.Sonne_Hoehe", 17, IPSVarType::vtFloat, false);
 		}
 		if($this->ReadPropertyBoolean("sundirection") == true) // string
 		{
@@ -423,9 +423,9 @@ class Astronomy extends IPSModule
 		{
 			SetValue($this->GetIDForIdent("sundirection"), $SunDazimut); 
 		}
-		if($this->ReadPropertyBoolean("sunheight") == true) // float
+		if($this->ReadPropertyBoolean("sunaltitude") == true) // float
 		{
-			SetValue($this->GetIDForIdent("sunheight"), $Sun_alt);
+			SetValue($this->GetIDForIdent("sunaltitude"), $Sun_alt);
 		}
 		if($this->ReadPropertyBoolean("sundistance") == true) // float
 		{

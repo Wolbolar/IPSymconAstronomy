@@ -16,7 +16,7 @@
 				{
                     "name": "moonaltitude",
                     "type": "CheckBox",
-                    "caption": "moonaltitude"
+                    "caption": "moon altitude"
                 },	
 				{
                     "name": "moonbrightlimbangle",
@@ -84,9 +84,9 @@
                     "caption": "sun distance"
                 },	
 				{
-                    "name": "sunheight",
+                    "name": "sunaltitude",
                     "type": "CheckBox",
-                    "caption": "sun height"
+                    "caption": "sun altitude"
                 },	
 				{
                     "name": "sundirection",
