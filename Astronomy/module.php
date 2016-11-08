@@ -484,7 +484,7 @@ class Astronomy extends IPSModule
 		$moonazimut = $this->EQAz($MoonHh, $MoonHm, $MoonHs, $MoonDECd, $MoonDECm, $MoonDECs, $P);
 		$moonaltidude = $this->EQAlt($MoonHh, $MoonHm, $MoonHs, $MoonDECd, $MoonDECm, $MoonDECs, $P);
 
-		$dazimut = $this->direction($az);
+		$dazimut = $this->direction($moonazimut);
 
 		if($this->ReadPropertyBoolean("moonazimut") == true) // float
 		{
@@ -506,9 +506,9 @@ class Astronomy extends IPSModule
 		{
 			SetValue($this->GetIDForIdent("moonphase"), $Moonphase);
 		}
-		if($this->ReadPropertyBoolean("moonanglearea") == true) // float
+		if($this->ReadPropertyBoolean("moonbrightlimbangle") == true) // float
 		{
-			SetValue($this->GetIDForIdent("moonanglearea"), $Moonpabl);
+			SetValue($this->GetIDForIdent("moonbrightlimbangle"), $Moonpabl);
 		}
 		
 	}
