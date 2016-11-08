@@ -1145,7 +1145,7 @@ class Astronomy extends IPSModule
 	{
 		$A = $this->Radians($this->DMSDD($ELD, $ELM, $ELS));                      //eclon
 		$B = $this->Radians($this->DMSDD($BD, $BM, $BS));                         //eclat
-		$C = $this->Radians(Obliq($GD, $GM, $GY));                         //obliq
+		$C = $this->Radians($this->Obliq($GD, $GM, $GY));                         //obliq
 		$D = sin($B) * cos($C) + cos($B) * sin($C) * sin($A);   //sin Dec
 		$ECDec = $this->Degrees(asin($D));                             //Dec Deg
 		return ($ECDec);
