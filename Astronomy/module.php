@@ -533,8 +533,11 @@ class Astronomy extends IPSModule
 		$mondphase = $this->moon_phase(date('Y', $timestamp), date('n', $timestamp), date('j', $timestamp));
 		$this->Mondaufgang();
 		$this->Monduntergang();
-		$picid = $this->Mondphase();
-		$this->UpdateMedia($picid);
+		$mondphase = $this->Moonphase();
+		$picture = $this->GetMoonPicture($mondphase);
+		$this->CalculateMoonphase();
+		$this->MoonphaseText();
+		$this->UpdateMedia($picture["picid"]);
 		
 		
 		$HMSDec = $this->HMSDH($Hour, $Minute, $Second); //Local Time HMS in Decimal Hours
@@ -2445,66 +2448,8 @@ class Astronomy extends IPSModule
 		}
 	}
 	
-	public function Mondphase()
+	protected function CalculateMoonphase()
 	{
-		// Formel nach http://www.die-seite.eu/wm-mondphasen.php
-
-		$ursprung = mktime(19,19,54,02,22,2016);
-		$akt_date = time(); //mktime(18,19,54,04,24,2016);//
-		$mondphase = round(((($akt_date - $ursprung) / (floor(29.530588861 * 86400))) - floor(($akt_date - $ursprung) / (floor(29.530588861 * 86400)))) * 100, 0);
-		
-		if ($mondphase <= 1 || $mondphase >= 99 ){  //--Vollmond
-		$phase_text = 'Vollmond';
-		if($mondphase>=99){
-			$pic = rescale([99,100],[172,177]);} // ([Mondphasen von,bis],[Bildnummern von,bis])
-			else{
-			$pic = rescale([0,1],[178,182]);}
-			$pic_n = floor($pic($mondphase));
-			if($pic_n<10){
-			   $pic_n = "00".$pic_n;}
-			elseif($pic_n<100){
-			   $pic_n = "0".$pic_n;}
-			else{$pic_n = $pic_n;}
-		$path = '<IMG src="user'.DIRECTORY_SEPARATOR.'mond'.DIRECTORY_SEPARATOR.'mond'.$pic_n.'.gif">';
-		//setvalue(29650 /*[Info\Astronomie\Mond\Mondansicht]*/, $path);
-		}
-		elseif ($mondphase > 1 && $mondphase < 49){  //--abnehmender Mond
-			$phase_text = 'abnehmender Mond';
-			$pic = rescale([2,48],[183,352]);
-			$pic_n = floor($pic($mondphase));
-			if($pic_n<10){
-			   $pic_n = "00".$pic_n;}
-			elseif($pic_n<100){
-			   $pic_n = "0".$pic_n;}
-			else{$pic_n = $pic_n;}
-		$path = '<IMG src="user'.DIRECTORY_SEPARATOR.'mond'.DIRECTORY_SEPARATOR.'mond'.$pic_n.'.gif">';
-		//setvalue(29650 /*[Info\Astronomie\Mond\Mondansicht]*/, $path);
-		}
-		elseif ($mondphase >= 49 && $mondphase <= 51){  //--Neumond
-			$phase_text = 'Neumond';
-			$pic = rescale([49,51],[353,362]);
-			$pic_n = floor($pic($mondphase));
-			if($pic_n<10){
-			   $pic_n = "00".$pic_n;}
-			elseif($pic_n<100){
-			   $pic_n = "0".$pic_n;}
-			else{$pic_n = $pic_n;}
-		$path = '<IMG src="user'.DIRECTORY_SEPARATOR.'mond'.DIRECTORY_SEPARATOR.'mond'.$pic_n.'.gif">';
-		//setvalue(29650 /*[Info\Astronomie\Mond\Mondansicht]*/, $path);
-		}
-		else{  //--zunehmender Mond
-			$phase_text = 'zunehmender Mond';
-			$pic = $this->rescale([52,98],[008,171]);
-			$pic_n = floor($pic($mondphase));
-			if($pic_n<10){
-			   $pic_n = "00".$pic_n;}
-			elseif($pic_n<100){
-			   $pic_n = "0".$pic_n;}
-			else{$pic_n = $pic_n;}
-		$path = '<IMG src="user'.DIRECTORY_SEPARATOR.'mond'.DIRECTORY_SEPARATOR.'mond'.$pic_n.'.gif">';
-		//setvalue(29650 /*[Info\Astronomie\Mond\Mondansicht]*/, $path);
-		}
-		
 		// ============================================================
 		//
 		// Phasen:    phase = 0 für Neumond
@@ -2659,10 +2604,7 @@ class Astronomy extends IPSModule
 		   $name .= ($ausgabe.";");
 		   }
 
-		if($this->ReadPropertyBoolean("moonphase") == true)
-		{
-			SetValue($this->GetIDForIdent("moonphase"), $phase_text." - ".$mondphase."%");
-		}
+		
 		$var = explode(";",$table);
 		$var_name = explode(";",$name);
 		if($this->ReadPropertyBoolean("newmoon") == true)
@@ -2686,11 +2628,111 @@ class Astronomy extends IPSModule
 			SetValue($this->GetIDForIdent("lastquarter"), $var[3]);
 		}
 		
-		
-		return $pic_n;
+		$moonphase = array ("newmoon" => $var[0], "firstquarter" => $var[1], "fullmoon" => $var[2], "lastquarter" => $var[3]);
+		return $moonphase;
 	}
+	
+	public function Moonphase()
+	{
+		// Formel nach http://www.die-seite.eu/wm-mondphasen.php
 
-
+		$ursprung = mktime(19,19,54,02,22,2016);
+		$akt_date = time(); //mktime(18,19,54,04,24,2016);//
+		$mondphase = round(((($akt_date - $ursprung) / (floor(29.530588861 * 86400))) - floor(($akt_date - $ursprung) / (floor(29.530588861 * 86400)))) * 100, 0);
+		
+		return $mondphase;
+	}
+	
+	public function MoonphaseText()
+	{
+		$mondphase = $this->Moonphase();
+		$picture = GetMoonPicture($mondphase);
+		$phase = $picture["phase"];
+		if($this->ReadPropertyBoolean("moonphase") == true)
+		{
+			SetValue($this->GetIDForIdent("moonphase"), $phase." - ".$mondphase."%");
+		}
+		$phasetext = $phase." - ".$mondphase."%";
+		return $phasetext;
+	}
+	
+	public function Moon_FirstQuarter()
+	{
+		$moonphase = $this->CalculateMoonphase();
+		$firstquarter = $moonphase["firstquarter"];
+		return $firstquarter;
+	}
+	
+	public function Moon_Newmoon()
+	{
+		$moonphase = $this->CalculateMoonphase();
+		$newmoon = $moonphase["newmoon"];
+		return $newmoon;
+	}
+	
+	public function Moon_Fullmoon()
+	{
+		$moonphase = $this->CalculateMoonphase();
+		$fullmoon = $moonphase["fullmoon"];
+		return $fullmoon;
+	}
+	
+	public function Moon_LastQuarter()
+	{
+		$moonphase = $this->CalculateMoonphase();
+		$lastquarter = $moonphase["lastquarter"];
+		return $lastquarter;
+	}
+	
+	protected function GetMoonPicture($mondphase)
+	{
+		if ($mondphase <= 1 || $mondphase >= 99 ){  //--Vollmond
+		$phase_text = 'Vollmond';
+		if($mondphase>=99){
+			$pic = $this->rescale([99,100],[172,177]);} // ([Mondphasen von,bis],[Bildnummern von,bis])
+			else{
+			$pic = $this->rescale([0,1],[178,182]);}
+			$pic_n = floor($pic($mondphase));
+			if($pic_n<10){
+			   $pic_n = "00".$pic_n;}
+			elseif($pic_n<100){
+			   $pic_n = "0".$pic_n;}
+			else{$pic_n = $pic_n;}
+		}
+		elseif ($mondphase > 1 && $mondphase < 49){  //--abnehmender Mond
+			$phase_text = 'abnehmender Mond';
+			$pic = $this->rescale([2,48],[183,352]);
+			$pic_n = floor($pic($mondphase));
+			if($pic_n<10){
+			   $pic_n = "00".$pic_n;}
+			elseif($pic_n<100){
+			   $pic_n = "0".$pic_n;}
+			else{$pic_n = $pic_n;}
+		}
+		elseif ($mondphase >= 49 && $mondphase <= 51){  //--Neumond
+			$phase_text = 'Neumond';
+			$pic = $this->rescale([49,51],[353,362]);
+			$pic_n = floor($pic($mondphase));
+			if($pic_n<10){
+			   $pic_n = "00".$pic_n;}
+			elseif($pic_n<100){
+			   $pic_n = "0".$pic_n;}
+			else{$pic_n = $pic_n;}
+		}
+		else{  //--zunehmender Mond
+			$phase_text = 'zunehmender Mond';
+			$pic = $this->rescale([52,98],[008,171]);
+			$pic_n = floor($pic($mondphase));
+			if($pic_n<10){
+			   $pic_n = "00".$pic_n;}
+			elseif($pic_n<100){
+			   $pic_n = "0".$pic_n;}
+			else{$pic_n = $pic_n;}
+		}
+		
+		$picture = array("picid" => $pic_n, "phase" => $phase_text)
+		return $picture;
+	}
 
 	protected function rescale($ab, $cd) //--Funktion zum anpassen der Mondphase 0-100 an Bildnummer 001-362 (Bilder der Seite http://www.avgoe.de)
 	{
@@ -2734,6 +2776,7 @@ class Astronomy extends IPSModule
 		{
 			SetValue($this->GetIDForIdent("moonrise"), $moonrise); 
 		}
+		return $moonrise;
 	}
 	
 	public function Monduntergang()
@@ -2755,6 +2798,7 @@ class Astronomy extends IPSModule
 		{
 			SetValue($this->GetIDForIdent("moonset"), $moonset); 
 		}
+		return $moonset;
 	}	
 	
 	// ------------------------------
