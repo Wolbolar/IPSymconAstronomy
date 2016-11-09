@@ -2872,7 +2872,7 @@ class Astronomy extends IPSModule
 			$formutctext = $this->FormUTCText($UTC);
 			$formelementsend = '{ "type": "Label", "label": "__________________________________________________________________________________________________" }';
 			
-			return	'{ '.$formhead.$formutctext.$formselection.$formelementsend'],'.$formactions.$formstatus.' }';
+			return	'{ '.$formhead.$formutctext.$formselection.$formelementsend.'],'.$formactions.$formstatus.' }';
 		}
 		
 		protected function FormUTCText($UTC)
