@@ -2878,159 +2878,159 @@ class Astronomy extends IPSModule
 		protected function FormUTCText($UTC)
 		{
 			$form = '';
-			if($UTZ == 14)
+			if($UTC == 14)
 			{
 				$form .= '{ "type": "Label", "label": "UTC +14 Tonga und 2 weitere LINT Kiritimati" },';
 			}
-			elseif($UTZ == 13.75)
+			elseif($UTC == 13.75)
 			{
 				$form .= '{ "type": "Label", "label": "UTC +13:45 Chatham-Inseln/Neuseeland CHADT Chatham-Inseln" },';
 			}
-			elseif($UTZ == 13)
+			elseif($UTC == 13)
 			{
 				$form .= '{ "type": "Label", "label": "UTC +13 Neuseeland mit Ausnahmen und 4 weitere NZDT Auckland" },';
 			}
-			elseif($UTZ == 12)
+			elseif($UTC == 12)
 			{
 				$form .= '{ "type": "Label", "label": "UTC +12 Kleines Gebiet in Russland und 6 weitere ANAT Anadyr" },';
 			}
-			elseif($UTZ == 11)
+			elseif($UTC == 11)
 			{
 				$form .= '{ "type": "Label", "label": "UTC +11 Großteil von Australien und 8 weitere AEDT Melbourne" },';
 			}
-			elseif($UTZ == 10.5)
+			elseif($UTC == 10.5)
 			{
 				$form .= '{ "type": "Label", "label": "UTC +10:30 Kleines Gebiet in Australien ACDT Adelaide" },';
 			}
-			elseif($UTZ == 10)
+			elseif($UTC == 10)
 			{
 				$form .= '{ "type": "Label", "label": "UTC +10 Queensland/Australien und 6 weitere AEST Brisbane" },';
 			}
-			elseif($UTZ == 9.5)
+			elseif($UTC == 9.5)
 			{
 				$form .= '{ "type": "Label", "label": "UTC +9:30 Northern Territory/Australien ACST Darwin" },';
 			}
-			elseif($UTZ == 9)
+			elseif($UTC == 9)
 			{
 				$form .= '{ "type": "Label", "label": "UTC +9 Japan, Südkorea und 4 weitere JST Tokio" },';
 			}
-			elseif($UTZ == 8.75)
+			elseif($UTC == 8.75)
 			{
 				$form .= '{ "type": "Label", "label": "UTC +8:45 Western Australia/Australien ACWST Eucla" },';
 			}
-			elseif($UTZ == 8.5)
+			elseif($UTC == 8.5)
 			{
 				$form .= '{ "type": "Label", "label": "UTC +8:30 Nordkorea PYT Pjöngjang" },';
 			}
-			elseif($UTZ == 8)
+			elseif($UTC == 8)
 			{
 				$form .= '{ "type": "Label", "label": "UTC +8 China, Philippinen und 10 weitere CST Peking" },';
 			}
-			elseif($UTZ == 7)
+			elseif($UTC == 7)
 			{
 				$form .= '{ "type": "Label", "label": "UTC +7 Großteil von Indonesien und 8 weitere WIB Jakarta" },';
 			}
-			elseif($UTZ == 6.5)
+			elseif($UTC == 6.5)
 			{
 				$form .= '{ "type": "Label", "label": "UTC +6:30 Myanmar und Kokosinseln MMT Rangun" },';
 			}
-			elseif($UTZ == 6)
+			elseif($UTC == 6)
 			{
 				$form .= '{ "type": "Label", "label": "UTC +6 Bangladesch und 6 weitere BST Dhaka },';
 			}
-			elseif($UTZ == 5.75)
+			elseif($UTC == 5.75)
 			{
 				$form .= '{ "type": "Label", "label": "UTC +5:45 Nepal NPT Kathmandu" },';
 			}
-			elseif($UTZ == 5.5)
+			elseif($UTC == 5.5)
 			{
 				$form .= '{ "type": "Label", "label": "UTC +5:30 Indien und Sri Lanka IST Neu-Delhi" },';
 			}
-			elseif($UTZ == 5)
+			elseif($UTC == 5)
 			{
 				$form .= '{ "type": "Label", "label": "UTC +5 Pakistan und 8 weitere UZT Taschkent" },';
 			}
-			elseif($UTZ == 4.5)
+			elseif($UTC == 4.5)
 			{
 				$form .= '{ "type": "Label", "label": "UTC +4:30 Afghanistan AFT Kabul" },';
 			}
-			elseif($UTZ == 4)
+			elseif($UTC == 4)
 			{
 				$form .= '{ "type": "Label", "label": "UTC +4 Aserbaidschan und 8 weitere GST Dubai" },';
 			}
-			elseif($UTZ == 3.5)
+			elseif($UTC == 3.5)
 			{
 				$form .= '{ "type": "Label", "label": "UTC +3:30 Iran IRST Teheran" },';
 			}
-			elseif($UTZ == 3)
+			elseif($UTC == 3)
 			{
 				$form .= '{ "type": "Label", "label": "UTC +3 Moskau/Russland und 24 weitere MSK Moskau" },';
 			}
-			elseif($UTZ == 2)
+			elseif($UTC == 2)
 			{
 				$form .= '{ "type": "Label", "label": "UTC +2 Griechenland und 30 weitere OEZ Kairo" },';
 			}
-			elseif($UTZ == 1)
+			elseif($UTC == 1)
 			{
 				$form .= '{ "type": "Label", "label": "UTC +1 Deutschland und 43 weitere MEZ Berlin" },';
 			}
-			elseif($UTZ == 0)
+			elseif($UTC == 0)
 			{
 				$form .= '{ "type": "Label", "label": "UTC +0 Großbritannien und 26 weitere GMT London" },';
 			}
-			elseif($UTZ == -1)
+			elseif($UTC == -1)
 			{
 				$form .= '{ "type": "Label", "label": "UTC -1 Cabo Verde und 2 weitere CVT Praia" },';
 			}
-			elseif($UTZ == -2)
+			elseif($UTC == -2)
 			{
 				$form .= '{ "type": "Label", "label": "UTC -2 Brasilien (manche Regionen) und Südgeorgien und die Südlichen Sandwichinseln BRST Rio de Janeiro" },';
 			}
-			elseif($UTZ == -3)
+			elseif($UTC == -3)
 			{
 				$form .= '{ "type": "Label", "label": "UTC -3 Brasilien (manche Regionen) und 10 weitere ART Buenos Aires" },';
 			}
-			elseif($UTZ == -3.5)
+			elseif($UTC == -3.5)
 			{
 				$form .= '{ "type": "Label", "label": "UTC -3:30 Neufundland und Labrador/Kanada NST St. John\'s" },';
 			}
-			elseif($UTZ == -4)
+			elseif($UTC == -4)
 			{
 				$form .= '{ "type": "Label", "label": "UTC -4 einige Gebiete von Kanada und 29 weitere VET Caracas" },';
 			}
-			elseif($UTZ == -5)
+			elseif($UTC == -5)
 			{
 				$form .= '{ "type": "Label", "label": "UTC -5 Vereinigte Staaten (manche Regionen) und 13 weitere EST New York" },';
 			}
-			elseif($UTZ == -6)
+			elseif($UTC == -6)
 			{
 				$form .= '{ "type": "Label", "label": "UTC -6 Vereinigte Staaten (manche Regionen) und 9 weitere CST Mexiko-Stadt" },';
 			}
-			elseif($UTZ == -7)
+			elseif($UTC == -7)
 			{
 				$form .= '{ "type": "Label", "label": "UTC -7 einige Gebiete von Vereinigte Staaten und 2 weitere MST Calgary" },';
 			}
-			elseif($UTZ == -8)
+			elseif($UTC == -8)
 			{
 				$form .= '{ "type": "Label", "label": "UTC -8 Vereinigte Staaten (manche Regionen) und 3 weitere PST Los Angeles" },';
 			}
-			elseif($UTZ == -9)
+			elseif($UTC == -9)
 			{
 				$form .= '{ "type": "Label", "label": "UTC -9 Alaska/Vereinigte Staaten und Französisch-Polynesien (manche Regionen) AKST Anchorage" },';
 			}
-			elseif($UTZ == -9.5)
+			elseif($UTC == -9.5)
 			{
 				$form .= '{ "type": "Label", "label": "UTC -9:30 Marquesas/Französisch-Polynesien MART Taiohae" },';
 			}
-			elseif($UTZ == -10)
+			elseif($UTC == -10)
 			{
 				$form .= '{ "type": "Label", "label": "UTC -10 Kleines Gebiet in Vereinigte Staaten und 2 weitere HAST Honolulu" },';
 			}
-			elseif($UTZ == -11)
+			elseif($UTC == -11)
 			{
 				$form .= '{ "type": "Label", "label": "UTC -11 American Samoa und 2 weitere NUT Alofi" },';
 			}
-			elseif($UTZ == -12)
+			elseif($UTC == -12)
 			{
 				$form .= '{ "type": "Label", "label": "UTC -12 Großteil von US Minor Outlying Islands AoE Bakerinsel" },';
 			}
