@@ -2730,7 +2730,7 @@ class Astronomy extends IPSModule
 			else{$pic_n = $pic_n;}
 		}
 		
-		$picture = array("picid" => $pic_n, "phase" => $phase_text)
+		$picture = array("picid" => $pic_n, "phase" => $phase_text);
 		return $picture;
 	}
 
