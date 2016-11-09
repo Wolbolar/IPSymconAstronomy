@@ -20,6 +20,7 @@ Berechung der Werte erfolgt über Formeln aus _"Practical Astronomy with your Ca
 
 ### Astronomische Werte:  
 
+* Julianisches Datum
 * Mond Azimut
 * Mond Entfernung
 * Mond Höhe
@@ -67,6 +68,7 @@ In IP-Symcon unter Kern Instanzen Instanz hinzufügen auswählen und Astronomie 
 ## 4. Funktionsreferenz
 
 ### Astronomische Daten:
+* Julianisches Datum
 * Mond Azimut
 * Mond Entfernung
 * Mond Höhe
@@ -96,6 +98,7 @@ In IP-Symcon unter Kern Instanzen Instanz hinzufügen auswählen und Astronomie 
 
 | Eigenschaft         | Typ     | Wert            | Beschreibung                                |
 | :-----------------: | :-----: | :-------------: | :-----------------------------------------: |
+| juliandate          | float   | JD              | Julianisches Datum                          |
 | moonazimut          | float   | Mond Azimut     | Mond Azimut                                 |
 | moondistance        | float   | Mond Entfernung | Entfernung des Monds zur Erde               |
 | moonaltitude        | float   | Mond Höhe       | Höhe des Monds in Grad                      |
@@ -129,6 +132,30 @@ Astronomy_SetAstronomyValues(integer $InstanceID)
 ```
 Aktualisiert alle im Modul ausgewählten Werte
 
+```php
+Astronomy_MoonphasePercent(integer $InstanceID)
+```
+Gibt den Fortschritt der Mondphase in % aus
+
+```php
+Astronomy_MoonphaseText(integer $InstanceID)
+```
+Liefert die Mondphase als Ausgabe Text - % z.B. zunehmender Mond - 84%
+
+```php
+Astronomy_Moon_FirstQuarter(integer $InstanceID)
+```
+Zeitpunkt Erstes Viertel
+
+```php
+Astronomy_Moon_Newmoon(integer $InstanceID)
+```
+Zeitpunkt Neumond
+
+```php
+Astronomy_Moon_Fullmoon(integer $InstanceID)
+```
+Zeitpunkt Vollmond
 
 ###  b. GUIDs und Datenaustausch:
 
