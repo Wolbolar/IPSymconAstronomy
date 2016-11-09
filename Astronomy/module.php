@@ -279,7 +279,15 @@ class Astronomy extends IPSModule
 	{
 		//testen ob im Medienpool existent
 			$modulid = $this->InstanceID;
-			$ImageFile = IPS_GetKernelDir()."modules".DIRECTORY_SEPARATOR."ipsymconastronomy".DIRECTORY_SEPARATOR."Astronomy".DIRECTORY_SEPARATOR."images".DIRECTORY_SEPARATOR."mond".DIRECTORY_SEPARATOR."mond".$picid.".gif";  // Image-Datei
+			$repository = "github"; //bitbucket, github
+			if ($repository == "github")
+			{
+				$ImageFile = IPS_GetKernelDir()."modules".DIRECTORY_SEPARATOR."IPSymconAstronomy".DIRECTORY_SEPARATOR."Astronomy".DIRECTORY_SEPARATOR."images".DIRECTORY_SEPARATOR."mond".DIRECTORY_SEPARATOR."mond".$picid.".gif";  // Image-Datei
+			}
+			elseif($repository == "bitbucket")
+			{
+				$ImageFile = IPS_GetKernelDir()."modules".DIRECTORY_SEPARATOR."ipsymconastronomy".DIRECTORY_SEPARATOR."Astronomy".DIRECTORY_SEPARATOR."images".DIRECTORY_SEPARATOR."mond".DIRECTORY_SEPARATOR."mond".$picid.".gif";  // Image-Datei		
+			}
 			$Content = @Sys_GetURLContent($ImageFile); 
 			$MediaID = @$this->GetIDForIdent('picturemoon');
 			if ($MediaID === false)
