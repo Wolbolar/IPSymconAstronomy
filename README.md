@@ -107,7 +107,7 @@ In IP-Symcon unter Kern Instanzen Instanz hinzufügen auswählen und Astronomie 
 | moonset             | integer | Mond Untergang  | Zeitpunkt Mond Untergang                    |
 | moonphase           | string  | Mond Phase      | Mond Phase                                  |
 | newmoon             | string  | Neumond         | Zeitpunkt Neumond                           |
-| firstquarter        | string  | 1/4             | Zeitpunkt Erstes Viertel                    |
+| firstquarter        | string  | Erstes Viertel  | Zeitpunkt Erstes Viertel                    |
 | fullmoon            | string  | Vollmond        | Zeitpunkt Vollmond                          |
 | lastquarter         | string  | letztes Viertel | Zeitpunkt Letztes Viertel                   |
 | sunazimut           | float   | Sonne Azimut    | Sonne Azimut                                |

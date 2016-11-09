@@ -14,7 +14,9 @@ class Astronomy extends IPSModule
 		//These lines are parsed on Symcon Startup or Instance creation
         //You cannot use variables here. Just static values.
 		
-        $this->RegisterPropertyBoolean("moonazimut", false);
+		$this->RegisterPropertyFloat("UTC", 1);
+        $this->RegisterPropertyBoolean("juliandate", false);
+		$this->RegisterPropertyBoolean("moonazimut", false);
 		$this->RegisterPropertyBoolean("moondistance", false);
 		$this->RegisterPropertyBoolean("moonaltitude", false);
 		$this->RegisterPropertyBoolean("moonbrightlimbangle", false);
@@ -42,6 +44,7 @@ class Astronomy extends IPSModule
         parent::ApplyChanges();
 		
 		$this->ValidateConfiguration();
+		$this->RegisterTimer('Update', 6000, 'Astrononmy_SetAstronomyValues()($id)');	
 		$this->SetAstronomyValues();
 	
     }
@@ -56,55 +59,65 @@ class Astronomy extends IPSModule
 	private function ValidateConfiguration()
 	{
 		
+		if($this->ReadPropertyBoolean("juliandate") == true) // float
+		{
+			$associations =  Array(	);
+			$this->SetupProfile(IPSVarType::vtFloat, "Astronomie.Julianisches_Datum", "Calendar", "", "", 0, 0, 0, 1, $associations);
+			$this->SetupVariable("juliandate", "Julianisches Datum", "Astronomie.Julianisches_Datum", 1, IPSVarType::vtFloat, true);
+		}
+		else
+		{
+			$this->SetupVariable("juliandate", "Julianisches Datum", "Astronomie.Julianisches_Datum", 1, IPSVarType::vtFloat, false);
+		}
 		if($this->ReadPropertyBoolean("moonazimut") == true) // float
 		{
 			$associations =  Array(	);
 			$this->SetupProfile(IPSVarType::vtFloat, "Astronomie.Mond_Azimut", "Moon", "", "°", 0, 0, 0, 2, $associations);
-			$this->SetupVariable("moonazimut", "Mond Azimut", "Astronomie.Mond_Azimut", 1, IPSVarType::vtFloat, true);
+			$this->SetupVariable("moonazimut", "Mond Azimut", "Astronomie.Mond_Azimut", 2, IPSVarType::vtFloat, true);
 		}
 		else
 		{
-			$this->SetupVariable("moonazimut", "Mond Azimut", "Astronomie.Mond_Azimut", 1, IPSVarType::vtFloat, false);
+			$this->SetupVariable("moonazimut", "Mond Azimut", "Astronomie.Mond_Azimut", 2, IPSVarType::vtFloat, false);
 		}
 		if($this->ReadPropertyBoolean("moondistance") == true) // float
 		{
 			$associations =  Array(	);
 			$this->SetupProfile(IPSVarType::vtFloat, "Astronomie.Mond_Entfernung", "Moon", "", " km", 0, 0, 0, 0, $associations);
-			$this->SetupVariable("moondistance", "Mond Entfernung", "Astronomie.Mond_Entfernung", 2, IPSVarType::vtFloat, true);
+			$this->SetupVariable("moondistance", "Mond Entfernung", "Astronomie.Mond_Entfernung", 3, IPSVarType::vtFloat, true);
 		}
 		else
 		{
-			$this->SetupVariable("moondistance", "Mond Entfernung", "Astronomie.Mond_Entfernung", 2, IPSVarType::vtFloat, false);
+			$this->SetupVariable("moondistance", "Mond Entfernung", "Astronomie.Mond_Entfernung", 3, IPSVarType::vtFloat, false);
 		}
 		if($this->ReadPropertyBoolean("moonaltitude") == true) // float
 		{
 			$associations =  Array(	);
 			$this->SetupProfile(IPSVarType::vtFloat, "Astronomie.Mond_Hoehe", "Moon", "", "°", 0, 0, 0, 2, $associations);
-			$this->SetupVariable("moonaltitude", "Mond Höhe", "Astronomie.Mond_Hoehe", 3, IPSVarType::vtFloat, true);
+			$this->SetupVariable("moonaltitude", "Mond Höhe", "Astronomie.Mond_Hoehe", 4, IPSVarType::vtFloat, true);
 		}
 		else
 		{
-			$this->SetupVariable("moonaltitude", "Mond Höhe", "Astronomie.Mond_Hoehe", 3, IPSVarType::vtFloat, false);
+			$this->SetupVariable("moonaltitude", "Mond Höhe", "Astronomie.Mond_Hoehe", 4, IPSVarType::vtFloat, false);
 		}
 		if($this->ReadPropertyBoolean("moonbrightlimbangle") == true) // float
 		{
 			$associations =  Array(	);
 			$this->SetupProfile(IPSVarType::vtFloat, "Astronomie.Mond_Positionswinkel", "Moon", "", "°", 0, 0, 0, 2, $associations);
-			$this->SetupVariable("moonbrightlimbangle", "Mond Positionswinkel der beleuchteten Fläche", "Astronomie.Mond_Positionswinkel", 4, IPSVarType::vtFloat, true);
+			$this->SetupVariable("moonbrightlimbangle", "Mond Positionswinkel der beleuchteten Fläche", "Astronomie.Mond_Positionswinkel", 5, IPSVarType::vtFloat, true);
 		}
 		else
 		{
-			$this->SetupVariable("moonbrightlimbangle", "Mond Positionswinkel der beleuchteten Fläche", "Astronomie.Mond_Positionswinkel", 4, IPSVarType::vtFloat, false);
+			$this->SetupVariable("moonbrightlimbangle", "Mond Positionswinkel der beleuchteten Fläche", "Astronomie.Mond_Positionswinkel", 5, IPSVarType::vtFloat, false);
 		}
 		if($this->ReadPropertyBoolean("moondirection") == true) // string
 		{
 			$associations =  Array(	);
 			$this->SetupProfile(IPSVarType::vtString, "Astronomie.Mond_Himmelsrichtung", "Moon", "", "", 0, 0, 0, 0, $associations);
-			$this->SetupVariable("moondirection", "Mond Richtung", "Astronomie.Mond_Himmelsrichtung", 5, IPSVarType::vtString, true);
+			$this->SetupVariable("moondirection", "Mond Richtung", "Astronomie.Mond_Himmelsrichtung", 6, IPSVarType::vtString, true);
 		}
 		else
 		{
-			$this->SetupVariable("moondirection", "Mond Richtung", "Astronomie.Mond_Himmelsrichtung", 5, IPSVarType::vtString, false);
+			$this->SetupVariable("moondirection", "Mond Richtung", "Astronomie.Mond_Himmelsrichtung", 6, IPSVarType::vtString, false);
 		}
 		if($this->ReadPropertyBoolean("moonvisibility") == true) // float
 		{
@@ -118,9 +131,8 @@ class Astronomy extends IPSModule
 		}
 		if($this->ReadPropertyBoolean("moonrise") == true) // int
 		{
-			//$associations =  Array(	);
-			//$this->SetupProfile(IPSVarType::vtInteger, "Astronomie.Mond_Aufgang", "Moon", "", "", 0, 0, 0, 0, $associations);
-			$this->SetupVariable("moonrise", "Mondaufgang", "~UnixTimestampTime", 8, IPSVarType::vtInteger, true);
+			$objid = $this->SetupVariable("moonrise", "Mondaufgang", "~UnixTimestampTime", 8, IPSVarType::vtInteger, true);
+			IPS_SetIcon($objid, "Moon");
 		}
 		else
 		{
@@ -128,7 +140,8 @@ class Astronomy extends IPSModule
 		}
 		if($this->ReadPropertyBoolean("moonset") == true) // int
 		{
-			$this->SetupVariable("moonset", "Monduntergang", "~UnixTimestampTime", 9, IPSVarType::vtInteger, true);
+			$objid = $this->SetupVariable("moonset", "Monduntergang", "~UnixTimestampTime", 9, IPSVarType::vtInteger, true);
+			IPS_SetIcon($objid, "Moon");
 		}
 		else
 		{
@@ -237,7 +250,8 @@ class Astronomy extends IPSModule
 		if($this->ReadPropertyBoolean("picturemoon") == true) // string
 		{
 			$picid = $this->Mondphase();
-			$this->UpdateMedia($picid);
+			$objid = $this->UpdateMedia($picid);
+			IPS_SetIcon($objid, "Moon");
 		}
 		else
 		{
@@ -247,13 +261,14 @@ class Astronomy extends IPSModule
 		}
 		if($this->ReadPropertyBoolean("sunmoonview") == true) // string
 		{
-			$this->SetupVariable("sunmoonview", "Position Sonne und Mond", "~HTMLBox", 22, IPSVarType::vtString, true);
+			$objid = $this->SetupVariable("sunmoonview", "Position Sonne und Mond", "~HTMLBox", 22, IPSVarType::vtString, true);
+			IPS_SetIcon($objid, "Sun");
 		}
 		else
 		{
 			$this->SetupVariable("sunmoonview", "Position Sonne und Mond", "~HTMLBox", 22, IPSVarType::vtString, false);
 		}
-				
+			
 		// Status Aktiv
 		$this->SetStatus(102);	
 		
@@ -283,6 +298,7 @@ class Astronomy extends IPSModule
 			IPS_SetInfo ($MediaID, $picid);
 			IPS_SetMediaContent($MediaID, base64_encode($Content));  //Bild Base64 codieren und ablegen
 			IPS_SendMediaEvent($MediaID); //aktualisieren
+			return $MediaID;
 	}
 	
 	// Profil anlegen
@@ -317,24 +333,26 @@ class Astronomy extends IPSModule
 			switch ($vartype)
 			{
 				case IPSVarType::vtBoolean:
-					$this->RegisterVariableBoolean ( $ident, $name, $profile, $position );
+					$objid = $this->RegisterVariableBoolean ( $ident, $name, $profile, $position );
 					break;
 				case IPSVarType::vtInteger:
-					$this->RegisterVariableInteger ( $ident, $name, $profile, $position );
+					$objid = $this->RegisterVariableInteger ( $ident, $name, $profile, $position );
 					break;
 				case IPSVarType::vtFloat:
-					$this->RegisterVariableFloat ( $ident, $name, $profile, $position );
+					$objid = $this->RegisterVariableFloat ( $ident, $name, $profile, $position );
 					break;
 				case IPSVarType::vtString:
-					$this->RegisterVariableString ( $ident, $name, $profile, $position );
+					$objid = $this->RegisterVariableString ( $ident, $name, $profile, $position );
 					break;
 			}	
 		}
 		else
 		{
+			$objid = $this->GetIDForIdent($ident);
 			$this->UnregisterVariable($ident);
-		}	
+		}
 		
+		return $objid;
 	}
 	
 	protected function SunMoonView($sunazimut, $sunaltitude, $moonazimut, $moonaltitude)
@@ -467,7 +485,7 @@ class Astronomy extends IPSModule
 		</head>
 
 		<body onload="draw()">
-		<canvas id="canvas1" width="800" height="180" > //style="border:1px solid yellow;"
+		<canvas id="canvas1" width="800" height="400" > //style="border:1px solid yellow;"
 		</canvas>
 		</body>
 
@@ -479,7 +497,7 @@ class Astronomy extends IPSModule
 		$handle = fopen($fullFilename, "w");
 		fwrite($handle, $html);
 		fclose($handle);
-		$HTMLData = '<iframe src="user'.DIRECTORY_SEPARATOR.'neo'.DIRECTORY_SEPARATOR.'sunmoonline.php" border="0" frameborder="0" style= "width: 100%; height: 500px;"/></iframe>';
+		$HTMLData = '<iframe src="user'.DIRECTORY_SEPARATOR.'neo'.DIRECTORY_SEPARATOR.'sunmoonline.php" border="0" frameborder="0" style= "width: 100%; height:400px;"/></iframe>';
 		if($this->ReadPropertyBoolean("sunmoonview") == true)
 		{
 			SetValue($this->GetIDForIdent("sunmoonview"), $HTMLData);
@@ -508,7 +526,7 @@ class Astronomy extends IPSModule
 			{
 				$DS = 1;
 			}
-		$ZC = 1; // Zone Correction to Geenwich: 1 = UTC+1
+		$ZC = $this->ReadPropertyFloat("UTC"); // Zone Correction to Greenwich: 1 = UTC+1
 		
 	
 		$timestamp = time();
@@ -524,7 +542,11 @@ class Astronomy extends IPSModule
 		$GD = $this->LctUT($Hour, $Minute, $Second, $DS, $ZC, $day, $month, $year)[1];
 		$GM = $this->LctUT($Hour, $Minute, $Second, $DS, $ZC, $day, $month, $year)[2];
 		$GY = $this->LctUT($Hour, $Minute, $Second, $DS, $ZC, $day, $month, $year)[3];
-		$CDJD = $this->CDJD($GD, $GM, $GY);  //UT Julian Date
+		$JD = $this->CDJD($GD, $GM, $GY);  //UT Julian Date
+		if($this->ReadPropertyBoolean("juliandate") == true)
+		{
+			SetValue($this->GetIDForIdent("juliandate"), $JD);
+		}
 		$LCH = $this->DHHour($HMSDec);  //LCT Hour --> Local Time
 		$LCM = $this->DHMin($HMSDec);   //LCT Minute
 		$LCS = $this->DHSec($HMSDec);   //LCT Second
@@ -822,8 +844,8 @@ class Astronomy extends IPSModule
 			$C = $this->roundvariantfix(365.25 * $Y);}
 
 		$D = $this->roundvariantfix(30.6001 * ($M + 1));
-		$CDJD = $B + $C + $D + $day + 1720994.5;
-		return ($CDJD);
+		$JD = $B + $C + $D + $day + 1720994.5;
+		return ($JD);
 	}
 	
 	

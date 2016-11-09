@@ -2,7 +2,10 @@
 	"translations": {
 		"de": { 
 			"Astronomy values": "Astronomische Daten",
+			"Coordinated Universal Time (UTC):":"Zeitzone (Koordinierte Weltzeit)",
+			"UTC":"UTC",
 			"select values for display:": "Daten zur Anzeige auswählen:",
+			"Julian Date":"Julianisches Datum",
 			"moon azimut": "Mond Azimut",
 			"moon distance": "Mond Entfernung",
 			"moon altitude": "Mond Höhe",
