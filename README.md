@@ -1,4 +1,4 @@
-# IPSymconFireTV
+# IPSymconAstronomy
 
 Modul für IP-Symcon ab Version 4.1 zeigt Astonomische Daten an.
 Beta Test
@@ -16,11 +16,31 @@ Beta Test
 
 ## 1. Funktionsumfang
 
-Mit dem Modul wird unter Kerninstanzen eine Instanz mit Astonomischen Werten angelegt. Welche Werte angezeigt werden sollen lässt sich im Modul auswählen. 
+Mit dem Modul wird unter Kerninstanzen eine Instanz mit Astonomischen Werten angelegt. Welche Werte angezeigt werden sollen lässt sich im Modul auswählen.
+Berechung der Werte erfolgt über Formeln aus _"Practical Astronomy with your Calculator or Spreadsheet"_ von Peter Duffet-Smith und Jonathan Zwart. 
 
 ### Astronomische Werte:  
 
- - Up, Down, Left, Right, Enter, Back, Home, Menu, Media Play/Pause, Media Previous, Media Next
+* Mond Azimut
+* Mond Entfernung
+* Mond Höhe
+* Mond Positionswinkel der beleuchteten Fläche
+* Mond Himmelsrichtung 
+* Mond Richtung (Grad)
+* Mond Sichtbarkeit
+* Mond Aufgang
+* Mond Untergang
+* Mond Phase
+* Zeitpunkt Neumond
+* Zeitpunkt Erstes Viertel
+* Zeitpunkt Vollmond
+* Zeitpunkt Letztes Viertel
+* Sonne Azimut
+* Sonne Entfernung
+* Sonne Höhe
+* Sonne Richtung
+* Sonne Richtung (Grad)
+* Jahreszeit
  
 
 ## 2. Voraussetzungen
@@ -75,9 +95,28 @@ In IP-Symcon unter Kern Instanzen Instanz hinzufügen auswählen und Astronomie 
 
 ### Astronomie:
 
-| Eigenschaft | Typ     | Standardwert | Funktion                                  |
-| :---------: | :-----: | :----------: | :---------------------------------------: |
-| IPFireTV    | string  |              | IP Adresse FireTV                         |
+| Eigenschaft         | Typ     | Wert            | Beschreibung                                |
+| :-----------------: | :-----: | :-------------: | :-----------------------------------------: |
+| moonazimut          | float   | Mond Azimut     | Mond Azimut                                 |
+| moondistance        | float   | Mond Entfernung | Entfernung des Monds zur Erde               |
+| moonaltitude        | float   | Mond Höhe       | Höhe des Monds in Grad                      |
+| moonbrightlimbangle | float   | Positionswinkel | Mond Positionswinkel der beleuchteten Fläche|
+| moondirection       | string  | Himmelsrichtung | Himmelsrichtung des Monds                   |
+| moonvisibility      | float   | Sichtbarkeit    | Sichtbarkeit des Monds                      |
+| moonrise            | integer | Mond Aufgang    | Zeitpunkt Mond Aufgang                      |
+| moonset             | integer | Mond Untergang  | Zeitpunkt Mond Untergang                    |
+| moonphase           | string  | Mond Phase      | Mond Phase                                  |
+| newmoon             | string  | Neumond         | Zeitpunkt Neumond                           |
+| firstquarter        | string  | 1/4             | Zeitpunkt Erstes Viertel                    |
+| fullmoon            | string  | Vollmond        | Zeitpunkt Vollmond                          |
+| lastquarter         | string  | letztes Viertel | Zeitpunkt Letztes Viertel                   |
+| sunazimut           | float   | Sonne Azimut    | Sonne Azimut                                |
+| sundistance         | float   | Sonne Entfernung| Sonne Entfernung                            |
+| sunaltitude         | float   | Sonne Höhe      | Sonne Höhe                                  |
+| sundirection        | string  | Himmelsrichtung | Himmelsrichtung                             |
+| season              | string  | Jahreszeit      | Jahreszeit                                  |
+| picturemoon         | gif     | Bild Mond       | Bild der aktuellen Ansicht vom Mond         |
+| sunmoonview         | string  | Position        | Position Sonne und Mond                     |
 
 
 ## 6. Anhang
@@ -87,10 +126,9 @@ In IP-Symcon unter Kern Instanzen Instanz hinzufügen auswählen und Astronomie 
 #### Astronomie:
 
 ```php
-Astronomy_Up(integer $InstanceID)
+Astronomy_SetAstronomyValues(integer $InstanceID)
 ```
-
-Up
+Aktualisiert alle im Modul ausgewählten Werte
 
 
 ###  b. GUIDs und Datenaustausch:
