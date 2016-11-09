@@ -1,0 +1,36 @@
+{
+	"translations": {
+		"de": { 
+			"Astronomy values": "Astronomische Daten",
+			"Coordinated Universal Time (UTC):":"Zeitzone (Koordinierte Weltzeit)",
+			"UTC":"UTC",
+			"select values for display:": "Daten zur Anzeige auswählen:",
+			"Julian Date":"Julianisches Datum",
+			"moon azimut": "Mond Azimut",
+			"moon distance": "Mond Entfernung",
+			"moon altitude": "Mond Höhe",
+			"moon bright limb angle": "Mond Positionswinkel der beleuchteten Fläche",
+			"moon direction": "Mond Himmelsrichtung",
+			"moon visibility": "Mond Sichtbarkeit",
+			"moon rise": "Mond Aufgang",
+			"moon set": "Mond Untergang",
+			"moon phase": "Mond Phase",
+			"new moon": "Zeitpunkt Neumond",
+			"first quarter": "Zeitpunkt Erstes Viertel",
+			"full moon": "Zeitpunkt Vollmond",
+			"last quarter": "Zeitpunkt Letztes Viertel",
+			"sun azimut": "Sonne Azimut",
+			"sun distance": "Sonne Entfernung",
+			"sun altitude": "Sonne Höhe",
+			"sun direction": "Sonne Richtung",
+			"season": "Jahreszeit",
+			"picture moon": "Mond Bild",
+			"view position sun and moon": "Ansicht Position Sonne und Mond",
+			"update values": "Werte aktualisieren",
+			"update": "Aktualisieren",
+			"Creating instance.": "Die Instanz wird erstellt.",
+			"Astronomy ok": "Astronomie ok",
+			"interface closed.": "Interface geschlossen."
+		}
+	}
+}

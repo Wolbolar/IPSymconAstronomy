@@ -1,0 +1,11 @@
+{
+    "id": "{AE370BEA-2B51-4C64-A147-0CCE3494FE08}",
+    "name": "Astronomy",
+    "type": 0,
+    "vendor": "Sonstige",
+    "aliases": ["Astronomie"],
+    "parentRequirements": [],
+    "childRequirements": [],
+    "implemented": [],
+    "prefix": "Astronomy"
+}
