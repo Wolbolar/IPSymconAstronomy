@@ -279,7 +279,7 @@ class Astronomy extends IPSModule
 	{
 		//testen ob im Medienpool existent
 			$modulid = $this->InstanceID;
-			$repository = "github"; //bitbucket, github
+			$repository = "bitbucket"; //bitbucket, github
 			if ($repository == "github")
 			{
 				$ImageFile = IPS_GetKernelDir()."modules".DIRECTORY_SEPARATOR."IPSymconAstronomy".DIRECTORY_SEPARATOR."Astronomy".DIRECTORY_SEPARATOR."images".DIRECTORY_SEPARATOR."mond".DIRECTORY_SEPARATOR."mond".$picid.".gif";  // Image-Datei
