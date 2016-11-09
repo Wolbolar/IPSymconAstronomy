@@ -2646,7 +2646,7 @@ class Astronomy extends IPSModule
 	public function MoonphaseText()
 	{
 		$mondphase = $this->MoonphasePercent();
-		$picture = GetMoonPicture($mondphase);
+		$picture = $this->GetMoonPicture($mondphase);
 		$phase = $picture["phase"];
 		if($this->ReadPropertyBoolean("moonphase") == true)
 		{
