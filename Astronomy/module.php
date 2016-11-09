@@ -349,8 +349,11 @@ class Astronomy extends IPSModule
 		}
 		else
 		{
-			$objid = $this->GetIDForIdent($ident);
-			$this->UnregisterVariable($ident);
+			$objid = @$this->GetIDForIdent($ident);
+			if ($objid > 0)
+			{
+				$this->UnregisterVariable($ident);
+			}
 		}
 		
 		return $objid;
