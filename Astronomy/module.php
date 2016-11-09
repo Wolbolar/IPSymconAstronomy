@@ -249,8 +249,9 @@ class Astronomy extends IPSModule
 		}
 		if($this->ReadPropertyBoolean("picturemoon") == true) // string
 		{
-			$picid = $this->Mondphase();
-			$objid = $this->UpdateMedia($picid);
+			$mondphase = $this->MoonphasePercent();
+			$picture = $this->GetMoonPicture($mondphase);
+			$this->UpdateMedia($picture["picid"]);
 			IPS_SetIcon($objid, "Moon");
 		}
 		else
