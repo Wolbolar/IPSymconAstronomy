@@ -251,7 +251,7 @@ class Astronomy extends IPSModule
 		{
 			$mondphase = $this->MoonphasePercent();
 			$picture = $this->GetMoonPicture($mondphase);
-			$this->UpdateMedia($picture["picid"]);
+			$objid = $this->UpdateMedia($picture["picid"]);
 			IPS_SetIcon($objid, "Moon");
 		}
 		else
