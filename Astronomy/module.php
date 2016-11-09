@@ -62,7 +62,7 @@ class Astronomy extends IPSModule
 		if($this->ReadPropertyBoolean("juliandate") == true) // float
 		{
 			$associations =  Array(	);
-			$this->SetupProfile(IPSVarType::vtFloat, "Astronomie.Julianisches_Datum", "Calendar", "", "", 0, 0, 0, 1, $associations);
+			$this->SetupProfile(IPSVarType::vtFloat, "Astronomie.Julianisches_Datum", "Calendar", "", " Tage", 0, 0, 0, 1, $associations);
 			$this->SetupVariable("juliandate", "Julianisches Datum", "Astronomie.Julianisches_Datum", 1, IPSVarType::vtFloat, true);
 		}
 		else
@@ -2861,6 +2861,378 @@ class Astronomy extends IPSModule
         
     }
 	
+	//Configuration Form
+		public function GetConfigurationForm()
+		{
+			$UTC = $this->ReadPropertyFloat("UTC");
+			$formhead = $this->FormHead();
+			$formselection = $this->FormSelection();
+			$formstatus = $this->FormStatus();
+			$formactions = $this->FormActions();
+			$formutctext = $this->FormUTCText($UTC);
+			$formelementsend = '{ "type": "Label", "label": "__________________________________________________________________________________________________" }';
+			
+			return	'{ '.$formhead.$formutctext.$formselection.$formelementsend'],'.$formactions.$formstatus.' }';
+		}
+		
+		protected function FormUTCText($UTC)
+		{
+			$form = '';
+			if($UTZ == 14)
+			{
+				$form .= '{ "type": "Label", "label": "UTC +14 Tonga und 2 weitere LINT Kiritimati" },';
+			}
+			elseif($UTZ == 13.75)
+			{
+				$form .= '{ "type": "Label", "label": "UTC +13:45 Chatham-Inseln/Neuseeland CHADT Chatham-Inseln" },';
+			}
+			elseif($UTZ == 13)
+			{
+				$form .= '{ "type": "Label", "label": "UTC +13 Neuseeland mit Ausnahmen und 4 weitere NZDT Auckland" },';
+			}
+			elseif($UTZ == 12)
+			{
+				$form .= '{ "type": "Label", "label": "UTC +12 Kleines Gebiet in Russland und 6 weitere ANAT Anadyr" },';
+			}
+			elseif($UTZ == 11)
+			{
+				$form .= '{ "type": "Label", "label": "UTC +11 Großteil von Australien und 8 weitere AEDT Melbourne" },';
+			}
+			elseif($UTZ == 10.5)
+			{
+				$form .= '{ "type": "Label", "label": "UTC +10:30 Kleines Gebiet in Australien ACDT Adelaide" },';
+			}
+			elseif($UTZ == 10)
+			{
+				$form .= '{ "type": "Label", "label": "UTC +10 Queensland/Australien und 6 weitere AEST Brisbane" },';
+			}
+			elseif($UTZ == 9.5)
+			{
+				$form .= '{ "type": "Label", "label": "UTC +9:30 Northern Territory/Australien ACST Darwin" },';
+			}
+			elseif($UTZ == 9)
+			{
+				$form .= '{ "type": "Label", "label": "UTC +9 Japan, Südkorea und 4 weitere JST Tokio" },';
+			}
+			elseif($UTZ == 8.75)
+			{
+				$form .= '{ "type": "Label", "label": "UTC +8:45 Western Australia/Australien ACWST Eucla" },';
+			}
+			elseif($UTZ == 8.5)
+			{
+				$form .= '{ "type": "Label", "label": "UTC +8:30 Nordkorea PYT Pjöngjang" },';
+			}
+			elseif($UTZ == 8)
+			{
+				$form .= '{ "type": "Label", "label": "UTC +8 China, Philippinen und 10 weitere CST Peking" },';
+			}
+			elseif($UTZ == 7)
+			{
+				$form .= '{ "type": "Label", "label": "UTC +7 Großteil von Indonesien und 8 weitere WIB Jakarta" },';
+			}
+			elseif($UTZ == 6.5)
+			{
+				$form .= '{ "type": "Label", "label": "UTC +6:30 Myanmar und Kokosinseln MMT Rangun" },';
+			}
+			elseif($UTZ == 6)
+			{
+				$form .= '{ "type": "Label", "label": "UTC +6 Bangladesch und 6 weitere BST Dhaka },';
+			}
+			elseif($UTZ == 5.75)
+			{
+				$form .= '{ "type": "Label", "label": "UTC +5:45 Nepal NPT Kathmandu" },';
+			}
+			elseif($UTZ == 5.5)
+			{
+				$form .= '{ "type": "Label", "label": "UTC +5:30 Indien und Sri Lanka IST Neu-Delhi" },';
+			}
+			elseif($UTZ == 5)
+			{
+				$form .= '{ "type": "Label", "label": "UTC +5 Pakistan und 8 weitere UZT Taschkent" },';
+			}
+			elseif($UTZ == 4.5)
+			{
+				$form .= '{ "type": "Label", "label": "UTC +4:30 Afghanistan AFT Kabul" },';
+			}
+			elseif($UTZ == 4)
+			{
+				$form .= '{ "type": "Label", "label": "UTC +4 Aserbaidschan und 8 weitere GST Dubai" },';
+			}
+			elseif($UTZ == 3.5)
+			{
+				$form .= '{ "type": "Label", "label": "UTC +3:30 Iran IRST Teheran" },';
+			}
+			elseif($UTZ == 3)
+			{
+				$form .= '{ "type": "Label", "label": "UTC +3 Moskau/Russland und 24 weitere MSK Moskau" },';
+			}
+			elseif($UTZ == 2)
+			{
+				$form .= '{ "type": "Label", "label": "UTC +2 Griechenland und 30 weitere OEZ Kairo" },';
+			}
+			elseif($UTZ == 1)
+			{
+				$form .= '{ "type": "Label", "label": "UTC +1 Deutschland und 43 weitere MEZ Berlin" },';
+			}
+			elseif($UTZ == 0)
+			{
+				$form .= '{ "type": "Label", "label": "UTC +0 Großbritannien und 26 weitere GMT London" },';
+			}
+			elseif($UTZ == -1)
+			{
+				$form .= '{ "type": "Label", "label": "UTC -1 Cabo Verde und 2 weitere CVT Praia" },';
+			}
+			elseif($UTZ == -2)
+			{
+				$form .= '{ "type": "Label", "label": "UTC -2 Brasilien (manche Regionen) und Südgeorgien und die Südlichen Sandwichinseln BRST Rio de Janeiro" },';
+			}
+			elseif($UTZ == -3)
+			{
+				$form .= '{ "type": "Label", "label": "UTC -3 Brasilien (manche Regionen) und 10 weitere ART Buenos Aires" },';
+			}
+			elseif($UTZ == -3.5)
+			{
+				$form .= '{ "type": "Label", "label": "UTC -3:30 Neufundland und Labrador/Kanada NST St. John\'s" },';
+			}
+			elseif($UTZ == -4)
+			{
+				$form .= '{ "type": "Label", "label": "UTC -4 einige Gebiete von Kanada und 29 weitere VET Caracas" },';
+			}
+			elseif($UTZ == -5)
+			{
+				$form .= '{ "type": "Label", "label": "UTC -5 Vereinigte Staaten (manche Regionen) und 13 weitere EST New York" },';
+			}
+			elseif($UTZ == -6)
+			{
+				$form .= '{ "type": "Label", "label": "UTC -6 Vereinigte Staaten (manche Regionen) und 9 weitere CST Mexiko-Stadt" },';
+			}
+			elseif($UTZ == -7)
+			{
+				$form .= '{ "type": "Label", "label": "UTC -7 einige Gebiete von Vereinigte Staaten und 2 weitere MST Calgary" },';
+			}
+			elseif($UTZ == -8)
+			{
+				$form .= '{ "type": "Label", "label": "UTC -8 Vereinigte Staaten (manche Regionen) und 3 weitere PST Los Angeles" },';
+			}
+			elseif($UTZ == -9)
+			{
+				$form .= '{ "type": "Label", "label": "UTC -9 Alaska/Vereinigte Staaten und Französisch-Polynesien (manche Regionen) AKST Anchorage" },';
+			}
+			elseif($UTZ == -9.5)
+			{
+				$form .= '{ "type": "Label", "label": "UTC -9:30 Marquesas/Französisch-Polynesien MART Taiohae" },';
+			}
+			elseif($UTZ == -10)
+			{
+				$form .= '{ "type": "Label", "label": "UTC -10 Kleines Gebiet in Vereinigte Staaten und 2 weitere HAST Honolulu" },';
+			}
+			elseif($UTZ == -11)
+			{
+				$form .= '{ "type": "Label", "label": "UTC -11 American Samoa und 2 weitere NUT Alofi" },';
+			}
+			elseif($UTZ == -12)
+			{
+				$form .= '{ "type": "Label", "label": "UTC -12 Großteil von US Minor Outlying Islands AoE Bakerinsel" },';
+			}
+			return $form;
+		}
+		
+		protected function FormSelection()
+		{			 
+			$form = '{ "type": "Select", "name": "UTC", "caption": "UTC",
+					"options": [
+						{ "label": "UTC +14 LINT Kiritimati", "value": 14 },
+						{ "label": "UTC +13:45 CHADT Chatham-Inseln", "value": 13.75 },
+						{ "label": "UTC +13 NZDT Auckland", "value": 13 },
+						{ "label": "UTC +12 ANAT Anadyr", "value": 12 },
+						{ "label": "UTC +11 AEDT Melbourne", "value": 11 },
+						{ "label": "UTC +10:30 ACDT Adelaide", "value": 10.5 },
+						{ "label": "UTC +10 AEST Brisbane", "value": 10 },
+						{ "label": "UTC +9:30 ACST Darwin", "value": 9.5 },
+						{ "label": "UTC +9 JST Tokio", "value": 9 },
+						{ "label": "UTC +8:45 ACWST Eucla", "value": 8.75 },
+						{ "label": "UTC +8:30 PYT Pjöngjang", "value": 8.5 },
+						{ "label": "UTC +8 CST Peking", "value": 8 },
+						{ "label": "UTC +7 WIB Jakarta", "value": 7 },
+						{ "label": "UTC +6:30 MMT Rangun", "value": 6.5 },
+						{ "label": "UTC +6 BST Dhaka", "value": 6 },
+						{ "label": "UTC +5:45 NPT Kathmandu", "value": 5.75 },
+						{ "label": "UTC +5:30 IST Neu-Delhi", "value": 5.5 },
+						{ "label": "UTC +5 UZT Taschkent", "value": 5 },
+						{ "label": "UTC +4:30 AFT Kabul", "value": 4.5 },
+						{ "label": "UTC +4 GST Dubai", "value": 4 },
+						{ "label": "UTC +3:30 IRST Teheran", "value": 3.5 },
+						{ "label": "UTC +3 MSK Moskau", "value": 3 },
+						{ "label": "UTC +2 OEZ Kairo", "value": 2 },
+						{ "label": "UTC +1 MEZ Berlin", "value": 1 },
+						{ "label": "UTC +0 GMT London", "value": 0 },
+						{ "label": "UTC -1 CVT Praia", "value": -1 },
+						{ "label": "UTC -2 BRST Rio de Janeiro", "value": -2 },
+						{ "label": "UTC -3 ART Buenos Aires", "value": -3 },
+						{ "label": "UTC -3:30 NST St. John\'s", "value": -3.5 },
+						{ "label": "UTC -4 VET Caracas", "value": -4 },
+						{ "label": "UTC -5 EST New York", "value": -5 },
+						{ "label": "UTC -6 CST Mexiko-Stadt", "value": -6 },
+						{ "label": "UTC -7 MST Calgary", "value": -7 },
+						{ "label": "UTC -8 PST Los Angeles", "value": -8 },
+						{ "label": "UTC -9 AKST Anchorage", "value": -9 },
+						{ "label": "UTC -9:30 MART Taiohae", "value": -9.5 },
+						{ "label": "UTC -10 HAST Honolulu", "value": -10 },
+						{ "label": "UTC -11 NUT Alofi", "value": -11 },
+						{ "label": "UTC -12 AoE Bakerinsel", "value": -12 }
+					]
+				},
+				{ "type": "Label", "label": "select values for display:" },
+				{
+                    "name": "juliandate",
+                    "type": "CheckBox",
+                    "caption": "Julian Date"
+                },
+				{
+                    "name": "moonazimut",
+                    "type": "CheckBox",
+                    "caption": "moon azimut"
+                },
+				{
+                    "name": "moondistance",
+                    "type": "CheckBox",
+                    "caption": "moon distance"
+                },	
+				{
+                    "name": "moonaltitude",
+                    "type": "CheckBox",
+                    "caption": "moon altitude"
+                },	
+				{
+                    "name": "moonbrightlimbangle",
+                    "type": "CheckBox",
+                    "caption": "moon bright limb angle"
+                },	
+				{
+                    "name": "moondirection",
+                    "type": "CheckBox",
+                    "caption": "moon direction"
+                },		
+				{
+                    "name": "moonvisibility",
+                    "type": "CheckBox",
+                    "caption": "moon visibility"
+                },	
+				{
+                    "name": "moonrise",
+                    "type": "CheckBox",
+                    "caption": "moon rise"
+                },	
+				{
+                    "name": "moonset",
+                    "type": "CheckBox",
+                    "caption": "moon set"
+                },	
+				{
+                    "name": "moonphase",
+                    "type": "CheckBox",
+                    "caption": "moon phase"
+                },	
+				{
+                    "name": "newmoon",
+                    "type": "CheckBox",
+                    "caption": "new moon"
+                },	
+				{
+                    "name": "firstquarter",
+                    "type": "CheckBox",
+                    "caption": "first quarter"
+                },	
+				{
+                    "name": "fullmoon",
+                    "type": "CheckBox",
+                    "caption": "full moon"
+                },	
+				{
+                    "name": "lastquarter",
+                    "type": "CheckBox",
+                    "caption": "last quarter"
+                },	
+				{
+                    "name": "sunazimut",
+                    "type": "CheckBox",
+                    "caption": "sun azimut"
+                },	
+				{
+                    "name": "sundistance",
+                    "type": "CheckBox",
+                    "caption": "sun distance"
+                },	
+				{
+                    "name": "sunaltitude",
+                    "type": "CheckBox",
+                    "caption": "sun altitude"
+                },	
+				{
+                    "name": "sundirection",
+                    "type": "CheckBox",
+                    "caption": "sun direction"
+                },
+				{
+                    "name": "season",
+                    "type": "CheckBox",
+                    "caption": "season"
+                },
+				{
+                    "name": "picturemoon",
+                    "type": "CheckBox",
+                    "caption": "picture moon"
+                },
+				{
+                    "name": "sunmoonview",
+                    "type": "CheckBox",
+                    "caption": "view position sun and moon"
+                },';
+			return $form;
+		}
+		
+		protected function FormHead()
+		{
+			$form = '"elements":
+            [
+				{ "type": "Label", "label": "Astronomy values" },
+				{ "type": "Label", "label": "Coordinated Universal Time (UTC):" },';
+			
+			return $form;
+		}
+		
+		protected function FormActions()
+		{
+			$form = '"actions":
+			[
+				{ "type": "Label", "label": "update values" },
+				{ "type": "Button", "label": "update", "onClick": "Astronomy_SetAstronomyValues($id);" }
+			],';
+			return  $form;
+		}	
+		
+		protected function FormStatus()
+		{
+			$form = '"status":
+            [
+                {
+                    "code": 101,
+                    "icon": "inactive",
+                    "caption": "Creating instance."
+                },
+				{
+                    "code": 102,
+                    "icon": "active",
+                    "caption": "Astronomy ok"
+                },
+                {
+                    "code": 104,
+                    "icon": "inactive",
+                    "caption": "interface closed."
+                }
+            ]';
+			return $form;
+		}
 }
 
 /******************************************************************************
