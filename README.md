@@ -1,7 +1,6 @@
 # IPSymconAstronomy
 
 Modul für IP-Symcon ab Version 4.1 zeigt Astonomische Daten an.
-Beta Test
 
 ## Dokumentation
 

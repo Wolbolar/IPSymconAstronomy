@@ -533,7 +533,7 @@ class Astronomy extends IPSModule
 		$mondphase = $this->moon_phase(date('Y', $timestamp), date('n', $timestamp), date('j', $timestamp));
 		$this->Mondaufgang();
 		$this->Monduntergang();
-		$mondphase = $this->Moonphase();
+		$mondphase = $this->MoonphasePercent();
 		$picture = $this->GetMoonPicture($mondphase);
 		$this->CalculateMoonphase();
 		$this->MoonphaseText();
@@ -2632,7 +2632,7 @@ class Astronomy extends IPSModule
 		return $moonphase;
 	}
 	
-	public function Moonphase()
+	public function MoonphasePercent()
 	{
 		// Formel nach http://www.die-seite.eu/wm-mondphasen.php
 
@@ -2645,7 +2645,7 @@ class Astronomy extends IPSModule
 	
 	public function MoonphaseText()
 	{
-		$mondphase = $this->Moonphase();
+		$mondphase = $this->MoonphasePercent();
 		$picture = GetMoonPicture($mondphase);
 		$phase = $picture["phase"];
 		if($this->ReadPropertyBoolean("moonphase") == true)
