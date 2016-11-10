@@ -44,7 +44,7 @@ class Astronomy extends IPSModule
         parent::ApplyChanges();
 		
 		$this->ValidateConfiguration();
-		$this->RegisterTimer('Update', 360000, 'Astrononmy_SetAstronomyValues($id)');	
+		$this->RegisterTimer('Update', 360000, 'Astronomy_SetAstronomyValues($id)');	
 		$this->SetAstronomyValues();
 	
     }
