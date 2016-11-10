@@ -44,7 +44,7 @@ class Astronomy extends IPSModule
         parent::ApplyChanges();
 		
 		$this->ValidateConfiguration();
-		$this->RegisterTimer('Update', 360000, 'Astrononmy_SetAstronomyValues()($id)');	
+		$this->RegisterTimer('Update', 360000, 'Astrononmy_SetAstronomyValues($id)');	
 		$this->SetAstronomyValues();
 	
     }
@@ -509,7 +509,7 @@ class Astronomy extends IPSModule
 		$handle = fopen($fullFilename, "w");
 		fwrite($handle, $html);
 		fclose($handle);
-		$HTMLData = '<iframe src="user'.DIRECTORY_SEPARATOR.'sunmoonline.php" border="0" frameborder="0" style= "width: 100%; height:260px;"/></iframe>';
+		$HTMLData = '<iframe src="user'.DIRECTORY_SEPARATOR.'sunmoonline.php" border="0" frameborder="0" style= "width: 100%; height:280px;"/></iframe>';
 		if($this->ReadPropertyBoolean("sunmoonview") == true)
 		{
 			SetValue($this->GetIDForIdent("sunmoonview"), $HTMLData);
