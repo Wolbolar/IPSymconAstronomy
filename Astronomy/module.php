@@ -174,7 +174,16 @@ class Astronomy extends IPSModule
 		}
 		if($this->ReadPropertyBoolean("moonrise") == true) // int
 		{
-			$objid = $this->SetupVariable("moonrise", "Mondaufgang", "~UnixTimestampTime", 8, IPSVarType::vtInteger, true);
+			$ipsversion = $this->GetIPSVersion ();
+			if($ipsversion == 1)
+			{
+				$objid = $this->SetupVariable("moonrise", "Mondaufgang", "~UnixTimestamp", 8, IPSVarType::vtInteger, true);
+			}
+			else
+			{
+				$objid = $this->SetupVariable("moonrise", "Mondaufgang", "~UnixTimestampTime", 8, IPSVarType::vtInteger, true);
+			}
+			
 			IPS_SetIcon($objid, "Moon");
 		}
 		else
@@ -183,7 +192,16 @@ class Astronomy extends IPSModule
 		}
 		if($this->ReadPropertyBoolean("moonset") == true) // int
 		{
-			$objid = $this->SetupVariable("moonset", "Monduntergang", "~UnixTimestampTime", 9, IPSVarType::vtInteger, true);
+			$ipsversion = $this->GetIPSVersion ();
+			if($ipsversion == 1)
+			{
+				$objid = $this->SetupVariable("moonset", "Monduntergang", "~UnixTimestamp", 9, IPSVarType::vtInteger, true);
+			}
+			else
+			{
+				$objid = $this->SetupVariable("moonset", "Monduntergang", "~UnixTimestampTime", 9, IPSVarType::vtInteger, true);
+			}
+			
 			IPS_SetIcon($objid, "Moon");
 		}
 		else
@@ -343,12 +361,12 @@ class Astronomy extends IPSModule
 									Array(4, "Winter",  "", -1)
 									);
 			}
-			$this->SetupProfile(IPSVarType::vtString, "Astronomie.Jahreszeit", "Sun", "", "", 0, 0, 0, 0, $associations);
-			$this->SetupVariable("season", "Jahreszeit", "Astronomie.Jahreszeit", 20, IPSVarType::vtString, true);
+			$this->SetupProfile(IPSVarType::vtInteger, "Astronomie.Jahreszeit", "Sun", "", "", 0, 0, 0, 0, $associations);
+			$this->SetupVariable("season", "Jahreszeit", "Astronomie.Jahreszeit", 20, IPSVarType::vtInteger, true);
 		}
 		else
 		{
-			$this->SetupVariable("season", "Jahreszeit", "Astronomie.Jahreszeit", 20, IPSVarType::vtString, false);
+			$this->SetupVariable("season", "Jahreszeit", "Astronomie.Jahreszeit", 20, IPSVarType::vtInteger, false);
 		}
 		if($this->ReadPropertyBoolean("picturemoon") == true) // string
 		{
@@ -3397,6 +3415,23 @@ class Astronomy extends IPSModule
                 }
             ]';
 			return $form;
+		}
+		
+		protected function GetIPSVersion ()
+		{
+			$ipsversion = IPS_GetKernelVersion ( );
+			$ipsversion = explode( ".", $ipsversion);
+			$ipsmajor = intval($ipsversion[0]);
+			$ipsminor = intval($ipsversion[1]);
+			if($ipsminor < 10)
+			{
+			$ipsversion = 1;
+			}
+			else
+			{
+			$ipsversion = 2;
+			}
+			return $ipsversion;
 		}
 }
 

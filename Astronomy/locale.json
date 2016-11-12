@@ -2,7 +2,7 @@
 	"translations": {
 		"de": { 
 			"Astronomy values": "Astronomische Daten",
-			"Display language Webfront":"Anzeige Sprache im Webfront",
+			"Display language Webfront:":"Anzeige Sprache im Webfront:",
 			"language":"Sprache",
 			"German":"Deutsch",
 			"English":"Englisch",
