@@ -2817,9 +2817,17 @@ class Astronomy extends IPSModule
 	}
 	
 	protected function GetMoonPicture($mondphase)
-	{
+	{	
+		$language = $this->ReadPropertyBoolean("language");
 		if ($mondphase <= 1 || $mondphase >= 99 ){  //--Vollmond
-		$phase_text = 'Vollmond';
+		if($language == 1)
+		{
+			$phase_text = 'Vollmond';
+		}
+		else
+		{
+			$phase_text = 'full moon';
+		}
 		if($mondphase>=99){
 			$pic = $this->rescale([99,100],[172,177]);} // ([Mondphasen von,bis],[Bildnummern von,bis])
 			else{
@@ -2832,7 +2840,14 @@ class Astronomy extends IPSModule
 			else{$pic_n = $pic_n;}
 		}
 		elseif ($mondphase > 1 && $mondphase < 49){  //--abnehmender Mond
-			$phase_text = 'abnehmender Mond';
+			if($language == 1)
+			{
+				$phase_text = 'abnehmender Mond';
+			}
+			else
+			{
+				$phase_text = 'decreasing moon';
+			}
 			$pic = $this->rescale([2,48],[183,352]);
 			$pic_n = floor($pic($mondphase));
 			if($pic_n<10){
@@ -2842,7 +2857,14 @@ class Astronomy extends IPSModule
 			else{$pic_n = $pic_n;}
 		}
 		elseif ($mondphase >= 49 && $mondphase <= 51){  //--Neumond
-			$phase_text = 'Neumond';
+			if($language == 1)
+			{
+				$phase_text = 'Neumond';
+			}
+			else
+			{
+				$phase_text = 'new moon';
+			}
 			$pic = $this->rescale([49,51],[353,362]);
 			$pic_n = floor($pic($mondphase));
 			if($pic_n<10){
@@ -2852,7 +2874,14 @@ class Astronomy extends IPSModule
 			else{$pic_n = $pic_n;}
 		}
 		else{  //--zunehmender Mond
-			$phase_text = 'zunehmender Mond';
+			if($language == 1)
+			{
+				$phase_text = 'zunehmender Mond';
+			}
+			else
+			{
+				$phase_text = 'increasing moon';
+			}
 			$pic = $this->rescale([52,98],[008,171]);
 			$pic_n = floor($pic($mondphase));
 			if($pic_n<10){
