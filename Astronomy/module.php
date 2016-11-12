@@ -15,6 +15,7 @@ class Astronomy extends IPSModule
         //You cannot use variables here. Just static values.
 		
 		$this->RegisterPropertyFloat("UTC", 1);
+		$this->RegisterPropertyInteger("language", 1);
         $this->RegisterPropertyBoolean("juliandate", false);
 		$this->RegisterPropertyBoolean("moonazimut", false);
 		$this->RegisterPropertyBoolean("moondistance", false);
@@ -109,32 +110,57 @@ class Astronomy extends IPSModule
 		{
 			$this->SetupVariable("moonbrightlimbangle", "Mond Positionswinkel der beleuchteten Fläche", "Astronomie.Mond_Positionswinkel", 5, IPSVarType::vtFloat, false);
 		}
-		if($this->ReadPropertyBoolean("moondirection") == true) // string
+		if($this->ReadPropertyBoolean("moondirection") == true) // integer
 		{
-			$associations =  Array(
-									Array("N", "N",  "", -1),
-									Array("NNE", "NNO",  "", -1),
-									Array("NE", "NO",  "", -1),
-									Array("ENE", "ONO",  "", -1),
-									Array("E", "O",  "", -1),
-									Array("ESE", "OSO",  "", -1),
-									Array("SE", "SO",  "", -1),
-									Array("SSE", "SSO",  "", -1),
-									Array("S", "S",  "", -1),
-									Array("SSW", "SSW",  "", -1),
-									Array("SW", "SW",  "", -1),
-									Array("WSW", "WSW",  "", -1),
-									Array("W", "W",  "", -1),
-									Array("WNW", "WNW",  "", -1),
-									Array("NW", "NW",  "", -1),
-									Array("NNW", "NNW",  "", -1)
+			$language = $this->ReadPropertyBoolean("language");
+			if($language == 1) //ger
+			{
+				$associations =  Array(
+									Array(0, "N",  "", -1),
+									Array(1, "NNO",  "", -1),
+									Array(2, "NO",  "", -1),
+									Array(3, "ONO",  "", -1),
+									Array(4, "O",  "", -1),
+									Array(5, "OSO",  "", -1),
+									Array(6, "SO",  "", -1),
+									Array(7, "SSO",  "", -1),
+									Array(8, "S",  "", -1),
+									Array(9, "SSW",  "", -1),
+									Array(10, "SW",  "", -1),
+									Array(11, "WSW",  "", -1),
+									Array(12, "W",  "", -1),
+									Array(13, "WNW",  "", -1),
+									Array(14, "NW",  "", -1),
+									Array(15, "NNW",  "", -1)
 									);
-			$this->SetupProfile(IPSVarType::vtString, "Astronomie.Mond_Himmelsrichtung", "Moon", "", "", 0, 0, 0, 0, $associations);
-			$this->SetupVariable("moondirection", "Mond Richtung", "Astronomie.Mond_Himmelsrichtung", 6, IPSVarType::vtString, true);
+			}
+			elseif($language == 2) // eng
+			{
+				$associations =  Array(
+									Array(0, "N",  "", -1),
+									Array(1, "NNE",  "", -1),
+									Array(2, "NE",  "", -1),
+									Array(3, "ENE",  "", -1),
+									Array(4, "E",  "", -1),
+									Array(5, "ESE",  "", -1),
+									Array(6, "SE",  "", -1),
+									Array(7, "SSE",  "", -1),
+									Array(8, "S",  "", -1),
+									Array(9, "SSW",  "", -1),
+									Array(10, "SW",  "", -1),
+									Array(11, "WSW",  "", -1),
+									Array(12, "W",  "", -1),
+									Array(13, "WNW",  "", -1),
+									Array(14, "NW",  "", -1),
+									Array(15, "NNW",  "", -1)
+									);
+			}
+			$this->SetupProfile(IPSVarType::vtInteger, "Astronomie.Mond_Himmelsrichtung", "Moon", "", "", 0, 0, 0, 0, $associations);
+			$this->SetupVariable("moondirection", "Mond Richtung", "Astronomie.Mond_Himmelsrichtung", 6, IPSVarType::vtInteger, true);
 		}
 		else
 		{
-			$this->SetupVariable("moondirection", "Mond Richtung", "Astronomie.Mond_Himmelsrichtung", 6, IPSVarType::vtString, false);
+			$this->SetupVariable("moondirection", "Mond Richtung", "Astronomie.Mond_Himmelsrichtung", 6, IPSVarType::vtInteger, false);
 		}
 		if($this->ReadPropertyBoolean("moonvisibility") == true) // float
 		{
@@ -244,36 +270,79 @@ class Astronomy extends IPSModule
 		{
 			$this->SetupVariable("sunaltitude", "Sonne Höhe", "Astronomie.Sonne_Hoehe", 17, IPSVarType::vtFloat, false);
 		}
-		if($this->ReadPropertyBoolean("sundirection") == true) // string
+		if($this->ReadPropertyBoolean("sundirection") == true) // integer
 		{
-			$associations =  Array(
-									Array("N", "N",  "", -1),
-									Array("NNE", "NNO",  "", -1),
-									Array("NE", "NO",  "", -1),
-									Array("ENE", "ONO",  "", -1),
-									Array("E", "O",  "", -1),
-									Array("ESE", "OSO",  "", -1),
-									Array("SE", "SO",  "", -1),
-									Array("SSE", "SSO",  "", -1),
-									Array("S", "S",  "", -1),
-									Array("SSW", "SSW",  "", -1),
-									Array("SW", "SW",  "", -1),
-									Array("WSW", "WSW",  "", -1),
-									Array("W", "W",  "", -1),
-									Array("WNW", "WNW",  "", -1),
-									Array("NW", "NW",  "", -1),
-									Array("NNW", "NNW",  "", -1)
+			$language = $this->ReadPropertyBoolean("language");
+			if($language == 1) //ger
+			{
+				$associations =  Array(
+									Array(0, "N",  "", -1),
+									Array(1, "NNO",  "", -1),
+									Array(2, "NO",  "", -1),
+									Array(3, "ONO",  "", -1),
+									Array(4, "O",  "", -1),
+									Array(5, "OSO",  "", -1),
+									Array(6, "SO",  "", -1),
+									Array(7, "SSO",  "", -1),
+									Array(8, "S",  "", -1),
+									Array(9, "SSW",  "", -1),
+									Array(10, "SW",  "", -1),
+									Array(11, "WSW",  "", -1),
+									Array(12, "W",  "", -1),
+									Array(13, "WNW",  "", -1),
+									Array(14, "NW",  "", -1),
+									Array(15, "NNW",  "", -1)
 									);
-			$this->SetupProfile(IPSVarType::vtString, "Astronomie.Sonne_Himmelsrichtung", "Sun", "", "", 0, 0, 0, 0, $associations);
-			$this->SetupVariable("sundirection", "Sonne Richtung", "Astronomie.Sonne_Himmelsrichtung", 18, IPSVarType::vtString, true);
+			}
+			elseif($language == 2) // eng
+			{
+				$associations =  Array(
+									Array(0, "N",  "", -1),
+									Array(1, "NNE",  "", -1),
+									Array(2, "NE",  "", -1),
+									Array(3, "ENE",  "", -1),
+									Array(4, "E",  "", -1),
+									Array(5, "ESE",  "", -1),
+									Array(6, "SE",  "", -1),
+									Array(7, "SSE",  "", -1),
+									Array(8, "S",  "", -1),
+									Array(9, "SSW",  "", -1),
+									Array(10, "SW",  "", -1),
+									Array(11, "WSW",  "", -1),
+									Array(12, "W",  "", -1),
+									Array(13, "WNW",  "", -1),
+									Array(14, "NW",  "", -1),
+									Array(15, "NNW",  "", -1)
+									);
+			}
+			$this->SetupProfile(IPSVarType::vtInteger, "Astronomie.Sonne_Himmelsrichtung", "Sun", "", "", 0, 0, 0, 0, $associations);
+			$this->SetupVariable("sundirection", "Sonne Richtung", "Astronomie.Sonne_Himmelsrichtung", 18, IPSVarType::vtInteger, true);
 		}
 		else
 		{
-			$this->SetupVariable("sundirection", "Sonne Richtung", "Astronomie.Sonne_Himmelsrichtung", 18, IPSVarType::vtString, false);
+			$this->SetupVariable("sundirection", "Sonne Richtung", "Astronomie.Sonne_Himmelsrichtung", 18, IPSVarType::vtInteger, false);
 		}
-		if($this->ReadPropertyBoolean("season") == true) // string
+		if($this->ReadPropertyBoolean("season") == true) // integer
 		{
-			$associations =  Array(	);
+			$language = $this->ReadPropertyBoolean("language");
+			if($language == 1) //ger
+			{
+				$associations =  Array(
+									Array(1, "Frühling",  "", -1),
+									Array(2, "Sommer",  "", -1),
+									Array(3, "Herbst",  "", -1),
+									Array(4, "Winter",  "", -1)
+									);
+			}
+			elseif($language == 2) // eng
+			{
+				$associations =  Array(
+									Array(1, "Spring",  "", -1),
+									Array(2, "Sommer",  "", -1),
+									Array(3, "Autumn",  "", -1),
+									Array(4, "Winter",  "", -1)
+									);
+			}
 			$this->SetupProfile(IPSVarType::vtString, "Astronomie.Jahreszeit", "Sun", "", "", 0, 0, 0, 0, $associations);
 			$this->SetupVariable("season", "Jahreszeit", "Astronomie.Jahreszeit", 20, IPSVarType::vtString, true);
 		}
@@ -624,11 +693,11 @@ class Astronomy extends IPSModule
 		$SunRAhms = $SunRAhour.":".$SunRAm.":".$SunRAs;
 
 		$season = "";
-		if(($SunRAh>=0)and($SunRAh<6)){$season = "Frühling";}        //Frühling
-		if(($SunRAh>=6)and($SunRAh<12)){$season = "Sommer";}        //Sommer
-		if(($SunRAh>=12)and($SunRAh<18)){$season = "Herbst";}        //Herbst
-		if(($SunRAh>=18)and($SunRAh<24)){$season = "Winter";}        //Winter
-		if($this->ReadPropertyBoolean("season") == true) // float
+		if(($SunRAh>=0)and($SunRAh<6)){$season = 1;}        //Frühling
+		if(($SunRAh>=6)and($SunRAh<12)){$season = 2;}        //Sommer
+		if(($SunRAh>=12)and($SunRAh<18)){$season = 3;}        //Herbst
+		if(($SunRAh>=18)and($SunRAh<24)){$season = 4;}        //Winter
+		if($this->ReadPropertyBoolean("season") == true)
 		{
 			SetValue($this->GetIDForIdent("season"), $season); 
 		}
@@ -810,52 +879,52 @@ class Astronomy extends IPSModule
 	{
 		
 		if(($degree >= 0)and($degree < 22.5)){
-			$direction = "N";
+			$direction = 0;
 			}
 		if(($degree >= 22.5)and($degree < 45)){
-		   $direction = "NNE";
+		   $direction = 1;
 			}
 		if(($degree >= 45)and($degree < 67.5)){
-		   $direction = "NE";
+		   $direction = 2;
 			}
 		if(($degree >= 67.5)and($degree < 90)){
-			$direction = "ENE";
+			$direction = 3;
 			}
 		if(($degree >= 90)and($degree < 112.5)){
-		   $direction = "E";
+		   $direction = 4;
 			}
 		if(($degree >= 112.5)and($degree < 135)){
-		   $direction = "ESE";
+		   $direction = 5;
 			}
 		if(($degree >= 135)and($degree < 157.5)){
-		   $direction = "SE";
+		   $direction = 6;
 			}
 		if(($degree >= 157.5)and($degree < 180)){
-		   $direction = "SSE";
+		   $direction = 7;
 			}
 		if(($degree >= 180)and($degree < 202.5)){
-		   $direction = "S";
+		   $direction = 8;
 			}
 		if(($degree >= 202.5)and($degree < 225)){
-		   $direction = "SSW";
+		   $direction = 9;
 			}
 		if(($degree >= 225)and($degree < 247.5)){
-		   $direction = "SW";
+		   $direction = 10;
 			}
 		if(($degree >= 247.5)and($degree < 270)){
-		   $direction = "WSW";
+		   $direction = 11;
 			}
 		if(($degree >= 270)and($degree < 292.5)){
-		   $direction = "W";
+		   $direction = 12;
 			}
 		if(($degree >= 292.5)and($degree < 315)){
-		   $direction = "WNW";
+		   $direction = 13;
 			}
 		if(($degree >= 315)and($degree < 337.5)){
-			$direction = "NW";
+			$direction = 14;
 			}
 		if(($degree >= 337.5)and($degree <= 360)){
-		   $direction = "NNW";
+		   $direction = 15;
 			}
 		return ($direction);
 	}
