@@ -2,6 +2,10 @@
 	"translations": {
 		"de": { 
 			"Astronomy values": "Astronomische Daten",
+			"Display language Webfront:":"Anzeige Sprache im Webfront:",
+			"language":"Sprache",
+			"German":"Deutsch",
+			"English":"Englisch",
 			"Coordinated Universal Time (UTC):":"Zeitzone (Koordinierte Weltzeit)",
 			"UTC":"UTC",
 			"select values for display:": "Daten zur Anzeige auswählen:",
