@@ -3354,6 +3354,13 @@ class Astronomy extends IPSModule
 			$form = '"elements":
             [
 				{ "type": "Label", "label": "Astronomy values" },
+				{ "type": "Label", "label": "Display language Webfront:" },
+				{ "type": "Select", "name": "language", "caption": "language",
+					"options": [
+						{ "label": "German", "value": 1 },
+						{ "label": "English", "value": 2 }
+					]
+				},
 				{ "type": "Label", "label": "Coordinated Universal Time (UTC):" },';
 			
 			return $form;
