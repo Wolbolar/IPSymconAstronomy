@@ -874,7 +874,6 @@ class Astronomy extends IPSModule
 		return ($daygerman);
 	}
 
-
 	protected function direction($degree)
 	{
 		
