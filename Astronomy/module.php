@@ -111,7 +111,24 @@ class Astronomy extends IPSModule
 		}
 		if($this->ReadPropertyBoolean("moondirection") == true) // string
 		{
-			$associations =  Array(	);
+			$associations =  Array(
+									Array("N", "N",  "", -1),
+									Array("NNE", "NNO",  "", -1),
+									Array("NE", "NO",  "", -1),
+									Array("ENE", "ONO",  "", -1),
+									Array("E", "O",  "", -1),
+									Array("ESE", "OSO",  "", -1),
+									Array("SE", "SO",  "", -1),
+									Array("SSE", "SSO",  "", -1),
+									Array("S", "S",  "", -1),
+									Array("SSW", "SSW",  "", -1),
+									Array("SW", "SW",  "", -1),
+									Array("WSW", "WSW",  "", -1),
+									Array("W", "W",  "", -1),
+									Array("WNW", "WNW",  "", -1),
+									Array("NW", "NW",  "", -1),
+									Array("NNW", "NNW",  "", -1)
+									);
 			$this->SetupProfile(IPSVarType::vtString, "Astronomie.Mond_Himmelsrichtung", "Moon", "", "", 0, 0, 0, 0, $associations);
 			$this->SetupVariable("moondirection", "Mond Richtung", "Astronomie.Mond_Himmelsrichtung", 6, IPSVarType::vtString, true);
 		}
@@ -229,7 +246,24 @@ class Astronomy extends IPSModule
 		}
 		if($this->ReadPropertyBoolean("sundirection") == true) // string
 		{
-			$associations =  Array(	);
+			$associations =  Array(
+									Array("N", "N",  "", -1),
+									Array("NNE", "NNO",  "", -1),
+									Array("NE", "NO",  "", -1),
+									Array("ENE", "ONO",  "", -1),
+									Array("E", "O",  "", -1),
+									Array("ESE", "OSO",  "", -1),
+									Array("SE", "SO",  "", -1),
+									Array("SSE", "SSO",  "", -1),
+									Array("S", "S",  "", -1),
+									Array("SSW", "SSW",  "", -1),
+									Array("SW", "SW",  "", -1),
+									Array("WSW", "WSW",  "", -1),
+									Array("W", "W",  "", -1),
+									Array("WNW", "WNW",  "", -1),
+									Array("NW", "NW",  "", -1),
+									Array("NNW", "NNW",  "", -1)
+									);
 			$this->SetupProfile(IPSVarType::vtString, "Astronomie.Sonne_Himmelsrichtung", "Sun", "", "", 0, 0, 0, 0, $associations);
 			$this->SetupVariable("sundirection", "Sonne Richtung", "Astronomie.Sonne_Himmelsrichtung", 18, IPSVarType::vtString, true);
 		}
