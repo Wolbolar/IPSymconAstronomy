@@ -154,6 +154,13 @@
                     "type": "CheckBox",
                     "caption": "picture moon"
                 },
+				{ "type": "Label", "label": "background moonpicture:" },
+				{ "type": "Select", "name": "moonbackground", "caption": "background",
+					"options": [
+						{ "label": "black background", "value": 1 },
+						{ "label": "transparent background", "value": 2 }
+					]
+				},
 				{
                     "name": "sunmoonview",
                     "type": "CheckBox",
