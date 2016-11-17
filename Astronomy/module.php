@@ -16,6 +16,7 @@ class Astronomy extends IPSModule
 		
 		$this->RegisterPropertyFloat("UTC", 1);
 		$this->RegisterPropertyInteger("language", 1);
+		$this->RegisterPropertyInteger("moonbackground", 1);
         $this->RegisterPropertyBoolean("juliandate", false);
 		$this->RegisterPropertyBoolean("moonazimut", false);
 		$this->RegisterPropertyBoolean("moondistance", false);
@@ -401,13 +402,29 @@ class Astronomy extends IPSModule
 		//testen ob im Medienpool existent
 			$modulid = $this->InstanceID;
 			$repository = "github"; //bitbucket, github
+			$background = $this->ReadPropertyInteger("moonbackground");
 			if ($repository == "github")
-			{
-				$ImageFile = IPS_GetKernelDir()."modules".DIRECTORY_SEPARATOR."IPSymconAstronomy".DIRECTORY_SEPARATOR."Astronomy".DIRECTORY_SEPARATOR."images".DIRECTORY_SEPARATOR."mond".DIRECTORY_SEPARATOR."mond".$picid.".gif";  // Image-Datei
+			{	
+				if ($background == 1)
+				{
+					$ImageFile = IPS_GetKernelDir()."modules".DIRECTORY_SEPARATOR."IPSymconAstronomy".DIRECTORY_SEPARATOR."Astronomy".DIRECTORY_SEPARATOR."images".DIRECTORY_SEPARATOR."mond".DIRECTORY_SEPARATOR."mond".$picid.".gif";  // Image-Datei
+				}
+				elseif ($background == 2)
+				{
+					$ImageFile = IPS_GetKernelDir()."modules".DIRECTORY_SEPARATOR."IPSymconAstronomy".DIRECTORY_SEPARATOR."Astronomy".DIRECTORY_SEPARATOR."images".DIRECTORY_SEPARATOR."mondtransparent".DIRECTORY_SEPARATOR."mond".$picid.".png";  // Image-Datei
+				}	
 			}
 			elseif($repository == "bitbucket")
 			{
-				$ImageFile = IPS_GetKernelDir()."modules".DIRECTORY_SEPARATOR."ipsymconastronomy".DIRECTORY_SEPARATOR."Astronomy".DIRECTORY_SEPARATOR."images".DIRECTORY_SEPARATOR."mond".DIRECTORY_SEPARATOR."mond".$picid.".gif";  // Image-Datei		
+				if ($background == 1)
+				{
+					$ImageFile = IPS_GetKernelDir()."modules".DIRECTORY_SEPARATOR."ipsymconastronomy".DIRECTORY_SEPARATOR."Astronomy".DIRECTORY_SEPARATOR."images".DIRECTORY_SEPARATOR."mond".DIRECTORY_SEPARATOR."mond".$picid.".gif";  // Image-Datei		
+				}
+				elseif ($background == 2)
+				{
+					$ImageFile = IPS_GetKernelDir()."modules".DIRECTORY_SEPARATOR."ipsymconastronomy".DIRECTORY_SEPARATOR."Astronomy".DIRECTORY_SEPARATOR."images".DIRECTORY_SEPARATOR."mondtransparent".DIRECTORY_SEPARATOR."mond".$picid.".png";  // Image-Datei		
+				}
+				
 			}
 			$Content = @Sys_GetURLContent($ImageFile); 
 			$MediaID = @$this->GetIDForIdent('picturemoon');
@@ -3388,6 +3405,13 @@ class Astronomy extends IPSModule
                     "type": "CheckBox",
                     "caption": "picture moon"
                 },
+				{ "type": "Label", "label": "background moonpicture:" },
+				{ "type": "Select", "name": "moonbackground", "caption": "background",
+					"options": [
+						{ "label": "black background", "value": 1 },
+						{ "label": "transparent background", "value": 2 }
+					]
+				},
 				{
                     "name": "sunmoonview",
                     "type": "CheckBox",
