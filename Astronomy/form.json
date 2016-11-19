@@ -167,7 +167,9 @@
                     "type": "CheckBox",
                     "caption": "use own moon pictures"
                 },
-				{ "type": "Label", "label": "pictures must have the name mond001 to mondXXX" },
+				{ "type": "Label", "label": "pictures must have the number 001 to XXX for example mond001" },
+				{ "type": "Label", "label": "pictures name (without number)" },
+				{ "type": "ValidationTextBox", "name": "picturename", "caption": "picture name" },
 				{ "type": "Label", "label": "picture file type" },
 				{ "type": "Select", "name": "filetype", "caption": "file type",
 					"options": [

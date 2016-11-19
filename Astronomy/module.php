@@ -49,6 +49,7 @@ class Astronomy extends IPSModule
 		$this->RegisterPropertyInteger("lastdecreasingmoonpic", 171);
 		$this->RegisterPropertyString("picturemoonpath", "media/mondphase");
 		$this->RegisterPropertyInteger("filetype", 1);
+		$this->RegisterPropertyString("picturename", "mond");
     }
 
     public function ApplyChanges()
@@ -3493,7 +3494,9 @@ class Astronomy extends IPSModule
                     "type": "CheckBox",
                     "caption": "use own moon pictures"
                 },
-				{ "type": "Label", "label": "pictures must have the name mond001 to mondXXX" },
+				{ "type": "Label", "label": "pictures must have the number 001 to XXX for example mond001" },
+				{ "type": "Label", "label": "pictures name (without number)" },
+				{ "type": "ValidationTextBox", "name": "picturename", "caption": "picture name" },
 				{ "type": "Label", "label": "picture file type" },
 				{ "type": "Select", "name": "filetype", "caption": "file type",
 					"options": [
