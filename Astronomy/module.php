@@ -38,6 +38,17 @@ class Astronomy extends IPSModule
 		$this->RegisterPropertyBoolean("season", false);
 		$this->RegisterPropertyBoolean("picturemoon", false);
 		$this->RegisterPropertyBoolean("sunmoonview", false);
+		$this->RegisterPropertyBoolean("picturemoonselection", false);
+		$this->RegisterPropertyInteger("firstfullmoonpic", 172);
+		$this->RegisterPropertyInteger("lastfullmoonpic", 182);
+		$this->RegisterPropertyInteger("firstincreasingmoonpic", 183);
+		$this->RegisterPropertyInteger("lastincreasingmoonpic", 352);
+		$this->RegisterPropertyInteger("firstnewmoonpic", 353);
+		$this->RegisterPropertyInteger("lastnewmoonpic", 362);
+		$this->RegisterPropertyInteger("firstdecreasingmoonpic", 8);
+		$this->RegisterPropertyInteger("lastdecreasingmoonpic", 171);
+		$this->RegisterPropertyString("picturemoonpath", "media/mondphase");
+		$this->RegisterPropertyInteger("filetype", 1);
     }
 
     public function ApplyChanges()
@@ -399,32 +410,54 @@ class Astronomy extends IPSModule
 	
 	protected function UpdateMedia($picid)
 	{
-		//testen ob im Medienpool existent
+			//testen ob im Medienpool existent
 			$modulid = $this->InstanceID;
 			$repository = "bitbucket"; //bitbucket, github
-			$background = $this->ReadPropertyInteger("moonbackground");
-			if ($repository == "github")
-			{	
-				if ($background == 1)
-				{
-					$ImageFile = IPS_GetKernelDir()."modules".DIRECTORY_SEPARATOR."IPSymconAstronomy".DIRECTORY_SEPARATOR."Astronomy".DIRECTORY_SEPARATOR."images".DIRECTORY_SEPARATOR."mond".DIRECTORY_SEPARATOR."mond".$picid.".gif";  // Image-Datei
-				}
-				elseif ($background == 2)
-				{
-					$ImageFile = IPS_GetKernelDir()."modules".DIRECTORY_SEPARATOR."IPSymconAstronomy".DIRECTORY_SEPARATOR."Astronomy".DIRECTORY_SEPARATOR."images".DIRECTORY_SEPARATOR."mondtransparent".DIRECTORY_SEPARATOR."mond".$picid.".png";  // Image-Datei
-				}	
-			}
-			elseif($repository == "bitbucket")
+			$picturemoonselection = $this->ReadPropertyBoolean("picturemoonselection");
+			if ($picturemoonselection)
 			{
-				if ($background == 1)
+				$path = $this->ReadPropertyString("picturemoonpath");
+				$filetype = $this->ReadPropertyInteger("filetype");
+				if ($filetype == 1)
 				{
-					$ImageFile = IPS_GetKernelDir()."modules".DIRECTORY_SEPARATOR."ipsymconastronomy".DIRECTORY_SEPARATOR."Astronomy".DIRECTORY_SEPARATOR."images".DIRECTORY_SEPARATOR."mond".DIRECTORY_SEPARATOR."mond".$picid.".gif";  // Image-Datei		
+					$filetype == "png";
 				}
-				elseif ($background == 2)
+				elseif ($filetype == 2)
 				{
-					$ImageFile = IPS_GetKernelDir()."modules".DIRECTORY_SEPARATOR."ipsymconastronomy".DIRECTORY_SEPARATOR."Astronomy".DIRECTORY_SEPARATOR."images".DIRECTORY_SEPARATOR."mondtransparent".DIRECTORY_SEPARATOR."mond".$picid.".png";  // Image-Datei		
+					$filetype == "gif";
 				}
-				
+				elseif ($filetype == 3)
+				{
+					$filetype == "jpg";
+				}
+				$ImageFile = IPS_GetKernelDir().$path.DIRECTORY_SEPARATOR."mond".$picid.$filetype;
+			}
+			else
+			{
+				$background = $this->ReadPropertyInteger("moonbackground");
+				if ($repository == "github")
+				{	
+					if ($background == 1)
+					{
+						$ImageFile = IPS_GetKernelDir()."modules".DIRECTORY_SEPARATOR."IPSymconAstronomy".DIRECTORY_SEPARATOR."Astronomy".DIRECTORY_SEPARATOR."images".DIRECTORY_SEPARATOR."mond".DIRECTORY_SEPARATOR."mond".$picid.".gif";  // Image-Datei
+					}
+					elseif ($background == 2)
+					{
+						$ImageFile = IPS_GetKernelDir()."modules".DIRECTORY_SEPARATOR."IPSymconAstronomy".DIRECTORY_SEPARATOR."Astronomy".DIRECTORY_SEPARATOR."images".DIRECTORY_SEPARATOR."mondtransparent".DIRECTORY_SEPARATOR."mond".$picid.".png";  // Image-Datei
+					}	
+				}
+				elseif($repository == "bitbucket")
+				{
+					if ($background == 1)
+					{
+						$ImageFile = IPS_GetKernelDir()."modules".DIRECTORY_SEPARATOR."ipsymconastronomy".DIRECTORY_SEPARATOR."Astronomy".DIRECTORY_SEPARATOR."images".DIRECTORY_SEPARATOR."mond".DIRECTORY_SEPARATOR."mond".$picid.".gif";  // Image-Datei		
+					}
+					elseif ($background == 2)
+					{
+						$ImageFile = IPS_GetKernelDir()."modules".DIRECTORY_SEPARATOR."ipsymconastronomy".DIRECTORY_SEPARATOR."Astronomy".DIRECTORY_SEPARATOR."images".DIRECTORY_SEPARATOR."mondtransparent".DIRECTORY_SEPARATOR."mond".$picid.".png";  // Image-Datei		
+					}
+					
+				}
 			}
 			$Content = @Sys_GetURLContent($ImageFile); 
 			$MediaID = @$this->GetIDForIdent('picturemoon');
@@ -2836,19 +2869,61 @@ class Astronomy extends IPSModule
 	protected function GetMoonPicture($mondphase)
 	{	
 		$language = $this->ReadPropertyBoolean("language");
-		if ($mondphase <= 1 || $mondphase >= 99 ){  //--Vollmond
-		if($language == 1)
-		{
-			$phase_text = 'Vollmond';
-		}
-		else
-		{
-			$phase_text = 'full moon';
-		}
-		if($mondphase>=99){
-			$pic = $this->rescale([99,100],[172,177]);} // ([Mondphasen von,bis],[Bildnummern von,bis])
-			else{
-			$pic = $this->rescale([0,1],[178,182]);}
+		$picturemoonselection = ReadPropertyBoolean("picturemoonselection");
+			if ($picturemoonselection)
+			{
+				$firstfullmoonpic = $this->ReadPropertyInteger("firstfullmoonpic");
+				$lastfullmoonpic = $this->ReadPropertyInteger("lastfullmoonpic");
+				$firstincreasingmoonpic = $this->ReadPropertyInteger("firstincreasingmoonpic");
+				$lastincreasingmoonpic = $this->ReadPropertyInteger("lastincreasingmoonpic");
+				$firstnewmoonpic = $this->ReadPropertyInteger("firstnewmoonpic");
+				$lastnewmoonpic = $this->ReadPropertyInteger("lastnewmoonpic");
+				$firstdecreasingmoonpic = $this->ReadPropertyInteger("firstdecreasingmoonpic");
+				$lastdecreasingmoonpic = $this->ReadPropertyInteger("lastdecreasingmoonpic");
+			}
+			else
+			{
+				$firstfullmoonpic = 172;
+				$lastfullmoonpic = 182;
+				$firstincreasingmoonpic = 183;
+				$lastincreasingmoonpic = 352;
+				$firstnewmoonpic = 353;
+				$lastnewmoonpic = 362;
+				$firstdecreasingmoonpic = 008;
+				$lastdecreasingmoonpic = 171;
+			}
+		if ($mondphase <= 1 || $mondphase >= 99 )  //--Vollmond
+		{ 
+			if($language == 1)
+			{
+				$phase_text = 'Vollmond';
+			}
+			else
+			{
+				$phase_text = 'full moon';
+			}
+			if ($picturemoonselection)
+			{
+				if($mondphase>=99)
+				{
+					$pic = $this->rescale([99,100],[$firstfullmoonpic,$lastfullmoonpic]); // ([Mondphasen von,bis],[Bildnummern von,bis])
+				} 
+				else
+				{
+					$pic = $this->rescale([0,1],[$firstfullmoonpic,$lastfullmoonpic]);
+				}
+			}
+			else
+			{
+				if($mondphase>=99)
+				{
+					$pic = $this->rescale([99,100],[172,177]); // ([Mondphasen von,bis],[Bildnummern von,bis])
+				} 
+				else
+				{
+					$pic = $this->rescale([0,1],[178,182]);
+				}
+			}
 			$pic_n = floor($pic($mondphase));
 			if($pic_n<10){
 			   $pic_n = "00".$pic_n;}
@@ -2865,7 +2940,7 @@ class Astronomy extends IPSModule
 			{
 				$phase_text = 'decreasing moon';
 			}
-			$pic = $this->rescale([2,48],[183,352]);
+			$pic = $this->rescale([2,48],[$firstincreasingmoonpic,$lastincreasingmoonpic]);
 			$pic_n = floor($pic($mondphase));
 			if($pic_n<10){
 			   $pic_n = "00".$pic_n;}
@@ -2882,7 +2957,7 @@ class Astronomy extends IPSModule
 			{
 				$phase_text = 'new moon';
 			}
-			$pic = $this->rescale([49,51],[353,362]);
+			$pic = $this->rescale([49,51],[$firstnewmoonpic,$lastnewmoonpic]);
 			$pic_n = floor($pic($mondphase));
 			if($pic_n<10){
 			   $pic_n = "00".$pic_n;}
@@ -2899,7 +2974,7 @@ class Astronomy extends IPSModule
 			{
 				$phase_text = 'increasing moon';
 			}
-			$pic = $this->rescale([52,98],[008,171]);
+			$pic = $this->rescale([52,98],[$firstdecreasingmoonpic,$lastdecreasingmoonpic]);
 			$pic_n = floor($pic($mondphase));
 			if($pic_n<10){
 			   $pic_n = "00".$pic_n;}
@@ -3412,6 +3487,44 @@ class Astronomy extends IPSModule
 						{ "label": "transparent background", "value": 2 }
 					]
 				},
+				{ "type": "Label", "label": "alternative use own moonpictures:" },
+				{
+                    "name": "picturemoonselection",
+                    "type": "CheckBox",
+                    "caption": "use own moon pictures"
+                },
+				{ "type": "Label", "label": "pictures must have the name mond001 to mondXXX" },
+				{ "type": "Label", "label": "picture file type" },
+				{ "type": "Select", "name": "filetype", "caption": "file type",
+					"options": [
+						{ "label": "png", "value": 1 },
+						{ "label": "gif", "value": 2 },
+						{ "label": "jpg", "value": 3 }
+					]
+				},
+				{ "type": "Label", "label": "picture number of the first and last picture of the moon phase:" },
+				{ "type": "Label", "label": "full moon:" },
+				{ "type": "Label", "label": "picture number of the first picture full moon:" },
+				{ "type": "NumberSpinner", "name": "firstfullmoonpic", "caption": "number of the first picture" },
+				{ "type": "Label", "label": "picture number of the last picture full moon:" },
+				{ "type": "NumberSpinner", "name": "lastfullmoonpic", "caption": "number of the last picture" },
+				{ "type": "Label", "label": "increasing moon:" },
+				{ "type": "Label", "label": "picture number of the first picture increasing moon:" },
+				{ "type": "NumberSpinner", "name": "firstincreasingmoonpic", "caption": "number of the first picture" },
+				{ "type": "Label", "label": "picture number of the last picture increasing moon:" },
+				{ "type": "NumberSpinner", "name": "lastincreasingmoonpic", "caption": "number of the last picture" },
+				{ "type": "Label", "label": "new moon:" },
+				{ "type": "Label", "label": "picture number of the first picture new moon:" },
+				{ "type": "NumberSpinner", "name": "firstnewmoonpic", "caption": "number of the first picture" },
+				{ "type": "Label", "label": "picture number of the last picture new moon:" },
+				{ "type": "NumberSpinner", "name": "lastnewmoonpic", "caption": "number of the last picture" },
+				{ "type": "Label", "label": "decreasing moon:" },
+				{ "type": "Label", "label": "picture number of the first picture decreasing moon:" },
+				{ "type": "NumberSpinner", "name": "firstdecreasingmoonpic", "caption": "number of the first picture" },
+				{ "type": "Label", "label": "picture number of the last picture decreasing moon:" },
+				{ "type": "NumberSpinner", "name": "lastdecreasingmoonpic", "caption": "number of the last picture" },
+				{ "type": "Label", "label": "path of the moonphase pictures relative to the IP-Symcon folder:" },
+				{ "type": "ValidationTextBox", "name": "picturemoonpath", "caption": "path moon pictures" },
 				{
                     "name": "sunmoonview",
                     "type": "CheckBox",
