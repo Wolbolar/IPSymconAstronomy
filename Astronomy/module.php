@@ -469,13 +469,13 @@ class Astronomy extends IPSModule
 			}
 			if ($selectionresize)//resize image
 			{
-				$imageinfo = getimageinfo($ImageFile);
-				$image = createimage($ImageFile, $imageinfo["imagetype"]);
-				$thumb = createthumbnail($mediaimgwidth, $mediaimgheight, $imageinfo["imagewidth"],$imageinfo["imageheight"]);
+				$imageinfo = $this->getimageinfo($ImageFile);
+				$image = $this->createimage($ImageFile, $imageinfo["imagetype"]);
+				$thumb = $this->createthumbnail($mediaimgwidth, $mediaimgheight, $imageinfo["imagewidth"],$imageinfo["imageheight"]);
 				$thumbimg = $thumb["img"];
 				$thumbwidth = $thumb["width"];
 				$thumbheight = $thumb["height"];
-				$ImageFile = copyimgtothumbnail($thumbimg, $image, $thumbwidth, $thumbheight, $imageinfo["imagewidth"],$imageinfo["imageheight"], $picturename);
+				$ImageFile = $this->copyimgtothumbnail($thumbimg, $image, $thumbwidth, $thumbheight, $imageinfo["imagewidth"],$imageinfo["imageheight"], $picturename);
 				
 			}
 			$Content = @Sys_GetURLContent($ImageFile); 
