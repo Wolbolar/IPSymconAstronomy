@@ -422,17 +422,17 @@ class Astronomy extends IPSModule
 				$filetype = $this->ReadPropertyInteger("filetype");
 				if ($filetype == 1)
 				{
-					$filetype == "png";
+					$filetype = "png";
 				}
 				elseif ($filetype == 2)
 				{
-					$filetype == "gif";
+					$filetype = "gif";
 				}
 				elseif ($filetype == 3)
 				{
-					$filetype == "jpg";
+					$filetype = "jpg";
 				}
-				$ImageFile = IPS_GetKernelDir().$path.DIRECTORY_SEPARATOR.$picturename.$picid.$filetype;
+				$ImageFile = IPS_GetKernelDir().$path.DIRECTORY_SEPARATOR.$picturename.$picid.".".$filetype;
 			}
 			else
 			{
