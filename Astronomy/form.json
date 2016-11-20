@@ -161,6 +161,16 @@
 						{ "label": "transparent background", "value": 2 }
 					]
 				},
+				{ "type": "Label", "label": "resize images for the media element (module images are 100x100):" },
+				{
+                    "name": "selectionresize",
+                    "type": "CheckBox",
+                    "caption": "resize images"
+                },
+				{ "type": "Label", "label": "media image width:" },
+				{ "type": "NumberSpinner", "name": "mediaimgwidth", "caption": "width" },
+				{ "type": "Label", "label": "media image height:" },
+				{ "type": "NumberSpinner", "name": "mediaimgheight", "caption": "height" },
 				{ "type": "Label", "label": "alternative use own moonpictures:" },
 				{
                     "name": "picturemoonselection",
