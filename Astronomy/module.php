@@ -414,6 +414,7 @@ class Astronomy extends IPSModule
 			//testen ob im Medienpool existent
 			$modulid = $this->InstanceID;
 			$repository = "bitbucket"; //bitbucket, github
+			$picturename = $this->ReadPropertyString("picturename");
 			$picturemoonselection = $this->ReadPropertyBoolean("picturemoonselection");
 			if ($picturemoonselection)
 			{
@@ -431,7 +432,7 @@ class Astronomy extends IPSModule
 				{
 					$filetype == "jpg";
 				}
-				$ImageFile = IPS_GetKernelDir().$path.DIRECTORY_SEPARATOR."mond".$picid.$filetype;
+				$ImageFile = IPS_GetKernelDir().$path.DIRECTORY_SEPARATOR.$picturename.$picid.$filetype;
 			}
 			else
 			{
@@ -2869,7 +2870,7 @@ class Astronomy extends IPSModule
 	
 	protected function GetMoonPicture($mondphase)
 	{	
-		$language = $this->ReadPropertyBoolean("language");
+		$language = $this->ReadPropertyInteger("language");
 		$picturemoonselection = $this->ReadPropertyBoolean("picturemoonselection");
 			if ($picturemoonselection)
 			{
