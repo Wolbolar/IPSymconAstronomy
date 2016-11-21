@@ -524,6 +524,8 @@ class Astronomy extends IPSModule
 		        break;
 		    case 3: // PNG
 		        $image = imagecreatefrompng($imagefile);
+				//imagealphablending($image, true); // setting alpha blending on
+				//imagesavealpha($image, true); // save alphablending setting (important)
 		        break;
 		    default:
 		        die('Unsupported imageformat');
@@ -570,6 +572,9 @@ class Astronomy extends IPSModule
 
 	// Thumbnail erstellen
 	$thumbimg = imagecreatetruecolor($thumbwidth, $thumbheight);
+	imagesavealpha($thumbimg, true);
+	$trans_colour = imagecolorallocatealpha($thumbimg, 0, 0, 0, 127);
+	imagefill($thumbimg, 0, 0, $trans_colour);
 	$thumb = array("img" => $thumbimg, "width" => $thumbwidth, "height" => $thumbheight);
 	return $thumb;
   }
