@@ -38,6 +38,9 @@ class Astronomy extends IPSModule
 		$this->RegisterPropertyBoolean("season", false);
 		$this->RegisterPropertyBoolean("picturemoon", false);
 		$this->RegisterPropertyBoolean("sunmoonview", false);
+		$this->RegisterPropertyBoolean("selectionresize", false);
+		$this->RegisterPropertyInteger("mediaimgwidth", 100);
+		$this->RegisterPropertyInteger("mediaimgheight", 100);
 		$this->RegisterPropertyBoolean("picturemoonselection", false);
 		$this->RegisterPropertyInteger("firstfullmoonpic", 172);
 		$this->RegisterPropertyInteger("lastfullmoonpic", 182);
@@ -415,6 +418,9 @@ class Astronomy extends IPSModule
 			$modulid = $this->InstanceID;
 			$repository = "bitbucket"; //bitbucket, github
 			$picturename = $this->ReadPropertyString("picturename");
+			$selectionresize = $this->ReadPropertyBoolean("selectionresize");
+			$mediaimgwidth = $this->ReadPropertyInteger("mediaimgwidth");
+			$mediaimgheight = $this->ReadPropertyInteger("mediaimgheight");
 			$picturemoonselection = $this->ReadPropertyBoolean("picturemoonselection");
 			if ($picturemoonselection)
 			{
@@ -461,6 +467,17 @@ class Astronomy extends IPSModule
 					
 				}
 			}
+			if ($selectionresize)//resize image
+			{
+				$imageinfo = $this->getimageinfo($ImageFile);
+				$image = $this->createimage($ImageFile, $imageinfo["imagetype"]);
+				$thumb = $this->createthumbnail($mediaimgwidth, $mediaimgheight, $imageinfo["imagewidth"],$imageinfo["imageheight"]);
+				$thumbimg = $thumb["img"];
+				$thumbwidth = $thumb["width"];
+				$thumbheight = $thumb["height"];
+				$ImageFile = $this->copyimgtothumbnail($thumbimg, $image, $thumbwidth, $thumbheight, $imageinfo["imagewidth"],$imageinfo["imageheight"], $picturename);
+				
+			}
 			$Content = @Sys_GetURLContent($ImageFile); 
 			$MediaID = @$this->GetIDForIdent('picturemoon');
 			if ($MediaID === false)
@@ -483,6 +500,101 @@ class Astronomy extends IPSModule
 			return $MediaID;
 	}
 	
+	protected function getimageinfo($imagefile)
+	{				
+		$imagesize = getimagesize($imagefile);
+		$imagewidth = $imagesize[0];
+		$imageheight = $imagesize[1];
+		$imagetype = $imagesize[2];
+		$imageinfo = array("imagewidth" => $imagewidth, "imageheight" => $imageheight, "imagetype" => $imagetype);
+		return $imageinfo;
+	}
+	
+	protected function createimage($imagefile, $imagetype)
+	{
+		switch ($imagetype)
+		{
+		    // Bedeutung von $imagetype:
+		    // 1 = GIF, 2 = JPG, 3 = PNG, 4 = SWF, 5 = PSD, 6 = BMP, 7 = TIFF(intel byte order), 8 = TIFF(motorola byte order), 9 = JPC, 10 = JP2, 11 = JPX, 12 = JB2, 13 = SWC, 14 = IFF, 15 = WBMP, 16 = XBM
+		    case 1: // GIF
+		        $image = imagecreatefromgif($imagefile);
+		        break;
+		    case 2: // JPEG
+		        $image = imagecreatefromjpeg($imagefile);
+		        break;
+		    case 3: // PNG
+		        $image = imagecreatefrompng($imagefile);
+				//imagealphablending($image, true); // setting alpha blending on
+				//imagesavealpha($image, true); // save alphablending setting (important)
+		        break;
+		    default:
+		        die('Unsupported imageformat');
+		}
+		 return $image;
+  }
+  
+  protected function createthumbnail($mediaimgwidth, $mediaimgheight, $imagewidth, $imageheight)
+  {
+	// Maximalausmaße
+	$maxthumbwidth = $mediaimgwidth;
+	$maxthumbheight = $mediaimgheight;
+	// Ausmaße kopieren, wir gehen zuerst davon aus, dass das Bild schon Thumbnailgröße hat
+	$thumbwidth = $imagewidth;
+	$thumbheight = $imageheight;
+	// Breite skalieren falls nötig
+	if ($thumbwidth > $maxthumbwidth)
+	{                                    
+		$factor = $maxthumbwidth / $thumbwidth;
+		$thumbwidth *= $factor;
+		$thumbheight *= $factor;
+	}
+	// Höhe skalieren, falls nötig
+	if ($thumbheight > $maxthumbheight)
+	{
+			$factor = $maxthumbheight / $thumbheight;
+			$thumbwidth *= $factor;
+			$thumbheight *= $factor;
+	}
+	// Vergrößern Breite
+	if ($thumbwidth < $maxthumbwidth)
+	{
+		$factor = $maxthumbheight / $thumbheight;
+		$thumbwidth *= $factor;
+		$thumbheight *= $factor;
+	}
+	//vergrößern Höhe
+	if ($thumbheight < $maxthumbheight)
+	{
+			$factor = $maxthumbheight / $thumbheight;
+			$thumbwidth *= $factor;
+			$thumbheight *= $factor;
+	}
+
+	// Thumbnail erstellen
+	$thumbimg = imagecreatetruecolor($thumbwidth, $thumbheight);
+	imagesavealpha($thumbimg, true);
+	$trans_colour = imagecolorallocatealpha($thumbimg, 0, 0, 0, 127);
+	imagefill($thumbimg, 0, 0, $trans_colour);
+	$thumb = array("img" => $thumbimg, "width" => $thumbwidth, "height" => $thumbheight);
+	return $thumb;
+  }
+  
+  protected function copyimgtothumbnail($thumb, $image, $thumbwidth, $thumbheight, $imagewidth, $imageheight, $picturename)
+  {
+	imagecopyresampled(
+		$thumb,
+		$image,
+		0, 0, 0, 0, // Startposition des Ausschnittes
+		$thumbwidth, $thumbheight,
+		$imagewidth, $imageheight
+		);
+	// In Datei speichern
+	$thumbfile = IPS_GetKernelDir()."media".DIRECTORY_SEPARATOR."resampled_".$picturename.".png";  // Image-Datei
+	imagepng($thumb, $thumbfile);
+	imagedestroy($thumb);
+	return $thumbfile;
+  }
+  
 	// Profil anlegen
 	protected function SetupProfile($vartype, $name, $icon, $prefix, $suffix, $minvalue, $maxvalue, $stepsize, $digits, $associations)
 	{
@@ -3489,6 +3601,16 @@ class Astronomy extends IPSModule
 						{ "label": "transparent background", "value": 2 }
 					]
 				},
+				{ "type": "Label", "label": "resize images for the media element (module images are 100x100):" },
+				{
+                    "name": "selectionresize",
+                    "type": "CheckBox",
+                    "caption": "resize images"
+                },
+				{ "type": "Label", "label": "media image width:" },
+				{ "type": "NumberSpinner", "name": "mediaimgwidth", "caption": "width" },
+				{ "type": "Label", "label": "media image height:" },
+				{ "type": "NumberSpinner", "name": "mediaimgheight", "caption": "height" },
 				{ "type": "Label", "label": "alternative use own moonpictures:" },
 				{
                     "name": "picturemoonselection",
