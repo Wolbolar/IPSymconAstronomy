@@ -3,7 +3,7 @@
     "name": "AstronomyTimer",
     "type": 3,
     "vendor": "Sonstige",
-    "aliases": ["Astronomie"],
+    "aliases": ["Astronomie Timer"],
     "parentRequirements": [],
     "childRequirements": [],
     "implemented": [],
