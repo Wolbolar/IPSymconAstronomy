@@ -53,6 +53,10 @@ class Astronomy extends IPSModule
 		$this->RegisterPropertyString("picturemoonpath", "media/mondphase");
 		$this->RegisterPropertyInteger("filetype", 1);
 		$this->RegisterPropertyString("picturename", "mond");
+		$this->RegisterPropertyBoolean("sunriseselect", false);
+		$this->RegisterPropertyInteger("sunrise", 0);
+		$this->RegisterPropertyBoolean("sunsetselect", false);
+		$this->RegisterPropertyInteger("sunset", 0);
     }
 
     public function ApplyChanges()
@@ -406,7 +410,24 @@ class Astronomy extends IPSModule
 		{
 			$this->SetupVariable("sunmoonview", "Position Sonne und Mond", "~HTMLBox", 22, IPSVarType::vtString, false);
 		}
-			
+		if($this->ReadPropertyBoolean("sunsetselect") == true) // string
+		{
+			$objid = $this->SetupVariable("sunset", "Sonnenuntergang", "~UnixTimestamp", 23, IPSVarType::vtInteger, true);
+			IPS_SetIcon($objid, "Sun");
+		}
+		else
+		{
+			$this->SetupVariable("sunset", "Sonnenuntergang", "~UnixTimestamp", 23, IPSVarType::vtInteger, false);
+		}
+		if($this->ReadPropertyBoolean("sunriseselect") == true) // string
+		{
+			$objid = $this->SetupVariable("sunrise", "Sonnenaufgang", "~UnixTimestamp", 24, IPSVarType::vtInteger, true);
+			IPS_SetIcon($objid, "Sun");
+		}
+		else
+		{
+			$this->SetupVariable("sunrise", "Sonnenaufgang", "~UnixTimestamp", 24, IPSVarType::vtInteger, false);
+		}	
 		// Status Aktiv
 		$this->SetStatus(102);	
 		
