@@ -469,6 +469,7 @@ class Astronomy extends IPSModule
 			}
 			if ($selectionresize)//resize image
 			{
+				$picturename = $picturename.$picid;
 				$imageinfo = $this->getimageinfo($ImageFile);
 				$image = $this->createimage($ImageFile, $imageinfo["imagetype"]);
 				$thumb = $this->createthumbnail($mediaimgwidth, $mediaimgheight, $imageinfo["imagewidth"],$imageinfo["imageheight"]);
