@@ -1,0 +1,36 @@
+{
+	"translations": {
+		"de": { 
+			"Astronomy Timer": "Astronomischer Timer",
+			"choose type of event for the astronomical timer:":"Typ des Ereignisses für den Astronomischen Timer auswählen:",
+			"event for the timer":"Ereigniss des Timers",
+			"sunrise":"Sonnenaufgang",
+			"sunset":"Sonnenuntergang",
+			"civilTwilightStart":"zivile Morgendämmerung",
+			"civilTwilightEnd":"zivile Abenddämmerung",
+			"nauticTwilightStart": "nautische Morgendämmerung",
+			"nauticTwilightEnd":"nautische Abenddämmerung",
+			"astronomicTwilightStart": "astronomische Morgendämmerung",
+			"astronomicTwilightEnd": "astronomische Abenddämmerung",
+			"offset for the timer:": "Zeitversatz des Timers",
+			"offset (minute)": "Zeitversatz (Minuten)",
+			"cutoff time (used instead of the astronomical time if limit is reached)": "Grenzzeit (wird alterativ benutzt wenn die astronomische Zeit jenseits der Grenzzeit liegt)",
+			"cutoff time": "cutoff time",
+			"create variable with the time of the event for the webfront":"Variable zur Anzeige der Eventuhrzeit für den Webfront erstellen",
+			"webfront variable":"Webfront Variable",
+			"choose trigger script":"Skript zum triggern auswählen:",
+			"trigger script:":"Trigger Skript:",
+			"trigger script":"Trigger Skript",
+			"alternative change variable:":"Alternative Variable ändern:",
+			"check box for variable use":"Haken setzten zur Variablenänderung",
+			"set variable":"Variable setzen",
+			"trigger variable":"Trigger Variable",
+			"variable value":"Variablen Wert",
+			"update timer":"Timer aktualisieren",
+			"update":"aktualisieren",
+			"Creating instance.": "Die Instanz wird erstellt.",
+			"Astronomy ok": "Astronomie ok",
+			"interface closed.": "Interface geschlossen."
+		}
+	}
+}

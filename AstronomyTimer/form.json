@@ -1,0 +1,65 @@
+{
+    "elements":
+            [
+				{ "type": "Label", "label": "Astronomy Timer" },
+				{ "type": "Label", "label": "choose type of event for the astronomical timer:" },
+				{ "type": "Select", "name": "typetimer", "caption": "event for the timer",
+					"options": [
+						{ "label": "sunrise", "value": 1 },
+						{ "label": "sunset", "value": 2 },
+						{ "label": "civilTwilightStart", "value": 3 },
+						{ "label": "civilTwilightEnd", "value": 4 },
+						{ "label": "nauticTwilightStart", "value": 5 },
+						{ "label": "nauticTwilightEnd", "value": 6 },
+						{ "label": "astronomicTwilightStart", "value": 7 },
+						{ "label": "astronomicTwilightEnd", "value": 8 }
+					]
+				},
+				{ "type": "Label", "label": "offset for the timer:" },
+				{ "type": "NumberSpinner", "name": "offset", "caption": "offset (minute)" },
+				{ "type": "Label", "label": "cutoff time (used instead of the astronomical time if limit is reached)" },
+				{ "type": "ValidationTextBox", "name": "cutofftime", "caption": "cutoff time" },
+				{ "type": "Label", "label": "create variable with the time of the event for the webfront" },
+				{
+                    "name": "varwebfrontselect",
+                    "type": "CheckBox",
+                    "caption": "webfront variable"
+                },
+				{ "type": "Label", "label": "choose trigger script" },
+				{ "type": "Label", "label": "trigger script:" },
+				{ "type": "SelectScript", "name": "triggerscript", "caption": "trigger script" },
+				{ "type": "Label", "label": "alternative change variable:" },
+				{ "type": "Label", "label": "check box for variable use" },
+				{
+                    "name": "varselect",
+                    "type": "CheckBox",
+                    "caption": "set variable"
+                },
+				{ "type": "SelectVariable", "name": "triggervariable", "caption": "trigger variable" },
+				{ "type": "ValidationTextBox", "name": "varvalue", "caption": "variable value" },
+				{ "type": "Label", "label": "____________________________________________________________________" }
+            ],
+	"actions":
+			[
+				{ "type": "Label", "label": "update timer" },
+				{ "type": "Button", "label": "update", "onClick": "Astronomy_UpdateTimer($id);" }
+			],
+    "status":
+            [
+                {
+                    "code": 101,
+                    "icon": "inactive",
+                    "caption": "Creating instance."
+                },
+				{
+                    "code": 102,
+                    "icon": "active",
+                    "caption": "Astronomy ok"
+                },
+                {
+                    "code": 104,
+                    "icon": "inactive",
+                    "caption": "interface closed."
+                }
+            ]
+}
