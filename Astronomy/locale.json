@@ -69,7 +69,7 @@
 			"sunrise":"Sonnenaufgang",
 			"sunset with offset:":"Sonnenuntergang mit Offset:",
 			"sunset":"Sonnenuntergang",
-			"seconds":"seconds",
+			"offset (minute)":"Offset (Minuten)",
 			"update values": "Werte aktualisieren",
 			"update": "Aktualisieren",
 			"Creating instance.": "Die Instanz wird erstellt.",

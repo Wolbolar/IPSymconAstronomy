@@ -3686,14 +3686,14 @@ class Astronomy extends IPSModule
                     "type": "CheckBox",
                     "caption": "sunrise"
                 },
-				{ "type": "IntervalBox", "name": "sunrise", "caption": "seconds" },
+				{ "type": "NumberSpinner", "name": "sunrise", "caption": "offset (minute)" },
 				{ "type": "Label", "label": "sunset with offset:" },
 				{
                     "name": "sunsetselect",
                     "type": "CheckBox",
                     "caption": "sunset"
                 },
-				{ "type": "IntervalBox", "name": "sunset", "caption": "seconds" },';
+				{ "type": "NumberSpinner", "name": "sunset", "caption": "offset (minute)" },';
 			return $form;
 		}
 		
