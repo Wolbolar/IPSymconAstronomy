@@ -3677,7 +3677,23 @@ class Astronomy extends IPSModule
                     "name": "sunmoonview",
                     "type": "CheckBox",
                     "caption": "view position sun and moon"
-                },';
+                },
+				{ "type": "Label", "label": "____________________________________________________________________" },
+				{ "type": "Label", "label": "sunrise and sunset with offset:" },
+				{ "type": "Label", "label": "sunrise with offset:" },
+				{
+                    "name": "sunriseselect",
+                    "type": "CheckBox",
+                    "caption": "sunrise"
+                },
+				{ "type": "IntervalBox", "name": "sunrise", "caption": "seconds" },
+				{ "type": "Label", "label": "sunset with offset:" },
+				{
+                    "name": "sunsetselect",
+                    "type": "CheckBox",
+                    "caption": "sunset"
+                },
+				{ "type": "IntervalBox", "name": "sunset", "caption": "seconds" },';
 			return $form;
 		}
 		
