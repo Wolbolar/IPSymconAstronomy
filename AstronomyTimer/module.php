@@ -438,7 +438,7 @@ class AstronomyTimer extends IPSModule
             IPS_SetEventActive($eventid, true);
         }
         IPS_SetEventCyclic($eventid, 0, 0, 0, 0, 0, 0);
-		IPS_SetEventCyclicTimeFrom($eventid, integer $Stunde, integer $Minute, integer $Sekunde );
+		IPS_SetEventCyclicTimeFrom($eventid, $Stunde, $Minute, $Sekunde );
 		IPS_SetEventCyclicTimeTo($eventid, 0, 0, 0 );
 		return $eventid;
 	}
@@ -456,7 +456,7 @@ class AstronomyTimer extends IPSModule
             IPS_SetEventActive($eventid, true);
         }
         IPS_SetEventCyclic($eventid, 0, 0, 0, 0, 0, 0);
-        IPS_SetEventCyclicTimeFrom($eventid, integer $Stunde, integer $Minute, integer $Sekunde );
+        IPS_SetEventCyclicTimeFrom($eventid, $Stunde, $Minute, $Sekunde );
 		IPS_SetEventCyclicTimeTo($eventid, 0, 0, 0 );
 		return $eventid;
 	}
