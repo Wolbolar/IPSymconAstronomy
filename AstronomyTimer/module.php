@@ -2976,7 +2976,7 @@ class AstronomyTimer extends IPSModule
 		
 		protected function FormSelection()
 		{			 
-			$form = '{ "type": "Select", "name": "typetimer", "caption": "event for the timer",
+			$form = '{ "type": "Select", "name": "timertype", "caption": "event for the timer",
 					"options": [
 						{ "label": "sunrise", "value": 1 },
 						{ "label": "sunset", "value": 2 },
@@ -2985,12 +2985,19 @@ class AstronomyTimer extends IPSModule
 						{ "label": "nauticTwilightStart", "value": 5 },
 						{ "label": "nauticTwilightEnd", "value": 6 },
 						{ "label": "astronomicTwilightStart", "value": 7 },
-						{ "label": "astronomicTwilightEnd", "value": 8 }
+						{ "label": "astronomicTwilightEnd", "value": 8 },
+						{ "label": "moonrise", "value": 9 },
+						{ "label": "moonset", "value": 10 }
 					]
 				},
 				{ "type": "Label", "label": "offset for the timer:" },
-				{ "type": "NumberSpinner", "name": "offset", "caption": "offset (minute)" },
+				{ "type": "NumberSpinner", "name": "offset", "caption": "minute" },
 				{ "type": "Label", "label": "cutoff time (used instead of the astronomical time if limit is reached)" },
+				{
+                    "name": "cutoffselect",
+                    "type": "CheckBox",
+                    "caption": "use cutoff time"
+                },
 				{ "type": "ValidationTextBox", "name": "cutofftime", "caption": "cutoff time" },
 				{ "type": "Label", "label": "create variable with the time of the event for the webfront" },
 				{
@@ -3001,7 +3008,7 @@ class AstronomyTimer extends IPSModule
 				{ "type": "Label", "label": "choose trigger script" },
 				{ "type": "Label", "label": "trigger script:" },
 				{ "type": "SelectScript", "name": "triggerscript", "caption": "trigger script" },
-				{ "type": "Label", "label": "alternative change variable:" },
+				{ "type": "Label", "label": "alternative: change variable" },
 				{ "type": "Label", "label": "check box for variable use" },
 				{
                     "name": "varselect",
@@ -3051,6 +3058,16 @@ class AstronomyTimer extends IPSModule
                     "code": 104,
                     "icon": "inactive",
                     "caption": "interface closed."
+                },
+				{
+                    "code": 211,
+                    "icon": "inactive",
+                    "caption": "select variable"
+                },
+				{
+                    "code": 212,
+                    "icon": "inactive",
+                    "caption": "select script"
                 }
             ]';
 			return $form;

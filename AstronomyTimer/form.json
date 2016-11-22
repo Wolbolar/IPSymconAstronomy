@@ -18,8 +18,13 @@
 					]
 				},
 				{ "type": "Label", "label": "offset for the timer:" },
-				{ "type": "NumberSpinner", "name": "offset", "caption": "offset (minute)" },
+				{ "type": "NumberSpinner", "name": "offset", "caption": "minute" },
 				{ "type": "Label", "label": "cutoff time (used instead of the astronomical time if limit is reached)" },
+				{
+                    "name": "cutoffselect",
+                    "type": "CheckBox",
+                    "caption": "use cutoff time"
+                },
 				{ "type": "ValidationTextBox", "name": "cutofftime", "caption": "cutoff time" },
 				{ "type": "Label", "label": "create variable with the time of the event for the webfront" },
 				{
