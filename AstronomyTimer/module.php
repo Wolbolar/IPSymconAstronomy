@@ -29,7 +29,6 @@ class AstronomyTimer extends IPSModule
 		
 		$this->ValidateConfiguration(); 
 		$this->RegisterTimer('Update', 360000, 'Astronomy_UpdateTimer('.$this->InstanceID.');');	
-		//$this->SetAstronomyValues();
 	
     }
 
@@ -2597,403 +2596,53 @@ class AstronomyTimer extends IPSModule
 	//Configuration Form
 		public function GetConfigurationForm()
 		{
-			$UTC = $this->ReadPropertyFloat("UTC");
 			$formhead = $this->FormHead();
 			$formselection = $this->FormSelection();
 			$formstatus = $this->FormStatus();
 			$formactions = $this->FormActions();
-			$formutctext = $this->FormUTCText($UTC);
 			$formelementsend = '{ "type": "Label", "label": "__________________________________________________________________________________________________" }';
 			
-			return	'{ '.$formhead.$formutctext.$formselection.$formelementsend.'],'.$formactions.$formstatus.' }';
+			return	'{ '.$formhead.$formselection.$formelementsend.'],'.$formactions.$formstatus.' }';
 		}
 		
-		protected function FormUTCText($UTC)
-		{
-			$form = '';
-			if($UTC == 14)
-			{
-				$form .= '{ "type": "Label", "label": "UTC +14 Tonga und 2 weitere LINT Kiritimati" },';
-			}
-			elseif($UTC == 13.75)
-			{
-				$form .= '{ "type": "Label", "label": "UTC +13:45 Chatham-Inseln/Neuseeland CHADT Chatham-Inseln" },';
-			}
-			elseif($UTC == 13)
-			{
-				$form .= '{ "type": "Label", "label": "UTC +13 Neuseeland mit Ausnahmen und 4 weitere NZDT Auckland" },';
-			}
-			elseif($UTC == 12)
-			{
-				$form .= '{ "type": "Label", "label": "UTC +12 Kleines Gebiet in Russland und 6 weitere ANAT Anadyr" },';
-			}
-			elseif($UTC == 11)
-			{
-				$form .= '{ "type": "Label", "label": "UTC +11 Großteil von Australien und 8 weitere AEDT Melbourne" },';
-			}
-			elseif($UTC == 10.5)
-			{
-				$form .= '{ "type": "Label", "label": "UTC +10:30 Kleines Gebiet in Australien ACDT Adelaide" },';
-			}
-			elseif($UTC == 10)
-			{
-				$form .= '{ "type": "Label", "label": "UTC +10 Queensland/Australien und 6 weitere AEST Brisbane" },';
-			}
-			elseif($UTC == 9.5)
-			{
-				$form .= '{ "type": "Label", "label": "UTC +9:30 Northern Territory/Australien ACST Darwin" },';
-			}
-			elseif($UTC == 9)
-			{
-				$form .= '{ "type": "Label", "label": "UTC +9 Japan, Südkorea und 4 weitere JST Tokio" },';
-			}
-			elseif($UTC == 8.75)
-			{
-				$form .= '{ "type": "Label", "label": "UTC +8:45 Western Australia/Australien ACWST Eucla" },';
-			}
-			elseif($UTC == 8.5)
-			{
-				$form .= '{ "type": "Label", "label": "UTC +8:30 Nordkorea PYT Pjöngjang" },';
-			}
-			elseif($UTC == 8)
-			{
-				$form .= '{ "type": "Label", "label": "UTC +8 China, Philippinen und 10 weitere CST Peking" },';
-			}
-			elseif($UTC == 7)
-			{
-				$form .= '{ "type": "Label", "label": "UTC +7 Großteil von Indonesien und 8 weitere WIB Jakarta" },';
-			}
-			elseif($UTC == 6.5)
-			{
-				$form .= '{ "type": "Label", "label": "UTC +6:30 Myanmar und Kokosinseln MMT Rangun" },';
-			}
-			elseif($UTC == 6)
-			{
-				$form .= '{ "type": "Label", "label": "UTC +6 Bangladesch und 6 weitere BST Dhaka },';
-			}
-			elseif($UTC == 5.75)
-			{
-				$form .= '{ "type": "Label", "label": "UTC +5:45 Nepal NPT Kathmandu" },';
-			}
-			elseif($UTC == 5.5)
-			{
-				$form .= '{ "type": "Label", "label": "UTC +5:30 Indien und Sri Lanka IST Neu-Delhi" },';
-			}
-			elseif($UTC == 5)
-			{
-				$form .= '{ "type": "Label", "label": "UTC +5 Pakistan und 8 weitere UZT Taschkent" },';
-			}
-			elseif($UTC == 4.5)
-			{
-				$form .= '{ "type": "Label", "label": "UTC +4:30 Afghanistan AFT Kabul" },';
-			}
-			elseif($UTC == 4)
-			{
-				$form .= '{ "type": "Label", "label": "UTC +4 Aserbaidschan und 8 weitere GST Dubai" },';
-			}
-			elseif($UTC == 3.5)
-			{
-				$form .= '{ "type": "Label", "label": "UTC +3:30 Iran IRST Teheran" },';
-			}
-			elseif($UTC == 3)
-			{
-				$form .= '{ "type": "Label", "label": "UTC +3 Moskau/Russland und 24 weitere MSK Moskau" },';
-			}
-			elseif($UTC == 2)
-			{
-				$form .= '{ "type": "Label", "label": "UTC +2 Griechenland und 30 weitere OEZ Kairo" },';
-			}
-			elseif($UTC == 1)
-			{
-				$form .= '{ "type": "Label", "label": "UTC +1 Deutschland und 43 weitere MEZ Berlin" },';
-			}
-			elseif($UTC == 0)
-			{
-				$form .= '{ "type": "Label", "label": "UTC +0 Großbritannien und 26 weitere GMT London" },';
-			}
-			elseif($UTC == -1)
-			{
-				$form .= '{ "type": "Label", "label": "UTC -1 Cabo Verde und 2 weitere CVT Praia" },';
-			}
-			elseif($UTC == -2)
-			{
-				$form .= '{ "type": "Label", "label": "UTC -2 Brasilien (manche Regionen) und Südgeorgien und die Südlichen Sandwichinseln BRST Rio de Janeiro" },';
-			}
-			elseif($UTC == -3)
-			{
-				$form .= '{ "type": "Label", "label": "UTC -3 Brasilien (manche Regionen) und 10 weitere ART Buenos Aires" },';
-			}
-			elseif($UTC == -3.5)
-			{
-				$form .= '{ "type": "Label", "label": "UTC -3:30 Neufundland und Labrador/Kanada NST St. John\'s" },';
-			}
-			elseif($UTC == -4)
-			{
-				$form .= '{ "type": "Label", "label": "UTC -4 einige Gebiete von Kanada und 29 weitere VET Caracas" },';
-			}
-			elseif($UTC == -5)
-			{
-				$form .= '{ "type": "Label", "label": "UTC -5 Vereinigte Staaten (manche Regionen) und 13 weitere EST New York" },';
-			}
-			elseif($UTC == -6)
-			{
-				$form .= '{ "type": "Label", "label": "UTC -6 Vereinigte Staaten (manche Regionen) und 9 weitere CST Mexiko-Stadt" },';
-			}
-			elseif($UTC == -7)
-			{
-				$form .= '{ "type": "Label", "label": "UTC -7 einige Gebiete von Vereinigte Staaten und 2 weitere MST Calgary" },';
-			}
-			elseif($UTC == -8)
-			{
-				$form .= '{ "type": "Label", "label": "UTC -8 Vereinigte Staaten (manche Regionen) und 3 weitere PST Los Angeles" },';
-			}
-			elseif($UTC == -9)
-			{
-				$form .= '{ "type": "Label", "label": "UTC -9 Alaska/Vereinigte Staaten und Französisch-Polynesien (manche Regionen) AKST Anchorage" },';
-			}
-			elseif($UTC == -9.5)
-			{
-				$form .= '{ "type": "Label", "label": "UTC -9:30 Marquesas/Französisch-Polynesien MART Taiohae" },';
-			}
-			elseif($UTC == -10)
-			{
-				$form .= '{ "type": "Label", "label": "UTC -10 Kleines Gebiet in Vereinigte Staaten und 2 weitere HAST Honolulu" },';
-			}
-			elseif($UTC == -11)
-			{
-				$form .= '{ "type": "Label", "label": "UTC -11 American Samoa und 2 weitere NUT Alofi" },';
-			}
-			elseif($UTC == -12)
-			{
-				$form .= '{ "type": "Label", "label": "UTC -12 Großteil von US Minor Outlying Islands AoE Bakerinsel" },';
-			}
-			return $form;
-		}
+		
 		
 		protected function FormSelection()
 		{			 
-			$form = '{ "type": "Select", "name": "UTC", "caption": "UTC",
+			$form = '{ "type": "Select", "name": "typetimer", "caption": "event for the timer",
 					"options": [
-						{ "label": "UTC +14 LINT Kiritimati", "value": 14 },
-						{ "label": "UTC +13:45 CHADT Chatham-Inseln", "value": 13.75 },
-						{ "label": "UTC +13 NZDT Auckland", "value": 13 },
-						{ "label": "UTC +12 ANAT Anadyr", "value": 12 },
-						{ "label": "UTC +11 AEDT Melbourne", "value": 11 },
-						{ "label": "UTC +10:30 ACDT Adelaide", "value": 10.5 },
-						{ "label": "UTC +10 AEST Brisbane", "value": 10 },
-						{ "label": "UTC +9:30 ACST Darwin", "value": 9.5 },
-						{ "label": "UTC +9 JST Tokio", "value": 9 },
-						{ "label": "UTC +8:45 ACWST Eucla", "value": 8.75 },
-						{ "label": "UTC +8:30 PYT Pjöngjang", "value": 8.5 },
-						{ "label": "UTC +8 CST Peking", "value": 8 },
-						{ "label": "UTC +7 WIB Jakarta", "value": 7 },
-						{ "label": "UTC +6:30 MMT Rangun", "value": 6.5 },
-						{ "label": "UTC +6 BST Dhaka", "value": 6 },
-						{ "label": "UTC +5:45 NPT Kathmandu", "value": 5.75 },
-						{ "label": "UTC +5:30 IST Neu-Delhi", "value": 5.5 },
-						{ "label": "UTC +5 UZT Taschkent", "value": 5 },
-						{ "label": "UTC +4:30 AFT Kabul", "value": 4.5 },
-						{ "label": "UTC +4 GST Dubai", "value": 4 },
-						{ "label": "UTC +3:30 IRST Teheran", "value": 3.5 },
-						{ "label": "UTC +3 MSK Moskau", "value": 3 },
-						{ "label": "UTC +2 OEZ Kairo", "value": 2 },
-						{ "label": "UTC +1 MEZ Berlin", "value": 1 },
-						{ "label": "UTC +0 GMT London", "value": 0 },
-						{ "label": "UTC -1 CVT Praia", "value": -1 },
-						{ "label": "UTC -2 BRST Rio de Janeiro", "value": -2 },
-						{ "label": "UTC -3 ART Buenos Aires", "value": -3 },
-						{ "label": "UTC -3:30 NST St. John\'s", "value": -3.5 },
-						{ "label": "UTC -4 VET Caracas", "value": -4 },
-						{ "label": "UTC -5 EST New York", "value": -5 },
-						{ "label": "UTC -6 CST Mexiko-Stadt", "value": -6 },
-						{ "label": "UTC -7 MST Calgary", "value": -7 },
-						{ "label": "UTC -8 PST Los Angeles", "value": -8 },
-						{ "label": "UTC -9 AKST Anchorage", "value": -9 },
-						{ "label": "UTC -9:30 MART Taiohae", "value": -9.5 },
-						{ "label": "UTC -10 HAST Honolulu", "value": -10 },
-						{ "label": "UTC -11 NUT Alofi", "value": -11 },
-						{ "label": "UTC -12 AoE Bakerinsel", "value": -12 }
+						{ "label": "sunrise", "value": 1 },
+						{ "label": "sunset", "value": 2 },
+						{ "label": "civilTwilightStart", "value": 3 },
+						{ "label": "civilTwilightEnd", "value": 4 },
+						{ "label": "nauticTwilightStart", "value": 5 },
+						{ "label": "nauticTwilightEnd", "value": 6 },
+						{ "label": "astronomicTwilightStart", "value": 7 },
+						{ "label": "astronomicTwilightEnd", "value": 8 }
 					]
 				},
-				{ "type": "Label", "label": "select values for display:" },
+				{ "type": "Label", "label": "offset for the timer:" },
+				{ "type": "NumberSpinner", "name": "offset", "caption": "offset (minute)" },
+				{ "type": "Label", "label": "cutoff time (used instead of the astronomical time if limit is reached)" },
+				{ "type": "ValidationTextBox", "name": "cutofftime", "caption": "cutoff time" },
+				{ "type": "Label", "label": "create variable with the time of the event for the webfront" },
 				{
-                    "name": "juliandate",
+                    "name": "varwebfrontselect",
                     "type": "CheckBox",
-                    "caption": "Julian Date"
+                    "caption": "webfront variable"
                 },
+				{ "type": "Label", "label": "choose trigger script" },
+				{ "type": "Label", "label": "trigger script:" },
+				{ "type": "SelectScript", "name": "triggerscript", "caption": "trigger script" },
+				{ "type": "Label", "label": "alternative change variable:" },
+				{ "type": "Label", "label": "check box for variable use" },
 				{
-                    "name": "moonazimut",
+                    "name": "varselect",
                     "type": "CheckBox",
-                    "caption": "moon azimut"
+                    "caption": "set variable"
                 },
-				{
-                    "name": "moondistance",
-                    "type": "CheckBox",
-                    "caption": "moon distance"
-                },	
-				{
-                    "name": "moonaltitude",
-                    "type": "CheckBox",
-                    "caption": "moon altitude"
-                },	
-				{
-                    "name": "moonbrightlimbangle",
-                    "type": "CheckBox",
-                    "caption": "moon bright limb angle"
-                },	
-				{
-                    "name": "moondirection",
-                    "type": "CheckBox",
-                    "caption": "moon direction"
-                },		
-				{
-                    "name": "moonvisibility",
-                    "type": "CheckBox",
-                    "caption": "moon visibility"
-                },	
-				{
-                    "name": "moonrise",
-                    "type": "CheckBox",
-                    "caption": "moon rise"
-                },	
-				{
-                    "name": "moonset",
-                    "type": "CheckBox",
-                    "caption": "moon set"
-                },	
-				{
-                    "name": "moonphase",
-                    "type": "CheckBox",
-                    "caption": "moon phase"
-                },	
-				{
-                    "name": "newmoon",
-                    "type": "CheckBox",
-                    "caption": "new moon"
-                },	
-				{
-                    "name": "firstquarter",
-                    "type": "CheckBox",
-                    "caption": "first quarter"
-                },	
-				{
-                    "name": "fullmoon",
-                    "type": "CheckBox",
-                    "caption": "full moon"
-                },	
-				{
-                    "name": "lastquarter",
-                    "type": "CheckBox",
-                    "caption": "last quarter"
-                },	
-				{
-                    "name": "sunazimut",
-                    "type": "CheckBox",
-                    "caption": "sun azimut"
-                },	
-				{
-                    "name": "sundistance",
-                    "type": "CheckBox",
-                    "caption": "sun distance"
-                },	
-				{
-                    "name": "sunaltitude",
-                    "type": "CheckBox",
-                    "caption": "sun altitude"
-                },	
-				{
-                    "name": "sundirection",
-                    "type": "CheckBox",
-                    "caption": "sun direction"
-                },
-				{
-                    "name": "season",
-                    "type": "CheckBox",
-                    "caption": "season"
-                },
-				{
-                    "name": "picturemoon",
-                    "type": "CheckBox",
-                    "caption": "picture moon"
-                },
-				{ "type": "Label", "label": "background moonpicture:" },
-				{ "type": "Select", "name": "moonbackground", "caption": "background",
-					"options": [
-						{ "label": "black background", "value": 1 },
-						{ "label": "transparent background", "value": 2 }
-					]
-				},
-				{ "type": "Label", "label": "resize images for the media element (module images are 100x100):" },
-				{
-                    "name": "selectionresize",
-                    "type": "CheckBox",
-                    "caption": "resize images"
-                },
-				{ "type": "Label", "label": "media image width:" },
-				{ "type": "NumberSpinner", "name": "mediaimgwidth", "caption": "width" },
-				{ "type": "Label", "label": "media image height:" },
-				{ "type": "NumberSpinner", "name": "mediaimgheight", "caption": "height" },
-				{ "type": "Label", "label": "alternative use own moonpictures:" },
-				{
-                    "name": "picturemoonselection",
-                    "type": "CheckBox",
-                    "caption": "use own moon pictures"
-                },
-				{ "type": "Label", "label": "pictures must have the number 001 to XXX for example mond001" },
-				{ "type": "Label", "label": "pictures name (without number)" },
-				{ "type": "ValidationTextBox", "name": "picturename", "caption": "picture name" },
-				{ "type": "Label", "label": "picture file type" },
-				{ "type": "Select", "name": "filetype", "caption": "file type",
-					"options": [
-						{ "label": "png", "value": 1 },
-						{ "label": "gif", "value": 2 },
-						{ "label": "jpg", "value": 3 }
-					]
-				},
-				{ "type": "Label", "label": "picture number of the first and last picture of the moon phase:" },
-				{ "type": "Label", "label": "full moon:" },
-				{ "type": "Label", "label": "picture number of the first picture full moon:" },
-				{ "type": "NumberSpinner", "name": "firstfullmoonpic", "caption": "first picture" },
-				{ "type": "Label", "label": "picture number of the last picture full moon:" },
-				{ "type": "NumberSpinner", "name": "lastfullmoonpic", "caption": "last picture" },
-				{ "type": "Label", "label": "increasing moon:" },
-				{ "type": "Label", "label": "picture number of the first picture increasing moon:" },
-				{ "type": "NumberSpinner", "name": "firstincreasingmoonpic", "caption": "first picture" },
-				{ "type": "Label", "label": "picture number of the last picture increasing moon:" },
-				{ "type": "NumberSpinner", "name": "lastincreasingmoonpic", "caption": "last picture" },
-				{ "type": "Label", "label": "new moon:" },
-				{ "type": "Label", "label": "picture number of the first picture new moon:" },
-				{ "type": "NumberSpinner", "name": "firstnewmoonpic", "caption": "first picture" },
-				{ "type": "Label", "label": "picture number of the last picture new moon:" },
-				{ "type": "NumberSpinner", "name": "lastnewmoonpic", "caption": "last picture" },
-				{ "type": "Label", "label": "decreasing moon:" },
-				{ "type": "Label", "label": "picture number of the first picture decreasing moon:" },
-				{ "type": "NumberSpinner", "name": "firstdecreasingmoonpic", "caption": "first picture" },
-				{ "type": "Label", "label": "picture number of the last picture decreasing moon:" },
-				{ "type": "NumberSpinner", "name": "lastdecreasingmoonpic", "caption": "last picture" },
-				{ "type": "Label", "label": "path of the moonphase pictures relative to the IP-Symcon folder:" },
-				{ "type": "ValidationTextBox", "name": "picturemoonpath", "caption": "path moon pictures" },
-				{
-                    "name": "sunmoonview",
-                    "type": "CheckBox",
-                    "caption": "view position sun and moon"
-                },
-				{ "type": "Label", "label": "____________________________________________________________________" },
-				{ "type": "Label", "label": "sunrise and sunset with offset:" },
-				{ "type": "Label", "label": "sunrise with offset:" },
-				{
-                    "name": "sunriseselect",
-                    "type": "CheckBox",
-                    "caption": "sunrise"
-                },
-				{ "type": "NumberSpinner", "name": "sunrise", "caption": "offset (minute)" },
-				{ "type": "Label", "label": "sunset with offset:" },
-				{
-                    "name": "sunsetselect",
-                    "type": "CheckBox",
-                    "caption": "sunset"
-                },
-				{ "type": "NumberSpinner", "name": "sunset", "caption": "offset (minute)" },';
+				{ "type": "SelectVariable", "name": "triggervariable", "caption": "trigger variable" },
+				{ "type": "ValidationTextBox", "name": "varvalue", "caption": "variable value" },';
 			return $form;
 		}
 		
@@ -3001,15 +2650,8 @@ class AstronomyTimer extends IPSModule
 		{
 			$form = '"elements":
             [
-				{ "type": "Label", "label": "Astronomy values" },
-				{ "type": "Label", "label": "Display language Webfront:" },
-				{ "type": "Select", "name": "language", "caption": "language",
-					"options": [
-						{ "label": "German", "value": 1 },
-						{ "label": "English", "value": 2 }
-					]
-				},
-				{ "type": "Label", "label": "Coordinated Universal Time (UTC):" },';
+				{ "type": "Label", "label": "Astronomy Timer" },
+				{ "type": "Label", "label": "choose type of event for the astronomical timer:" },';
 			
 			return $form;
 		}
@@ -3018,8 +2660,8 @@ class AstronomyTimer extends IPSModule
 		{
 			$form = '"actions":
 			[
-				{ "type": "Label", "label": "update values" },
-				{ "type": "Button", "label": "update", "onClick": "Astronomy_SetAstronomyValues($id);" }
+				{ "type": "Label", "label": "update timer" },
+				{ "type": "Button", "label": "update", "onClick": "Astronomy_UpdateTimer($id);" }
 			],';
 			return  $form;
 		}	
@@ -3065,285 +2707,7 @@ class AstronomyTimer extends IPSModule
 		}
 }
 
-/******************************************************************************
-* The following is a PHP implementation of the JavaScript code found at:      *
-* http://bodmas.org/astronomy/riset.html                                      *
-*                                                                             *
-* Original maths and code written by Keith Burnett <bodmas.org>               *
-* PHP port written by Matt "dxprog" Hackmann <dxprog.com>                     *
-*                                                                             *
-* This program is free software: you can redistribute it and/or modify        *
-* it under the terms of the GNU General Public License as published by        *
-* the Free Software Foundation, either version 3 of the License, or           *
-* (at your option) any later version.                                         *
-*                                                                             *
-* This program is distributed in the hope that it will be useful,             *
-* but WITHOUT ANY WARRANTY; without even the implied warranty of              *
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the               *
-* GNU General Public License for more details.                                *
-*                                                                             *
-* You should have received a copy of the GNU General Public License           *
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.       *
-******************************************************************************/
 
-class Moon extends stdClass
-{
-
-    /**
-     * Calculates the moon rise/set for a given location and day of year
-     */
-    public static function calculateMoonTimes($month, $day, $year, $lat, $lon) {
-
-        $utrise = $utset = 0;
-
-        $timezone = (int)($lon / 15);
-        $date = self::modifiedJulianDate($month, $day, $year);
-        $date -= $timezone / 24;
-        $latRad = deg2rad($lat);
-        $sinho = 0.0023271056;
-        $sglat = sin($latRad);
-        $cglat = cos($latRad);
-
-        $rise = false;
-        $set = false;
-        $above = false;
-        $hour = 1;
-        $ym = self::sinAlt($date, $hour - 1, $lon, $cglat, $sglat) - $sinho;
-
-        $above = $ym > 0;
-        while ($hour < 25 && (false == $set || false == $rise)) {
-
-            $yz = self::sinAlt($date, $hour, $lon, $cglat, $sglat) - $sinho;
-            $yp = self::sinAlt($date, $hour + 1, $lon, $cglat, $sglat) - $sinho;
-
-            $quadout = self::quad($ym, $yz, $yp);
-            $nz = $quadout[0];
-            $z1 = $quadout[1];
-            $z2 = $quadout[2];
-            $xe = $quadout[3];
-            $ye = $quadout[4];
-
-            if ($nz == 1) {
-                if ($ym < 0) {
-                    $utrise = $hour + $z1;
-                    $rise = true;
-                } else {
-                    $utset = $hour + $z1;
-                    $set = true;
-                }
-            }
-
-            if ($nz == 2) {
-                if ($ye < 0) {
-                    $utrise = $hour + $z2;
-                    $utset = $hour + $z1;
-                } else {
-                    $utrise = $hour + $z1;
-                    $utset = $hour + $z2;
-                }
-            }
-
-            $ym = $yp;
-            $hour += 2.0;
-
-        }
-        // Convert to unix timestamps and return as an object
-        $retVal = new stdClass();
-        $utrise = self::convertTime($utrise);
-        $utset = self::convertTime($utset);
-        $summertime = date("I");
-        if($summertime == 0){
-        $retVal->moonrise = $rise ? mktime($utrise['hrs'], $utrise['min'], 0+3600, $month, $day, $year) : mktime(0, 0, 0, $month, $day + 1, $year);
-        $retVal->moonset = $set ? mktime($utset['hrs'], $utset['min'], 0+3600, $month, $day, $year) : mktime(0, 0, 0, $month, $day + 1, $year);
-        }
-         else{
-         $retVal->moonrise = $rise ? mktime($utrise['hrs'], $utrise['min'], 0+7200, $month, $day, $year) : mktime(0, 0, 0, $month, $day + 1, $year);
-        $retVal->moonset = $set ? mktime($utset['hrs'], $utset['min'], 0+7200, $month, $day, $year) : mktime(0, 0, 0, $month, $day + 1, $year);
-        }
-        return $retVal;
-
-    }
-
-    /**
-     *    finds the parabola throuh the three points (-1,ym), (0,yz), (1, yp)
-     *  and returns the coordinates of the max/min (if any) xe, ye
-     *  the values of x where the parabola crosses zero (roots of the self::quadratic)
-     *  and the number of roots (0, 1 or 2) within the interval [-1, 1]
-     *
-     *    well, this routine is producing sensible answers
-     *
-     *  results passed as array [nz, z1, z2, xe, ye]
-     */
-    private static function quad($ym, $yz, $yp) {
-
-        $nz = $z1 = $z2 = 0;
-        $a = 0.5 * ($ym + $yp) - $yz;
-        $b = 0.5 * ($yp - $ym);
-        $c = $yz;
-        $xe = -$b / (2 * $a);
-        $ye = ($a * $xe + $b) * $xe + $c;
-        $dis = $b * $b - 4 * $a * $c;
-        if ($dis > 0) {
-            $dx = 0.5 * sqrt($dis) / abs($a);
-            $z1 = $xe - $dx;
-            $z2 = $xe + $dx;
-            $nz = abs($z1) < 1 ? $nz + 1 : $nz;
-            $nz = abs($z2) < 1 ? $nz + 1 : $nz;
-            $z1 = $z1 < -1 ? $z2 : $z1;
-        }
-
-        return array($nz, $z1, $z2, $xe, $ye);
-
-    }
-
-    /**
-     *    this rather mickey mouse function takes a lot of
-     *  arguments and then returns the sine of the altitude of the moon
-     */
-    private static function sinAlt($mjd, $hour, $glon, $cglat, $sglat) {
-
-        $mjd += $hour / 24;
-        $t = ($mjd - 51544.5) / 36525;
-        $objpos = self::minimoon($t);
-
-        $ra = $objpos[1];
-        $dec = $objpos[0];
-        $decRad = deg2rad($dec);
-        $tau = 15 * (self::lmst($mjd, $glon) - $ra);
-
-        return $sglat * sin($decRad) + $cglat * cos($decRad) * cos(deg2rad($tau));
-
-    }
-
-    /**
-     *    returns an angle in degrees in the range 0 to 360
-     */
-    private static function degRange($x) {
-        $b = $x / 360;
-        $a = 360 * ($b - (int)$b);
-        $retVal = $a < 0 ? $a + 360 : $a;
-        return $retVal;
-    }
-
-    private static function lmst($mjd, $glon) {
-        $d = $mjd - 51544.5;
-        $t = $d / 36525;
-        $lst = self::degRange(280.46061839 + 360.98564736629 * $d + 0.000387933 * $t * $t - $t * $t * $t / 38710000);
-        return $lst / 15 + $glon / 15;
-    }
-
-    /**
-     * takes t and returns the geocentric ra and dec in an array mooneq
-     * claimed good to 5' (angle) in ra and 1' in dec
-     * tallies with another approximate method and with ICE for a couple of dates
-     */
-    private static function minimoon($t) {
-
-        $p2 = 6.283185307;
-        $arc = 206264.8062;
-        $coseps = 0.91748;
-        $sineps = 0.39778;
-
-        $lo = self::frac(0.606433 + 1336.855225 * $t);
-        $l = $p2 * self::frac(0.374897 + 1325.552410 * $t);
-        $l2 = $l * 2;
-        $ls = $p2 * self::frac(0.993133 + 99.997361 * $t);
-        $d = $p2 * self::frac(0.827361 + 1236.853086 * $t);
-        $d2 = $d * 2;
-        $f = $p2 * self::frac(0.259086 + 1342.227825 * $t);
-        $f2 = $f * 2;
-
-        $sinls = sin($ls);
-        $sinf2 = sin($f2);
-
-        $dl = 22640 /*[Visualization\Mobile\Beschattung\Beschattungselemente\Kueche\Programme]*/ * sin($l);
-        $dl += -4586 * sin($l - $d2);
-        $dl += 2370 * sin($d2);
-        $dl += 769 * sin($l2);
-        $dl += -668 * $sinls;
-        $dl += -412 * $sinf2;
-        $dl += -212 * sin($l2 - $d2);
-        $dl += -206 * sin ($l + $ls - $d2);
-        $dl += 192 * sin($l + $d2);
-        $dl += -165 * sin($ls - $d2);
-        $dl += -125 * sin($d);
-        $dl += -110 * sin($l + $ls);
-        $dl += 148 * sin($l - $ls);
-        $dl += -55 * sin($f2 - $d2);
-
-        $s = $f + ($dl + 412 * $sinf2 + 541 * $sinls) / $arc;
-        $h = $f - $d2;
-        $n = -526 * sin($h);
-        $n += 44 * sin($l + $h);
-        $n += -31 * sin(-$l + $h);
-        $n += -23 * sin($ls + $h);
-        $n += 11 * sin(-$ls + $h);
-        $n += -25 * sin(-$l2 + $f);
-        $n += 21 * sin(-$l + $f);
-
-        $L_moon = $p2 * self::frac($lo + $dl / 1296000);
-        $B_moon = (18520.0 * sin($s) + $n) / $arc;
-
-        $cb = cos($B_moon);
-        $x = $cb * cos($L_moon);
-        $v = $cb * sin($L_moon);
-        $w = sin($B_moon);
-        $y = $coseps * $v - $sineps * $w;
-        $z = $sineps * $v + $coseps * $w;
-        $rho = sqrt(1 - $z * $z);
-        $dec = (360 / $p2) * atan($z / $rho);
-        $ra = (48 / $p2) * atan($y / ($x + $rho));
-        $ra = $ra < 0 ? $ra + 24 : $ra;
-
-        return array($dec, $ra);
-
-    }
-
-    /**
-     *    returns the self::fractional part of x as used in self::minimoon and minisun
-     */
-    private static function frac($x) {
-        $x -= (int)$x;
-        return $x < 0 ? $x + 1 : $x;
-    }
-
-    /**
-     * Takes the day, month, year and hours in the day and returns the
-     * modified julian day number defined as mjd = jd - 2400000.5
-     * checked OK for Greg era dates - 26th Dec 02
-     */
-    private static function modifiedJulianDate($month, $day, $year) {
-
-        if ($month <= 2) {
-            $month += 12;
-            $year--;
-        }
-
-        $a = 10000 /*[Info\FritzBox Project\WLAN 2,4 GHz - Status\SqueezeboxTouch (192.168.55.20)\Signalstärke]*/ * $year + 100 * $month + $day;
-        $b = 0;
-        if ($a <= 15821004.1) {
-            $b = -2 * (int)(($year + 4716) / 4) - 1179;
-        } else {
-            $b = (int)($year / 400) - (int)($year / 100) + (int)($year / 4);
-        }
-
-        $a = 365 * $year - 679004;
-        return $a + $b + (int)(30.6001 * ($month + 1)) + $day;
-
-    }
-
-    /**
-     * Converts an hours decimal to hours and minutes
-     */
-    private static function convertTime($hours) {
-
-        $hrs = (int)($hours * 60 + 0.5) / 60.0;
-        $h = (int)($hrs);
-        $m = (int)(60 * ($hrs - $h) + 0.5);
-        return array('hrs'=>$h, 'min'=>$m);
-
-    }
-}
 
 class IPSVarType extends stdClass
 {
