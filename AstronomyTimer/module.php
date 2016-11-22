@@ -19,7 +19,7 @@ class AstronomyTimer extends IPSModule
 		$this->RegisterPropertyInteger("triggerscript", 0);
 		$this->RegisterPropertyBoolean("varselect", false);
 		$this->RegisterPropertyInteger("triggervariable", 0);
-		$this->RegisterPropertyString("varvalue", "00:00:00");
+		$this->RegisterPropertyString("varvalue", "");
     }
 
     public function ApplyChanges()

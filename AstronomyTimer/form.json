@@ -28,7 +28,7 @@
 				{ "type": "Label", "label": "choose trigger script" },
 				{ "type": "Label", "label": "trigger script:" },
 				{ "type": "SelectScript", "name": "triggerscript", "caption": "trigger script" },
-				{ "type": "Label", "label": "alternative change variable:" },
+				{ "type": "Label", "label": "alternative: change variable" },
 				{ "type": "Label", "label": "check box for variable use" },
 				{
                     "name": "varselect",
