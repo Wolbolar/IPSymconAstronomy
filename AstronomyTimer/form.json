@@ -3,7 +3,7 @@
             [
 				{ "type": "Label", "label": "Astronomy Timer" },
 				{ "type": "Label", "label": "choose type of event for the astronomical timer:" },
-				{ "type": "Select", "name": "typetimer", "caption": "event for the timer",
+				{ "type": "Select", "name": "timertype", "caption": "event for the timer",
 					"options": [
 						{ "label": "sunrise", "value": 1 },
 						{ "label": "sunset", "value": 2 },
@@ -12,7 +12,9 @@
 						{ "label": "nauticTwilightStart", "value": 5 },
 						{ "label": "nauticTwilightEnd", "value": 6 },
 						{ "label": "astronomicTwilightStart", "value": 7 },
-						{ "label": "astronomicTwilightEnd", "value": 8 }
+						{ "label": "astronomicTwilightEnd", "value": 8 },
+						{ "label": "moonrise", "value": 9 },
+						{ "label": "moonset", "value": 10 }
 					]
 				},
 				{ "type": "Label", "label": "offset for the timer:" },
@@ -60,6 +62,16 @@
                     "code": 104,
                     "icon": "inactive",
                     "caption": "interface closed."
+                },
+				{
+                    "code": 211,
+                    "icon": "inactive",
+                    "caption": "select variable"
+                },
+				{
+                    "code": 212,
+                    "icon": "inactive",
+                    "caption": "select script"
                 }
             ]
 }

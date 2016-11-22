@@ -12,6 +12,8 @@
 			"nauticTwilightEnd":"nautische Abenddämmerung",
 			"astronomicTwilightStart": "astronomische Morgendämmerung",
 			"astronomicTwilightEnd": "astronomische Abenddämmerung",
+			"moonrise":"Mondaufgang",
+			"moonset":"Monduntergang",
 			"offset for the timer:": "Zeitversatz des Timers",
 			"offset (minute)": "Zeitversatz (Minuten)",
 			"cutoff time (used instead of the astronomical time if limit is reached)": "Grenzzeit (wird alterativ benutzt wenn die astronomische Zeit jenseits der Grenzzeit liegt)",
