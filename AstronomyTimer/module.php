@@ -612,15 +612,15 @@ class AstronomyTimer extends IPSModule
 	protected function getlocationinfo()
 	{
 		$LocationID = IPS_GetInstanceListByModuleID("{45E97A63-F870-408A-B259-2933F7EABF74}")[0];
-		$isday = GetValue($this->IPS_GetObjectIDByIdent("IsDay", $LocationID));
-		$sunrise = GetValue($this->IPS_GetObjectIDByIdent("Sunrise", $LocationID));
-		$sunset = GetValue($this->IPS_GetObjectIDByIdent("Sunset", $LocationID));
-		$civiltwilightstart = GetValue($this->IPS_GetObjectIDByIdent("CivilTwilightStart", $LocationID));
-		$civiltwilightend = GetValue($this->IPS_GetObjectIDByIdent("CivilTwilightEnd", $LocationID));
-		$nautictwilightstart = GetValue($this->IPS_GetObjectIDByIdent("NauticTwilightStart", $LocationID));
-		$nautictwilightend = GetValue($this->IPS_GetObjectIDByIdent("NauticTwilightEnd", $LocationID));
-		$astronomictwilightstart = GetValue($this->IPS_GetObjectIDByIdent("AstronomicTwilightStart", $LocationID));
-		$astronomictwilightend = GetValue($this->IPS_GetObjectIDByIdent("AstronomicTwilightEnd", $LocationID));
+		$isday = GetValue(IPS_GetObjectIDByIdent("IsDay", $LocationID));
+		$sunrise = GetValue(IPS_GetObjectIDByIdent("Sunrise", $LocationID));
+		$sunset = GetValue(IPS_GetObjectIDByIdent("Sunset", $LocationID));
+		$civiltwilightstart = GetValue(IPS_GetObjectIDByIdent("CivilTwilightStart", $LocationID));
+		$civiltwilightend = GetValue(IPS_GetObjectIDByIdent("CivilTwilightEnd", $LocationID));
+		$nautictwilightstart = GetValue(IPS_GetObjectIDByIdent("NauticTwilightStart", $LocationID));
+		$nautictwilightend = GetValue(IPS_GetObjectIDByIdent("NauticTwilightEnd", $LocationID));
+		$astronomictwilightstart = GetValue(IPS_GetObjectIDByIdent("AstronomicTwilightStart", $LocationID));
+		$astronomictwilightend = GetValue(IPS_GetObjectIDByIdent("AstronomicTwilightEnd", $LocationID));
 		$locationinfo = array ("IsDay" => $isday, "Sunrise" => $sunrise, "Sunset" => $sunset, "CivilTwilightStart" => $civiltwilightstart, "CivilTwilightEnd" => $civiltwilightend, "NauticTwilightStart" => $nautictwilightstart, "NauticTwilightEnd" => $nautictwilightend, "AstronomicTwilightStart" => $astronomictwilightstart, "AstronomicTwilightEnd" => $astronomictwilightend);
 		return $locationinfo;
 	}
