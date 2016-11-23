@@ -29,8 +29,8 @@ class AstronomyTimer extends IPSModule
 		
 		$this->ValidateConfiguration(); 
 		//$this->RegisterTimer('Update', 360000, 'Astronomy_UpdateTimer('.$this->InstanceID.');');
-		$this->RegisterCyclicTimer();
-	
+		//$this->RegisterCyclicTimer();
+		$this->RegisterCyclicTimer('AstroTimerUpdate', 55, 'AstronomyTimer_Set('.$this->InstanceID.');');
     }
 
 		/**
@@ -94,29 +94,47 @@ class AstronomyTimer extends IPSModule
 		$this->SetStatus(102);	
 		
 	}
-	
-	protected function RegisterCyclicTimer()
+		
+	protected function RegisterCyclicTimer($ident, $interval, $script)
 	{
-		$name = "Update";
+		$id = @$this->GetIDForIdent($ident);
+		$name = "Astrotimer Update";
 		$Stunde = 0;
 		$Minute = 5;
 		$Sekunde = 0;
-		$ident = "UpdateAstroTimer";
-		$eventid = @$this->GetIDForIdent($ident);
-		if($eventid === false)
-        {
-            $eid = IPS_CreateEvent(1);
-            IPS_SetParent($eventid, $this->InstanceID);
-            IPS_SetName($eventid, $name);
-			IPS_SetIdent($eventid, $ident);
-            IPS_SetInfo($eventid, "Update AstroTimer");
-            IPS_SetEventScript($eventid, $id);
-            IPS_SetEventActive($eventid, true);
-        }
-        IPS_SetEventCyclic($eventid, 0, 0, 0, 0, 0, 0);
-        IPS_SetEventCyclicTimeFrom($eventid, $Stunde, $Minute, $Sekunde );
-		IPS_SetEventCyclicTimeTo($eventid, 0, 0, 0 );
-        return $eid;
+		if ($id && IPS_GetEvent($id)['EventType'] <> 1)
+		{
+		  IPS_DeleteEvent($id);
+		  $id = 0;
+		}
+
+		if (!$id)
+		{
+		  $id = IPS_CreateEvent(1);
+		  IPS_SetParent($id, $this->InstanceID);
+		  IPS_SetIdent($id, $ident);
+		}
+
+		IPS_SetName($id, $name);
+		IPS_SetInfo($id, "Update AstroTimer");
+		IPS_SetHidden($id, true);
+		IPS_SetEventScript($id, "\$id = \$_IPS['TARGET'];\n$script;");
+
+		if (!IPS_EventExists($id)) throw new Exception("Ident with name $ident is used for wrong object type");
+
+		if (!($interval > 0))
+		{
+		  IPS_SetEventCyclic($id, 0, 0, 0, 0, 1, 1);
+		  //IPS_SetEventCyclic($eventid, 0, 0, 0, 0, 0, 0);
+		  //IPS_SetEventCyclicTimeFrom($eventid, $Stunde, $Minute, $Sekunde );
+		  //IPS_SetEventCyclicTimeTo($eventid, 0, 0, 0 );
+		  IPS_SetEventActive($id, false);
+		}
+		else
+		{
+		  IPS_SetEventCyclic($id, 0, 0, 0, 0, 1, $interval);
+		  IPS_SetEventActive($id, true);
+		}
 	}
 	
 	// Profil anlegen
