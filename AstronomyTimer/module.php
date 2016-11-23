@@ -101,12 +101,15 @@ class AstronomyTimer extends IPSModule
 		$Stunde = 0;
 		$Minute = 5;
 		$Sekunde = 0;
+		$ident = "UpdateAstroTimer";
+		$eventid = @$this->GetIDForIdent($ident);
 		if($eventid === false)
         {
             $eid = IPS_CreateEvent(1);
             IPS_SetParent($eventid, $this->InstanceID);
             IPS_SetName($eventid, $name);
-            IPS_SetInfo($eventid, "this timer was created by script #$IPS_SELF");
+			IPS_SetIdent($eventid, $ident);
+            IPS_SetInfo($eventid, "Update AstroTimer");
             IPS_SetEventScript($eventid, $id);
             IPS_SetEventActive($eventid, true);
         }
@@ -454,6 +457,7 @@ class AstronomyTimer extends IPSModule
             $eid = IPS_CreateEvent(1);
             IPS_SetParent($eventid, $this->InstanceID);
             IPS_SetName($eventid, $name);
+			IPS_SetIdent($eventid, $ident);
             IPS_SetInfo($eventid, "Timer was created by AstroTimer ".$this->InstanceID);
             IPS_SetEventScript($eventid, $objectid);
             IPS_SetEventActive($eventid, true);
@@ -472,6 +476,7 @@ class AstronomyTimer extends IPSModule
             $eid = IPS_CreateEvent(1);
             IPS_SetParent($eventid, $this->InstanceID);
             IPS_SetName($eventid, $name);
+			IPS_SetIdent($eventid, $ident);
             IPS_SetInfo($eventid, "Timer was created by AstroTimer ".$this->InstanceID);
             IPS_SetEventScript($eventid, $objectid);
             IPS_SetEventActive($eventid, true);
