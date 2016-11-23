@@ -14,6 +14,7 @@ class AstronomyTimer extends IPSModule
 		
 		$this->RegisterPropertyInteger("timertype", 1);
 		$this->RegisterPropertyInteger("offset", 0);
+		$this->RegisterPropertyBoolean("cutoffselect", false);
 		$this->RegisterPropertyString("cutofftime", "00:00:00");
 		$this->RegisterPropertyBoolean("varwebfrontselect", false);
 		$this->RegisterPropertyInteger("triggerscript", 0);
