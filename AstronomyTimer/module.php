@@ -474,6 +474,9 @@ class AstronomyTimer extends IPSModule
 		$cutoff = $this->GetCutoffTime();
 		$timestamp = 0;
 		$direction = "";
+		$Stunde = 0;
+		$Minute = 0;
+		$Sekunde = 0;
 		switch ($timertype)
 			{
 				case "Sunrise":
