@@ -612,15 +612,15 @@ class AstronomyTimer extends IPSModule
 	protected function getlocationinfo()
 	{
 		$LocationID = IPS_GetInstanceListByModuleID("{45E97A63-F870-408A-B259-2933F7EABF74}")[0];
-		$isday = GetValue($this->GetIDForIdent("IsDay"));
-		$sunrise = GetValue($this->GetIDForIdent("Sunrise"));
-		$sunset = GetValue($this->GetIDForIdent("Sunset"));
-		$civiltwilightstart = GetValue($this->GetIDForIdent("CivilTwilightStart"));
-		$civiltwilightend = GetValue($this->GetIDForIdent("CivilTwilightEnd"));
-		$nautictwilightstart = GetValue($this->GetIDForIdent("NauticTwilightStart"));
-		$nautictwilightend = GetValue($this->GetIDForIdent("NauticTwilightEnd"));
-		$astronomictwilightstart = GetValue($this->GetIDForIdent("AstronomicTwilightStart"));
-		$astronomictwilightend = GetValue($this->GetIDForIdent("AstronomicTwilightEnd"));
+		$isday = GetValue($this->IPS_GetObjectIDByIdent("IsDay", $LocationID));
+		$sunrise = GetValue($this->IPS_GetObjectIDByIdent("Sunrise", $LocationID));
+		$sunset = GetValue($this->IPS_GetObjectIDByIdent("Sunset", $LocationID));
+		$civiltwilightstart = GetValue($this->IPS_GetObjectIDByIdent("CivilTwilightStart", $LocationID));
+		$civiltwilightend = GetValue($this->IPS_GetObjectIDByIdent("CivilTwilightEnd", $LocationID));
+		$nautictwilightstart = GetValue($this->IPS_GetObjectIDByIdent("NauticTwilightStart", $LocationID));
+		$nautictwilightend = GetValue($this->IPS_GetObjectIDByIdent("NauticTwilightEnd", $LocationID));
+		$astronomictwilightstart = GetValue($this->IPS_GetObjectIDByIdent("AstronomicTwilightStart", $LocationID));
+		$astronomictwilightend = GetValue($this->IPS_GetObjectIDByIdent("AstronomicTwilightEnd", $LocationID));
 		$locationinfo = array ("IsDay" => $isday, "Sunrise" => $sunrise, "Sunset" => $sunset, "CivilTwilightStart" => $civiltwilightstart, "CivilTwilightEnd" => $civiltwilightend, "NauticTwilightStart" => $nautictwilightstart, "NauticTwilightEnd" => $nautictwilightend, "AstronomicTwilightStart" => $astronomictwilightstart, "AstronomicTwilightEnd" => $astronomictwilightend);
 		return $locationinfo;
 	}
