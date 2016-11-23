@@ -472,6 +472,8 @@ class AstronomyTimer extends IPSModule
 		$astronomictwilightend = $locationinfo["AstronomicTwilightEnd"];
 		$offset = $this->GetOffset();
 		$cutoff = $this->GetCutoffTime();
+		$timestamp = 0;
+		$direction = "";
 		switch ($timertype)
 			{
 				case "Sunrise":
@@ -572,7 +574,7 @@ class AstronomyTimer extends IPSModule
 		$eventid = @$this->GetIDForIdent($ident);
 		if($eventid === false)
         {
-            $eid = IPS_CreateEvent(1);
+            $eventid = IPS_CreateEvent(1);
             //IPS_SetParent($eventid, $this->InstanceID);
 			IPS_SetParent($eventid, $objectid);
             IPS_SetName($eventid, $name);
@@ -594,7 +596,7 @@ class AstronomyTimer extends IPSModule
 		$eventid = @$this->GetIDForIdent($ident);
 		if($eventid === false)
         {
-            $eid = IPS_CreateEvent(1);
+            $eventid = IPS_CreateEvent(1);
             //IPS_SetParent($eventid, $this->InstanceID);
 			IPS_SetParent($eventid, $objectid);
             IPS_SetName($eventid, $name);
