@@ -28,7 +28,8 @@ class AstronomyTimer extends IPSModule
         parent::ApplyChanges();
 		
 		$this->ValidateConfiguration(); 
-		$this->RegisterTimer('Update', 360000, 'Astronomy_UpdateTimer('.$this->InstanceID.');');	
+		//$this->RegisterTimer('Update', 360000, 'Astronomy_UpdateTimer('.$this->InstanceID.');');
+		$this->RegisterCyclicTimer();
 	
     }
 
@@ -93,7 +94,28 @@ class AstronomyTimer extends IPSModule
 		$this->SetStatus(102);	
 		
 	}
-  
+	
+	protected function RegisterCyclicTimer()
+	{
+		$name = "Update";
+		$Stunde = 0;
+		$Minute = 5;
+		$Sekunde = 0;
+		if($eventid === false)
+        {
+            $eid = IPS_CreateEvent(1);
+            IPS_SetParent($eventid, $this->InstanceID);
+            IPS_SetName($eventid, $name);
+            IPS_SetInfo($eventid, "this timer was created by script #$IPS_SELF");
+            IPS_SetEventScript($eventid, $id);
+            IPS_SetEventActive($eventid, true);
+        }
+        IPS_SetEventCyclic($eventid, 0, 0, 0, 0, 0, 0);
+        IPS_SetEventCyclicTimeFrom($eventid, $Stunde, $Minute, $Sekunde );
+		IPS_SetEventCyclicTimeTo($eventid, 0, 0, 0 );
+        return $eid;
+	}
+	
 	// Profil anlegen
 	protected function SetupProfile($vartype, $name, $icon, $prefix, $suffix, $minvalue, $maxvalue, $stepsize, $digits, $associations)
 	{
@@ -150,7 +172,6 @@ class AstronomyTimer extends IPSModule
 		
 		return $objid;
 	}
-	
 	
 	public function Set()
 	{
