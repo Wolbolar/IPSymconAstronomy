@@ -462,6 +462,14 @@ class AstronomyTimer extends IPSModule
 	protected function GetTimerSettings($timertype)
 	{
 		$locationinfo = $this->getlocationinfo();
+		$sunrise = $locationinfo["Sunrise"];
+		$sunset = $locationinfo["Sunset"];
+		$civiltwilightstart = $locationinfo["CivilTwilightStart"];
+		$civiltwilightend = $locationinfo["CivilTwilightEnd"];
+		$nautictwilightstart = $locationinfo["NauticTwilightStart"];
+		$nautictwilightend = $locationinfo["NauticTwilightEnd"];
+		$astronomictwilightstart = $locationinfo["AstronomicTwilightStart"];
+		$astronomictwilightend = $locationinfo["AstronomicTwilightEnd"];
 		$offset = $this->GetOffset();
 		$cutoff = $this->GetCutoffTime();
 		switch ($timertype)
