@@ -537,7 +537,7 @@ class AstronomyTimer extends IPSModule
 			$Minute = intval(date("i", $timestamp));
 			$Sekunde = intval(date("s", $timestamp));
 		}	
-		$timersettings = array("timestamp" => $timestamp, "direction" => $direction, "Stunde" => $Stunde, "Minute" => $Minute, "Sekunde" => $Sekunde, "cutofftime" => $cutofftime);
+		$timersettings = array("timestamp" => $timestamp, "direction" => $direction, "Stunde" => $Stunde, "Minute" => $Minute, "Sekunde" => $Sekunde, "cutofftime" => $cutoff);
 		return $timersettings;
 	}
 	
@@ -560,20 +560,21 @@ class AstronomyTimer extends IPSModule
 					$eventid = $this->RegisterAstroTimerScript($Stunde, $Minute, $Sekunde, $objectid, $ident, $name);
 					break;
 				case "Variable":
-					$eventid = $this->RegisterAstroTimerVariable($Stunde, $Minute, $Sekunde, $varvalue, $ident, $name);
+					$eventid = $this->RegisterAstroTimerVariable($Stunde, $Minute, $Sekunde, $objectid, $varvalue, $ident, $name);
 					break;
 			}	
 		
         return $eventid;
     }
 		
-	protected function RegisterAstroTimerVariable($Stunde, $Minute, $Sekunde, $varvalue, $ident, $name)
+	protected function RegisterAstroTimerVariable($Stunde, $Minute, $Sekunde, $objectid, $varvalue, $ident, $name)
 	{
 		$eventid = @$this->GetIDForIdent($ident);
 		if($eventid === false)
         {
             $eid = IPS_CreateEvent(1);
-            IPS_SetParent($eventid, $this->InstanceID);
+            //IPS_SetParent($eventid, $this->InstanceID);
+			IPS_SetParent($eventid, $objectid);
             IPS_SetName($eventid, $name);
 			IPS_SetIdent($eventid, $ident);
             IPS_SetInfo($eventid, "Timer was created by AstroTimer ".$this->InstanceID);
@@ -594,7 +595,8 @@ class AstronomyTimer extends IPSModule
 		if($eventid === false)
         {
             $eid = IPS_CreateEvent(1);
-            IPS_SetParent($eventid, $this->InstanceID);
+            //IPS_SetParent($eventid, $this->InstanceID);
+			IPS_SetParent($eventid, $objectid);
             IPS_SetName($eventid, $name);
 			IPS_SetIdent($eventid, $ident);
             IPS_SetInfo($eventid, "Timer was created by AstronomyTimer ".$this->InstanceID);
