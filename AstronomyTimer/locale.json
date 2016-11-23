@@ -28,14 +28,17 @@
 			"check box for variable use":"Haken setzten zur Variablenänderung",
 			"set variable":"Variable setzen",
 			"trigger variable":"Trigger Variable",
+			"type value to set for the variable, please use point not comma for float (4.3)":"zu setztender Wert für die Variable eingeben, bitte Punkt statt Komma bei float verwenden (4.3)",
 			"variable value":"Variablen Wert",
 			"update timer":"Timer aktualisieren",
 			"update":"aktualisieren",
 			"Creating instance.":"Die Instanz wird erstellt.",
 			"Astronomy ok": "Astronomie ok",
 			"interface closed.": "Interface geschlossen.",
+			"check format cuttoff time":"Zeitformat der Grenzzeit überprüfen",
 			"select variable":"Variable auswählen",
-			"select script":"select script"
+			"select script":"select script",
+			"wrong value for Variable type":"Falscher Wert zum ausgewählten Variablentyp"
 		}
 	}
 }

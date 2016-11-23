@@ -30,8 +30,7 @@ class AstronomyTimer extends IPSModule
 		
 		$this->ValidateConfiguration(); 
 		//$this->RegisterTimer('Update', 360000, 'Astronomy_UpdateTimer('.$this->InstanceID.');');
-		//$this->RegisterCyclicTimer();
-		$this->RegisterCyclicTimer('AstroTimerUpdate', 55, 'AstronomyTimer_Set('.$this->InstanceID.');');
+		$this->RegisterCyclicTimer('AstroTimerUpdate', 0, 5, 0, 'AstronomyTimer_Set('.$this->InstanceID.')');
     }
 
 		/**
@@ -50,10 +49,12 @@ class AstronomyTimer extends IPSModule
 			if($ipsversion == 1)
 			{
 				$objid = $this->SetupVariable("eventtime", "Time Event", "~UnixTimestamp", 1, IPSVarType::vtInteger, true);
+				$this->SetVarWebFront()
 			}
 			else
 			{
 				$objid = $this->SetupVariable("eventtime", "Time Event", "~UnixTimestampTime", 1, IPSVarType::vtInteger, true);
+				$this->SetVarWebFront();
 			}
 			
 			IPS_SetIcon($objid, "Clock");
@@ -67,12 +68,34 @@ class AstronomyTimer extends IPSModule
 		$varselect = $this->ReadPropertyBoolean("varselect");
 		$triggerscript = $this->ReadPropertyInteger("triggerscript");
 		$triggervariable = $this->ReadPropertyInteger("triggervariable");
-		$cutofftime = $this->ReadPropertyString("cutofftime");
+		$cutoffselect = $this->ReadPropertyBoolean("cutoffselect");
+		$cutofftime = $this->GetCutoffTime;
+		if ($cutoffselect == true && $cutofftime == false)
+		{
+			$this->SetStatus(210); //check format time
+		}
+		
 		if($varselect)
 		{
 			if($triggervariable > 0)
-			{
-				$varvalue = $this->ReadPropertyString("varvalue");
+			{	
+				$varvalueinfo = $this->GetTriggerVarValue();
+				$varvalue = $varvalueinfo["Value"];
+				$varvaluetype = $varvalueinfo["VarType"];
+				$vartype = $this->GetVarType($objectid);
+				$vartypecheck = false;
+				if($vartype === $varvaluetype)
+				{
+					$vartypecheck = true;
+				}
+				if ($vartypecheck)
+				{
+					$this->Set();
+				}
+				else
+				{
+					$this->SetStatus(213); // wrong value for vartype
+				}
 			}
 			else
 			{
@@ -83,7 +106,7 @@ class AstronomyTimer extends IPSModule
 		{
 			if($triggerscript > 0)
 			{
-				
+				$this->Set();
 			}
 			else
 			{
@@ -96,13 +119,10 @@ class AstronomyTimer extends IPSModule
 		
 	}
 		
-	protected function RegisterCyclicTimer($ident, $interval, $script)
+	protected function RegisterCyclicTimer($ident, $Stunde, $Minute, $Sekunde, $script)
 	{
 		$id = @$this->GetIDForIdent($ident);
 		$name = "Astrotimer Update";
-		$Stunde = 0;
-		$Minute = 5;
-		$Sekunde = 0;
 		if ($id && IPS_GetEvent($id)['EventType'] <> 1)
 		{
 		  IPS_DeleteEvent($id);
@@ -123,19 +143,10 @@ class AstronomyTimer extends IPSModule
 
 		if (!IPS_EventExists($id)) throw new Exception("Ident with name $ident is used for wrong object type");
 
-		if (!($interval > 0))
-		{
-		  IPS_SetEventCyclic($id, 0, 0, 0, 0, 1, 1);
-		  //IPS_SetEventCyclic($eventid, 0, 0, 0, 0, 0, 0);
-		  //IPS_SetEventCyclicTimeFrom($eventid, $Stunde, $Minute, $Sekunde );
-		  //IPS_SetEventCyclicTimeTo($eventid, 0, 0, 0 );
-		  IPS_SetEventActive($id, false);
-		}
-		else
-		{
-		  IPS_SetEventCyclic($id, 0, 0, 0, 0, 1, $interval);
-		  IPS_SetEventActive($id, true);
-		}
+		IPS_SetEventCyclic($id, 0, 0, 0, 0, 0, 0);
+		IPS_SetEventCyclicTimeFrom($id, $Stunde, $Minute, $Sekunde );
+		IPS_SetEventCyclicTimeTo($id, 0, 0, 0 );
+		IPS_SetEventActive($id, false);
 	}
 	
 	// Profil anlegen
@@ -372,19 +383,84 @@ class AstronomyTimer extends IPSModule
 	
 	protected function GetTriggerVarValue()
 	{
-		$varvalue = $this->ReadPropertyString("varvalue");
+		$varvalue = $this->ReadPropertyString("varvalue"); // string
+		$varvaluetype = 3; // string
+		$numeric = is_numeric($varvalue);
+		$varvaluebool = strtolower($varvalue);// bolean
+		if($varvaluebool == "false")
+		{
+			$varvalue = false;
+			$varvaluetype = 0; // boolean
+		}
+		if($varvaluebool == "true")
+		{
+			$varvalue = true;
+			$varvaluetype = 0; // boolean
+		}
+		if($numeric)
+		{
+			$varvaluefloat = isfloat($varvalue);
+			Echo "is float:";
+			var_dump($varvaluefloat);
+			if($varvaluefloat)
+			{
+				$varvalue = floatval($varvalue);// float
+				$varvaluetype = 2;
+			}
+			else
+			{
+				$varvalue = intval($varvalue);// int
+				$varvaluetype = 1;
+			}
+		}
+		$varvalue = array("VarType" => $varvaluetype, "Value" => $varvalue);
 		return $varvalue;
 	}
 	
-	protected function WriteVariableValue()
+	public function WriteVariableValue()
 	{
-		$this->GetTriggerVarValue();
+		$varvalueinfo = $this->GetTriggerVarValue();
+		$varvalue = $varvalueinfo["Value"];
+		$varvaluetype = $varvalueinfo["VarType"];
+		$vartype = $this->GetVarType($objectid);
+		$vartypecheck = false;
+		if($vartype === $varvaluetype)
+		{
+			$vartypecheck = true;
+		}
+		if ($vartypecheck)
+		{
+			SetValue($objectid, $varvalue);
+		}
+		else
+		{
+			echo "Variablenwert und Variablentyp stimmen nicht überein.";
+		}
 	}
 	
-	protected function RegisterAstroTimer($timertype, $offset, $settype, $objectid, $varvalue)
+	protected function isfloat($value)
 	{
-		$ident = $timertype.$objectid;
-		$name = $timertype." + ".$offset." Minuten";
+		// PHP automagically tries to coerce $value to a number
+		return is_float($value + 0);
+	}
+	
+	protected function SetVarWebFront()
+	{
+		$objectid = $this->GetIDForIdent("eventtime");
+		$timertype = $this->ReadPropertyInteger("timertype");
+		$timersettings = $this->GetTimerSettings($timertype);
+		$timestamp = $timersettings["timestamp"];
+		$direction = $timersettings["direction"];
+		$cutofftime = $timersettings["cutofftime"];
+		if (($cutoff > $timestamp && $direction == "up")||($cutoff < $timestamp && $direction == "down"))
+		{
+			$timestamp = $cutofftime;
+		}
+		SetValue($objectid, $timestamp);
+	}
+	
+	protected function GetTimerSettings($timertype)
+	{
 		$locationinfo = $this->getlocationinfo();
 		$offset = $this->GetOffset();
 		$cutoff = $this->GetCutoffTime();
@@ -440,9 +516,7 @@ class AstronomyTimer extends IPSModule
 					$direction = "down";
 					$timestamp = $moonset + $offset;
 					break;	
-			}	
-		
-		
+			}
 		if (($cutoff > $timestamp && $direction == "up")||($cutoff < $timestamp && $direction == "down"))
 		{
 			$Stunde = intval(date("G", $cutoff));
@@ -454,21 +528,38 @@ class AstronomyTimer extends IPSModule
 			$Stunde = intval(date("G", $timestamp));
 			$Minute = intval(date("i", $timestamp));
 			$Sekunde = intval(date("s", $timestamp));
-		}
+		}	
+		$timersettings = array("timestamp" => $timestamp, "direction" => $direction, "Stunde" => $Stunde, "Minute" => $Minute, "Sekunde" => $Sekunde, "cutofftime" => $cutofftime);
+		return $timersettings;
+	}
+	
+	protected function RegisterAstroTimer($timertype, $offset, $settype, $objectid, $varvalue)
+	{
+		$ident = $timertype.$objectid;
+		$name = $timertype." + ".$offset." Minuten";
+		
+		$timersettings = $this->GetTimerSettings($timertype);
+		$timestamp = $timersettings["timestamp"];
+		$direction = $timersettings["direction"];
+		$Stunde = $timersettings["Stunde"];
+		$Minute = $timersettings["Minute"];
+		$Sekunde = $timersettings["Sekunde"];
+		$cutofftime = $timersettings["cutofftime"];
+		
 		switch ($settype)
 			{
 				case "Script":
 					$eventid = $this->RegisterAstroTimerScript($Stunde, $Minute, $Sekunde, $objectid, $ident, $name);
 					break;
 				case "Variable":
-					$eventid = $this->RegisterAstroTimerVariable($Stunde, $Minute, $Sekunde, $objectid, $varvalue, $ident, $name);
+					$eventid = $this->RegisterAstroTimerVariable($Stunde, $Minute, $Sekunde, $varvalue, $ident, $name);
 					break;
 			}	
 		
         return $eventid;
     }
 		
-	protected function RegisterAstroTimerVariable($Stunde, $Minute, $Sekunde, $objectid, $varvalue, $ident, $name)
+	protected function RegisterAstroTimerVariable($Stunde, $Minute, $Sekunde, $varvalue, $ident, $name)
 	{
 		$eventid = @$this->GetIDForIdent($ident);
 		if($eventid === false)
@@ -479,6 +570,8 @@ class AstronomyTimer extends IPSModule
 			IPS_SetIdent($eventid, $ident);
             IPS_SetInfo($eventid, "Timer was created by AstroTimer ".$this->InstanceID);
             IPS_SetEventScript($eventid, $objectid);
+			$script = "AstronomyTimer_WriteVariableValue(".$this->InstanceID.")";
+			IPS_SetEventScript($eventid, "\$id = \$_IPS['TARGET'];\n$script;");
             IPS_SetEventActive($eventid, true);
         }
         IPS_SetEventCyclic($eventid, 0, 0, 0, 0, 0, 0);
@@ -496,7 +589,7 @@ class AstronomyTimer extends IPSModule
             IPS_SetParent($eventid, $this->InstanceID);
             IPS_SetName($eventid, $name);
 			IPS_SetIdent($eventid, $ident);
-            IPS_SetInfo($eventid, "Timer was created by AstroTimer ".$this->InstanceID);
+            IPS_SetInfo($eventid, "Timer was created by AstronomyTimer ".$this->InstanceID);
             IPS_SetEventScript($eventid, $objectid);
             IPS_SetEventActive($eventid, true);
         }
@@ -3061,6 +3154,7 @@ class AstronomyTimer extends IPSModule
                     "caption": "set variable"
                 },
 				{ "type": "SelectVariable", "name": "triggervariable", "caption": "trigger variable" },
+				{ "type": "Label", "label": "type value to set for the variable, please use point not comma for float (4.3)" },
 				{ "type": "ValidationTextBox", "name": "varvalue", "caption": "variable value" },';
 			return $form;
 		}
@@ -3105,6 +3199,11 @@ class AstronomyTimer extends IPSModule
                     "caption": "interface closed."
                 },
 				{
+                    "code": 210,
+                    "icon": "inactive",
+                    "caption": "check format cuttoff time"
+                },
+				{
                     "code": 211,
                     "icon": "inactive",
                     "caption": "select variable"
@@ -3113,6 +3212,11 @@ class AstronomyTimer extends IPSModule
                     "code": 212,
                     "icon": "inactive",
                     "caption": "select script"
+                },
+				{
+                    "code": 213,
+                    "icon": "inactive",
+                    "caption": "wrong value for Variable type"
                 }
             ]';
 			return $form;

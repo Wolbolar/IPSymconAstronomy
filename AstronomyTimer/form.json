@@ -43,6 +43,7 @@
                     "caption": "set variable"
                 },
 				{ "type": "SelectVariable", "name": "triggervariable", "caption": "trigger variable" },
+				{ "type": "Label", "label": "type value to set for the variable, please use point not comma for float (4.3)" },
 				{ "type": "ValidationTextBox", "name": "varvalue", "caption": "variable value" },
 				{ "type": "Label", "label": "____________________________________________________________________" }
             ],
@@ -69,6 +70,11 @@
                     "caption": "interface closed."
                 },
 				{
+                    "code": 210,
+                    "icon": "inactive",
+                    "caption": "check format cuttoff time"
+                },
+				{
                     "code": 211,
                     "icon": "inactive",
                     "caption": "select variable"
@@ -77,6 +83,11 @@
                     "code": 212,
                     "icon": "inactive",
                     "caption": "select script"
+                },
+				{
+                    "code": 213,
+                    "icon": "inactive",
+                    "caption": "wrong value for Variable type"
                 }
             ]
 }
