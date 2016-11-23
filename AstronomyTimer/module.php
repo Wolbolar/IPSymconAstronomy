@@ -451,10 +451,10 @@ class AstronomyTimer extends IPSModule
 		$timersettings = $this->GetTimerSettings($timertype);
 		$timestamp = $timersettings["timestamp"];
 		$direction = $timersettings["direction"];
-		$cutofftime = $timersettings["cutofftime"];
+		$cutoff = $timersettings["cutofftime"];
 		if (($cutoff > $timestamp && $direction == "up")||($cutoff < $timestamp && $direction == "down"))
 		{
-			$timestamp = $cutofftime;
+			$timestamp = $cutoff;
 		}
 		SetValue($objectid, $timestamp);
 	}
