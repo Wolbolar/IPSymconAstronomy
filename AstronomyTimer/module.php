@@ -82,7 +82,7 @@ class AstronomyTimer extends IPSModule
 				$varvalueinfo = $this->GetTriggerVarValue();
 				$varvalue = $varvalueinfo["Value"];
 				$varvaluetype = $varvalueinfo["VarType"];
-				$vartype = $this->GetVarType($objectid);
+				$vartype = $this->GetVarType($triggervariable);
 				$vartypecheck = false;
 				if($vartype === $varvaluetype)
 				{
