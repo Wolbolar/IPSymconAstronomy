@@ -364,7 +364,7 @@ class AstronomyTimer extends IPSModule
 					$timertype = "Moonset";
 					break;	
 			}	
-		return $typetimer;
+		return $timertype;
 	}
 	
 	protected function GetCutoffTime()
