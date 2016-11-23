@@ -49,7 +49,7 @@ class AstronomyTimer extends IPSModule
 			if($ipsversion == 1)
 			{
 				$objid = $this->SetupVariable("eventtime", "Time Event", "~UnixTimestamp", 1, IPSVarType::vtInteger, true);
-				$this->SetVarWebFront()
+				$this->SetVarWebFront();
 			}
 			else
 			{
