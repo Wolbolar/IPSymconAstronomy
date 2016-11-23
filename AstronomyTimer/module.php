@@ -69,7 +69,7 @@ class AstronomyTimer extends IPSModule
 		$triggerscript = $this->ReadPropertyInteger("triggerscript");
 		$triggervariable = $this->ReadPropertyInteger("triggervariable");
 		$cutoffselect = $this->ReadPropertyBoolean("cutoffselect");
-		$cutofftime = $this->GetCutoffTime;
+		$cutofftime = $this->GetCutoffTime();
 		if ($cutoffselect == true && $cutofftime == false)
 		{
 			$this->SetStatus(210); //check format time
