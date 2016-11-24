@@ -215,7 +215,7 @@ class AstronomyTimer extends IPSModule
 	
 	public function Set()
 	{
-		$debug = true;
+		$debug = false;
 		$timertype = $this->GetTypeTimer();
 		$offset = $this->ReadPropertyInteger("offset");
 		$varselect = $this->ReadPropertyBoolean("varselect");
@@ -457,16 +457,30 @@ class AstronomyTimer extends IPSModule
 	
 	protected function SetVarWebFront()
 	{
+		$debug = true;
 		$objectid = $this->GetIDForIdent("eventtime");
 		$timertype = $this->ReadPropertyInteger("timertype");
 		$timersettings = $this->GetTimerSettings($timertype);
 		$timestamp = $timersettings["timestamp"];
 		$direction = $timersettings["direction"];
 		$cutoff = $timersettings["cutofftime"];
+		$offset = $timersettings["offset"];
+		if($debug)
+		{
+			IPS_LogMessage("AstronomyTimer timestamp: ", $timestamp);
+			IPS_LogMessage("AstronomyTimer direction: ", $direction);
+			IPS_LogMessage("AstronomyTimer cutoff: ", $cutoff);
+		}
 		if (($cutoff > $timestamp && $direction == "up")||($cutoff < $timestamp && $direction == "down"))
 		{
 			$timestamp = $cutoff;
 		}
+		else
+		{
+			$timestamp = $timestamp + $offset;
+		}
+		if($debug)
+			IPS_LogMessage("AstronomyTimer timestamp with offset: ", $timestamp);
 		SetValue($objectid, $timestamp);
 	}
 	
@@ -553,7 +567,7 @@ class AstronomyTimer extends IPSModule
 			$Minute = intval(date("i", $timestamp));
 			$Sekunde = intval(date("s", $timestamp));
 		}	
-		$timersettings = array("timestamp" => $timestamp, "direction" => $direction, "Stunde" => $Stunde, "Minute" => $Minute, "Sekunde" => $Sekunde, "cutofftime" => $cutoff);
+		$timersettings = array("timestamp" => $timestamp, "direction" => $direction, "Stunde" => $Stunde, "Minute" => $Minute, "Sekunde" => $Sekunde, "cutofftime" => $cutoff, "offset" => $offset);
 		return $timersettings;
 	}
 	
