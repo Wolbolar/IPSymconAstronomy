@@ -818,9 +818,11 @@ class Astronomy extends IPSModule
 
 		//Erstellen des Dateinamens, abspeichern und Aufruf in <iframe>-----------------
 		$frameheight = $this->ReadPropertyInteger("frameheight");
-		$frameheighttype = $this->ReadPropertyInteger("frameheighttype");
+		$frameheighttypevalue = $this->ReadPropertyInteger("frameheighttype");
+		$frameheighttype = $this->GetFrameType($frameheighttypevalue);
 		$framewidth = $this->ReadPropertyInteger("framewidth");
-		$framewidthtype = $this->ReadPropertyInteger("framewidthtype");
+		$framewidthtypevalue = $this->ReadPropertyInteger("framewidthtype");
+		$framewidthtype = $this->GetFrameType($framewidthtypevalue);
 		$filename = "sunmoonline.php";
 		$fullFilename = IPS_GetKernelDir()."webfront".DIRECTORY_SEPARATOR."user".DIRECTORY_SEPARATOR.$filename;
 		$handle = fopen($fullFilename, "w");
@@ -831,6 +833,19 @@ class Astronomy extends IPSModule
 		{
 			SetValue($this->GetIDForIdent("sunmoonview"), $HTMLData);
 		}
+	}
+	
+	protected GetFrameType($value)
+	{
+		if($value == 1)
+		{
+			$type = "px";
+		}
+		elseif($value == 2)
+		{
+			$type = "%";
+		}
+		return $type;
 	}
 	
 	public function SetAstronomyValues()
