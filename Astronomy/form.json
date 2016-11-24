@@ -216,6 +216,22 @@
                     "type": "CheckBox",
                     "caption": "view position sun and moon"
                 },
+				{ "type": "Label", "label": "frame width in px or %:" },
+				{ "type": "Select", "name": "framewidthtype", "caption": "frame width type",
+					"options": [
+						{ "label": "px", "value": 1 },
+						{ "label": "%", "value": 2 }
+					]
+				},
+				{ "type": "NumberSpinner", "name": "framewidth", "caption": "width" },
+				{ "type": "Label", "label": "frame height in px or %:" },
+				{ "type": "Select", "name": "frameheighttype", "caption": "frame height type",
+					"options": [
+						{ "label": "px", "value": 1 },
+						{ "label": "%", "value": 2 }
+					]
+				},
+				{ "type": "NumberSpinner", "name": "frameheight", "caption": "height" },
 				{ "type": "Label", "label": "____________________________________________________________________" },
 				{ "type": "Label", "label": "sunrise and sunset with offset:" },
 				{ "type": "Label", "label": "sunrise with offset:" },

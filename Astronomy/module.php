@@ -59,6 +59,10 @@ class Astronomy extends IPSModule
 		$this->RegisterPropertyBoolean("sunsetselect", false);
 		$this->RegisterPropertyInteger("settype", 1);
 		$this->RegisterPropertyInteger("sunsetoffset", 0);
+		$this->RegisterPropertyInteger("frameheight", 280);
+		$this->RegisterPropertyInteger("framewidth", 400);
+		$this->RegisterPropertyInteger("frameheighttype", 1);
+		$this->RegisterPropertyInteger("framewidthtype", 1);
     }
 
     public function ApplyChanges()
@@ -813,12 +817,16 @@ class Astronomy extends IPSModule
 		</html>';
 
 		//Erstellen des Dateinamens, abspeichern und Aufruf in <iframe>-----------------
+		$frameheight = $this->ReadPropertyInteger("frameheight");
+		$frameheighttype = $this->ReadPropertyInteger("frameheighttype");
+		$framewidth = $this->ReadPropertyInteger("framewidth");
+		$framewidthtype = $this->ReadPropertyInteger("framewidthtype");
 		$filename = "sunmoonline.php";
 		$fullFilename = IPS_GetKernelDir()."webfront".DIRECTORY_SEPARATOR."user".DIRECTORY_SEPARATOR.$filename;
 		$handle = fopen($fullFilename, "w");
 		fwrite($handle, $html);
 		fclose($handle);
-		$HTMLData = '<iframe src="user'.DIRECTORY_SEPARATOR.'sunmoonline.php" border="0" frameborder="0" style= "width: 100%; height:280px;"/></iframe>';
+		$HTMLData = '<iframe src="user'.DIRECTORY_SEPARATOR.'sunmoonline.php" border="0" frameborder="0" style= "width:'.$framewidth.$framewidthtype.'; height:'.$frameheight.$frameheighttype.';"/></iframe>';
 		if($this->ReadPropertyBoolean("sunmoonview") == true)
 		{
 			SetValue($this->GetIDForIdent("sunmoonview"), $HTMLData);
@@ -3765,6 +3773,22 @@ class Astronomy extends IPSModule
                     "type": "CheckBox",
                     "caption": "view position sun and moon"
                 },
+				{ "type": "Label", "label": "frame width in px or %:" },
+				{ "type": "Select", "name": "framewidthtype", "caption": "frame width type",
+					"options": [
+						{ "label": "px", "value": 1 },
+						{ "label": "%", "value": 2 }
+					]
+				},
+				{ "type": "NumberSpinner", "name": "framewidth", "caption": "width" },
+				{ "type": "Label", "label": "frame height in px or %:" },
+				{ "type": "Select", "name": "frameheighttype", "caption": "frame height type",
+					"options": [
+						{ "label": "px", "value": 1 },
+						{ "label": "%", "value": 2 }
+					]
+				},
+				{ "type": "NumberSpinner", "name": "frameheight", "caption": "height" },
 				{ "type": "Label", "label": "____________________________________________________________________" },
 				{ "type": "Label", "label": "sunrise and sunset with offset:" },
 				{ "type": "Label", "label": "sunrise with offset:" },
