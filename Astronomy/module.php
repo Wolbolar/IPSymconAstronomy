@@ -882,8 +882,8 @@ class Astronomy extends IPSModule
 					$sunsettimestamp = $this->Monduntergang + $sunsetoffset; // "Moonset"
 					break;	
 			}
-		$sunsetobjid = GetIDForIdent("sunset");
-		$sunriseobjid = GetIDForIdent("sunrise");
+		$sunsetobjid = $this->GetIDForIdent("sunset");
+		$sunriseobjid = $this->GetIDForIdent("sunrise");
 		SetValue($sunrisetimestamp, $sunriseobjid);
 		SetValue($sunsettimestamp, $sunsetobjid);
 		$P = $Latitude;
