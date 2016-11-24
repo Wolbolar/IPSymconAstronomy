@@ -902,13 +902,19 @@ class Astronomy extends IPSModule
 					$sunsettimestamp = $astronomictwilightend + $sunsetoffset; // "AstronomicTwilightEnd"
 					break;
 				case 5:
-					$sunsettimestamp = $this->Monduntergang + $sunsetoffset; // "Moonset"
+					$sunsettimestamp = $this->Monduntergang() + $sunsetoffset; // "Moonset"
 					break;	
 			}
-		$sunsetobjid = $this->GetIDForIdent("sunset");
-		$sunriseobjid = $this->GetIDForIdent("sunrise");
-		SetValue($sunriseobjid, $sunrisetimestamp);
-		SetValue($sunsetobjid, $sunsettimestamp);
+		$sunsetobjid = @$this->GetIDForIdent("sunset");
+		$sunriseobjid = @$this->GetIDForIdent("sunrise");
+		if($sunsetobjid > 0)
+		{
+			SetValue($sunsetobjid, $sunsettimestamp);
+		}
+		if($sunriseobjid > 0)
+		{
+			SetValue($sunriseobjid, $sunrisetimestamp);
+		}
 		$P = $Latitude;
 		$L = $Longitude;
 		$day = date("d");
