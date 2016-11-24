@@ -3773,7 +3773,7 @@ class Astronomy extends IPSModule
                     "type": "CheckBox",
                     "caption": "sunrise"
                 },
-				{ "type": "Select", "name": "risetype", "caption": "sunrise or moonrise",
+				{ "type": "Select", "name": "risetype", "caption": "sun- or moonrise",
 					"options": [
 						{ "label": "sunrise", "value": 1 },
 						{ "label": "civilTwilightStart", "value": 2 },
@@ -3789,7 +3789,7 @@ class Astronomy extends IPSModule
                     "type": "CheckBox",
                     "caption": "sunset"
                 },
-				{ "type": "Select", "name": "settype", "caption": "sunset or moonset",
+				{ "type": "Select", "name": "settype", "caption": "sun- or moonset",
 					"options": [
 						{ "label": "sunset", "value": 1 },
 						{ "label": "civilTwilightEnd", "value": 2 },
