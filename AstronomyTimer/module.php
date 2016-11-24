@@ -56,12 +56,10 @@ class AstronomyTimer extends IPSModule
 			if($ipsversion == 1)
 			{
 				$objid = $this->SetupVariable("eventtime", "Time Event", "~UnixTimestamp", 1, IPSVarType::vtInteger, true);
-				$this->SetVarWebFront();
 			}
 			else
 			{
 				$objid = $this->SetupVariable("eventtime", "Time Event", "~UnixTimestampTime", 1, IPSVarType::vtInteger, true);
-				$this->SetVarWebFront();
 			}
 			
 			IPS_SetIcon($objid, "Clock");
@@ -455,33 +453,10 @@ class AstronomyTimer extends IPSModule
 		return is_float($value + 0);
 	}
 	
-	protected function SetVarWebFront()
+	protected function SetVarWebFront($value)
 	{
-		$debug = true;
 		$objectid = $this->GetIDForIdent("eventtime");
-		$timertype = $this->ReadPropertyInteger("timertype");
-		$timersettings = $this->GetTimerSettings($timertype);
-		$timestamp = $timersettings["timestamp"];
-		$direction = $timersettings["direction"];
-		$cutoff = $timersettings["cutofftime"];
-		$offset = $timersettings["offset"];
-		if($debug)
-		{
-			IPS_LogMessage("AstronomyTimer timestamp: ", $timestamp);
-			IPS_LogMessage("AstronomyTimer direction: ", $direction);
-			IPS_LogMessage("AstronomyTimer cutoff: ", $cutoff);
-		}
-		if (($cutoff > $timestamp && $direction == "up")||($cutoff < $timestamp && $direction == "down"))
-		{
-			$timestamp = $cutoff;
-		}
-		else
-		{
-			$timestamp = $timestamp + $offset;
-		}
-		if($debug)
-			IPS_LogMessage("AstronomyTimer timestamp with offset: ", $timestamp);
-		SetValue($objectid, $timestamp);
+		SetValue($objectid, $value);
 	}
 	
 	protected function GetTimerSettings($timertype)
@@ -587,17 +562,17 @@ class AstronomyTimer extends IPSModule
 		switch ($settype)
 			{
 				case "Script":
-					$eventid = $this->RegisterAstroTimerScript($Stunde, $Minute, $Sekunde, $objectid, $ident, $name);
+					$eventid = $this->RegisterAstroTimerScript($timestamp, $Stunde, $Minute, $Sekunde, $objectid, $ident, $name);
 					break;
 				case "Variable":
-					$eventid = $this->RegisterAstroTimerVariable($Stunde, $Minute, $Sekunde, $objectid, $varvalue, $ident, $name);
+					$eventid = $this->RegisterAstroTimerVariable($timestamp, $Stunde, $Minute, $Sekunde, $objectid, $varvalue, $ident, $name);
 					break;
 			}	
 		
         return $eventid;
     }
 		
-	protected function RegisterAstroTimerVariable($Stunde, $Minute, $Sekunde, $objectid, $varvalue, $ident, $name)
+	protected function RegisterAstroTimerVariable($timestamp, $Stunde, $Minute, $Sekunde, $objectid, $varvalue, $ident, $name)
 	{
 		$eventid = @$this->GetIDForIdent($ident);
 		if($eventid === false)
@@ -624,10 +599,11 @@ class AstronomyTimer extends IPSModule
         IPS_SetEventCyclic($eventid, 0, 0, 0, 0, 0, 0);
 		IPS_SetEventCyclicTimeFrom($eventid, $Stunde, $Minute, $Sekunde );
 		IPS_SetEventCyclicTimeTo($eventid, 0, 0, 0 );
+		$this->SetVarWebFront($timestamp);
 		return $eventid;
 	}
 	
-	protected function RegisterAstroTimerScript($Stunde, $Minute, $Sekunde, $objectid, $ident, $name)
+	protected function RegisterAstroTimerScript($timestamp, $Stunde, $Minute, $Sekunde, $objectid, $ident, $name)
 	{
 		$eventid = @$this->GetIDForIdent($ident);
 		if($eventid === false)
@@ -652,7 +628,8 @@ class AstronomyTimer extends IPSModule
         }
         IPS_SetEventCyclic($eventid, 0, 0, 0, 0, 0, 0);
         IPS_SetEventCyclicTimeFrom($eventid, $Stunde, $Minute, $Sekunde );
-		IPS_SetEventCyclicTimeTo($eventid, 0, 0, 0 );
+		IPS_SetEventCyclicTimeTo($eventid, 0, 0, 0 ); 
+		$this->SetVarWebFront($timestamp);
 		return $eventid;
 	}
 	
