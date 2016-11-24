@@ -59,10 +59,10 @@ class Astronomy extends IPSModule
 		$this->RegisterPropertyBoolean("sunsetselect", false);
 		$this->RegisterPropertyInteger("settype", 1);
 		$this->RegisterPropertyInteger("sunsetoffset", 0);
-		$this->RegisterPropertyInteger("frameheight", 280);
-		$this->RegisterPropertyInteger("framewidth", 400);
+		$this->RegisterPropertyInteger("frameheight", 290);
+		$this->RegisterPropertyInteger("framewidth", 100);
 		$this->RegisterPropertyInteger("frameheighttype", 1);
-		$this->RegisterPropertyInteger("framewidthtype", 1);
+		$this->RegisterPropertyInteger("framewidthtype", 2);
     }
 
     public function ApplyChanges()
