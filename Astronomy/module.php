@@ -884,8 +884,8 @@ class Astronomy extends IPSModule
 			}
 		$sunsetobjid = $this->GetIDForIdent("sunset");
 		$sunriseobjid = $this->GetIDForIdent("sunrise");
-		SetValue($sunrisetimestamp, $sunriseobjid);
-		SetValue($sunsettimestamp, $sunsetobjid);
+		SetValue($sunriseobjid, $sunrisetimestamp);
+		SetValue($sunsetobjid, $sunsettimestamp);
 		$P = $Latitude;
 		$L = $Longitude;
 		$day = date("d");
