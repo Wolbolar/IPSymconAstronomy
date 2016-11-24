@@ -835,7 +835,7 @@ class Astronomy extends IPSModule
 		}
 	}
 	
-	protected GetFrameType($value)
+	protected function GetFrameType($value)
 	{
 		if($value == 1)
 		{
