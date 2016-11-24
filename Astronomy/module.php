@@ -439,7 +439,7 @@ class Astronomy extends IPSModule
 	{
 			//testen ob im Medienpool existent
 			$modulid = $this->InstanceID;
-			$repository = "bitbucket"; //bitbucket, github
+			$repository = "github"; //bitbucket, github
 			$picturename = $this->ReadPropertyString("picturename");
 			$selectionresize = $this->ReadPropertyBoolean("selectionresize");
 			$mediaimgwidth = $this->ReadPropertyInteger("mediaimgwidth");
