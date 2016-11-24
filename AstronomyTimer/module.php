@@ -215,6 +215,7 @@ class AstronomyTimer extends IPSModule
 	
 	public function Set()
 	{
+		$debug = true;
 		$timertype = $this->GetTypeTimer();
 		$offset = $this->ReadPropertyInteger("offset");
 		$varselect = $this->ReadPropertyBoolean("varselect");
@@ -223,12 +224,16 @@ class AstronomyTimer extends IPSModule
 			$settype = "Variable";
 			$objectid = $this->ReadPropertyInteger("triggerscript");
 			$varvalue = $this->GetTriggerVarValue();
+			if($debug)
+			echo "ObjektID Skript: ".$objectid;
 		}
 		else
 		{
 			$settype = "Script";
 			$objectid = $this->ReadPropertyInteger("triggervariable");
 			$varvalue = 0;
+			if($debug)
+			echo "ObjektID Variable: ".$objectid;
 		}
 		
 		
