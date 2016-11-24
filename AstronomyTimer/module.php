@@ -21,6 +21,13 @@ class AstronomyTimer extends IPSModule
 		$this->RegisterPropertyBoolean("varselect", false);
 		$this->RegisterPropertyInteger("triggervariable", 0);
 		$this->RegisterPropertyString("varvalue", "");
+		$this->RegisterPropertyBoolean("monday", true);
+		$this->RegisterPropertyBoolean("tuesday", true);
+		$this->RegisterPropertyBoolean("wednesday", true);
+		$this->RegisterPropertyBoolean("thursday", true);
+		$this->RegisterPropertyBoolean("friday", true);
+		$this->RegisterPropertyBoolean("saturday", true);
+		$this->RegisterPropertyBoolean("sunday", true);
     }
 
     public function ApplyChanges()
@@ -216,14 +223,12 @@ class AstronomyTimer extends IPSModule
 			$settype = "Variable";
 			$objectid = $this->ReadPropertyInteger("triggerscript");
 			$varvalue = $this->GetTriggerVarValue();
-			echo $objectid;
 		}
 		else
 		{
 			$settype = "Script";
 			$objectid = $this->ReadPropertyInteger("triggervariable");
 			$varvalue = 0;
-			echo $objectid;
 		}
 		
 		
@@ -421,10 +426,11 @@ class AstronomyTimer extends IPSModule
 	
 	public function WriteVariableValue()
 	{
+		$triggervariable = $this->ReadPropertyInteger("triggervariable");
 		$varvalueinfo = $this->GetTriggerVarValue();
 		$varvalue = $varvalueinfo["Value"];
 		$varvaluetype = $varvalueinfo["VarType"];
-		$vartype = $this->GetVarType($objectid);
+		$vartype = $this->GetVarType($triggervariable);
 		$vartypecheck = false;
 		if($vartype === $varvaluetype)
 		{
@@ -432,7 +438,7 @@ class AstronomyTimer extends IPSModule
 		}
 		if ($vartypecheck)
 		{
-			SetValue($objectid, $varvalue);
+			SetValue($triggervariable, $varvalue);
 		}
 		else
 		{
@@ -588,7 +594,15 @@ class AstronomyTimer extends IPSModule
             IPS_SetEventScript($eventid, $objectid);
 			$script = "AstronomyTimer_WriteVariableValue(".$this->InstanceID.")";
 			IPS_SetEventScript($eventid, "\$id = \$_IPS['TARGET'];\n$script;");
-            IPS_SetEventActive($eventid, true);
+            $activeday = $this->CheckActiveDay();
+			if($activeday)
+			{
+				IPS_SetEventActive($eventid, true);
+			}
+			else
+			{
+				IPS_SetEventActive($eventid, false);
+			}
         }
         IPS_SetEventCyclic($eventid, 0, 0, 0, 0, 0, 0);
 		IPS_SetEventCyclicTimeFrom($eventid, $Stunde, $Minute, $Sekunde );
@@ -608,12 +622,63 @@ class AstronomyTimer extends IPSModule
 			IPS_SetIdent($eventid, $ident);
             IPS_SetInfo($eventid, "Timer was created by AstronomyTimer ".$this->InstanceID);
             IPS_SetEventScript($eventid, $objectid);
-            IPS_SetEventActive($eventid, true);
+			$activeday = $this->CheckActiveDay();
+			if($activeday)
+			{
+				IPS_SetEventActive($eventid, true);
+			}
+			else
+			{
+				IPS_SetEventActive($eventid, false);
+			}
+            
         }
         IPS_SetEventCyclic($eventid, 0, 0, 0, 0, 0, 0);
         IPS_SetEventCyclicTimeFrom($eventid, $Stunde, $Minute, $Sekunde );
 		IPS_SetEventCyclicTimeTo($eventid, 0, 0, 0 );
 		return $eventid;
+	}
+	
+	protected function CheckActiveDay()
+	{
+		$activeday = true;
+		$currentday = date("w"); // Wochentag in Zahlenwert, 0 für Sonntag, 6 für Samstag
+		$monday = $this->ReadPropertyBoolean("monday");
+		$tuesday = $this->ReadPropertyBoolean("tuesday");
+		$wednesday = $this->ReadPropertyBoolean("wednesday");
+		$thursday = $this->ReadPropertyBoolean("thursday");
+		$friday = $this->ReadPropertyBoolean("friday");
+		$saturday = $this->ReadPropertyBoolean("saturday");
+		$sunday = $this->ReadPropertyBoolean("sunday");
+		if($currentday == 1 && $monday == false)
+		{
+			$activeday = false;
+		}
+		elseif($currentday == 2 && $tuesday == false)
+		{
+			$activeday = false;
+		}
+		elseif($currentday == 3 && $wednesday == false)
+		{
+			$activeday = false;
+		}
+		elseif($currentday == 4 && $thursday == false)
+		{
+			$activeday = false;
+		}
+		elseif($currentday == 5 && $friday == false)
+		{
+			$activeday = false;
+		}
+		elseif($currentday == 6 && $saturday == false)
+		{
+			$activeday = false;
+		}
+		elseif($currentday == 0 && $sunday == false)
+		{
+			$activeday = false;
+		}
+		return $activeday;
 	}
 	
 	protected function getlocation()
@@ -878,7 +943,17 @@ class AstronomyTimer extends IPSModule
                 },
 				{ "type": "SelectVariable", "name": "triggervariable", "caption": "trigger variable" },
 				{ "type": "Label", "label": "type value to set for the variable, please use point not comma for float (4.3)" },
-				{ "type": "ValidationTextBox", "name": "varvalue", "caption": "variable value" },';
+				{ "type": "ValidationTextBox", "name": "varvalue", "caption": "variable value" },
+				{ "type": "Label", "label": "____________________________________________________________________" },
+				{ "type": "Label", "label": "OPTIONAL (leave empty if not needed):" },
+				{ "type": "Label", "label": "timer is valid only:" },
+				{ "name": "monday", "type": "CheckBox", "caption": "monday" },
+				{ "name": "tuesday", "type": "CheckBox", "caption": "tuesday" },
+				{ "name": "wednesday", "type": "CheckBox", "caption": "wednesday" },
+				{ "name": "thursday", "type": "CheckBox", "caption": "thursday" },
+				{ "name": "friday", "type": "CheckBox", "caption": "friday" },
+				{ "name": "saturday", "type": "CheckBox", "caption": "saturday" },
+				{ "name": "sunday", "type": "CheckBox", "caption": "sunday" },';
 			return $form;
 		}
 		

@@ -45,6 +45,16 @@
 				{ "type": "SelectVariable", "name": "triggervariable", "caption": "trigger variable" },
 				{ "type": "Label", "label": "type value to set for the variable, please use point not comma for float (4.3)" },
 				{ "type": "ValidationTextBox", "name": "varvalue", "caption": "variable value" },
+				{ "type": "Label", "label": "____________________________________________________________________" },
+				{ "type": "Label", "label": "OPTIONAL (leave empty if not needed):" },
+				{ "type": "Label", "label": "timer is valid only:" },
+				{ "name": "monday", "type": "CheckBox", "caption": "monday" },
+				{ "name": "tuesday", "type": "CheckBox", "caption": "tuesday" },
+				{ "name": "wednesday", "type": "CheckBox", "caption": "wednesday" },
+				{ "name": "thursday", "type": "CheckBox", "caption": "thursday" },
+				{ "name": "friday", "type": "CheckBox", "caption": "friday" },
+				{ "name": "saturday", "type": "CheckBox", "caption": "saturday" },
+				{ "name": "sunday", "type": "CheckBox", "caption": "sunday" },
 				{ "type": "Label", "label": "____________________________________________________________________" }
             ],
 	"actions":
