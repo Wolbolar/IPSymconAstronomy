@@ -224,14 +224,32 @@
                     "type": "CheckBox",
                     "caption": "sunrise"
                 },
-				{ "type": "NumberSpinner", "name": "sunrise", "caption": "offset (minute)" },
+				{ "type": "Select", "name": "risetype", "caption": "sunrise or moonrise",
+					"options": [
+						{ "label": "sunrise", "value": 1 },
+						{ "label": "civilTwilightStart", "value": 2 },
+						{ "label": "nauticTwilightStart", "value": 3 },
+						{ "label": "astronomicTwilightStart", "value": 4 },
+						{ "label": "moonrise", "value": 5 }
+					]
+				},
+				{ "type": "NumberSpinner", "name": "sunriseoffset", "caption": "offset (minute)" },
 				{ "type": "Label", "label": "sunset with offset:" },
 				{
                     "name": "sunsetselect",
                     "type": "CheckBox",
                     "caption": "sunset"
                 },
-				{ "type": "NumberSpinner", "name": "sunset", "caption": "offset (minute)" },
+				{ "type": "Select", "name": "settype", "caption": "sunset or moonset",
+					"options": [
+						{ "label": "sunset", "value": 1 },
+						{ "label": "civilTwilightEnd", "value": 2 },
+						{ "label": "nauticTwilightEnd", "value": 3 },
+						{ "label": "astronomicTwilightEnd", "value": 4 },
+						{ "label": "moonset", "value": 5 }
+					]
+				},
+				{ "type": "NumberSpinner", "name": "sunsetoffset", "caption": "offset (minute)" },
 				{ "type": "Label", "label": "____________________________________________________________________" }
             ],
 	"actions":
