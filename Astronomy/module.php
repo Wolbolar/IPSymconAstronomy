@@ -53,6 +53,12 @@ class Astronomy extends IPSModule
 		$this->RegisterPropertyString("picturemoonpath", "media/mondphase");
 		$this->RegisterPropertyInteger("filetype", 1);
 		$this->RegisterPropertyString("picturename", "mond");
+		$this->RegisterPropertyBoolean("sunriseselect", false);
+		$this->RegisterPropertyInteger("risetype", 1);
+		$this->RegisterPropertyInteger("sunriseoffset", 0);
+		$this->RegisterPropertyBoolean("sunsetselect", false);
+		$this->RegisterPropertyInteger("settype", 1);
+		$this->RegisterPropertyInteger("sunsetoffset", 0);
     }
 
     public function ApplyChanges()
@@ -406,7 +412,24 @@ class Astronomy extends IPSModule
 		{
 			$this->SetupVariable("sunmoonview", "Position Sonne und Mond", "~HTMLBox", 22, IPSVarType::vtString, false);
 		}
-			
+		if($this->ReadPropertyBoolean("sunsetselect") == true) // string
+		{
+			$objid = $this->SetupVariable("sunset", "Sonnenuntergang", "~UnixTimestamp", 23, IPSVarType::vtInteger, true);
+			IPS_SetIcon($objid, "Sun");
+		}
+		else
+		{
+			$this->SetupVariable("sunset", "Sonnenuntergang", "~UnixTimestamp", 23, IPSVarType::vtInteger, false);
+		}
+		if($this->ReadPropertyBoolean("sunriseselect") == true) // string
+		{
+			$objid = $this->SetupVariable("sunrise", "Sonnenaufgang", "~UnixTimestamp", 24, IPSVarType::vtInteger, true);
+			IPS_SetIcon($objid, "Sun");
+		}
+		else
+		{
+			$this->SetupVariable("sunrise", "Sonnenaufgang", "~UnixTimestamp", 24, IPSVarType::vtInteger, false);
+		}	
 		// Status Aktiv
 		$this->SetStatus(102);	
 		
@@ -416,7 +439,7 @@ class Astronomy extends IPSModule
 	{
 			//testen ob im Medienpool existent
 			$modulid = $this->InstanceID;
-			$repository = "github"; //bitbucket, github
+			$repository = "bitbucket"; //bitbucket, github
 			$picturename = $this->ReadPropertyString("picturename");
 			$selectionresize = $this->ReadPropertyBoolean("selectionresize");
 			$mediaimgwidth = $this->ReadPropertyInteger("mediaimgwidth");
@@ -807,6 +830,62 @@ class Astronomy extends IPSModule
 		$location = $this->getlocation();
 		$Latitude = $location["Latitude"];
 		$Longitude = $location["Longitude"];
+		$locationinfo = $this->getlocationinfo();
+		$sunrise = $locationinfo["Sunrise"];
+		$sunset = $locationinfo["Sunset"];
+		$civiltwilightstart = $locationinfo["CivilTwilightStart"];
+		$civiltwilightend = $locationinfo["CivilTwilightEnd"];
+		$nautictwilightstart = $locationinfo["NauticTwilightStart"];
+		$nautictwilightend = $locationinfo["NauticTwilightEnd"];
+		$astronomictwilightstart = $locationinfo["AstronomicTwilightStart"];
+		$astronomictwilightend = $locationinfo["AstronomicTwilightEnd"];
+		$sunsetoffset = $this->GetOffset("Sunset");
+		$sunriseoffset = $this->GetOffset("Sunrise");
+		$risetype = $this->ReadPropertyInteger("risetype");
+		$sunrisetimestamp = 0;
+		switch ($risetype)
+			{
+				case 1:
+					$sunrisetimestamp = $sunrise + $sunriseoffset;// "Sunrise"
+					break;
+				case 2:
+					$sunrisetimestamp = $civiltwilightstart + $sunriseoffset; // "CivilTwilightStart"
+					break;
+				case 3:
+					$sunrisetimestamp = $nautictwilightstart + $sunriseoffset; // "NauticTwilightStart"
+					break;
+				case 4:
+					$sunrisetimestamp = $astronomictwilightstart + $sunriseoffset; // "AstronomicTwilightStart"
+					break;
+				case 5:
+					$sunrisetimestamp = $this->Mondaufgang() + $sunriseoffset; // "Moonrise"
+					break;	
+			}	
+			
+		$settype = $this->ReadPropertyInteger("settype");
+		$sunsettimestamp = 0;
+		switch ($settype)
+			{
+				case 1:
+					$sunsettimestamp = $sunset + $sunsetoffset; // "Sunset"
+					break;
+				case 2:
+					$sunsettimestamp = $civiltwilightend + $sunsetoffset; // "CivilTwilightEnd"
+					break;
+				case 3:
+					$sunsettimestamp = $nautictwilightend + $sunsetoffset; // "NauticTwilightEnd"
+					break;
+				case 4:
+					$sunsettimestamp = $astronomictwilightend + $sunsetoffset; // "AstronomicTwilightEnd"
+					break;
+				case 5:
+					$sunsettimestamp = $this->Monduntergang + $sunsetoffset; // "Moonset"
+					break;	
+			}
+		$sunsetobjid = $this->GetIDForIdent("sunset");
+		$sunriseobjid = $this->GetIDForIdent("sunrise");
+		SetValue($sunriseobjid, $sunrisetimestamp);
+		SetValue($sunsetobjid, $sunsettimestamp);
 		$P = $Latitude;
 		$L = $Longitude;
 		$day = date("d");
@@ -1021,7 +1100,36 @@ class Astronomy extends IPSModule
 		$location = array ("Latitude" => $Latitude, "Longitude" => $Longitude);
 		return $location;
 	}
-
+	
+	protected function getlocationinfo()
+	{
+		$LocationID = IPS_GetInstanceListByModuleID("{45E97A63-F870-408A-B259-2933F7EABF74}")[0];
+		$isday = GetValue(IPS_GetObjectIDByIdent("IsDay", $LocationID));
+		$sunrise = GetValue(IPS_GetObjectIDByIdent("Sunrise", $LocationID));
+		$sunset = GetValue(IPS_GetObjectIDByIdent("Sunset", $LocationID));
+		$civiltwilightstart = GetValue(IPS_GetObjectIDByIdent("CivilTwilightStart", $LocationID));
+		$civiltwilightend = GetValue(IPS_GetObjectIDByIdent("CivilTwilightEnd", $LocationID));
+		$nautictwilightstart = GetValue(IPS_GetObjectIDByIdent("NauticTwilightStart", $LocationID));
+		$nautictwilightend = GetValue(IPS_GetObjectIDByIdent("NauticTwilightEnd", $LocationID));
+		$astronomictwilightstart = GetValue(IPS_GetObjectIDByIdent("AstronomicTwilightStart", $LocationID));
+		$astronomictwilightend = GetValue(IPS_GetObjectIDByIdent("AstronomicTwilightEnd", $LocationID));
+		$locationinfo = array ("IsDay" => $isday, "Sunrise" => $sunrise, "Sunset" => $sunset, "CivilTwilightStart" => $civiltwilightstart, "CivilTwilightEnd" => $civiltwilightend, "NauticTwilightStart" => $nautictwilightstart, "NauticTwilightEnd" => $nautictwilightend, "AstronomicTwilightStart" => $astronomictwilightstart, "AstronomicTwilightEnd" => $astronomictwilightend);
+		return $locationinfo;
+	}
+	
+	protected function GetOffset($type)
+	{	
+		if($type == "Sunrise")
+		{
+			$offset = $this->ReadPropertyInteger("sunriseoffset");
+		}
+		elseif($type == "Sunset")
+		{
+			$offset = $this->ReadPropertyInteger("sunsetoffset");
+		}
+		$offset = $offset * 60; 
+		return $offset;
+	}
 	//FormelScript zur Berechnung von Astronomischen Ereignissen
 	//nach dem Buch "Practical Astronomy with your Calculator or Spreadsheet"
 	//von Peter Duffet-Smith und Jonathan Zwart
@@ -3656,7 +3764,41 @@ class Astronomy extends IPSModule
                     "name": "sunmoonview",
                     "type": "CheckBox",
                     "caption": "view position sun and moon"
-                },';
+                },
+				{ "type": "Label", "label": "____________________________________________________________________" },
+				{ "type": "Label", "label": "sunrise and sunset with offset:" },
+				{ "type": "Label", "label": "sunrise with offset:" },
+				{
+                    "name": "sunriseselect",
+                    "type": "CheckBox",
+                    "caption": "sunrise"
+                },
+				{ "type": "Select", "name": "risetype", "caption": "sun- or moonrise",
+					"options": [
+						{ "label": "sunrise", "value": 1 },
+						{ "label": "civilTwilightStart", "value": 2 },
+						{ "label": "nauticTwilightStart", "value": 3 },
+						{ "label": "astronomicTwilightStart", "value": 4 },
+						{ "label": "moonrise", "value": 5 }
+					]
+				},
+				{ "type": "NumberSpinner", "name": "sunriseoffset", "caption": "offset (minute)" },
+				{ "type": "Label", "label": "sunset with offset:" },
+				{
+                    "name": "sunsetselect",
+                    "type": "CheckBox",
+                    "caption": "sunset"
+                },
+				{ "type": "Select", "name": "settype", "caption": "sun- or moonset",
+					"options": [
+						{ "label": "sunset", "value": 1 },
+						{ "label": "civilTwilightEnd", "value": 2 },
+						{ "label": "nauticTwilightEnd", "value": 3 },
+						{ "label": "astronomicTwilightEnd", "value": 4 },
+						{ "label": "moonset", "value": 5 }
+					]
+				},
+				{ "type": "NumberSpinner", "name": "sunsetoffset", "caption": "offset (minute)" },';
 			return $form;
 		}
 		

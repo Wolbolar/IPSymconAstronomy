@@ -1,0 +1,11 @@
+{
+    "id": "{5C02271C-D599-4C71-98D3-86C89F94EB96}",
+    "name": "AstronomyTimer",
+    "type": 3,
+    "vendor": "Sonstige",
+    "aliases": ["Astronomie Timer"],
+    "parentRequirements": [],
+    "childRequirements": [],
+    "implemented": [],
+    "prefix": "AstronomyTimer"
+}

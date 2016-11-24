@@ -216,6 +216,40 @@
                     "type": "CheckBox",
                     "caption": "view position sun and moon"
                 },
+				{ "type": "Label", "label": "____________________________________________________________________" },
+				{ "type": "Label", "label": "sunrise and sunset with offset:" },
+				{ "type": "Label", "label": "sunrise with offset:" },
+				{
+                    "name": "sunriseselect",
+                    "type": "CheckBox",
+                    "caption": "sunrise"
+                },
+				{ "type": "Select", "name": "risetype", "caption": "sun- or moonrise",
+					"options": [
+						{ "label": "sunrise", "value": 1 },
+						{ "label": "civilTwilightStart", "value": 2 },
+						{ "label": "nauticTwilightStart", "value": 3 },
+						{ "label": "astronomicTwilightStart", "value": 4 },
+						{ "label": "moonrise", "value": 5 }
+					]
+				},
+				{ "type": "NumberSpinner", "name": "sunriseoffset", "caption": "offset (minute)" },
+				{ "type": "Label", "label": "sunset with offset:" },
+				{
+                    "name": "sunsetselect",
+                    "type": "CheckBox",
+                    "caption": "sunset"
+                },
+				{ "type": "Select", "name": "settype", "caption": "sun- or moonset",
+					"options": [
+						{ "label": "sunset", "value": 1 },
+						{ "label": "civilTwilightEnd", "value": 2 },
+						{ "label": "nauticTwilightEnd", "value": 3 },
+						{ "label": "astronomicTwilightEnd", "value": 4 },
+						{ "label": "moonset", "value": 5 }
+					]
+				},
+				{ "type": "NumberSpinner", "name": "sunsetoffset", "caption": "offset (minute)" },
 				{ "type": "Label", "label": "____________________________________________________________________" }
             ],
 	"actions":
