@@ -3118,7 +3118,7 @@ class Astronomy extends IPSModule
 		return $lastquarter;
 	}
 	
-	protected function GetMoonPicture($mondphase)
+	public function GetMoonPicture($mondphase)
 	{	
 		$language = $this->ReadPropertyInteger("language");
 		$picturemoonselection = $this->ReadPropertyBoolean("picturemoonselection");
