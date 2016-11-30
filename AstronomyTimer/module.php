@@ -309,7 +309,7 @@ class AstronomyTimer extends IPSModule
 		AstronomyTimer_Set($astrotimerobjid);
 	}
 	
-	public function SetNauticTwilightStart(int $offset, string $settype, int $objectid, string $varvalue);
+	public function SetNauticTwilightStart(int $offset, string $settype, int $objectid, string $varvalue)
 	{
 		$timertype = 5;
 		$astrotimerobjid = CreateAstroTimerInstance($timertype, $CatID, $offset, $settype, $objectid, $varvalue);
