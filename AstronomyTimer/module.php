@@ -369,8 +369,8 @@ class AstronomyTimer extends IPSModule
 		$astrotimerobjid = IPS_CreateInstance("{5C02271C-D599-4C71-98D3-86C89F94EB96}");
 		$targetobjectname = IPS_GetName($objectid);
 		$timername = $this->GetTypeTimer($timertype);
-		$name = $timertype." + ".$offset." Min ".$targetobjectname;
-		$ident = $timertype.$offset.$objectid;
+		$name = $timername." + ".$offset." Min ".$targetobjectname;
+		$ident = "Timertype".$timertype."Offset".$offset."objid".$objectid;
 		IPS_SetProperty($astrotimerobjid, 'timertype', $timertype);
 		IPS_SetProperty($astrotimerobjid, 'offset', $offset);
 		if ($settype !== "Script" && $settype !== "Variable")
