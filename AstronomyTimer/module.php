@@ -214,7 +214,7 @@ class AstronomyTimer extends IPSModule
 	public function Set()
 	{
 		$debug = false;
-		$timertype = $this->GetTypeTimer();
+		$timertype = $this->GetTimerName();
 		$offset = $this->ReadPropertyInteger("offset");
 		$varselect = $this->ReadPropertyBoolean("varselect");
 		if($varselect)
@@ -368,6 +368,7 @@ class AstronomyTimer extends IPSModule
 	{
 		$astrotimerobjid = IPS_CreateInstance("{5C02271C-D599-4C71-98D3-86C89F94EB96}");
 		$targetobjectname = IPS_GetName($objectid);
+		$timername = $this->GetTypeTimer($timertype);
 		$name = $timertype." + ".$offset." Min ".$targetobjectname;
 		$ident = $timertype.$offset.$objectid;
 		IPS_SetProperty($astrotimerobjid, 'timertype', $timertype);
@@ -401,9 +402,14 @@ class AstronomyTimer extends IPSModule
 		return $offset;
 	}
 	
-	protected function GetTypeTimer()
+	protected function GetTimerName()
 	{
 		$timertype = $this->ReadPropertyInteger("timertype");
+		$this->GetTypeTimer($timertype);
+	}
+	
+	protected function GetTypeTimer($timertype)
+	{
 		switch ($timertype)
 			{
 				case 1:
