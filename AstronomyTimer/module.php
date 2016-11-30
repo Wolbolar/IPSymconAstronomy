@@ -214,7 +214,7 @@ class AstronomyTimer extends IPSModule
 	public function Set()
 	{
 		$debug = false;
-		$timertype = $this->GetTypeTimer();
+		$timertype = $this->GetTimerName();
 		$offset = $this->ReadPropertyInteger("offset");
 		$varselect = $this->ReadPropertyBoolean("varselect");
 		if($varselect)
@@ -234,101 +234,165 @@ class AstronomyTimer extends IPSModule
 				IPS_LogMessage("ObjektID Variable: ", $objectid);
 		}
 		
-		
 		switch ($timertype)
 			{
 				case "Sunrise":
-					$this->SetSunrise($offset, $settype, $objectid, $varvalue);
+					$timertype = "Sunrise";
+					$this->RegisterAstroTimer($timertype, $offset, $settype, $objectid, $varvalue);
 					break;
 				case "Sunset":
-					$this->SetSunset($offset, $settype, $objectid, $varvalue);
+					$timertype = "Sunset";
+					$this->RegisterAstroTimer($timertype, $offset, $settype, $objectid, $varvalue);
 					break;
 				case "CivilTwilightStart":
-					$this->SetCivilTwilightStart($offset, $settype, $objectid, $varvalue);
+					$timertype = "CivilTwilightStart";
+					$this->RegisterAstroTimer($timertype, $offset, $settype, $objectid, $varvalue);
 					break;
 				case "CivilTwilightEnd":
-					$this->SetCivilTwilightEnd($offset, $settype, $objectid, $varvalue);
+					$timertype = "CivilTwilightEnd";
+					$this->RegisterAstroTimer($timertype, $offset, $settype, $objectid, $varvalue);
 					break;
 				case "NauticTwilightStart":
-					$this->SetNauticTwilightStart($offset, $settype, $objectid, $varvalue);
+					$timertype = "NauticTwilightStart";
+					$this->RegisterAstroTimer($timertype, $offset, $settype, $objectid, $varvalue);
 					break;
 				case "NauticTwilightEnd":
-					$this->SetNauticTwilightEnd($offset, $settype, $objectid, $varvalue);
+					$timertype = "NauticTwilightEnd";
+					$this->RegisterAstroTimer($timertype, $offset, $settype, $objectid, $varvalue);
 					break;
 				case "AstronomicTwilightStart":
-					$this->SetAstronomicTwilightStart($offset, $settype, $objectid, $varvalue);
+					$timertype = "AstronomicTwilightStart";
+					$this->RegisterAstroTimer($timertype, $offset, $settype, $objectid, $varvalue);
 					break;
 				case "AstronomicTwilightEnd":
-					$this->SetAstronomicTwilightEnd($offset, $settype, $objectid, $varvalue);
+					$timertype = "AstronomicTwilightEnd";
+					$this->RegisterAstroTimer($timertype, $offset, $settype, $objectid, $varvalue);
 					break;
 				case "Moonrise":
-					$this->SetMoonrise($offset, $settype, $objectid, $varvalue);
+					$timertype = "Moonrise";
+					$this->RegisterAstroTimer($timertype, $offset, $settype, $objectid, $varvalue);
 					break;
 				case "Moonset":
-					$this->SetMoonset($offset, $settype, $objectid, $varvalue);
+					$timertype = "Moonset";
+					$this->RegisterAstroTimer($timertype, $offset, $settype, $objectid, $varvalue);
 					break;	
 			}	
 		
 	}
-	
+		
 	public function SetSunrise(int $offset, string $settype, int $objectid, string $varvalue)
 	{
-		$timertype = "Sunrise";
-		$this->RegisterAstroTimer($timertype, $offset, $settype, $objectid, $varvalue);
+		$CatID = $this->CreateAstroTimerCategory();
+		$timertype = 1;
+		$astrotimerobjid = $this->CreateAstroTimerInstance($timertype, $CatID, $offset, $settype, $objectid, $varvalue);
+		AstronomyTimer_Set($astrotimerobjid);
 	}
 	
 	public function SetSunset(int $offset, string $settype, int $objectid, string $varvalue)
 	{
-		$timertype = "Sunset";
-		$this->RegisterAstroTimer($timertype, $offset, $settype, $objectid, $varvalue);
+		$timertype = 2;
+		$astrotimerobjid = $this->CreateAstroTimerInstance($timertype, $CatID, $offset, $settype, $objectid, $varvalue);
+		AstronomyTimer_Set($astrotimerobjid);
 	}
 	
 	public function SetCivilTwilightStart(int $offset, string $settype, int $objectid, string $varvalue)
 	{
-		$timertype = "CivilTwilightStart";
-		$this->RegisterAstroTimer($timertype, $offset, $settype, $objectid, $varvalue);
+		$timertype = 3;
+		$astrotimerobjid = $this->CreateAstroTimerInstance($timertype, $CatID, $offset, $settype, $objectid, $varvalue);
+		AstronomyTimer_Set($astrotimerobjid);
 	}
 	
 	public function SetCivilTwilightEnd(int $offset, string $settype, int $objectid, string $varvalue)
 	{
-		$timertype = "CivilTwilightEnd";
-		$this->RegisterAstroTimer($timertype, $offset, $settype, $objectid, $varvalue);
+		$timertype = 4;
+		$astrotimerobjid = $this->CreateAstroTimerInstance($timertype, $CatID, $offset, $settype, $objectid, $varvalue);
+		AstronomyTimer_Set($astrotimerobjid);
 	}
 	
 	public function SetNauticTwilightStart(int $offset, string $settype, int $objectid, string $varvalue)
 	{
-		$timertype = "NauticTwilightStart";
-		$this->RegisterAstroTimer($timertype, $offset, $settype, $objectid, $varvalue);
+		$timertype = 5;
+		$astrotimerobjid = $this->CreateAstroTimerInstance($timertype, $CatID, $offset, $settype, $objectid, $varvalue);
+		AstronomyTimer_Set($astrotimerobjid);
 	}
 	
 	public function SetNauticTwilightEnd(int $offset, string $settype, int $objectid, string $varvalue)
 	{
-		$timertype = "NauticTwilightEnd";
-		$this->RegisterAstroTimer($timertype, $offset, $settype, $objectid, $varvalue);
+		$timertype = 6;
+		$astrotimerobjid = $this->CreateAstroTimerInstance($timertype, $CatID, $offset, $settype, $objectid, $varvalue);
+		AstronomyTimer_Set($astrotimerobjid);
 	}
 	
 	public function SetAstronomicTwilightStart(int $offset, string $settype, int $objectid, string $varvalue)
 	{
-		$timertype = "AstronomicTwilightStart";
-		$this->RegisterAstroTimer($timertype, $offset, $settype, $objectid, $varvalue);
+		$timertype = 7;
+		$astrotimerobjid = $this->CreateAstroTimerInstance($timertype, $CatID, $offset, $settype, $objectid, $varvalue);
+		AstronomyTimer_Set($astrotimerobjid);
 	}
 	
 	public function SetAstronomicTwilightEnd(int $offset, string $settype, int $objectid, string $varvalue)
 	{
-		$timertype = "AstronomicTwilightEnd";
-		$this->RegisterAstroTimer($timertype, $offset, $settype, $objectid, $varvalue);
+		$timertype = 8;
+		$astrotimerobjid = $this->CreateAstroTimerInstance($timertype, $CatID, $offset, $settype, $objectid, $varvalue);
+		AstronomyTimer_Set($astrotimerobjid);
 	}
 	
 	public function SetMoonrise(int $offset, string $settype, int $objectid, string $varvalue)
 	{
-		$timertype = "Moonrise";
-		$this->RegisterAstroTimer($timertype, $offset, $settype, $objectid, $varvalue);
+		$timertype = 9;
+		$astrotimerobjid = $this->CreateAstroTimerInstance($timertype, $CatID, $offset, $settype, $objectid, $varvalue);
+		AstronomyTimer_Set($astrotimerobjid);
 	}
 	
 	public function SetMoonset(int $offset, string $settype, int $objectid, string $varvalue)
 	{
-		$timertype = "Moonset";
-		$this->RegisterAstroTimer($timertype, $offset, $settype, $objectid, $varvalue);
+		$timertype = 10;
+		$astrotimerobjid = $this->CreateAstroTimerInstance($timertype, $CatID, $offset, $settype, $objectid, $varvalue);
+		AstronomyTimer_Set($astrotimerobjid);
+	}
+	
+	protected function CreateAstroTimerCategory()
+	{
+		$CatID = @IPS_GetCategoryIDByName("Astronomie Timer", 0);
+		if ($CatID === false)
+		{
+			$CatID = IPS_CreateCategory();       // Kategorie anlegen
+			IPS_SetName($CatID, "Astronomie Timer"); // Kategorie benennen
+			IPS_SetIdent($CatID, "AstrotimerCat");
+			IPS_SetParent($CatID, 0); // Kategorie einsortieren unter dem Root
+		}
+		return $CatID;
+	}
+	
+	protected function CreateAstroTimerInstance($timertype, $CatID, $offset, $settype, $objectid, $varvalue)
+	{
+		$astrotimerobjid = IPS_CreateInstance("{5C02271C-D599-4C71-98D3-86C89F94EB96}");
+		$targetobjectname = IPS_GetName($objectid);
+		$timername = $this->GetTypeTimer($timertype);
+		$name = $timername." + ".$offset." Min ".$targetobjectname;
+		$ident = "Timertype".$timertype."Offset".$offset."objid".$objectid;
+		IPS_SetProperty($astrotimerobjid, 'timertype', $timertype);
+		IPS_SetProperty($astrotimerobjid, 'offset', $offset);
+		if ($settype !== "Script" && $settype !== "Variable")
+			{
+				echo "Settype nicht gültig. Script oder Variable auswählen.";
+			}
+		if ($settype == "Script")
+			{
+				IPS_SetProperty($astrotimerobjid, 'triggerscript', $objectid);
+			}
+		if ($settype == "Variable")
+			{
+				IPS_SetProperty($astrotimerobjid, 'varselect', true);
+				IPS_SetProperty($astrotimerobjid, 'triggervariable', $objectid);
+				IPS_SetProperty($astrotimerobjid, 'varvalue', $varvalue);
+			}	
+		IPS_SetParent($astrotimerobjid, $CatID);
+		IPS_SetName($astrotimerobjid, $name);
+		IPS_SetIdent($astrotimerobjid, $ident);
+		IPS_LogMessage('AstroTimer', $name.' mit ObjID '.$astrotimerobjid.'erstellt.');
+		IPS_ApplyChanges($astrotimerobjid);
+		return $astrotimerobjid; 
 	}
 	
 	protected function GetOffset()
@@ -338,9 +402,14 @@ class AstronomyTimer extends IPSModule
 		return $offset;
 	}
 	
-	protected function GetTypeTimer()
+	protected function GetTimerName()
 	{
 		$timertype = $this->ReadPropertyInteger("timertype");
+		$this->GetTypeTimer($timertype);
+	}
+	
+	protected function GetTypeTimer($timertype)
+	{
 		switch ($timertype)
 			{
 				case 1:
@@ -455,7 +524,8 @@ class AstronomyTimer extends IPSModule
 	
 	protected function SetVarWebFront($value)
 	{
-		$objectid = $this->GetIDForIdent("eventtime");
+		$objectid = @$this->GetIDForIdent("eventtime");
+		if ($objectid > 0)
 		SetValue($objectid, $value);
 	}
 	
