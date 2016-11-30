@@ -205,8 +205,10 @@ AstronomyTimer_Set(int $InstanceID)
 ```
 Setzt den Astronomie Timer mit den in der Instanz eingestellten Werten
 
+__*Um mit Funktionen einen Astronomie Timer anlegen zu können muss mindestens ein Astronomie Timer zuvor in IP-Symconangelegt worden sein. Mit der Funktion wird dann auf diese eine Instanz verwiesen um weitere timer anzulegen.*__
+
 ```php
-AstronomyTimer_SetSunrise(int $offset, string $settype, int $objectid, string $varvalue)
+AstronomyTimer_SetSunrise(int $InstanceID, int $offset, string $settype, int $objectid, string $varvalue)
 ```
 Setzt einen Astronomie Timer mit Sonnenaufgang + Offset
 _$offset_   Offsetwert in Minuten 
@@ -215,7 +217,7 @@ _$objectid_ ObjektID der Variable oder des Skripts für Timerausführung
 _$varvalue_ Wert den der Timer bei einer Variable einstellen soll wenn das Event stattfindet. Auf den passenen Wert zum Variablentyp achten. Wenn ein Skript ausgeführt werden soll ist der Wert hier __*NULL*__
 
 ```php
-AstronomyTimer_SetSunset(int $offset, string $settype, int $objectid, string $varvalue)
+AstronomyTimer_SetSunset(int $InstanceID, int $offset, string $settype, int $objectid, string $varvalue)
 ```
 Setzt einen Astronomie Timer mit Sonnenuntergang + Offset
 _$offset_   Offsetwert in Minuten 
@@ -224,7 +226,7 @@ _$objectid_ ObjektID der Variable oder des Skripts für Timerausführung
 _$varvalue_ Wert den der Timer bei einer Variable einstellen soll wenn das Event stattfindet. Auf den passenen Wert zum Variablentyp achten. Wenn ein Skript ausgeführt werden soll ist der Wert hier __*NULL*__
 
 ```php
-AstronomyTimer_SetCivilTwilightStart(int $offset, string $settype, int $objectid, string $varvalue)
+AstronomyTimer_SetCivilTwilightStart(int $InstanceID, int $offset, string $settype, int $objectid, string $varvalue)
 ```
 Setzt einen Astronomie Timer mit ziviler Morgendämmerung + Offset
 _$offset_   Offsetwert in Minuten 
@@ -233,7 +235,7 @@ _$objectid_ ObjektID der Variable oder des Skripts für Timerausführung
 _$varvalue_ Wert den der Timer bei einer Variable einstellen soll wenn das Event stattfindet. Auf den passenen Wert zum Variablentyp achten. Wenn ein Skript ausgeführt werden soll ist der Wert hier __*NULL*__
 
 ```php
-AstronomyTimer_SetCivilTwilightEnd(int $offset, string $settype, int $objectid, string $varvalue)
+AstronomyTimer_SetCivilTwilightEnd(int $InstanceID, int $offset, string $settype, int $objectid, string $varvalue)
 ```
 Setzt einen Astronomie Timer mit ziviler Abenddämmerung + Offset
 _$offset_   Offsetwert in Minuten 
@@ -242,7 +244,7 @@ _$objectid_ ObjektID der Variable oder des Skripts für Timerausführung
 _$varvalue_ Wert den der Timer bei einer Variable einstellen soll wenn das Event stattfindet. Auf den passenen Wert zum Variablentyp achten. Wenn ein Skript ausgeführt werden soll ist der Wert hier __*NULL*__
 
 ```php
-AstronomyTimer_SetNauticTwilightStart(int $offset, string $settype, int $objectid, string $varvalue)
+AstronomyTimer_SetNauticTwilightStart(int $InstanceID, int $offset, string $settype, int $objectid, string $varvalue)
 ```
 Setzt einen Astronomie Timer mit nautischer Morgendämmerung + Offset
 _$offset_   Offsetwert in Minuten 
@@ -251,7 +253,7 @@ _$objectid_ ObjektID der Variable oder des Skripts für Timerausführung
 _$varvalue_ Wert den der Timer bei einer Variable einstellen soll wenn das Event stattfindet. Auf den passenen Wert zum Variablentyp achten. Wenn ein Skript ausgeführt werden soll ist der Wert hier __*NULL*__
 
 ```php
-AstronomyTimer_SetNauticTwilightEnd(int $offset, string $settype, int $objectid, string $varvalue)
+AstronomyTimer_SetNauticTwilightEnd(int $InstanceID, int $offset, string $settype, int $objectid, string $varvalue)
 ```
 Setzt einen Astronomie Timer mit nautischer Abenddämmerung + Offset
 _$offset_   Offsetwert in Minuten 
@@ -260,7 +262,7 @@ _$objectid_ ObjektID der Variable oder des Skripts für Timerausführung
 _$varvalue_ Wert den der Timer bei einer Variable einstellen soll wenn das Event stattfindet. Auf den passenen Wert zum Variablentyp achten. Wenn ein Skript ausgeführt werden soll ist der Wert hier __*NULL*__
 
 ```php
-AstronomyTimer_SetAstronomicTwilightStart(int $offset, string $settype, int $objectid, string $varvalue)
+AstronomyTimer_SetAstronomicTwilightStart(int $InstanceID, int $offset, string $settype, int $objectid, string $varvalue)
 ```
 Setzt einen Astronomie Timer mit astronomischer Morgendämmerung + Offset
 _$offset_   Offsetwert in Minuten 
@@ -269,7 +271,7 @@ _$objectid_ ObjektID der Variable oder des Skripts für Timerausführung
 _$varvalue_ Wert den der Timer bei einer Variable einstellen soll wenn das Event stattfindet. Auf den passenen Wert zum Variablentyp achten. Wenn ein Skript ausgeführt werden soll ist der Wert hier __*NULL*__
 
 ```php
-AstronomyTimer_SetAstronomicTwilightEnd(int $offset, string $settype, int $objectid, string $varvalue)
+AstronomyTimer_SetAstronomicTwilightEnd(int $InstanceID, int $offset, string $settype, int $objectid, string $varvalue)
 ```
 Setzt einen Astronomie Timer mit astronomischer Abenddämmerung + Offset
 _$offset_   Offsetwert in Minuten 
@@ -278,7 +280,7 @@ _$objectid_ ObjektID der Variable oder des Skripts für Timerausführung
 _$varvalue_ Wert den der Timer bei einer Variable einstellen soll wenn das Event stattfindet. Auf den passenen Wert zum Variablentyp achten. Wenn ein Skript ausgeführt werden soll ist der Wert hier __*NULL*__
 
 ```php
-AstronomyTimer_SetMoonrise(int $offset, string $settype, int $objectid, string $varvalue)
+AstronomyTimer_SetMoonrise(int $InstanceID, int $offset, string $settype, int $objectid, string $varvalue)
 ```
 Setzt einen Astronomie Timer mit Mondaufgang + Offset
 _$offset_   Offsetwert in Minuten 
@@ -287,7 +289,7 @@ _$objectid_ ObjektID der Variable oder des Skripts für Timerausführung
 _$varvalue_ Wert den der Timer bei einer Variable einstellen soll wenn das Event stattfindet. Auf den passenen Wert zum Variablentyp achten. Wenn ein Skript ausgeführt werden soll ist der Wert hier __*NULL*__
 
 ```php
-AstronomyTimer_SetMoonset(int $offset, string $settype, int $objectid, string $varvalue)
+AstronomyTimer_SetMoonset(int $InstanceID, int $offset, string $settype, int $objectid, string $varvalue)
 ```
 Setzt einen Astronomie Timer mit Monduntergang + Offset
 _$offset_   Offsetwert in Minuten 
