@@ -369,7 +369,7 @@ class AstronomyTimer extends IPSModule
 		$astrotimerobjid = IPS_CreateInstance("{5C02271C-D599-4C71-98D3-86C89F94EB96}");
 		$targetobjectname = IPS_GetName($objectid);
 		$name = $timertype." + ".$offset." Min ".$targetobjectname;
-		$ident = $timertype.$offset.$targetobjectname;
+		$ident = $timertype.$offset.$objectid;
 		IPS_SetProperty($astrotimerobjid, 'timertype', $timertype);
 		IPS_SetProperty($astrotimerobjid, 'offset', $offset);
 		if ($settype !== "Script" && $settype !== "Variable")
@@ -518,7 +518,8 @@ class AstronomyTimer extends IPSModule
 	
 	protected function SetVarWebFront($value)
 	{
-		$objectid = $this->GetIDForIdent("eventtime");
+		$objectid = @$this->GetIDForIdent("eventtime");
+		if ($objectid > 0)
 		SetValue($objectid, $value);
 	}
 	
