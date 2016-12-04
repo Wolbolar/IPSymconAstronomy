@@ -478,7 +478,7 @@ class AstronomyTimer extends IPSModule
 		}
 		if($numeric)
 		{
-			$varvaluefloat = isfloat($varvalue);
+			$varvaluefloat = $this->isfloat($varvalue);
 			if($varvaluefloat)
 			{
 				$varvalue = floatval($varvalue);// float
