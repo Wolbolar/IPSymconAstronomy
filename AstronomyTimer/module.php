@@ -223,7 +223,8 @@ class AstronomyTimer extends IPSModule
 			$objectid = $this->ReadPropertyInteger("triggervariable");
 			$varvalue = $this->GetTriggerVarValue();
 			if($debug)
-				IPS_LogMessage("ObjektID Skript: ", $objectid);
+					IPS_LogMessage("ObjektID Variable: ", $objectid);
+			
 		}
 		else
 		{
@@ -231,7 +232,7 @@ class AstronomyTimer extends IPSModule
 			$objectid = $this->ReadPropertyInteger("triggerscript");
 			$varvalue = 0;
 			if($debug)
-				IPS_LogMessage("ObjektID Variable: ", $objectid);
+				IPS_LogMessage("ObjektID Skript: ", $objectid);
 		}
 		
 		switch ($timertype)
@@ -653,7 +654,6 @@ class AstronomyTimer extends IPSModule
 		if(!$eventid)
         {
             $eventid = IPS_CreateEvent(1);
-            //IPS_SetParent($eventid, $this->InstanceID);
 			IPS_SetParent($eventid, $objectid);
             IPS_SetName($eventid, $name);
 			IPS_SetIdent($eventid, $ident);
@@ -684,7 +684,6 @@ class AstronomyTimer extends IPSModule
 		if(!$eventid)
         {
             $eventid = IPS_CreateEvent(1);
-            //IPS_SetParent($eventid, $this->InstanceID);
 			IPS_SetParent($eventid, $objectid);
             IPS_SetName($eventid, $name);
 			IPS_SetIdent($eventid, $ident);
