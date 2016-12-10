@@ -36,7 +36,7 @@ class AstronomyTimer extends IPSModule
         parent::ApplyChanges();
 		
 		$this->ValidateConfiguration(); 
-		//$this->RegisterTimer('Update', 360000, 'Astronomy_UpdateTimer('.$this->InstanceID.');');
+		//$this->RegisterTimer('Update', 360000, 'AstronomyTimer_UpdateTimer('.$this->InstanceID.');');
 		$this->RegisterCyclicTimer('AstroTimerUpdate', 0, 5, 0, 'AstronomyTimer_Set('.$this->InstanceID.')');
     }
 
@@ -1036,7 +1036,7 @@ class AstronomyTimer extends IPSModule
 			$form = '"actions":
 			[
 				{ "type": "Label", "label": "update timer" },
-				{ "type": "Button", "label": "update", "onClick": "Astronomy_UpdateTimer($id);" }
+				{ "type": "Button", "label": "update", "onClick": "AstronomyTimer_UpdateTimer($id);" }
 			],';
 			return  $form;
 		}	

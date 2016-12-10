@@ -60,7 +60,7 @@
 	"actions":
 			[
 				{ "type": "Label", "label": "update timer" },
-				{ "type": "Button", "label": "update", "onClick": "Astronomy_UpdateTimer($id);" }
+				{ "type": "Button", "label": "update", "onClick": "AstronomyTimer_UpdateTimer($id);" }
 			],
     "status":
             [
