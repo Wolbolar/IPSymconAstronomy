@@ -366,32 +366,36 @@ class AstronomyTimer extends IPSModule
 	
 	protected function CreateAstroTimerInstance($timertype, $CatID, $offset, $settype, $objectid, $varvalue)
 	{
-		$astrotimerobjid = IPS_CreateInstance("{5C02271C-D599-4C71-98D3-86C89F94EB96}");
 		$targetobjectname = IPS_GetName($objectid);
 		$timername = $this->GetTypeTimer($timertype);
-		$name = $timername." + ".$offset." Min ".$targetobjectname;
-		$ident = "Timertype".$timertype."Offset".$offset."objid".$objectid;
-		IPS_SetProperty($astrotimerobjid, 'timertype', $timertype);
-		IPS_SetProperty($astrotimerobjid, 'offset', $offset);
-		if ($settype !== "Script" && $settype !== "Variable")
-			{
-				echo "Settype nicht gültig. Script oder Variable auswählen.";
-			}
-		if ($settype == "Script")
-			{
-				IPS_SetProperty($astrotimerobjid, 'triggerscript', $objectid);
-			}
-		if ($settype == "Variable")
-			{
-				IPS_SetProperty($astrotimerobjid, 'varselect', true);
-				IPS_SetProperty($astrotimerobjid, 'triggervariable', $objectid);
-				IPS_SetProperty($astrotimerobjid, 'varvalue', $varvalue);
-			}	
-		IPS_SetParent($astrotimerobjid, $CatID);
-		IPS_SetName($astrotimerobjid, $name);
-		IPS_SetIdent($astrotimerobjid, $ident);
-		IPS_LogMessage('AstroTimer', $name.' mit ObjID '.$astrotimerobjid.'erstellt.');
-		IPS_ApplyChanges($astrotimerobjid);
+		$ident = "Timertype_".$timername."_Offset_".$offset."_objid_".$objectid;
+		$astrotimerobjid = @IPS_GetObjectIDByIdent($ident, $CatID);
+		if(!$astrotimerobjid)
+		{
+			$astrotimerobjid = IPS_CreateInstance("{5C02271C-D599-4C71-98D3-86C89F94EB96}");
+			$name = $timername." + ".$offset." Min ".$targetobjectname;
+			IPS_SetProperty($astrotimerobjid, 'timertype', $timertype);
+			IPS_SetProperty($astrotimerobjid, 'offset', $offset);
+			if ($settype !== "Script" && $settype !== "Variable")
+				{
+					echo "Settype nicht gültig. Script oder Variable auswählen.";
+				}
+			if ($settype == "Script")
+				{
+					IPS_SetProperty($astrotimerobjid, 'triggerscript', $objectid);
+				}
+			if ($settype == "Variable")
+				{
+					IPS_SetProperty($astrotimerobjid, 'varselect', true);
+					IPS_SetProperty($astrotimerobjid, 'triggervariable', $objectid);
+					IPS_SetProperty($astrotimerobjid, 'varvalue', $varvalue);
+				}	
+			IPS_SetParent($astrotimerobjid, $CatID);
+			IPS_SetName($astrotimerobjid, $name);
+			IPS_SetIdent($astrotimerobjid, $ident);
+			IPS_LogMessage('AstroTimer', $name.' mit ObjID '.$astrotimerobjid.'erstellt.');
+			IPS_ApplyChanges($astrotimerobjid);
+		}
 		return $astrotimerobjid; 
 	}
 	
