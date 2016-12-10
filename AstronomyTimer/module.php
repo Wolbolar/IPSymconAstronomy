@@ -405,7 +405,8 @@ class AstronomyTimer extends IPSModule
 	protected function GetTimerName()
 	{
 		$timertype = $this->ReadPropertyInteger("timertype");
-		$this->GetTypeTimer($timertype);
+		$timername = $this->GetTypeTimer($timertype);
+		return $timername;
 	}
 	
 	protected function GetTypeTimer($timertype)
