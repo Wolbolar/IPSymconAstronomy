@@ -649,8 +649,8 @@ class AstronomyTimer extends IPSModule
 		
 	protected function RegisterAstroTimerVariable($timestamp, $Stunde, $Minute, $Sekunde, $objectid, $varvalue, $ident, $name)
 	{
-		$eventid = @$this->GetIDForIdent($ident);
-		if($eventid === false)
+		$eventid = @IPS_GetObjectIDByIdent($ident, $objectid);
+		if(!$eventid)
         {
             $eventid = IPS_CreateEvent(1);
             //IPS_SetParent($eventid, $this->InstanceID);
