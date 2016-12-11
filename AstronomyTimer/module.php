@@ -555,6 +555,7 @@ class AstronomyTimer extends IPSModule
 		$astronomictwilightstart = $locationinfo["AstronomicTwilightStart"];
 		$astronomictwilightend = $locationinfo["AstronomicTwilightEnd"];
 		$offset = $this->GetOffset();
+		$cutoffselect = $this->ReadPropertyBoolean("cutoffselect");
 		$cutoff = $this->GetCutoffTime();
 		$timestamp = 0;
 		$direction = "";
@@ -614,18 +615,31 @@ class AstronomyTimer extends IPSModule
 					$timestamp = $moonset + $offset;
 					break;	
 			}
-		if (($cutoff > $timestamp && $direction == "up")||($cutoff < $timestamp && $direction == "down"))
+		if($cutoffselect)
 		{
-			$Stunde = intval(date("G", $cutoff));
-			$Minute = intval(date("i", $cutoff));
-			$Sekunde = intval(date("s", $cutoff));
+			if (($cutoff > $timestamp && $direction == "up")||($cutoff < $timestamp && $direction == "down"))
+			{
+				$Stunde = intval(date("G", $cutoff));
+				$Minute = intval(date("i", $cutoff));
+				$Sekunde = intval(date("s", $cutoff));
+				IPS_LogMessage("AstroTimer: ", "Cutoff Set");
+			}
+			if (($cutoff < $timestamp && $direction == "up") || ($cutoff > $timestamp && $direction == "down"))
+			{
+				$Stunde = intval(date("G", $timestamp));
+				$Minute = intval(date("i", $timestamp));
+				$Sekunde = intval(date("s", $timestamp));
+				IPS_LogMessage("AstroTimer: ", "Timer Set");
+			}
 		}
-		if (($cutoff < $timestamp && $direction == "up") || ($cutoff > $timestamp && $direction == "down"))
+		else
 		{
 			$Stunde = intval(date("G", $timestamp));
 			$Minute = intval(date("i", $timestamp));
 			$Sekunde = intval(date("s", $timestamp));
+			IPS_LogMessage("AstroTimer: ", "Timer Set");
 		}	
+			
 		$timersettings = array("timestamp" => $timestamp, "direction" => $direction, "Stunde" => $Stunde, "Minute" => $Minute, "Sekunde" => $Sekunde, "cutofftime" => $cutoff, "offset" => $offset);
 		return $timersettings;
 	}
