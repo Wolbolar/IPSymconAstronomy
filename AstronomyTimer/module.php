@@ -829,10 +829,6 @@ class AstronomyTimer extends IPSModule
 		$data = (Moon::calculateMoonTimes($month, $day, $year, $latitude, $longitude));
 
 		$moonrise = $data->{'moonrise'}; //Aufgang
-		if($this->ReadPropertyBoolean("moonrise") == true) // float
-		{
-			SetValue($this->GetIDForIdent("moonrise"), $moonrise); 
-		}
 		return $moonrise;
 	}
 	
@@ -851,10 +847,6 @@ class AstronomyTimer extends IPSModule
 		$data = (Moon::calculateMoonTimes($month, $day, $year, $latitude, $longitude));
 
 		$moonset = $data->{'moonset'}; //Untergang
-		if($this->ReadPropertyBoolean("moonset") == true) // float
-		{
-			SetValue($this->GetIDForIdent("moonset"), $moonset); 
-		}
 		return $moonset;
 	}	
 	
