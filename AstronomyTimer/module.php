@@ -290,6 +290,7 @@ class AstronomyTimer extends IPSModule
 	
 	public function SetSunset(int $offset, string $settype, int $objectid, string $varvalue)
 	{
+		$CatID = $this->CreateAstroTimerCategory();
 		$timertype = 2;
 		$astrotimerobjid = $this->CreateAstroTimerInstance($timertype, $CatID, $offset, $settype, $objectid, $varvalue);
 		AstronomyTimer_Set($astrotimerobjid);
@@ -297,6 +298,7 @@ class AstronomyTimer extends IPSModule
 	
 	public function SetCivilTwilightStart(int $offset, string $settype, int $objectid, string $varvalue)
 	{
+		$CatID = $this->CreateAstroTimerCategory();
 		$timertype = 3;
 		$astrotimerobjid = $this->CreateAstroTimerInstance($timertype, $CatID, $offset, $settype, $objectid, $varvalue);
 		AstronomyTimer_Set($astrotimerobjid);
@@ -304,6 +306,7 @@ class AstronomyTimer extends IPSModule
 	
 	public function SetCivilTwilightEnd(int $offset, string $settype, int $objectid, string $varvalue)
 	{
+		$CatID = $this->CreateAstroTimerCategory();
 		$timertype = 4;
 		$astrotimerobjid = $this->CreateAstroTimerInstance($timertype, $CatID, $offset, $settype, $objectid, $varvalue);
 		AstronomyTimer_Set($astrotimerobjid);
@@ -311,6 +314,7 @@ class AstronomyTimer extends IPSModule
 	
 	public function SetNauticTwilightStart(int $offset, string $settype, int $objectid, string $varvalue)
 	{
+		$CatID = $this->CreateAstroTimerCategory();
 		$timertype = 5;
 		$astrotimerobjid = $this->CreateAstroTimerInstance($timertype, $CatID, $offset, $settype, $objectid, $varvalue);
 		AstronomyTimer_Set($astrotimerobjid);
@@ -318,6 +322,7 @@ class AstronomyTimer extends IPSModule
 	
 	public function SetNauticTwilightEnd(int $offset, string $settype, int $objectid, string $varvalue)
 	{
+		$CatID = $this->CreateAstroTimerCategory();
 		$timertype = 6;
 		$astrotimerobjid = $this->CreateAstroTimerInstance($timertype, $CatID, $offset, $settype, $objectid, $varvalue);
 		AstronomyTimer_Set($astrotimerobjid);
@@ -325,6 +330,7 @@ class AstronomyTimer extends IPSModule
 	
 	public function SetAstronomicTwilightStart(int $offset, string $settype, int $objectid, string $varvalue)
 	{
+		$CatID = $this->CreateAstroTimerCategory();
 		$timertype = 7;
 		$astrotimerobjid = $this->CreateAstroTimerInstance($timertype, $CatID, $offset, $settype, $objectid, $varvalue);
 		AstronomyTimer_Set($astrotimerobjid);
@@ -332,6 +338,7 @@ class AstronomyTimer extends IPSModule
 	
 	public function SetAstronomicTwilightEnd(int $offset, string $settype, int $objectid, string $varvalue)
 	{
+		$CatID = $this->CreateAstroTimerCategory();
 		$timertype = 8;
 		$astrotimerobjid = $this->CreateAstroTimerInstance($timertype, $CatID, $offset, $settype, $objectid, $varvalue);
 		AstronomyTimer_Set($astrotimerobjid);
@@ -339,6 +346,7 @@ class AstronomyTimer extends IPSModule
 	
 	public function SetMoonrise(int $offset, string $settype, int $objectid, string $varvalue)
 	{
+		$CatID = $this->CreateAstroTimerCategory();
 		$timertype = 9;
 		$astrotimerobjid = $this->CreateAstroTimerInstance($timertype, $CatID, $offset, $settype, $objectid, $varvalue);
 		AstronomyTimer_Set($astrotimerobjid);
@@ -346,6 +354,7 @@ class AstronomyTimer extends IPSModule
 	
 	public function SetMoonset(int $offset, string $settype, int $objectid, string $varvalue)
 	{
+		$CatID = $this->CreateAstroTimerCategory();
 		$timertype = 10;
 		$astrotimerobjid = $this->CreateAstroTimerInstance($timertype, $CatID, $offset, $settype, $objectid, $varvalue);
 		AstronomyTimer_Set($astrotimerobjid);
