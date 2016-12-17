@@ -36,6 +36,9 @@ class Astronomy extends IPSModule
 		$this->RegisterPropertyBoolean("sunaltitude", false);
 		$this->RegisterPropertyBoolean("sundirection", false);
 		$this->RegisterPropertyBoolean("season", false);
+		$this->RegisterPropertyBoolean("pictureyeartwilight", false);
+		$this->RegisterPropertyBoolean("picturedaytwilight", false);
+		$this->RegisterPropertyBoolean("picturetwilightlimited", false);
 		$this->RegisterPropertyBoolean("picturemoon", false);
 		$this->RegisterPropertyBoolean("sunmoonview", false);
 		$this->RegisterPropertyBoolean("selectionresize", false);
@@ -394,7 +397,35 @@ class Astronomy extends IPSModule
 		{
 			$this->SetupVariable("season", "Jahreszeit", "Astronomie.Jahreszeit", 20, IPSVarType::vtInteger, false);
 		}
-		if($this->ReadPropertyBoolean("picturemoon") == true) // string
+		if($this->ReadPropertyBoolean("pictureyeartwilight") == true) 
+		{
+			//
+		}
+		else
+		{
+			$MediaID = @$this->GetIDForIdent('pictureyeartwilight');
+			if($MediaID > 0)
+				IPS_DeleteMedia($MediaID, true);
+		}
+		if($this->ReadPropertyBoolean("picturedaytwilight") == true) 
+		{
+			//
+		}
+		else
+		{
+			$MediaID = @$this->GetIDForIdent('picturedaytwilight');
+			if($MediaID > 0)
+				IPS_DeleteMedia($MediaID, true);
+		}
+		if($this->ReadPropertyBoolean("picturetwilightlimited") == true) 
+		{
+			//
+		}
+		else
+		{
+			//
+		}
+		if($this->ReadPropertyBoolean("picturemoon") == true) 
 		{
 			$mondphase = $this->MoonphasePercent();
 			$picture = $this->GetMoonPicture($mondphase);
@@ -622,7 +653,291 @@ class Astronomy extends IPSModule
 	imagedestroy($thumb);
 	return $thumbfile;
   }
-  
+	
+	protected function TwilightDayPicture()
+	{
+		
+	}
+	
+	protected function TwilightYearPicture()
+	{
+		
+	}
+	
+	protected function CopyTwilightGraphics($variableId_Display)
+	{
+		if (GetValue($variableId_Display)) {
+			$SourceYear = IPS_GetKernelDir().'media'.DIRECTORY_SEPARATOR.'IPSTwilight_YearLimited.gif';
+			$SourceDay  = IPS_GetKernelDir().'media'.DIRECTORY_SEPARATOR.'IPSTwilight_DayLimited.gif';
+		} else {
+			$SourceYear = IPS_GetKernelDir().'media'.DIRECTORY_SEPARATOR.'IPSTwilight_YearUnlimited.gif';
+			$SourceDay  = IPS_GetKernelDir().'media'.DIRECTORY_SEPARATOR.'IPSTwilight_DayUnlimited.gif';
+		}
+	   
+		if (!copy($SourceYear, IPS_GetKernelDir().'media'.DIRECTORY_SEPARATOR.'IPSTwilight_Year.gif')) {
+			//IPSLogger_Err(__file__, "Error while coping $SourceYear to Destination File 'IPSTwilight_Year.gif'");
+		}
+		if (!copy($SourceDay,  IPS_GetKernelDir().'media'.DIRECTORY_SEPARATOR.'IPSTwilight_Day.gif')) {
+			//IPSLogger_Err(__file__, "Error while coping $SourceDay to Destination File 'IPSTwilight_Day.gif'");
+		}
+	}
+	
+	protected function GenerateTwilightGraphics($variableId_Display)
+	{
+		$this->GenerateTwilightGraphic('IPSTwilight_YearUnlimited', false, 4.4, 1.8);
+		$this->GenerateTwilightGraphic('IPSTwilight_YearLimited',   true,  4.4, 1.8);
+		$this->GenerateClockGraphic('IPSTwilight_DayUnlimited', false);
+		$this->GenerateClockGraphic('IPSTwilight_DayLimited',   true);
+
+		$this->CopyTwilightGraphics($variableId_Display);
+	}
+	
+	protected function GenerateClockGraphic($fileName, $useLimited=false, $Width=180)
+	{
+		$clockWidth   = $Width;
+		$clockHeight  = $clockWidth;
+		$marginLeft   = 20;
+		$marginRight  = 20;
+		$marginTop    = 15;
+		$marginMiddle = 45;
+		$marginBottom = 30;
+		$imageWidth   = $clockWidth + $marginLeft + $marginRight;
+		$imageHeight  = $clockHeight*2 + $marginBottom + $marginTop+ $marginMiddle;
+
+		$image  = imagecreate($imageWidth,$imageHeight);
+
+		$white         = imagecolorallocate($image,255,255,255);
+		$textColor     = imagecolorallocate($image,250,250,250);
+		$transparent   = imagecolortransparent($image,$white);
+		$black         = imagecolorallocate($image,0,0,0);
+		$red           = imagecolorallocate($image,255,0,0);
+		$green         = imagecolorallocate($image,0,255,0);
+		$blue          = imagecolorallocate($image,0,0,255);
+		$grey_back     = imagecolorallocate($image, 100, 100, 100);
+		$grey_line     = imagecolorallocate($image, 120, 120, 120);
+		$grey_sunrise1 = imagecolorallocate($image, 200, 200, 200);
+		$grey_sunrise2 = imagecolorallocate($image, 170, 170, 170);
+		$grey_sunrise3 = imagecolorallocate($image, 140, 140, 140);
+		$grey          = imagecolorallocate($image, 100, 100, 100);
+		$yellow        = imagecolorallocate($image, 255, 255, 0);
+
+		imagefilledrectangle($image,1,1,$imageWidth,$imageHeight,$transparent);
+
+		$timestamp  = time();
+		$sunrise    = date_sunrise($timestamp, SUNFUNCS_RET_TIMESTAMP, IPSTWILIGHT_LATITUDE, IPSTWILIGHT_LONGITUDE, 90+50/60, date("O")/100);
+		$sunset     = date_sunset ($timestamp, SUNFUNCS_RET_TIMESTAMP, IPSTWILIGHT_LATITUDE, IPSTWILIGHT_LONGITUDE, 90+50/60, date("O")/100);
+		$sunrise1   = date_sunrise($timestamp, SUNFUNCS_RET_TIMESTAMP, IPSTWILIGHT_LATITUDE, IPSTWILIGHT_LONGITUDE, 96, date("O")/100);
+		$sunset1    = date_sunset ($timestamp, SUNFUNCS_RET_TIMESTAMP, IPSTWILIGHT_LATITUDE, IPSTWILIGHT_LONGITUDE, 96, date("O")/100);
+		$sunrise2   = date_sunrise($timestamp, SUNFUNCS_RET_TIMESTAMP, IPSTWILIGHT_LATITUDE, IPSTWILIGHT_LONGITUDE, 102, date("O")/100);
+		$sunset2    = date_sunset ($timestamp, SUNFUNCS_RET_TIMESTAMP, IPSTWILIGHT_LATITUDE, IPSTWILIGHT_LONGITUDE, 102, date("O")/100);
+		$sunrise3   = date_sunrise($timestamp, SUNFUNCS_RET_TIMESTAMP, IPSTWILIGHT_LATITUDE, IPSTWILIGHT_LONGITUDE, 108, date("O")/100);
+		$sunset3    = date_sunset ($timestamp, SUNFUNCS_RET_TIMESTAMP, IPSTWILIGHT_LATITUDE, IPSTWILIGHT_LONGITUDE, 108, date("O")/100);
+
+		if ($useLimited ) {
+			LimitValues('SunriseLimits', $sunrise, $sunset);
+			LimitValues('CivilLimits', $sunrise1, $sunset1);
+			LimitValues('NauticLimits', $sunrise2, $sunset2);
+			LimitValues('AstronomicLimits', $sunrise3, $sunset3);
+		}
+
+
+		$sunriseMins  = (270+(date("H",$sunrise)*60  + date("i",$sunrise))*360/720)%360;
+		$sunsetMins   = (270+(date("H",$sunset)*60   + date("i",$sunset))*360/720)%360;
+		$sunrise1Mins = (270+(date("H",$sunrise1)*60 + date("i",$sunrise1))*360/720)%360;
+		$sunset1Mins  = (270+(date("H",$sunset1)*60  + date("i",$sunset1))*360/720)%360;
+		$sunrise2Mins = (270+(date("H",$sunrise2)*60 + date("i",$sunrise2))*360/720)%360;
+		$sunset2Mins  = (270+(date("H",$sunset2)*60  + date("i",$sunset2))*360/720)%360;
+		$sunrise3Mins = (270+(date("H",$sunrise3)*60 + date("i",$sunrise3))*360/720)%360;
+		$sunset3Mins  = (270+(date("H",$sunset3)*60  + date("i",$sunset3))*360/720)%360;
+		$middayMins  = (12*60);
+
+		// 0h - 12h
+		imagefilledarc($image, $marginLeft+$clockWidth/2, $marginTop+$clockHeight/2, $clockWidth+2, $clockHeight+2, 0, 360, $grey_line, IMG_ARC_PIE);
+		imagefilledarc($image, $marginLeft+$clockWidth/2, $marginTop+$clockHeight/2, $clockWidth, $clockHeight, 0, 360, $grey, IMG_ARC_PIE);
+
+		if ((date("H",$sunset3)*60+date("i",$sunset3))<(date("H",$sunrise3)*60+date("i",$sunrise3)) or (date("H",$sunset3)*60+date("i",$sunset3))<$middayMins) {
+			imagefilledarc($image, $marginLeft+$clockWidth/2, $marginTop+$clockHeight/2, $clockWidth, $clockHeight, $sunrise3Mins, 270, $grey_sunrise3, IMG_ARC_PIE);
+		} else {
+			imagefilledarc($image, $marginLeft+$clockWidth/2, $marginTop+$clockHeight/2, $clockWidth, $clockHeight, $sunrise3Mins, 270, $grey_sunrise3, IMG_ARC_PIE);
+		}
+		if ((date("H",$sunset2)*60+date("i",$sunset2))<(date("H",$sunrise2)*60+date("i",$sunrise2)) or (date("H",$sunset2)*60+date("i",$sunset2))<$middayMins) {
+			imagefilledarc($image, $marginLeft+$clockWidth/2, $marginTop+$clockHeight/2, $clockWidth, $clockHeight, $sunrise2Mins, 270, $grey_sunrise2, IMG_ARC_PIE);
+		} else {
+			imagefilledarc($image, $marginLeft+$clockWidth/2, $marginTop+$clockHeight/2, $clockWidth, $clockHeight, $sunrise2Mins, 270, $grey_sunrise2, IMG_ARC_PIE);
+		}
+		if ((date("H",$sunset1)*60+date("i",$sunset1))<(date("H",$sunrise1)*60+date("i",$sunrise1)) or (date("H",$sunset1)*60+date("i",$sunset1))<$middayMins) {
+			imagefilledarc($image, $marginLeft+$clockWidth/2, $marginTop+$clockHeight/2, $clockWidth, $clockHeight, $sunrise1Mins, 270, $grey_sunrise1, IMG_ARC_PIE);
+		} else {
+			imagefilledarc($image, $marginLeft+$clockWidth/2, $marginTop+$clockHeight/2, $clockWidth, $clockHeight, $sunrise1Mins, 270, $grey_sunrise1, IMG_ARC_PIE);
+		}
+		imagefilledarc($image, $marginLeft+$clockWidth/2, $marginTop+$clockHeight/2, $clockWidth, $clockHeight, $sunriseMins,  270,  $yellow,        IMG_ARC_PIE);
+		//imagefilledarc($image, $marginLeft+$clockWidth/2, $marginTop+$clockHeight/2, $clockWidth, $clockHeight, $sunriseMins,  $sunriseMins+1,  $red,        IMG_ARC_PIE);
+
+		// 12h - 24h
+		imagefilledarc($image, $marginLeft+$clockWidth/2, $marginTop+$marginMiddle+$clockHeight+$clockHeight/2, $clockWidth+2, $clockHeight+2, 0, 360, $grey_line, IMG_ARC_PIE);
+		imagefilledarc($image, $marginLeft+$clockWidth/2, $marginTop+$marginMiddle+$clockHeight+$clockHeight/2, $clockWidth, $clockHeight, 0, 360, $grey, IMG_ARC_PIE);
+		if ((date("H",$sunset3)*60+date("i",$sunset3))<(date("H",$sunrise3)*60+date("i",$sunrise3))) {
+			imagefilledarc($image, $marginLeft+$clockWidth/2, $marginTop+$marginMiddle+$clockHeight+$clockHeight/2, $clockWidth, $clockHeight, $sunset3Mins,270, $grey_sunrise3, IMG_ARC_PIE);
+		} else {
+			imagefilledarc($image, $marginLeft+$clockWidth/2, $marginTop+$marginMiddle+$clockHeight+$clockHeight/2, $clockWidth, $clockHeight, 270, $sunset3Mins, $grey_sunrise3, IMG_ARC_PIE);
+		}
+		if ((date("H",$sunset2)*60+date("i",$sunset2))<(date("H",$sunrise2)*60+date("i",$sunrise2))) {
+			imagefilledarc($image, $marginLeft+$clockWidth/2, $marginTop+$marginMiddle+$clockHeight+$clockHeight/2, $clockWidth, $clockHeight, $sunset2Mins,270, $grey_sunrise2, IMG_ARC_PIE);
+		} else {
+			imagefilledarc($image, $marginLeft+$clockWidth/2, $marginTop+$marginMiddle+$clockHeight+$clockHeight/2, $clockWidth, $clockHeight, 270, $sunset2Mins, $grey_sunrise2, IMG_ARC_PIE);
+		}
+		if ((date("H",$sunset1)*60+date("i",$sunset1))<(date("H",$sunrise1)*60+date("i",$sunrise1))) {
+			imagefilledarc($image, $marginLeft+$clockWidth/2, $marginTop+$marginMiddle+$clockHeight+$clockHeight/2, $clockWidth, $clockHeight, $sunset1Mins,270, $grey_sunrise1, IMG_ARC_PIE);
+		} else {
+			imagefilledarc($image, $marginLeft+$clockWidth/2, $marginTop+$marginMiddle+$clockHeight+$clockHeight/2, $clockWidth, $clockHeight, 270, $sunset1Mins, $grey_sunrise1, IMG_ARC_PIE);
+		}
+		imagefilledarc($image, $marginLeft+$clockWidth/2, $marginTop+$marginMiddle+$clockHeight+$clockHeight/2, $clockWidth, $clockHeight, 270,  $sunsetMins,  $yellow,        IMG_ARC_PIE);
+		//imagefilledarc($image, $marginLeft+$clockWidth/2, $marginTop+$marginMiddle+$clockHeight+$clockHeight/2, $clockWidth, $clockHeight, $sunsetMins,  $sunsetMins+1,  $red,        IMG_ARC_PIE);
+
+
+		imagestring($image,2,$marginLeft+$clockWidth/2-3,$marginTop-14,"00",$textColor);
+		imagestring($image,2,$marginLeft+$clockWidth/2-3,$marginTop+$clockHeight+2,"06",$textColor);
+		imagestring($image,2,$marginLeft-14,             $marginTop+$clockHeight/2-6,"09",$textColor);
+		imagestring($image,2,$marginLeft+$clockWidth+4,  $marginTop+$clockHeight/2-6,"03",$textColor);
+
+		imagestring($image,2,$marginLeft+$clockWidth/2-3,$marginTop+$clockHeight+$marginMiddle-14,"24",$textColor);
+		imagestring($image,2,$marginLeft+$clockWidth/2-3,$marginTop+$clockHeight*2+2+$marginMiddle,"18",$textColor);
+		imagestring($image,2,$marginLeft-14,             $marginTop+$clockHeight+$marginMiddle+$clockHeight/2-6,"21",$textColor);
+		imagestring($image,2,$marginLeft+$clockWidth+4,  $marginTop+$clockHeight+$marginMiddle+$clockHeight/2-6,"15",$textColor);
+
+
+		imagesetthickness($image, 1);
+		for ($alpha=0; $alpha<360; $alpha=$alpha+30) {
+			imageline($image, $marginLeft+$clockWidth/2*(1+cos(deg2rad($alpha))),
+			                  $marginTop+$clockWidth/2*(1+sin(deg2rad($alpha))),
+									$marginLeft+10+($clockWidth-20)/2*(1+cos(deg2rad($alpha))),
+									$marginTop+10+($clockWidth-20)/2*(1+sin(deg2rad($alpha))), $grey_line );
+
+			imageline($image, $marginLeft+$clockWidth/2*(1+cos(deg2rad($alpha))),
+			                  $marginTop+$clockHeight+$marginMiddle+$clockWidth/2*(1+sin(deg2rad($alpha))),
+									$marginLeft+10+($clockWidth-20)/2*(1+cos(deg2rad($alpha))),
+									$marginTop+$clockHeight+$marginMiddle+10+($clockWidth-20)/2*(1+sin(deg2rad($alpha))), $grey_line );
+
+		}
+
+		imagestring($image,1,10,$imageHeight-7,"Generated at ".date('d-M-Y H:i:s')."",$textColor);
+
+		imagegif ($image, IPS_GetKernelDir().'media/'.$fileName.'.gif', 90);
+		imagedestroy($image);
+	}
+	
+	protected function GenerateTwilightGraphic($fileName, $useLimited=false, $dayDivisor = 4.4, $dayWidth = 1.8)
+	{
+		$dayHeight    = 1440/$dayDivisor;     //24h*60Min=1440Min, 1440/4=360
+		$marginLeft   = 20;
+		$marginTop    = 5;
+		$marginBottom = 30;
+		$marginRight  = 5;
+		$imageWidth   = (365+30)*$dayWidth+$marginLeft+$marginRight; // 365days, 2*365=730
+		$imageHeight  = $dayHeight + $marginBottom + $marginTop;
+
+		$image  = imagecreate($imageWidth,$imageHeight);
+
+		$white         = imagecolorallocate($image,255,255,255);
+		$textColor     = imagecolorallocate($image,250,250,250);
+		$transparent   = imagecolortransparent($image,$white);
+		$black         = imagecolorallocate($image,0,0,0);
+		$red           = imagecolorallocate($image,255,0,0);
+		$green         = imagecolorallocate($image,0,255,0);
+		$blue          = imagecolorallocate($image,0,0,255);
+		$grey_back     = imagecolorallocate($image, 100, 100, 100);
+		$grey_line     = imagecolorallocate($image, 120, 120, 120);
+		$grey_sunrise1 = imagecolorallocate($image, 200, 200, 200);
+		$grey_sunrise2 = imagecolorallocate($image, 170, 170, 170);
+		$grey_sunrise3 = imagecolorallocate($image, 140, 140, 140);
+		$grey          = imagecolorallocate($image, 100, 100, 100);
+		$yellow        = imagecolorallocate($image, 255, 255, 0);
+
+		imagefilledrectangle($image,1,1,$imageWidth,$imageHeight,$transparent);
+		imagefilledrectangle($image,$marginLeft-2,$marginTop-2,$marginLeft+(365+30)*$dayWidth+1,$marginTop+$dayHeight+2,$black);
+
+		$timestamp  = mktime(12, 0, 0, 1, 1, date("Y"))-15*3600*24;
+		for ($day=0; $day<365+30; $day++) {
+			$sunrise     = date_sunrise($timestamp, SUNFUNCS_RET_TIMESTAMP, IPSTWILIGHT_LATITUDE, IPSTWILIGHT_LONGITUDE, 90+50/60, date("O")/100);
+			$sunset      = date_sunset ($timestamp, SUNFUNCS_RET_TIMESTAMP, IPSTWILIGHT_LATITUDE, IPSTWILIGHT_LONGITUDE, 90+50/60, date("O")/100);
+			$sunrise1    = date_sunrise($timestamp, SUNFUNCS_RET_TIMESTAMP, IPSTWILIGHT_LATITUDE, IPSTWILIGHT_LONGITUDE, 96, date("O")/100);
+			$sunset1     = date_sunset ($timestamp, SUNFUNCS_RET_TIMESTAMP, IPSTWILIGHT_LATITUDE, IPSTWILIGHT_LONGITUDE, 96, date("O")/100);
+			$sunrise2    = date_sunrise($timestamp, SUNFUNCS_RET_TIMESTAMP, IPSTWILIGHT_LATITUDE, IPSTWILIGHT_LONGITUDE, 102, date("O")/100);
+			$sunset2     = date_sunset ($timestamp, SUNFUNCS_RET_TIMESTAMP, IPSTWILIGHT_LATITUDE, IPSTWILIGHT_LONGITUDE, 102, date("O")/100);
+			$sunrise3    = date_sunrise($timestamp, SUNFUNCS_RET_TIMESTAMP, IPSTWILIGHT_LATITUDE, IPSTWILIGHT_LONGITUDE, 108, date("O")/100);
+			$sunset3     = date_sunset ($timestamp, SUNFUNCS_RET_TIMESTAMP, IPSTWILIGHT_LATITUDE, IPSTWILIGHT_LONGITUDE, 108, date("O")/100);
+
+			if ($useLimited ) {
+				LimitValues('SunriseLimits', $sunrise, $sunset);
+				LimitValues('CivilLimits', $sunrise1, $sunset1);
+				LimitValues('NauticLimits', $sunrise2, $sunset2);
+				LimitValues('AstronomicLimits', $sunrise3, $sunset3);
+			}
+
+			$sunriseMins = (date("H",$sunrise)*60 + date("i",$sunrise)) / $dayDivisor;
+			$sunsetMins  = (date("H",$sunset)*60 +  date("i",$sunset))  / $dayDivisor;
+			$sunrise1Mins = (date("H",$sunrise1)*60 + date("i",$sunrise1)) / $dayDivisor;
+			$sunset1Mins  = (date("H",$sunset1)*60 +  date("i",$sunset1))  / $dayDivisor;
+			$sunrise2Mins = (date("H",$sunrise2)*60 + date("i",$sunrise2)) / $dayDivisor;
+			$sunset2Mins  = (date("H",$sunset2)*60 +  date("i",$sunset2))  / $dayDivisor;
+			$sunrise3Mins = (date("H",$sunrise3)*60 + date("i",$sunrise3)) / $dayDivisor;
+			$sunset3Mins  = (date("H",$sunset3)*60 +  date("i",$sunset3))  / $dayDivisor;
+			$middayMins  = (12*60) / $dayDivisor;
+
+			$dayBeg = $marginLeft+$day*$dayWidth-$dayWidth+1;
+			$dayEnd = $marginLeft+$day*$dayWidth;
+
+
+			imagefilledrectangle($image, $dayBeg, $marginTop, $marginLeft+$day*$dayWidth, $marginTop+$dayHeight, $grey );
+			if ($sunset3Mins<$sunrise3Mins or $sunset3Mins<$middayMins) {
+				imagefilledrectangle($image, $dayBeg, $marginTop,                         $dayEnd, $marginTop+$dayHeight-$sunrise3Mins,  $grey_sunrise3);
+				imagefilledrectangle($image, $dayBeg, $marginTop+$dayHeight-$sunset3Mins, $dayEnd, $marginTop+$dayHeight,                $grey_sunrise3);
+			} else {
+				imagefilledrectangle($image, $dayBeg, $marginTop+$dayHeight-$sunrise3Mins, $dayEnd, $marginTop+$dayHeight-$sunset3Mins,  $grey_sunrise3);
+			}
+			if ($sunset2Mins<$sunrise2Mins or $sunset2Mins<$middayMins) {
+				imagefilledrectangle($image, $dayBeg, $marginTop,                         $dayEnd, $marginTop+$dayHeight-$sunrise2Mins,  $grey_sunrise2);
+				imagefilledrectangle($image, $dayBeg, $marginTop+$dayHeight-$sunset2Mins, $dayEnd, $marginTop+$dayHeight,                $grey_sunrise2);
+			} else {
+				imagefilledrectangle($image, $dayBeg, $marginTop+$dayHeight-$sunrise2Mins, $dayEnd, $marginTop+$dayHeight-$sunset2Mins,  $grey_sunrise2);
+			}
+			if ($sunset1Mins<$sunrise1Mins or $sunset1Mins<$middayMins) {
+				imagefilledrectangle($image, $dayBeg, $marginTop,                         $dayEnd, $marginTop+$dayHeight-$sunrise1Mins,  $grey_sunrise1);
+				imagefilledrectangle($image, $dayBeg, $marginTop+$dayHeight-$sunset1Mins, $dayEnd, $marginTop+$dayHeight,                $grey_sunrise1);
+			} else {
+				imagefilledrectangle($image, $dayBeg, $marginTop+$dayHeight-$sunrise1Mins, $dayEnd, $marginTop+$dayHeight-$sunset1Mins,  $grey_sunrise1);
+			}
+			imagefilledrectangle($image, $dayBeg, $marginTop+$dayHeight-$sunriseMins,  $dayEnd, $marginTop+$dayHeight-$sunsetMins,  $yellow );
+			imagefilledrectangle($image, $dayBeg, $marginTop+$dayHeight-$sunriseMins,  $dayEnd, $marginTop+$dayHeight-$sunriseMins, $red );
+			imagefilledrectangle($image, $dayBeg, $marginTop+$dayHeight-$sunsetMins,   $dayEnd, $marginTop+$dayHeight-$sunsetMins,  $red );
+
+			// Line for new Month
+			if (date("d",$timestamp)==1) {
+				imagefilledrectangle($image, $dayEnd, $marginTop, $dayEnd, $marginTop+$dayHeight, $grey_line );
+				if ($day<365) {
+					imagestring($image,2,$dayBeg+30*$dayWidth/2-8,$marginTop+$dayHeight+5,date('M',$timestamp),$textColor);
+				}
+			}
+			// Line for current Day
+			if (date("d",$timestamp)==date("d",time()) and date("m",$timestamp)==date("m",time())) {
+				imagefilledrectangle($image, $dayBeg,   $marginTop, $dayEnd,   $marginTop+$dayHeight, $blue );
+				imagefilledrectangle($image, $dayBeg-1, $marginTop, $dayEnd-1, $marginTop+$dayHeight, $blue );
+			}
+			$timestamp = $timestamp+60*60*24;
+		}
+
+		// Hour Lines/Text
+		for ($hour=0; $hour<=24; $hour=$hour+2) {
+			imageline($image, $marginLeft, $marginTop+$dayHeight/24*$hour, $marginLeft+(365+30)*$dayWidth-2, $marginTop+$dayHeight/24*$hour, $grey_line );
+			imagestring($image,2,2,$marginTop+$dayHeight-8-($dayHeight/24*$hour),str_pad($hour,2,'0', STR_PAD_LEFT),$textColor);
+		}
+
+		//imagestring($image,3,$imageWidth/2-100,15,"Tag- und Nachtstunden in Korneuburg",$textColor);
+		imagestring($image,1,10,$marginTop+$dayHeight+$marginBottom-7,"Generated at ".date('d-M-Y H:i:s')." by Brownson",$textColor);
+		imagegif ($image, IPS_GetKernelDir().'media/'.$fileName.'.gif', 90);
+		imagedestroy($image);
+	}
+	
 	// Profil anlegen
 	protected function SetupProfile($vartype, $name, $icon, $prefix, $suffix, $minvalue, $maxvalue, $stepsize, $digits, $associations)
 	{
@@ -3727,6 +4042,23 @@ class Astronomy extends IPSModule
                     "type": "CheckBox",
                     "caption": "season"
                 },
+				{ "type": "Label", "label": "____________________________________________________________________" },
+				{
+                    "name": "pictureyeartwilight",
+                    "type": "CheckBox",
+                    "caption": "picture year twilight"
+                },
+				{
+                    "name": "picturedaytwilight",
+                    "type": "CheckBox",
+                    "caption": "picture day twilight"
+                },
+				{
+                    "name": "picturetwilightlimited",
+                    "type": "CheckBox",
+                    "caption": "show pictures twilight limited"
+                },
+				{ "type": "Label", "label": "____________________________________________________________________" },
 				{
                     "name": "picturemoon",
                     "type": "CheckBox",
