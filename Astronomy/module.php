@@ -714,7 +714,7 @@ class Astronomy extends IPSModule
 			$ContentYear = $this->GenerateTwilightGraphic($filename, false, 4.4, 1.8);
 		}
 		$SourceYear = IPS_GetKernelDir().'media'.DIRECTORY_SEPARATOR.$filename.'.gif';
-		$nameyear = "IPSTwilight_YearLimited";
+		$nameyear = "Dämmerungszeiten Jahr";
 		$picid = "TwilightYearPicture";
 		$MediaID = $this->CreateMediaImage('TwilightYearPicture', $nameyear, $picid, $ContentYear, $this->InstanceID, $SourceYear, 27, "pictureyeartwilight");
 		return $MediaID;
