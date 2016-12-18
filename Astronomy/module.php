@@ -440,7 +440,11 @@ class Astronomy extends IPSModule
 			$mondphase = $this->MoonphasePercent();
 			$picture = $this->GetMoonPicture($mondphase);
 			$objid = $this->UpdateMedia($picture["picid"]);
-			IPS_SetIcon($objid, "Moon");
+			if($objid > 0)
+			{
+				IPS_SetIcon($objid, "Moon");
+			}
+			
 		}
 		else
 		{
@@ -551,33 +555,34 @@ class Astronomy extends IPSModule
 			}
 			$Content = @Sys_GetURLContent($ImageFile); 
 			$name = "Mond Ansicht";
-			if($this->ReadPropertyBoolean("picturemoonvisible") == true) 
-			{
-				$MediaID = $this->CreateMediaImage('picturemoon', $name, $picid, $Content, $this->InstanceID, $ImageFile, 21);
-			}
+			$MediaID = $this->CreateMediaImage('picturemoon', $name, $picid, $Content, $this->InstanceID, $ImageFile, 21, "picturemoonvisible");
 			return $MediaID;
 	}
 	
-	protected function CreateMediaImage($Ident, $name, $picid, $Content, $modulid, $ImageFile, $position)
+	protected function CreateMediaImage($Ident, $name, $picid, $Content, $modulid, $ImageFile, $position, $visible)
 	{
-		$MediaID = @$this->GetIDForIdent($Ident);
-		if ($MediaID === false)
-			{
-				$MediaID = IPS_CreateMedia(1);                  // Image im MedienPool anlegen
-				IPS_SetParent($MediaID, $modulid); // Medienobjekt einsortieren unter dem Modul
-				IPS_SetIdent ($MediaID, $Ident);
-				IPS_SetPosition($MediaID, $position);
-				IPS_SetMediaCached($MediaID, true);
-				// Das Cachen für das Mediaobjekt wird aktiviert.
-				// Beim ersten Zugriff wird dieses von der Festplatte ausgelesen
-				// und zukünftig nur noch im Arbeitsspeicher verarbeitet.
-				IPS_SetName($MediaID, $name); // Medienobjekt benennen
-			}
-			
-		IPS_SetMediaFile($MediaID, $ImageFile, False);    // Image im MedienPool mit Image-Datei verbinden
-		IPS_SetInfo ($MediaID, $picid);
-		IPS_SetMediaContent($MediaID, base64_encode($Content));  //Bild Base64 codieren und ablegen
-		IPS_SendMediaEvent($MediaID); //aktualisieren
+		$MediaID = false;
+		if($this->ReadPropertyBoolean($visible) == true)
+		{
+			$MediaID = @$this->GetIDForIdent($Ident);
+			if ($MediaID === false)
+				{
+					$MediaID = IPS_CreateMedia(1);                  // Image im MedienPool anlegen
+					IPS_SetParent($MediaID, $modulid); // Medienobjekt einsortieren unter dem Modul
+					IPS_SetIdent ($MediaID, $Ident);
+					IPS_SetPosition($MediaID, $position);
+					IPS_SetMediaCached($MediaID, true);
+					// Das Cachen für das Mediaobjekt wird aktiviert.
+					// Beim ersten Zugriff wird dieses von der Festplatte ausgelesen
+					// und zukünftig nur noch im Arbeitsspeicher verarbeitet.
+					IPS_SetName($MediaID, $name); // Medienobjekt benennen
+				}
+				
+			IPS_SetMediaFile($MediaID, $ImageFile, False);    // Image im MedienPool mit Image-Datei verbinden
+			IPS_SetInfo ($MediaID, $picid);
+			IPS_SetMediaContent($MediaID, base64_encode($Content));  //Bild Base64 codieren und ablegen
+			IPS_SendMediaEvent($MediaID); //aktualisieren
+		}
 		return $MediaID;
 	}
 	
@@ -691,7 +696,7 @@ class Astronomy extends IPSModule
 		}
 		$nameday = "Dämmerungszeiten Tag";
 		$picid = "TwilightDayPicture";
-		$MediaID = $this->CreateMediaImage('TwilightDayPicture', $nameday, $picid, $ContentDay, $this->InstanceID, $SourceDay, 26);
+		$MediaID = $this->CreateMediaImage('TwilightDayPicture', $nameday, $picid, $ContentDay, $this->InstanceID, $SourceDay, 26, "picturedaytwilight");
 		return $MediaID;
 	}
 	
@@ -709,7 +714,7 @@ class Astronomy extends IPSModule
 		}
 		$nameyear = "IPSTwilight_YearLimited";
 		$picid = "TwilightYearPicture";
-		$MediaID = $this->CreateMediaImage('TwilightYearPicture', $nameyear, $picid, $ContentYear, $this->InstanceID, $SourceYear, 27);
+		$MediaID = $this->CreateMediaImage('TwilightYearPicture', $nameyear, $picid, $ContentYear, $this->InstanceID, $SourceYear, 27, "pictureyeartwilight");
 		return $MediaID;
 	}
 	
