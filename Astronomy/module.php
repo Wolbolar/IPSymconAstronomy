@@ -709,7 +709,7 @@ class Astronomy extends IPSModule
 		}
 		elseif($type == "Standard")
 		{
-			$filename = "Astronomy_IPSTwilight_YearUnlimited";
+			$filename = "Astronomy_Twilight_YearUnlimited";
 			$ImagePath = $this->GenerateTwilightGraphic($filename, false, 4.4, 1.8);
 		}
 		$ContentYear = @Sys_GetURLContent($ImagePath);
