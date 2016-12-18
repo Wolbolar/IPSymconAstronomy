@@ -762,14 +762,6 @@ class Astronomy extends IPSModule
 
 		imagefilledrectangle($image,1,1,$imageWidth,$imageHeight,$transparent);
 
-		
-		$civiltwilightstart = $locationinfo["CivilTwilightStart"];
-		$civiltwilightend = $locationinfo["CivilTwilightEnd"];
-		$nautictwilightstart = $locationinfo["NauticTwilightStart"];
-		$nautictwilightend = $locationinfo["NauticTwilightEnd"];
-		$astronomictwilightstart = $locationinfo["AstronomicTwilightStart"];
-		$astronomictwilightend = $locationinfo["AstronomicTwilightEnd"];
-		
 		$sunrise1   = $civiltwilightstart;
 		$sunset1    = $civiltwilightend;
 		$sunrise2   = $nautictwilightstart;
@@ -865,7 +857,6 @@ class Astronomy extends IPSModule
 
 		}
 
-		//imagestring($image,1,10,$imageHeight-7,"Generated at ".date('d-M-Y H:i:s')."",$textColor);
 		$ImagePath  = IPS_GetKernelDir().'media'.DIRECTORY_SEPARATOR.$filename.'.gif';
 		imagegif ($image, $ImagePath);
 		imagedestroy($image);
@@ -916,13 +907,25 @@ class Astronomy extends IPSModule
 
 		$timestamp  = mktime(12, 0, 0, 1, 1, date("Y"))-15*3600*24;
 		for ($day=0; $day<365+30; $day++)
-			{
+		{
+			/*
 			$sunrise1   = $civiltwilightstart;
 			$sunset1    = $civiltwilightend;
 			$sunrise2   = $nautictwilightstart;
 			$sunset2    = $nautictwilightend;
 			$sunrise3   = $astronomictwilightstart;
 			$sunset3    = $astronomictwilightend;
+			*/
+			
+			$sunrise     = date_sunrise($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 90+50/60, date("O")/100);
+			$sunset      = date_sunset ($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 90+50/60, date("O")/100);
+			$sunrise1    = date_sunrise($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 96, date("O")/100);
+			$sunset1     = date_sunset ($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 96, date("O")/100);
+			$sunrise2    = date_sunrise($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 102, date("O")/100);
+			$sunset2     = date_sunset ($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 102, date("O")/100);
+			$sunrise3    = date_sunrise($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 108, date("O")/100);
+			$sunset3     = date_sunset ($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 108, date("O")/100);
+
 			
 			/*
 			if ($useLimited ) {
@@ -948,22 +951,31 @@ class Astronomy extends IPSModule
 
 
 			imagefilledrectangle($image, $dayBeg, $marginTop, $marginLeft+$day*$dayWidth, $marginTop+$dayHeight, $grey );
-			if ($sunset3Mins<$sunrise3Mins or $sunset3Mins<$middayMins) {
+			if ($sunset3Mins<$sunrise3Mins or $sunset3Mins<$middayMins)
+			{
 				imagefilledrectangle($image, $dayBeg, $marginTop,                         $dayEnd, $marginTop+$dayHeight-$sunrise3Mins,  $grey_sunrise3);
 				imagefilledrectangle($image, $dayBeg, $marginTop+$dayHeight-$sunset3Mins, $dayEnd, $marginTop+$dayHeight,                $grey_sunrise3);
-			} else {
+			}
+			else
+			{
 				imagefilledrectangle($image, $dayBeg, $marginTop+$dayHeight-$sunrise3Mins, $dayEnd, $marginTop+$dayHeight-$sunset3Mins,  $grey_sunrise3);
 			}
-			if ($sunset2Mins<$sunrise2Mins or $sunset2Mins<$middayMins) {
+			if ($sunset2Mins<$sunrise2Mins or $sunset2Mins<$middayMins)
+			{
 				imagefilledrectangle($image, $dayBeg, $marginTop,                         $dayEnd, $marginTop+$dayHeight-$sunrise2Mins,  $grey_sunrise2);
 				imagefilledrectangle($image, $dayBeg, $marginTop+$dayHeight-$sunset2Mins, $dayEnd, $marginTop+$dayHeight,                $grey_sunrise2);
-			} else {
+			}
+			else
+			{
 				imagefilledrectangle($image, $dayBeg, $marginTop+$dayHeight-$sunrise2Mins, $dayEnd, $marginTop+$dayHeight-$sunset2Mins,  $grey_sunrise2);
 			}
-			if ($sunset1Mins<$sunrise1Mins or $sunset1Mins<$middayMins) {
+			if ($sunset1Mins<$sunrise1Mins or $sunset1Mins<$middayMins)
+			{
 				imagefilledrectangle($image, $dayBeg, $marginTop,                         $dayEnd, $marginTop+$dayHeight-$sunrise1Mins,  $grey_sunrise1);
 				imagefilledrectangle($image, $dayBeg, $marginTop+$dayHeight-$sunset1Mins, $dayEnd, $marginTop+$dayHeight,                $grey_sunrise1);
-			} else {
+			}
+			else
+			{
 				imagefilledrectangle($image, $dayBeg, $marginTop+$dayHeight-$sunrise1Mins, $dayEnd, $marginTop+$dayHeight-$sunset1Mins,  $grey_sunrise1);
 			}
 			imagefilledrectangle($image, $dayBeg, $marginTop+$dayHeight-$sunriseMins,  $dayEnd, $marginTop+$dayHeight-$sunsetMins,  $yellow );
@@ -971,14 +983,17 @@ class Astronomy extends IPSModule
 			imagefilledrectangle($image, $dayBeg, $marginTop+$dayHeight-$sunsetMins,   $dayEnd, $marginTop+$dayHeight-$sunsetMins,  $red );
 
 			// Line for new Month
-			if (date("d",$timestamp)==1) {
+			if (date("d",$timestamp)==1)
+			{
 				imagefilledrectangle($image, $dayEnd, $marginTop, $dayEnd, $marginTop+$dayHeight, $grey_line );
-				if ($day<365) {
+				if ($day<365)
+				{
 					imagestring($image,2,$dayBeg+30*$dayWidth/2-8,$marginTop+$dayHeight+5,date('M',$timestamp),$textColor);
 				}
 			}
 			// Line for current Day
-			if (date("d",$timestamp)==date("d",time()) and date("m",$timestamp)==date("m",time())) {
+			if (date("d",$timestamp)==date("d",time()) and date("m",$timestamp)==date("m",time()))
+			{
 				imagefilledrectangle($image, $dayBeg,   $marginTop, $dayEnd,   $marginTop+$dayHeight, $blue );
 				imagefilledrectangle($image, $dayBeg-1, $marginTop, $dayEnd-1, $marginTop+$dayHeight, $blue );
 			}
@@ -986,13 +1001,12 @@ class Astronomy extends IPSModule
 		}
 
 		// Hour Lines/Text
-		for ($hour=0; $hour<=24; $hour=$hour+2) {
+		for ($hour=0; $hour<=24; $hour=$hour+2)
+		{
 			imageline($image, $marginLeft, $marginTop+$dayHeight/24*$hour, $marginLeft+(365+30)*$dayWidth-2, $marginTop+$dayHeight/24*$hour, $grey_line );
 			imagestring($image,2,2,$marginTop+$dayHeight-8-($dayHeight/24*$hour),str_pad($hour,2,'0', STR_PAD_LEFT),$textColor);
 		}
 
-		//imagestring($image,3,$imageWidth/2-100,15,"Tag- und Nachtstunden in Korneuburg",$textColor);
-		//imagestring($image,1,10,$marginTop+$dayHeight+$marginBottom-7,"Generated at ".date('d-M-Y H:i:s')." by Brownson",$textColor);
 		$ImagePath  = IPS_GetKernelDir().'media'.DIRECTORY_SEPARATOR.$filename.'.gif';
 		imagegif ($image, $ImagePath);
 		imagedestroy($image);
@@ -1320,6 +1334,19 @@ class Astronomy extends IPSModule
 		$this->CalculateMoonphase();
 		$this->MoonphaseText();
 		$this->UpdateMedia($picture["picid"]);
+		
+		$limited = $this->ReadPropertyBoolean("picturetwilightlimited");
+		if($limited)
+		{
+			$type = "Limited";
+		}
+		else
+		{
+			$type = "Standard";
+		}
+		$this->TwilightYearPicture($type);
+		$this->TwilightDayPicture($type);
+		
 		
 		
 		$HMSDec = $this->HMSDH($Hour, $Minute, $Second); //Local Time HMS in Decimal Hours
