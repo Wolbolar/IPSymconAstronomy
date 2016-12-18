@@ -555,11 +555,11 @@ class Astronomy extends IPSModule
 			}
 			$Content = @Sys_GetURLContent($ImageFile); 
 			$name = "Mond Ansicht";
-			$MediaID = $this->CreateMediaImage('picturemoon', $name, $picid, $Content, $this->InstanceID, $ImageFile, 21, "picturemoonvisible");
+			$MediaID = $this->CreateMediaImage('picturemoon', $name, $picid, $Content, $ImageFile, 21, "picturemoonvisible");
 			return $MediaID;
 	}
 	
-	protected function CreateMediaImage($Ident, $name, $picid, $Content, $modulid, $ImageFile, $position, $visible)
+	protected function CreateMediaImage($Ident, $name, $picid, $Content, $ImageFile, $position, $visible)
 	{
 		$MediaID = false;
 		if($this->ReadPropertyBoolean($visible) == true)
@@ -568,7 +568,7 @@ class Astronomy extends IPSModule
 			if ($MediaID === false)
 				{
 					$MediaID = IPS_CreateMedia(1);                  // Image im MedienPool anlegen
-					IPS_SetParent($MediaID, $modulid); // Medienobjekt einsortieren unter dem Modul
+					IPS_SetParent($MediaID, $this->InstanceID); // Medienobjekt einsortieren unter dem Modul
 					IPS_SetIdent ($MediaID, $Ident);
 					IPS_SetPosition($MediaID, $position);
 					IPS_SetMediaCached($MediaID, true);
@@ -686,18 +686,17 @@ class Astronomy extends IPSModule
 		if($type == "Limited")
 		{
 			$filename = "Astronomy_Twilight_DayLimited";
-			$ContentDay = $this->GenerateClockGraphic($filename,   true);
-			
+			$ImagePath = GenerateClockGraphic($filename,   true);	
 		}
 		elseif($type == "Standard")
 		{
 			$filename = "Astronomy_Twilight_DayUnlimited";
-			$ContentDay = $this->GenerateClockGraphic($filename, false);
+			$ImagePath = GenerateClockGraphic($filename, false);
 		}
-		$SourceDay  = IPS_GetKernelDir().'media'.DIRECTORY_SEPARATOR.$filename.'.gif';
+		$ContentDay = @Sys_GetURLContent($ImagePath);
 		$nameday = "Dämmerungszeiten Tag";
 		$picid = "TwilightDayPicture";
-		$MediaID = $this->CreateMediaImage('TwilightDayPicture', $nameday, $picid, $ContentDay, $this->InstanceID, $SourceDay, 26, "picturedaytwilight");
+		$MediaID = CreateMediaImage('TwilightDayPicture', $nameday, $picid, $ContentDay, $ImagePath, 26, "picturedaytwilight");
 		return $MediaID;
 	}
 	
@@ -706,17 +705,17 @@ class Astronomy extends IPSModule
 		if($type == "Limited")
 		{
 			$filename = "Astronomy_Twilight_DayLimited";
-			$ContentYear = $this->GenerateTwilightGraphic($filename, true,  4.4, 1.8);	
+			$ImagePath = GenerateTwilightGraphic($filename, true,  4.4, 1.8);	
 		}
 		elseif($type == "Standard")
 		{
 			$filename = "Astronomy_IPSTwilight_YearUnlimited";
-			$ContentYear = $this->GenerateTwilightGraphic($filename, false, 4.4, 1.8);
+			$ImagePath = GenerateTwilightGraphic($filename, false, 4.4, 1.8);
 		}
-		$SourceYear = IPS_GetKernelDir().'media'.DIRECTORY_SEPARATOR.$filename.'.gif';
+		$ContentYear = @Sys_GetURLContent($ImagePath);
 		$nameyear = "Dämmerungszeiten Jahr";
 		$picid = "TwilightYearPicture";
-		$MediaID = $this->CreateMediaImage('TwilightYearPicture', $nameyear, $picid, $ContentYear, $this->InstanceID, $SourceYear, 27, "pictureyeartwilight");
+		$MediaID = CreateMediaImage('TwilightYearPicture', $nameyear, $picid, $ContentYear, $ImagePath, 27, "pictureyeartwilight");
 		return $MediaID;
 	}
 	
@@ -778,14 +777,14 @@ class Astronomy extends IPSModule
 		$sunrise3   = $astronomictwilightstart;
 		$sunset3    = $astronomictwilightend;
 		
-
+		/*
 		if ($useLimited ) {
 			LimitValues('SunriseLimits', $sunrise, $sunset);
 			LimitValues('CivilLimits', $sunrise1, $sunset1);
 			LimitValues('NauticLimits', $sunrise2, $sunset2);
 			LimitValues('AstronomicLimits', $sunrise3, $sunset3);
 		}
-
+		*/
 
 		$sunriseMins  = (270+(date("H",$sunrise)*60  + date("i",$sunrise))*360/720)%360;
 		$sunsetMins   = (270+(date("H",$sunset)*60   + date("i",$sunset))*360/720)%360;
@@ -867,11 +866,10 @@ class Astronomy extends IPSModule
 		}
 
 		//imagestring($image,1,10,$imageHeight-7,"Generated at ".date('d-M-Y H:i:s')."",$textColor);
-
-		//imagegif ($image, IPS_GetKernelDir().'media/'.$filename.'.gif', 90);
-		//imagedestroy($image);
-		$Content = @Sys_GetURLContent($ImageFile);
-		return $Content;
+		$ImagePath  = IPS_GetKernelDir().'media'.DIRECTORY_SEPARATOR.$filename.'.gif';
+		imagegif ($image, $ImagePath);
+		imagedestroy($image);
+		return $ImagePath;
 	}
 	
 	protected function GenerateTwilightGraphic($filename, $useLimited=false, $dayDivisor = 4.4, $dayWidth = 1.8)
@@ -925,14 +923,16 @@ class Astronomy extends IPSModule
 			$sunset2    = $nautictwilightend;
 			$sunrise3   = $astronomictwilightstart;
 			$sunset3    = $astronomictwilightend;
-
+			
+			/*
 			if ($useLimited ) {
 				LimitValues('SunriseLimits', $sunrise, $sunset);
 				LimitValues('CivilLimits', $sunrise1, $sunset1);
 				LimitValues('NauticLimits', $sunrise2, $sunset2);
 				LimitValues('AstronomicLimits', $sunrise3, $sunset3);
 			}
-
+			*/
+			
 			$sunriseMins = (date("H",$sunrise)*60 + date("i",$sunrise)) / $dayDivisor;
 			$sunsetMins  = (date("H",$sunset)*60 +  date("i",$sunset))  / $dayDivisor;
 			$sunrise1Mins = (date("H",$sunrise1)*60 + date("i",$sunrise1)) / $dayDivisor;
@@ -993,10 +993,10 @@ class Astronomy extends IPSModule
 
 		//imagestring($image,3,$imageWidth/2-100,15,"Tag- und Nachtstunden in Korneuburg",$textColor);
 		//imagestring($image,1,10,$marginTop+$dayHeight+$marginBottom-7,"Generated at ".date('d-M-Y H:i:s')." by Brownson",$textColor);
-		//imagegif ($image, IPS_GetKernelDir().'media/'.$filename.'.gif', 90);
-		//imagedestroy($image);
-		$Content = @Sys_GetURLContent($ImageFile);
-		return $Content;
+		$ImagePath  = IPS_GetKernelDir().'media'.DIRECTORY_SEPARATOR.$filename.'.gif';
+		imagegif ($image, $ImagePath);
+		imagedestroy($image);
+		return $ImagePath;
 	}
 	
 	// Profil anlegen
