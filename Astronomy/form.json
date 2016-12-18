@@ -167,7 +167,7 @@
                 },
 				{ "type": "Label", "label": "____________________________________________________________________" },
 				{
-                    "name": "picturemoon",
+                    "name": "picturemoonvisible",
                     "type": "CheckBox",
                     "caption": "picture moon"
                 },

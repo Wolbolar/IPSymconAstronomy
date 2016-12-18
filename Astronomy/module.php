@@ -39,7 +39,7 @@ class Astronomy extends IPSModule
 		$this->RegisterPropertyBoolean("pictureyeartwilight", false);
 		$this->RegisterPropertyBoolean("picturedaytwilight", false);
 		$this->RegisterPropertyBoolean("picturetwilightlimited", false);
-		$this->RegisterPropertyBoolean("picturemoon", false);
+		$this->RegisterPropertyBoolean("picturemoonvisible", false);
 		$this->RegisterPropertyBoolean("sunmoonview", false);
 		$this->RegisterPropertyBoolean("selectionresize", false);
 		$this->RegisterPropertyInteger("mediaimgwidth", 100);
@@ -412,11 +412,11 @@ class Astronomy extends IPSModule
 		}
 		else
 		{
-			$MediaID = @IPS_GetObjectIDByIdent('pictureyeartwilight', $this->InstanceID);
+			$MediaID = @IPS_GetObjectIDByIdent('TwilightYearPicture', $this->InstanceID);
 			if($MediaID > 0)
 				IPS_DeleteMedia($MediaID, true);
 		}
-		if($this->ReadPropertyBoolean("picturedaytwilight") == true) 
+		if($this->ReadPropertyBoolean("TwilightDayPicture") == true) 
 		{
 			$limited = $this->ReadPropertyBoolean("picturetwilightlimited");
 			if($limited)
@@ -431,11 +431,11 @@ class Astronomy extends IPSModule
 		}
 		else
 		{
-			$MediaID = @IPS_GetObjectIDByIdent('picturedaytwilight', $this->InstanceID);
+			$MediaID = @IPS_GetObjectIDByIdent('TwilightDayPicture', $this->InstanceID);
 			if($MediaID > 0)
 				IPS_DeleteMedia($MediaID, true);
 		}
-		if($this->ReadPropertyBoolean("picturemoon") == true) 
+		if($this->ReadPropertyBoolean("picturemoonvisible") == true) 
 		{
 			$mondphase = $this->MoonphasePercent();
 			$picture = $this->GetMoonPicture($mondphase);
@@ -444,9 +444,9 @@ class Astronomy extends IPSModule
 		}
 		else
 		{
-			$MediaID = @IPS_GetObjectIDByIdent('picturemoon', $this->InstanceID);
-			//$MediaID = @$this->GetIDForIdent('picturemoon');
-			echo $MediaID." löschen";
+			//$MediaID = @IPS_GetObjectIDByIdent('picturemoon', $this->InstanceID);
+			$MediaID = @$this->GetIDForIdent('picturemoon');
+			//echo $MediaID." löschen";
 			if($MediaID > 0)
 				IPS_DeleteMedia($MediaID, true);
 		}
@@ -4111,7 +4111,7 @@ class Astronomy extends IPSModule
                 },
 				{ "type": "Label", "label": "____________________________________________________________________" },
 				{
-                    "name": "picturemoon",
+                    "name": "picturemoonvisible",
                     "type": "CheckBox",
                     "caption": "picture moon"
                 },
