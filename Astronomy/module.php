@@ -685,13 +685,13 @@ class Astronomy extends IPSModule
 	{
 		if($type == "Limited")
 		{
-			$filename = "IPSTwilight_DayLimited";
+			$filename = "Astronomy_Twilight_DayLimited";
 			$ContentDay = $this->GenerateClockGraphic($filename,   true);
 			
 		}
 		elseif($type == "Standard")
 		{
-			$filename = "IPSTwilight_DayUnlimited";
+			$filename = "Astronomy_Twilight_DayUnlimited";
 			$ContentDay = $this->GenerateClockGraphic($filename, false);
 		}
 		$SourceDay  = IPS_GetKernelDir().'media'.DIRECTORY_SEPARATOR.$filename.'.gif';
@@ -705,12 +705,12 @@ class Astronomy extends IPSModule
 	{
 		if($type == "Limited")
 		{
-			$filename = "IPSTwilight_DayLimited";
+			$filename = "Astronomy_Twilight_DayLimited";
 			$ContentYear = $this->GenerateTwilightGraphic($filename, true,  4.4, 1.8);	
 		}
 		elseif($type == "Standard")
 		{
-			$filename = "IPSTwilight_YearUnlimited";
+			$filename = "Astronomy_IPSTwilight_YearUnlimited";
 			$ContentYear = $this->GenerateTwilightGraphic($filename, false, 4.4, 1.8);
 		}
 		$SourceYear = IPS_GetKernelDir().'media'.DIRECTORY_SEPARATOR.$filename.'.gif';
