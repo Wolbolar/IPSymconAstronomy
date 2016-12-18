@@ -416,7 +416,7 @@ class Astronomy extends IPSModule
 			if($MediaID > 0)
 				IPS_DeleteMedia($MediaID, true);
 		}
-		if($this->ReadPropertyBoolean("TwilightDayPicture") == true) 
+		if($this->ReadPropertyBoolean("picturedaytwilight") == true) 
 		{
 			$limited = $this->ReadPropertyBoolean("picturetwilightlimited");
 			if($limited)
