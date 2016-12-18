@@ -686,17 +686,17 @@ class Astronomy extends IPSModule
 		if($type == "Limited")
 		{
 			$filename = "Astronomy_Twilight_DayLimited";
-			$ImagePath = GenerateClockGraphic($filename,   true);	
+			$ImagePath = $this->GenerateClockGraphic($filename,   true);	
 		}
 		elseif($type == "Standard")
 		{
 			$filename = "Astronomy_Twilight_DayUnlimited";
-			$ImagePath = GenerateClockGraphic($filename, false);
+			$ImagePath = $this->GenerateClockGraphic($filename, false);
 		}
 		$ContentDay = @Sys_GetURLContent($ImagePath);
 		$nameday = "Dämmerungszeiten Tag";
 		$picid = "TwilightDayPicture";
-		$MediaID = CreateMediaImage('TwilightDayPicture', $nameday, $picid, $ContentDay, $ImagePath, 26, "picturedaytwilight");
+		$MediaID = $this->CreateMediaImage('TwilightDayPicture', $nameday, $picid, $ContentDay, $ImagePath, 26, "picturedaytwilight");
 		return $MediaID;
 	}
 	
@@ -705,17 +705,17 @@ class Astronomy extends IPSModule
 		if($type == "Limited")
 		{
 			$filename = "Astronomy_Twilight_DayLimited";
-			$ImagePath = GenerateTwilightGraphic($filename, true,  4.4, 1.8);	
+			$ImagePath = $this->GenerateTwilightGraphic($filename, true,  4.4, 1.8);	
 		}
 		elseif($type == "Standard")
 		{
 			$filename = "Astronomy_IPSTwilight_YearUnlimited";
-			$ImagePath = GenerateTwilightGraphic($filename, false, 4.4, 1.8);
+			$ImagePath = $this->GenerateTwilightGraphic($filename, false, 4.4, 1.8);
 		}
 		$ContentYear = @Sys_GetURLContent($ImagePath);
 		$nameyear = "Dämmerungszeiten Jahr";
 		$picid = "TwilightYearPicture";
-		$MediaID = CreateMediaImage('TwilightYearPicture', $nameyear, $picid, $ContentYear, $ImagePath, 27, "pictureyeartwilight");
+		$MediaID = $this->CreateMediaImage('TwilightYearPicture', $nameyear, $picid, $ContentYear, $ImagePath, 27, "pictureyeartwilight");
 		return $MediaID;
 	}
 	
