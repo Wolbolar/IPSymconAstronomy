@@ -149,8 +149,25 @@
                     "type": "CheckBox",
                     "caption": "season"
                 },
+				{ "type": "Label", "label": "____________________________________________________________________" },
 				{
-                    "name": "picturemoon",
+                    "name": "pictureyeartwilight",
+                    "type": "CheckBox",
+                    "caption": "picture year twilight"
+                },
+				{
+                    "name": "picturedaytwilight",
+                    "type": "CheckBox",
+                    "caption": "picture day twilight"
+                },
+				{
+                    "name": "picturetwilightlimited",
+                    "type": "CheckBox",
+                    "caption": "show pictures twilight limited"
+                },
+				{ "type": "Label", "label": "____________________________________________________________________" },
+				{
+                    "name": "picturemoonvisible",
                     "type": "CheckBox",
                     "caption": "picture moon"
                 },
