@@ -445,6 +445,7 @@ class Astronomy extends IPSModule
 		else
 		{
 			$MediaID = @IPS_GetObjectIDByIdent('picturemoon', $this->InstanceID);
+			echo $MediaID." löschen";
 			if($MediaID > 0)
 				IPS_DeleteMedia($MediaID, true);
 		}
