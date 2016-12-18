@@ -551,7 +551,10 @@ class Astronomy extends IPSModule
 			}
 			$Content = @Sys_GetURLContent($ImageFile); 
 			$name = "Mond Ansicht";
-			$MediaID = $this->CreateMediaImage('picturemoon', $name, $picid, $Content, $this->InstanceID, $ImageFile, 21);
+			if($this->ReadPropertyBoolean("picturemoonvisible") == true) 
+			{
+				$MediaID = $this->CreateMediaImage('picturemoon', $name, $picid, $Content, $this->InstanceID, $ImageFile, 21);
+			}
 			return $MediaID;
 	}
 	
