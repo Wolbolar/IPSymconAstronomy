@@ -412,7 +412,7 @@ class Astronomy extends IPSModule
 		}
 		else
 		{
-			$MediaID = @$this->GetIDForIdent('pictureyeartwilight');
+			$MediaID = @IPS_GetObjectIDByIdent('pictureyeartwilight', $this->InstanceID);
 			if($MediaID > 0)
 				IPS_DeleteMedia($MediaID, true);
 		}
@@ -431,7 +431,7 @@ class Astronomy extends IPSModule
 		}
 		else
 		{
-			$MediaID = @$this->GetIDForIdent('picturedaytwilight');
+			$MediaID = @IPS_GetObjectIDByIdent('picturedaytwilight', $this->InstanceID);
 			if($MediaID > 0)
 				IPS_DeleteMedia($MediaID, true);
 		}
@@ -444,7 +444,7 @@ class Astronomy extends IPSModule
 		}
 		else
 		{
-			$MediaID = @$this->GetIDForIdent('picturemoon');
+			$MediaID = @IPS_GetObjectIDByIdent('picturemoon', $this->InstanceID);
 			if($MediaID > 0)
 				IPS_DeleteMedia($MediaID, true);
 		}
@@ -676,16 +676,15 @@ class Astronomy extends IPSModule
 
 		if($type == "Limited")
 		{
-			$nameday = "IPSTwilight_DayLimited";
 			$ContentDay = $this->GenerateClockGraphic($nameday,   true);
-			$SourceDay  = IPS_GetKernelDir().'media'.DIRECTORY_SEPARATOR.$nameday.'.gif';
+			$SourceDay  = IPS_GetKernelDir().'media'.DIRECTORY_SEPARATOR.'IPSTwilight_DayLimited.gif';
 		}
 		elseif($type == "Standard")
 		{
-			$nameday = "IPSTwilight_DayUnlimited";
 			$ContentDay = $this->GenerateClockGraphic($nameday, false);
-			$SourceDay  = IPS_GetKernelDir().'media'.DIRECTORY_SEPARATOR.$nameday.'.gif';
+			$SourceDay  = IPS_GetKernelDir().'media'.DIRECTORY_SEPARATOR.'IPSTwilight_DayUnlimited.gif';
 		}
+		$nameday = "Dämmerungszeiten Tag";
 		$picid = "TwilightDayPicture";
 		$MediaID = $this->CreateMediaImage('TwilightDayPicture', $nameday, $picid, $ContentDay, $this->InstanceID, $SourceDay, 26);
 		return $MediaID;
@@ -695,17 +694,15 @@ class Astronomy extends IPSModule
 	{
 		if($type == "Limited")
 		{
-			$nameyear = "IPSTwilight_YearLimited";
 			$ContentYear = $this->GenerateTwilightGraphic($nameyear, true,  4.4, 1.8);
-			$SourceYear = IPS_GetKernelDir().'media'.DIRECTORY_SEPARATOR.$nameyear.'.gif';
+			$SourceYear = IPS_GetKernelDir().'media'.DIRECTORY_SEPARATOR.'IPSTwilight_YearLimited.gif';
 		}
 		elseif($type == "Standard")
 		{
-			$nameyear = "IPSTwilight_YearUnlimited";
 			$ContentYear = $this->GenerateTwilightGraphic('IPSTwilight_YearUnlimited', false, 4.4, 1.8);
-			$SourceYear = IPS_GetKernelDir().'media'.DIRECTORY_SEPARATOR.$nameyear.'.gif';
+			$SourceYear = IPS_GetKernelDir().'media'.DIRECTORY_SEPARATOR.'IPSTwilight_YearUnlimited.gif';
 		}
-	
+		$nameyear = "IPSTwilight_YearLimited";
 		$picid = "TwilightYearPicture";
 		$MediaID = $this->CreateMediaImage('TwilightYearPicture', $nameyear, $picid, $ContentYear, $this->InstanceID, $SourceYear, 27);
 		return $MediaID;
