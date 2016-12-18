@@ -706,12 +706,12 @@ class Astronomy extends IPSModule
 		if($type == "Limited")
 		{
 			$filename = "IPSTwilight_DayLimited";
-			$ContentYear = $this->GenerateTwilightGraphic($nameyear, true,  4.4, 1.8);	
+			$ContentYear = $this->GenerateTwilightGraphic($filename, true,  4.4, 1.8);	
 		}
 		elseif($type == "Standard")
 		{
 			$filename = "IPSTwilight_YearUnlimited";
-			$ContentYear = $this->GenerateTwilightGraphic($nameyear, false, 4.4, 1.8);
+			$ContentYear = $this->GenerateTwilightGraphic($filename, false, 4.4, 1.8);
 		}
 		$SourceYear = IPS_GetKernelDir().'media'.DIRECTORY_SEPARATOR.$filename.'.gif';
 		$nameyear = "IPSTwilight_YearLimited";
