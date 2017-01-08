@@ -1,5 +1,7 @@
 {
     "id": "{AE370BEA-2B51-4C64-A147-0CCE3494FE08}",
+	"title": "Astronomie Instanz",
+	"description": "Instanz zur Anzeige von Julianisches Datum, Mond Azimut, Mond Entfernung, Mond Höhe, Mond Positionswinkel der beleuchteten Fläche, Mond Himmelsrichtung, Mond Sichtbarkeit, Mond Aufgang, Mond Untergang, Mond Phase, Zeitpunkt Neumond, Zeitpunkt Erstes Viertel, Zeitpunkt Vollmond, Zeitpunkt Letztes Viertel, Sonne Azimut, Sonne Entfernung, Sonne Höhe, Sonne Richtung, Jahreszeit, Mondbild und Bild der Dämmerungsanzeige",
     "name": "Astronomy",
     "type": 0,
     "vendor": "Sonstige",

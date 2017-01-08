@@ -1,5 +1,7 @@
 {
     "id": "{5C02271C-D599-4C71-98D3-86C89F94EB96}",
+	"title": "Astronomie Timer Instanz",
+	"description": "Instanz zum Anlegen eines Astronomischen Timers in IP-Symcon",
     "name": "AstronomyTimer",
     "type": 3,
     "vendor": "Sonstige",
