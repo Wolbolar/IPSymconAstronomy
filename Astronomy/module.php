@@ -4444,7 +4444,8 @@ class Astronomy extends IPSModule
 				{ "type": "NumberSpinner", "name": "sunsetoffset", "caption": "offset (minute)" },
 				{ "type": "Label", "label": "____________________________________________________________________" },
 				{ "type": "Label", "label": "optional create extended information:" },
-				{ "type": "Label", "label": "for moonrise, moonset, sunrise, sunset, newmoon, first qarter, full moon, last quarter separate variables with date and time are created if selected" },
+				{ "type": "Label", "label": "for moonrise, moonset, sunrise, sunset, newmoon, first qarter, full moon," },
+				{ "type": "Label", "label": "last quarter separate variables with date and time are created if selected" },
 				{
                     "name": "extinfoselection",
                     "type": "CheckBox",
