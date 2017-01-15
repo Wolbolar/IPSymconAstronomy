@@ -3876,8 +3876,8 @@ class Astronomy extends IPSModule
 			{
 				$moonsetdate = date("d.m.Y", $moonset);
 				$moonsettime = date("G:i:s", $moonset);
-				SetValue($this->GetIDForIdent("moonrisedate"), $moonsetdate);
-				SetValue($this->GetIDForIdent("moonrisetime"), $moonsettime);
+				SetValue($this->GetIDForIdent("moonsetdate"), $moonsetdate);
+				SetValue($this->GetIDForIdent("moonsettime"), $moonsettime);
 			}
 		}
 		return $moonset;
