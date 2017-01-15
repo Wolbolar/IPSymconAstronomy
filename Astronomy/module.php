@@ -1422,9 +1422,7 @@ class Astronomy extends IPSModule
 			SetValue($sunsetobjid, $sunsettimestamp);
 			if($this->ReadPropertyBoolean("extinfoselection") == true) // float
 			{
-				$sunsetdate = date("d.m.Y", $sunsettimestamp);
 				$sunsettime = date("G:i:s", $sunsettimestamp);
-				SetValue($this->GetIDForIdent("sunsetdate"), $sunsetdate);
 				SetValue($this->GetIDForIdent("sunsettime"), $sunsettime);
 			}
 			
@@ -1434,9 +1432,7 @@ class Astronomy extends IPSModule
 			SetValue($sunriseobjid, $sunrisetimestamp);
 			if($this->ReadPropertyBoolean("extinfoselection") == true) // float
 			{
-				$sunrisedate = date("d.m.Y", $sunrisetimestamp);
 				$sunrisetime = date("G:i:s", $sunrisetimestamp);
-				SetValue($this->GetIDForIdent("sunrisedate"), $sunrisedate);
 				SetValue($this->GetIDForIdent("sunrisetime"), $sunrisetime);
 			}
 		}
