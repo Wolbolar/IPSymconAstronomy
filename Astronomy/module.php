@@ -498,8 +498,8 @@ class Astronomy extends IPSModule
 			if($this->ReadPropertyBoolean("sunriseselect") == true) // string
 			{
 				$associations =  Array(	);
-				$this->SetupProfile(IPSVarType::vtString, "Astronomie.Sonnenuntergang_Zeit", "Sun", "", "", 0, 0, 0, 0, $associations);
-				$this->SetupVariable("sunrisetime", "Sonnenaufgang Uhrzeit", "Astronomie.Sonnenaugang_Zeit", 26, IPSVarType::vtString, true);
+				$this->SetupProfile(IPSVarType::vtString, "Astronomie.Sonnenaufgang_Zeit", "Sun", "", "", 0, 0, 0, 0, $associations);
+				$this->SetupVariable("sunrisetime", "Sonnenaufgang Uhrzeit", "Astronomie.Sonnenaufgang_Zeit", 26, IPSVarType::vtString, true);
 			}
 			else
 			{
