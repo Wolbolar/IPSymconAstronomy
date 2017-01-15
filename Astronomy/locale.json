@@ -91,6 +91,8 @@
 			"for moonrise, moonset, sunrise, sunset, newmoon, first qarter, full moon,":"Es werden für Mondaufgang, Monduntergang, Sonnenaufgang, Sonnenuntergang, Neumond, Erstes Viertel, Vollmond,",
 			"last quarter separate variables with date and time are created if selected":"Letztes Viertel zusätzlich einzelne Variablen mit Datum und Uhrzeit zur Visualisierung angelegt",
 			"extended information":"Erweitere Information",
+			"time format, see description of date in the PHP manual for more format information":"Zeit Formatierung, weitere Information der Formatierung unter der date Beschreibung des PHP Handbuchs",
+			"time format":"Zeit Format",
 			"update values": "Werte aktualisieren",
 			"update": "Aktualisieren",
 			"Creating instance.": "Die Instanz wird erstellt.",

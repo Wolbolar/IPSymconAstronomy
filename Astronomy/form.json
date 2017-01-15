@@ -291,7 +291,20 @@
                     "name": "extinfoselection",
                     "type": "CheckBox",
                     "caption": "extended information"
-                },	
+                },
+				{ "type": "Label", "label": "time format, see description of date for more format information" },
+				{ "type": "Select", "name": "timeformat", "caption": "time format",
+					"options": [
+						{ "label": "H:i", "value": 1 },
+						{ "label": "H:i:s", "value": 2 },
+						{ "label": "h:i", "value": 3 },
+						{ "label": "h:i:s", "value": 4 },
+						{ "label": "g:i", "value": 5 },
+						{ "label": "g:i:s", "value": 6 },
+						{ "label": "G:i", "value": 7 },
+						{ "label": "G:i:s", "value": 8 }
+					]
+				},
 				{ "type": "Label", "label": "____________________________________________________________________" }
             ],
 	"actions":

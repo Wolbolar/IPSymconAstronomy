@@ -68,6 +68,7 @@ class Astronomy extends IPSModule
 		$this->RegisterPropertyInteger("frameheighttype", 1);
 		$this->RegisterPropertyInteger("framewidthtype", 2);
 		$this->RegisterPropertyBoolean("extinfoselection", false);
+		$this->RegisterPropertyInteger("timeformat", 1);
     }
 
     public function ApplyChanges()
@@ -1358,6 +1359,44 @@ class Astronomy extends IPSModule
 		return $type;
 	}
 	
+	protected function GetTimeformat()
+	{
+		$formatselection = $this->ReadPropertyInteger("timeformat");
+		if($formatselection == 1)
+		{
+			$timeformat = "H:i";
+		}
+		if($formatselection == 2)
+		{
+			$timeformat = "H:i:s";
+		}
+		if($formatselection == 3)
+		{
+			$timeformat = "h:i";
+		}
+		if($formatselection == 4)
+		{
+			$timeformat = "h:i:s";
+		}
+		if($formatselection == 5)
+		{
+			$timeformat = "g:i";
+		}
+		if($formatselection == 6)
+		{
+			$timeformat = "g:i:s";
+		}
+		if($formatselection == 7)
+		{
+			$timeformat = "G:i";
+		}
+		if($formatselection == 8)
+		{
+			$timeformat = "G:i:s";
+		}
+		return $timeformat;
+	}
+	
 	public function SetAstronomyValues()
 	{
 		$location = $this->getlocation();
@@ -1422,7 +1461,8 @@ class Astronomy extends IPSModule
 			SetValue($sunsetobjid, $sunsettimestamp);
 			if($this->ReadPropertyBoolean("extinfoselection") == true) // float
 			{
-				$sunsettime = date("G:i:s", $sunsettimestamp);
+				$timeformat = $this->GetTimeformat();
+				$sunsettime = date($timeformat, $sunsettimestamp);
 				SetValue($this->GetIDForIdent("sunsettime"), $sunsettime);
 			}
 			
@@ -1432,7 +1472,8 @@ class Astronomy extends IPSModule
 			SetValue($sunriseobjid, $sunrisetimestamp);
 			if($this->ReadPropertyBoolean("extinfoselection") == true) // float
 			{
-				$sunrisetime = date("G:i:s", $sunrisetimestamp);
+				$timeformat = $this->GetTimeformat();
+				$sunrisetime = date($timeformat, $sunrisetimestamp);
 				SetValue($this->GetIDForIdent("sunrisetime"), $sunrisetime);
 			}
 		}
@@ -3569,7 +3610,8 @@ class Astronomy extends IPSModule
 				  elseif ($date == "Sun"){
 				  $wt = "So";}
 		  
-			$moontime =  date("H:i", $datum);
+			$timeformat = $this->GetTimeformat();
+			$moontime =  date($timeformat, $datum);
 		    $date = date("d.m.Y", $datum);		  
 		    $moondate[$i] = array("name" => $ausgabe, "date" => $date, "weekday" => $wt, "time" => $moontime);
 		    $i++;
@@ -3845,8 +3887,9 @@ class Astronomy extends IPSModule
 			SetValue($this->GetIDForIdent("moonrise"), $moonrise);
 			if($this->ReadPropertyBoolean("extinfoselection") == true) // float
 			{
+				$timeformat = $this->GetTimeformat();
 				$moonrisedate = date("d.m.Y", $moonrise);
-				$moonrisetime = date("G:i:s", $moonrise);
+				$moonrisetime = date($timeformat, $moonrise);
 				SetValue($this->GetIDForIdent("moonrisedate"), $moonrisedate);
 				SetValue($this->GetIDForIdent("moonrisetime"), $moonrisetime);
 			}
@@ -3874,8 +3917,9 @@ class Astronomy extends IPSModule
 			SetValue($this->GetIDForIdent("moonset"), $moonset); 
 			if($this->ReadPropertyBoolean("extinfoselection") == true) // float
 			{
+				$timeformat = $this->GetTimeformat();
 				$moonsetdate = date("d.m.Y", $moonset);
-				$moonsettime = date("G:i:s", $moonset);
+				$moonsettime = date($timeformat, $moonset);
 				SetValue($this->GetIDForIdent("moonsetdate"), $moonsetdate);
 				SetValue($this->GetIDForIdent("moonsettime"), $moonsettime);
 			}
@@ -4446,7 +4490,20 @@ class Astronomy extends IPSModule
                     "name": "extinfoselection",
                     "type": "CheckBox",
                     "caption": "extended information"
-                },';
+                },
+				{ "type": "Label", "label": "time format, see description of date for more format information" },
+				{ "type": "Select", "name": "timeformat", "caption": "time format",
+					"options": [
+						{ "label": "H:i", "value": 1 },
+						{ "label": "H:i:s", "value": 2 },
+						{ "label": "h:i", "value": 3 },
+						{ "label": "h:i:s", "value": 4 },
+						{ "label": "g:i", "value": 5 },
+						{ "label": "g:i:s", "value": 6 },
+						{ "label": "G:i", "value": 7 },
+						{ "label": "G:i:s", "value": 8 }
+					]
+				},';
 			return $form;
 		}
 		
