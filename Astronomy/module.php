@@ -3576,9 +3576,9 @@ class Astronomy extends IPSModule
 		}
 		
 		$newmoonstring = $moondate[0]["weekday"].", ".$moondate[0]["date"]." ".$moondate[0]["time"];
-		$firstquarterstring = $moondate[1]["weekday"].", ".$moondate[0]["date"]." ".$moondate[0]["time"];
-		$fullmoonstring = $moondate[2]["weekday"].", ".$moondate[0]["date"]." ".$moondate[0]["time"];
-		$lastquarterstring = $moondate[3]["weekday"].", ".$moondate[0]["date"]." ".$moondate[0]["time"];
+		$firstquarterstring = $moondate[1]["weekday"].", ".$moondate[1]["date"]." ".$moondate[1]["time"];
+		$fullmoonstring = $moondate[2]["weekday"].", ".$moondate[2]["date"]." ".$moondate[2]["time"];
+		$lastquarterstring = $moondate[3]["weekday"].", ".$moondate[3]["date"]." ".$moondate[3]["time"];
 		
 		if($this->ReadPropertyBoolean("newmoon") == true)
 		{
@@ -3599,7 +3599,7 @@ class Astronomy extends IPSModule
 				$firstquarterdate = $moondate[1]["date"];
 				$firstquartertime = $moondate[1]["time"];
 				SetValue($this->GetIDForIdent("firstquarterdate"), $firstquarterdate);
-				SetValue($this->GetIDForIdent("firstquarter"), $firstquartertime);
+				SetValue($this->GetIDForIdent("firstquartertime"), $firstquartertime);
 			}
 		}
 		if($this->ReadPropertyBoolean("fullmoon") == true)
