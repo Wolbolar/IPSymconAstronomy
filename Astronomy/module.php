@@ -3585,10 +3585,10 @@ class Astronomy extends IPSModule
 			SetValue($this->GetIDForIdent("newmoon"), $newmoonstring);	
 			if($this->ReadPropertyBoolean("extinfoselection") == true) // float
 			{
-				$moonrisedate = $moondate[0]["date"];
-				$moonrisetime = $moondate[0]["time"];
-				SetValue($this->GetIDForIdent("moonrisedate"), $moonrisedate);
-				SetValue($this->GetIDForIdent("moonrisetime"), $moonrisetime);
+				$newmoondate = $moondate[0]["date"];
+				$newmoontime = $moondate[0]["time"];
+				SetValue($this->GetIDForIdent("newmoondate"), $newmoondate);
+				SetValue($this->GetIDForIdent("newmoontime"), $newmoontime);
 			}
 		}
 		if($this->ReadPropertyBoolean("firstquarter") == true)
@@ -3596,10 +3596,10 @@ class Astronomy extends IPSModule
 			SetValue($this->GetIDForIdent("firstquarter"), $firstquarterstring);	
 			if($this->ReadPropertyBoolean("extinfoselection") == true) // float
 			{
-				$moonrisedate = $moondate[1]["date"];
-				$moonrisetime = $moondate[1]["time"];
-				SetValue($this->GetIDForIdent("moonrisedate"), $moonrisedate);
-				SetValue($this->GetIDForIdent("moonrisetime"), $moonrisetime);
+				$firstquarterdate = $moondate[1]["date"];
+				$firstquartertime = $moondate[1]["time"];
+				SetValue($this->GetIDForIdent("firstquarterdate"), $firstquarterdate);
+				SetValue($this->GetIDForIdent("firstquarter"), $firstquartertime);
 			}
 		}
 		if($this->ReadPropertyBoolean("fullmoon") == true)
@@ -3607,10 +3607,10 @@ class Astronomy extends IPSModule
 			SetValue($this->GetIDForIdent("fullmoon"), $fullmoonstring);	
 			if($this->ReadPropertyBoolean("extinfoselection") == true) // float
 			{
-				$moonrisedate = $moondate[2]["date"];
-				$moonrisetime = $moondate[2]["time"];
-				SetValue($this->GetIDForIdent("moonrisedate"), $moonrisedate);
-				SetValue($this->GetIDForIdent("moonrisetime"), $moonrisetime);
+				$fullmoondate = $moondate[2]["date"];
+				$fullmoontime = $moondate[2]["time"];
+				SetValue($this->GetIDForIdent("fullmoondate"), $fullmoondate);
+				SetValue($this->GetIDForIdent("fullmoontime"), $fullmoontime);
 			}
 		}
 		if($this->ReadPropertyBoolean("lastquarter") == true)
@@ -3618,10 +3618,10 @@ class Astronomy extends IPSModule
 			SetValue($this->GetIDForIdent("lastquarter"), $lastquarterstring);	
 			if($this->ReadPropertyBoolean("extinfoselection") == true) // float
 			{
-				$moonrisedate = $moondate[3]["date"];
-				$moonrisetime = $moondate[3]["time"];
-				SetValue($this->GetIDForIdent("moonrisedate"), $moonrisedate);
-				SetValue($this->GetIDForIdent("moonrisetime"), $moonrisetime);
+				$lastquarterdate = $moondate[3]["date"];
+				$lastquartertime = $moondate[3]["time"];
+				SetValue($this->GetIDForIdent("lastquarterdate"), $lastquarterdate);
+				SetValue($this->GetIDForIdent("lastquartertime"), $lastquartertime);
 			}
 		}
 		
