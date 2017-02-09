@@ -622,7 +622,7 @@ class AstronomyTimer extends IPSModule
 			}
 		if($cutoffselect)
 		{
-			if (($cutoff > $timestamp && $direction == "up")||($cutoff < $timestamp && $direction == "down"))
+			if (($cutoff > $timestamp && $direction == "up")||($cutoff > $timestamp && $direction == "down"))
 			{
 				$Stunde = intval(date("G", $cutoff));
 				$Minute = intval(date("i", $cutoff));
@@ -630,7 +630,7 @@ class AstronomyTimer extends IPSModule
 				$timestamp = $cutoff;
 				IPS_LogMessage("AstroTimer: ", "Cutoff Set");
 			}
-			if (($cutoff < $timestamp && $direction == "up") || ($cutoff > $timestamp && $direction == "down"))
+			if (($cutoff < $timestamp && $direction == "up") || ($cutoff < $timestamp && $direction == "down"))
 			{
 				$Stunde = intval(date("G", $timestamp));
 				$Minute = intval(date("i", $timestamp));
