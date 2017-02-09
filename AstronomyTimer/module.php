@@ -221,6 +221,7 @@ class AstronomyTimer extends IPSModule
 			$settype = "Variable";
 			$objectid = $this->ReadPropertyInteger("triggervariable");
 			$varvalue = $this->GetTriggerVarValue();
+			$this->SendDebug("ObjektID Variable:",$objectid,0);
 			if($debug)
 					IPS_LogMessage("ObjektID Variable: ", $objectid);
 			
@@ -230,6 +231,7 @@ class AstronomyTimer extends IPSModule
 			$settype = "Script";
 			$objectid = $this->ReadPropertyInteger("triggerscript");
 			$varvalue = 0;
+			$this->SendDebug("ObjektID Skript:",$objectid,0);
 			if($debug)
 				IPS_LogMessage("ObjektID Skript: ", $objectid);
 		}
@@ -462,7 +464,10 @@ class AstronomyTimer extends IPSModule
 	
 	protected function GetCutoffTime()
 	{
-		$cutofftime = $this->ReadPropertyString("cutofftime");
+		$cutofftimeinput = $this->ReadPropertyString("cutofftime");
+		$locationinfo = $this->getlocationinfo();
+		$sunrisedate = date("d.m.Y", $locationinfo["Sunrise"]);
+		$cutofftime = $sunrisedate." ".$cutofftimeinput;
 		$cutofftime = strtotime($cutofftime);
 		return $cutofftime;
 	}
