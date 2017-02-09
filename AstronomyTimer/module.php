@@ -627,6 +627,7 @@ class AstronomyTimer extends IPSModule
 				$Stunde = intval(date("G", $cutoff));
 				$Minute = intval(date("i", $cutoff));
 				$Sekunde = intval(date("s", $cutoff));
+				$timestamp = $cutoff;
 				IPS_LogMessage("AstroTimer: ", "Cutoff Set");
 			}
 			if (($cutoff < $timestamp && $direction == "up") || ($cutoff > $timestamp && $direction == "down"))
