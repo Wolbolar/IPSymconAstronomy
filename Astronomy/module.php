@@ -1403,6 +1403,7 @@ class Astronomy extends IPSModule
 		$Latitude = $location["Latitude"];
 		$Longitude = $location["Longitude"];
 		$locationinfo = $this->getlocationinfo();
+		$isday = $locationinfo["IsDay"];
 		$sunrise = $locationinfo["Sunrise"];
 		$sunset = $locationinfo["Sunset"];
 		$civiltwilightstart = $locationinfo["CivilTwilightStart"];
@@ -1479,6 +1480,7 @@ class Astronomy extends IPSModule
 		}
 		$P = $Latitude;
 		$L = $Longitude;
+		
 		$day = date("d");
 		$month = date("m");
 		$year = date("Y");
@@ -1531,6 +1533,7 @@ class Astronomy extends IPSModule
 		{
 			SetValue($this->GetIDForIdent("juliandate"), $JD);
 		}
+		
 		$LCH = $this->DHHour($HMSDec);  //LCT Hour --> Local Time
 		$LCM = $this->DHMin($HMSDec);   //LCT Minute
 		$LCS = $this->DHSec($HMSDec);   //LCT Second
@@ -1567,7 +1570,7 @@ class Astronomy extends IPSModule
 		{
 			SetValue($this->GetIDForIdent("season"), $season); 
 		}
-
+		
 		//Sun's Dec
 		$SunDec = $this->ECDec($SunlongDeg, $SunlongMin, $SunlongSec, 0, 0, 0, $GD, $GM, $GY);            //returns declination in decimal degrees
 		$SunDecd = $this->DDDeg($SunDec);
@@ -1612,6 +1615,8 @@ class Astronomy extends IPSModule
 		{
 			SetValue($this->GetIDForIdent("sundistance"), $rSun);
 		}
+		
+		
 		
 		//Calculation Moon--------------------------------------------------------------
 
@@ -1692,7 +1697,10 @@ class Astronomy extends IPSModule
 		{
 			SetValue($this->GetIDForIdent("moonbrightlimbangle"), $Moonpabl);
 		}
-		
+				
+		$astronomyinfo = array ("IsDay" => $isday, "Sunrise" => $sunrise, "Sunset" => $sunset, "CivilTwilightStart" => $civiltwilightstart, "CivilTwilightEnd" => $civiltwilightend, "NauticTwilightStart" => $nautictwilightstart, "NauticTwilightEnd" => $nautictwilightend, "AstronomicTwilightStart" => $astronomictwilightstart, "AstronomicTwilightEnd" => $astronomictwilightend,
+		"latitude" => $Latitude, "longitude" => $Longitude, "juliandate" => $JD, "season" => $season, "sunazimut" => $sunazimut, "sundirection" => $SunDazimut, "sunaltitude" => $sunaltitude, "sundistance" => $rSun, "moonazimut" => $Moonphase, "moonaltitude" => $Moonphase, "moondirection" => $Moonphase, "moondistance" => $Moonphase, "moonvisibility" => $Moonphase, "moonbrightlimbangle" => $Moonpabl);
+		return $astronomyinfo;
 	}
 	
 	protected function getlocation()
@@ -4556,7 +4564,7 @@ class Astronomy extends IPSModule
             ]';
 			return $form;
 		}
-		
+				
 		protected function GetIPSVersion ()
 		{
 			$ipsversion = IPS_GetKernelVersion ( );
