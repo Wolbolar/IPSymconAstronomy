@@ -3898,14 +3898,14 @@ class Astronomy extends IPSModule
 		$data = (Moon::calculateMoonTimes($month, $day, $year, $latitude, $longitude));
 
 		$moonrise = $data->{'moonrise'}; //Aufgang
+		$timeformat = $this->GetTimeformat();
+		$moonrisedate = date("d.m.Y", $moonrise);
+		$moonrisetime = date($timeformat, $moonrise);
 		if($this->ReadPropertyBoolean("moonrise") == true) // float
 		{
 			SetValue($this->GetIDForIdent("moonrise"), $moonrise);
 			if($this->ReadPropertyBoolean("extinfoselection") == true) // float
 			{
-				$timeformat = $this->GetTimeformat();
-				$moonrisedate = date("d.m.Y", $moonrise);
-				$moonrisetime = date($timeformat, $moonrise);
 				SetValue($this->GetIDForIdent("moonrisedate"), $moonrisedate);
 				SetValue($this->GetIDForIdent("moonrisetime"), $moonrisetime);
 			}
@@ -3929,14 +3929,14 @@ class Astronomy extends IPSModule
 		$data = (Moon::calculateMoonTimes($month, $day, $year, $latitude, $longitude));
 
 		$moonset = $data->{'moonset'}; //Untergang
+		$timeformat = $this->GetTimeformat();
+		$moonsetdate = date("d.m.Y", $moonset);
+		$moonsettime = date($timeformat, $moonset);
 		if($this->ReadPropertyBoolean("moonset") == true) // float
 		{
 			SetValue($this->GetIDForIdent("moonset"), $moonset); 
 			if($this->ReadPropertyBoolean("extinfoselection") == true) // float
 			{
-				$timeformat = $this->GetTimeformat();
-				$moonsetdate = date("d.m.Y", $moonset);
-				$moonsettime = date($timeformat, $moonset);
 				SetValue($this->GetIDForIdent("moonsetdate"), $moonsetdate);
 				SetValue($this->GetIDForIdent("moonsettime"), $moonsettime);
 			}
