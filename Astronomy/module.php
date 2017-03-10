@@ -4624,19 +4624,88 @@ class Astronomy extends IPSModule
 			{
 				$season = "Winter";
 			}
-			$sunazimut = $astronomyinfo['sunazimut'];
-			$SunDazimut = $astronomyinfo['sundirection'];
-			$sunaltitude = $astronomyinfo['sunaltitude'];
-			$rSun = $astronomyinfo['sundistance'];
+			$sunazimut = round($astronomyinfo['sunazimut'], 2)." Grad";
+			$SunDazimut = $this->GetSpokenDirection($astronomyinfo['sundirection']);
+			$sunaltitude = round($astronomyinfo['sunaltitude'], 2)." Grad";
+			$rSun = round($astronomyinfo['sundistance'], 0)." Kilometer";
 			$moonazimut = $astronomyinfo['moonazimut'];
-			$moonaltitude = $astronomyinfo['moonaltitude'];
-			$dazimut = $astronomyinfo['moondirection'];
-			$MoonDist = $astronomyinfo['moondistance'];
-			$Moonphase = $astronomyinfo['moonvisibility'];
+			$moonaltitude = round($astronomyinfo['moonaltitude'], 2)." Grad";
+			$dazimut = $this->GetSpokenDirection($astronomyinfo['moondirection']);
+			$MoonDist = round($astronomyinfo['moondistance'], 0)." Kilometer";
+			$Moonphase = $astronomyinfo['moonvisibility']." Prozent";
 			$Moonpabl = round($astronomyinfo['moonbrightlimbangle'], 2)." Grad";
 			$alexaresponse = array("isday" => $isday, "sunrisetime" => $sunrisetime, "sunrisedate" => $sunrisedate, "sunsettime" => $sunsettime, "sunsetdate" => $sunsetdate, "moonsetdate" => $moonsetdate, "moonsettime" => $moonsettime, "moonrisedate" => $moonrisedate, "moonrisetime" => $moonrisetime,"CivilTwilightStart" => $civiltwilightstart, "CivilTwilightEnd" => $civiltwilightend, "NauticTwilightStart" => $nautictwilightstart, "NauticTwilightEnd" => $nautictwilightend, "AstronomicTwilightStart" => $astronomictwilightstart, "AstronomicTwilightEnd" => $astronomictwilightend,
 			"latitude" => $Latitude, "longitude" => $Longitude, "juliandate" => $JD, "season" => $season, "sunazimut" => $sunazimut, "sundirection" => $SunDazimut, "sunaltitude" => $sunaltitude, "sundistance" => $rSun, "moonazimut" => $moonazimut, "moonaltitude" => $moonaltitude, "moondirection" => $dazimut, "moondistance" => $MoonDist, "moonvisibility" => $Moonphase, "moonbrightlimbangle" => $Moonpabl);
 			return $alexaresponse;
+		}
+		
+		protected GetSpokenDirection($direction)
+		{
+			if($direction == 0)
+			{
+				$direction = "Nord";
+			}
+			elseif($direction == 1)
+			{
+				$direction = "Nord Nord Ost";
+			}
+			elseif($direction == 2)
+			{
+				$direction = "Nord Ost";
+			}
+			elseif($direction == 3)
+			{
+				$direction = "Ost Nord Ost";
+			}
+			elseif($direction == 4)
+			{
+				$direction = "Ost";
+			}
+			elseif($direction == 5)
+			{
+				$direction = "Ost Süd Ost";
+			}
+			elseif($direction == 6)
+			{
+				$direction = "Süd Ost";
+			}
+			elseif($direction == 7)
+			{
+				$direction = "Süd Süd Ost";
+			}
+			elseif($direction == 8)
+			{
+				$direction = "Süd";
+			}
+			elseif($direction == 9)
+			{
+				$direction = "Süd Süd West";
+			}
+			elseif($direction == 10)
+			{
+				$direction = "Süd West";
+			}
+			elseif($direction == 11)
+			{
+				$direction = "West Süd West";
+			}
+			elseif($direction == 12)
+			{
+				$direction = "West";
+			}
+			elseif($direction == 13)
+			{
+				$direction = "West Nord West";
+			}
+			elseif($direction == 14)
+			{
+				$direction = "Nord West";
+			}
+			elseif($direction == 15)
+			{
+				$direction = "Nord Nord West";
+			}
+			return $direction;
 		}
 		
 		protected function GetIPSVersion ()
