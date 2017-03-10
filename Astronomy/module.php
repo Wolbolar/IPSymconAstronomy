@@ -4628,7 +4628,7 @@ class Astronomy extends IPSModule
 			$SunDazimut = $this->GetSpokenDirection($astronomyinfo['sundirection']);
 			$sunaltitude = round($astronomyinfo['sunaltitude'], 2)." Grad";
 			$rSun = round($astronomyinfo['sundistance'], 0)." Kilometer";
-			$moonazimut = $astronomyinfo['moonazimut'];
+			$moonazimut = round($astronomyinfo['moonazimut'], 2)." Grad";
 			$moonaltitude = round($astronomyinfo['moonaltitude'], 2)." Grad";
 			$dazimut = $this->GetSpokenDirection($astronomyinfo['moondirection']);
 			$MoonDist = round($astronomyinfo['moondistance'], 0)." Kilometer";
