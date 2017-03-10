@@ -4590,8 +4590,8 @@ class Astronomy extends IPSModule
 			$timeformat = $this->GetTimeformat();
 			$sunrise = $astronomyinfo['Sunrise'];
 			$sunset = $astronomyinfo['Sunset'];
-			$moonsetdate = date("d.m.Y", $sunset);
-			$moonsettime = date($timeformat, $sunset);
+			$sunsetdate = date("d.m.Y", $sunset);
+			$sunsettime = date($timeformat, $sunset);
 			$sunrisedate = date("d.m.Y", $sunrise);
 			$sunrisetime = date($timeformat, $sunrise);
 			$moonsetdate = $astronomyinfo['moonsetdate'];
