@@ -4639,7 +4639,7 @@ class Astronomy extends IPSModule
 			return $alexaresponse;
 		}
 		
-		protected GetSpokenDirection($direction)
+		protected function GetSpokenDirection($direction)
 		{
 			if($direction == 0)
 			{
