@@ -3910,7 +3910,7 @@ class Astronomy extends IPSModule
 				SetValue($this->GetIDForIdent("moonrisetime"), $moonrisetime);
 			}
 		}
-		$moonrisedata = array ("moonrisedate" => $moonrisedate, "moonrisetime" =>  $moonrisetime)
+		$moonrisedata = array ("moonrisedate" => $moonrisedate, "moonrisetime" =>  $moonrisetime);
 		return $moonrisedata;
 	}
 	
@@ -3941,7 +3941,7 @@ class Astronomy extends IPSModule
 				SetValue($this->GetIDForIdent("moonsettime"), $moonsettime);
 			}
 		}
-		moonsetdata = array ("moonsetdate" => $moonsetdate, "moonsettime" =>  $moonsettime)
+		$moonsetdata = array ("moonsetdate" => $moonsetdate, "moonsettime" =>  $moonsettime);
 		return $moonsetdata;
 	}	
 	
