@@ -1707,7 +1707,7 @@ class Astronomy extends IPSModule
 
 
 		$astronomyinfo = array ("IsDay" => $isday, "Sunrise" => $sunrise, "Sunset" => $sunset, "moonsetdate" => $moonsetdate, "moonsettime" => $moonsettime, "moonrisedate" => $moonrisedate, "moonrisetime" => $moonrisetime,"CivilTwilightStart" => $civiltwilightstart, "CivilTwilightEnd" => $civiltwilightend, "NauticTwilightStart" => $nautictwilightstart, "NauticTwilightEnd" => $nautictwilightend, "AstronomicTwilightStart" => $astronomictwilightstart, "AstronomicTwilightEnd" => $astronomictwilightend,
-		"latitude" => $Latitude, "longitude" => $Longitude, "juliandate" => $JD, "season" => $season, "sunazimut" => $sunazimut, "sundirection" => $SunDazimut, "sunaltitude" => $sunaltitude, "sundistance" => $rSun, "moonazimut" => $Moonphase, "moonaltitude" => $Moonphase, "moondirection" => $Moonphase, "moondistance" => $Moonphase, "moonvisibility" => $Moonphase, "moonbrightlimbangle" => $Moonpabl);
+		"latitude" => $Latitude, "longitude" => $Longitude, "juliandate" => $JD, "season" => $season, "sunazimut" => $sunazimut, "sundirection" => $SunDazimut, "sunaltitude" => $sunaltitude, "sundistance" => $rSun, "moonazimut" => $moonazimut, "moonaltitude" => $moonaltitude, "moondirection" => $dazimut, "moondistance" => $MoonDist, "moonvisibility" => $Moonphase, "moonbrightlimbangle" => $Moonpabl);
 		return $astronomyinfo;
 	}
 	
@@ -4574,7 +4574,140 @@ class Astronomy extends IPSModule
             ]';
 			return $form;
 		}
-				
+		
+		public function AlexaResponse()
+		{
+			$astronomyinfo = $this->SetAstronomyValues();
+			$isday = $astronomyinfo['IsDay'];
+			if ($isday)
+			{
+				$isday = "Tag";
+			}
+			else
+			{
+				$isday = "Nacht";
+			}
+			$timeformat = $this->GetTimeformat();
+			$sunrise = $astronomyinfo['Sunrise'];
+			$sunset = $astronomyinfo['Sunset'];
+			$sunsetdate = date("d.m.Y", $sunset);
+			$sunsettime = date($timeformat, $sunset);
+			$sunrisedate = date("d.m.Y", $sunrise);
+			$sunrisetime = date($timeformat, $sunrise);
+			$moonsetdate = $astronomyinfo['moonsetdate'];
+			$moonsettime = $astronomyinfo['moonsettime'];
+			$moonrisedate = $astronomyinfo['moonrisedate'];
+			$moonrisetime = $astronomyinfo['moonrisetime'];
+			$civiltwilightstart = date($timeformat, $astronomyinfo['CivilTwilightStart']);
+			$civiltwilightend = date($timeformat, $astronomyinfo['CivilTwilightEnd']);
+			$nautictwilightstart = date($timeformat, $astronomyinfo['NauticTwilightStart']);
+			$nautictwilightend = date($timeformat, $astronomyinfo['NauticTwilightEnd']);
+			$astronomictwilightstart = date($timeformat, $astronomyinfo['AstronomicTwilightStart']);
+			$astronomictwilightend = date($timeformat, $astronomyinfo['AstronomicTwilightEnd']);
+			$Latitude = $astronomyinfo['latitude']." Grad";
+			$Longitude = $astronomyinfo['longitude']." Grad";
+			$JD = $astronomyinfo['juliandate']." Tage";
+			$season = $astronomyinfo['season'];
+			if ($season == 1)
+			{
+				$season = "Frühling";
+			}
+			elseif ($season == 2)
+			{
+				$season = "Sommer";
+			}
+			if ($season == 3)
+			{
+				$season = "Herbst";
+			}
+			if ($season == 4)
+			{
+				$season = "Winter";
+			}
+			$sunazimut = round($astronomyinfo['sunazimut'], 2)." Grad";
+			$SunDazimut = $this->GetSpokenDirection($astronomyinfo['sundirection']);
+			$sunaltitude = round($astronomyinfo['sunaltitude'], 2)." Grad";
+			$rSun = round($astronomyinfo['sundistance'], 0)." Kilometer";
+			$moonazimut = $astronomyinfo['moonazimut'];
+			$moonaltitude = round($astronomyinfo['moonaltitude'], 2)." Grad";
+			$dazimut = $this->GetSpokenDirection($astronomyinfo['moondirection']);
+			$MoonDist = round($astronomyinfo['moondistance'], 0)." Kilometer";
+			$Moonphase = $astronomyinfo['moonvisibility']." Prozent";
+			$Moonpabl = round($astronomyinfo['moonbrightlimbangle'], 2)." Grad";
+			$alexaresponse = array("isday" => $isday, "sunrisetime" => $sunrisetime, "sunrisedate" => $sunrisedate, "sunsettime" => $sunsettime, "sunsetdate" => $sunsetdate, "moonsetdate" => $moonsetdate, "moonsettime" => $moonsettime, "moonrisedate" => $moonrisedate, "moonrisetime" => $moonrisetime,"CivilTwilightStart" => $civiltwilightstart, "CivilTwilightEnd" => $civiltwilightend, "NauticTwilightStart" => $nautictwilightstart, "NauticTwilightEnd" => $nautictwilightend, "AstronomicTwilightStart" => $astronomictwilightstart, "AstronomicTwilightEnd" => $astronomictwilightend,
+			"latitude" => $Latitude, "longitude" => $Longitude, "juliandate" => $JD, "season" => $season, "sunazimut" => $sunazimut, "sundirection" => $SunDazimut, "sunaltitude" => $sunaltitude, "sundistance" => $rSun, "moonazimut" => $moonazimut, "moonaltitude" => $moonaltitude, "moondirection" => $dazimut, "moondistance" => $MoonDist, "moonvisibility" => $Moonphase, "moonbrightlimbangle" => $Moonpabl);
+			return $alexaresponse;
+		}
+		
+		protected GetSpokenDirection($direction)
+		{
+			if($direction == 0)
+			{
+				$direction = "Nord";
+			}
+			elseif($direction == 1)
+			{
+				$direction = "Nord Nord Ost";
+			}
+			elseif($direction == 2)
+			{
+				$direction = "Nord Ost";
+			}
+			elseif($direction == 3)
+			{
+				$direction = "Ost Nord Ost";
+			}
+			elseif($direction == 4)
+			{
+				$direction = "Ost";
+			}
+			elseif($direction == 5)
+			{
+				$direction = "Ost Süd Ost";
+			}
+			elseif($direction == 6)
+			{
+				$direction = "Süd Ost";
+			}
+			elseif($direction == 7)
+			{
+				$direction = "Süd Süd Ost";
+			}
+			elseif($direction == 8)
+			{
+				$direction = "Süd";
+			}
+			elseif($direction == 9)
+			{
+				$direction = "Süd Süd West";
+			}
+			elseif($direction == 10)
+			{
+				$direction = "Süd West";
+			}
+			elseif($direction == 11)
+			{
+				$direction = "West Süd West";
+			}
+			elseif($direction == 12)
+			{
+				$direction = "West";
+			}
+			elseif($direction == 13)
+			{
+				$direction = "West Nord West";
+			}
+			elseif($direction == 14)
+			{
+				$direction = "Nord West";
+			}
+			elseif($direction == 15)
+			{
+				$direction = "Nord Nord West";
+			}
+			return $direction;
+		}
+		
 		protected function GetIPSVersion ()
 		{
 			$ipsversion = IPS_GetKernelVersion ( );
