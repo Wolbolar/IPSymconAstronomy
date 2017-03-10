@@ -1501,8 +1501,12 @@ class Astronomy extends IPSModule
 	
 		$timestamp = time();
 		$mondphase = $this->moon_phase(date('Y', $timestamp), date('n', $timestamp), date('j', $timestamp));
-		$this->Mondaufgang();
-		$this->Monduntergang();
+		$moonrise = $this->Mondaufgang();
+		$moonrisedate = $moonrise['moonrisedate'];
+		$moonrisetime = $moonrise['moonrisetime'];
+		$moonset = $this->Monduntergang();
+		$moonsetdate = $moonset['moonsetdate'];
+		$moonsettime = $moonset['moonsettime'];
 		$mondphase = $this->MoonphasePercent();
 		$picture = $this->GetMoonPicture($mondphase);
 		$this->CalculateMoonphase();
@@ -1697,8 +1701,12 @@ class Astronomy extends IPSModule
 		{
 			SetValue($this->GetIDForIdent("moonbrightlimbangle"), $Moonpabl);
 		}
-				
-		$astronomyinfo = array ("IsDay" => $isday, "Sunrise" => $sunrise, "Sunset" => $sunset, "CivilTwilightStart" => $civiltwilightstart, "CivilTwilightEnd" => $civiltwilightend, "NauticTwilightStart" => $nautictwilightstart, "NauticTwilightEnd" => $nautictwilightend, "AstronomicTwilightStart" => $astronomictwilightstart, "AstronomicTwilightEnd" => $astronomictwilightend,
+				$moonrisedate = $moonrise['moonrisedate'];
+		$moonrisetime = $moonrise['moonrisetime'];
+
+
+
+		$astronomyinfo = array ("IsDay" => $isday, "Sunrise" => $sunrise, "Sunset" => $sunset, "moonsetdate" => $moonsetdate, "moonsettime" => $moonsettime, "moonrisedate" => $moonrisedate, "moonrisetime" => $moonrisetime,"CivilTwilightStart" => $civiltwilightstart, "CivilTwilightEnd" => $civiltwilightend, "NauticTwilightStart" => $nautictwilightstart, "NauticTwilightEnd" => $nautictwilightend, "AstronomicTwilightStart" => $astronomictwilightstart, "AstronomicTwilightEnd" => $astronomictwilightend,
 		"latitude" => $Latitude, "longitude" => $Longitude, "juliandate" => $JD, "season" => $season, "sunazimut" => $sunazimut, "sundirection" => $SunDazimut, "sunaltitude" => $sunaltitude, "sundistance" => $rSun, "moonazimut" => $Moonphase, "moonaltitude" => $Moonphase, "moondirection" => $Moonphase, "moondistance" => $Moonphase, "moonvisibility" => $Moonphase, "moonbrightlimbangle" => $Moonpabl);
 		return $astronomyinfo;
 	}
@@ -3902,7 +3910,8 @@ class Astronomy extends IPSModule
 				SetValue($this->GetIDForIdent("moonrisetime"), $moonrisetime);
 			}
 		}
-		return $moonrise;
+		$moonrisedata = array ("moonrisedate" => $moonrisedate, "moonrisetime" =>  $moonrisetime);
+		return $moonrisedata;
 	}
 	
 	public function Monduntergang()
@@ -3932,7 +3941,8 @@ class Astronomy extends IPSModule
 				SetValue($this->GetIDForIdent("moonsettime"), $moonsettime);
 			}
 		}
-		return $moonset;
+		$moonsetdata = array ("moonsetdate" => $moonsetdate, "moonsettime" =>  $moonsettime);
+		return $moonsetdata;
 	}	
 	
 	// ------------------------------
