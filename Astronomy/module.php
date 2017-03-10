@@ -1707,7 +1707,7 @@ class Astronomy extends IPSModule
 
 
 		$astronomyinfo = array ("IsDay" => $isday, "Sunrise" => $sunrise, "Sunset" => $sunset, "moonsetdate" => $moonsetdate, "moonsettime" => $moonsettime, "moonrisedate" => $moonrisedate, "moonrisetime" => $moonrisetime,"CivilTwilightStart" => $civiltwilightstart, "CivilTwilightEnd" => $civiltwilightend, "NauticTwilightStart" => $nautictwilightstart, "NauticTwilightEnd" => $nautictwilightend, "AstronomicTwilightStart" => $astronomictwilightstart, "AstronomicTwilightEnd" => $astronomictwilightend,
-		"latitude" => $Latitude, "longitude" => $Longitude, "juliandate" => $JD, "season" => $season, "sunazimut" => $sunazimut, "sundirection" => $SunDazimut, "sunaltitude" => $sunaltitude, "sundistance" => $rSun, "moonazimut" => $Moonphase, "moonaltitude" => $Moonphase, "moondirection" => $Moonphase, "moondistance" => $Moonphase, "moonvisibility" => $Moonphase, "moonbrightlimbangle" => $Moonpabl);
+		"latitude" => $Latitude, "longitude" => $Longitude, "juliandate" => $JD, "season" => $season, "sunazimut" => $sunazimut, "sundirection" => $SunDazimut, "sunaltitude" => $sunaltitude, "sundistance" => $rSun, "moonazimut" => $moonazimut, "moonaltitude" => $moonaltitude, "moondirection" => $dazimut, "moondistance" => $MoonDist, "moonvisibility" => $Moonphase, "moonbrightlimbangle" => $Moonpabl);
 		return $astronomyinfo;
 	}
 	
@@ -4574,7 +4574,71 @@ class Astronomy extends IPSModule
             ]';
 			return $form;
 		}
-				
+		
+		public AlexaResponse()
+		{
+			$astronomyinfo = $this->SetAstronomyValues();
+			$isday = $astronomyinfo['IsDay'];
+			if ($isday)
+			{
+				$isday = "Tag";
+			}
+			else
+			{
+				$isday = "Nacht";
+			}
+			$timeformat = $this->GetTimeformat();
+			$sunrise = $astronomyinfo['Sunrise'];
+			$sunset = $astronomyinfo['Sunset'];
+			$moonsetdate = date("d.m.Y", $sunset);
+			$moonsettime = date($timeformat, $sunset);
+			$sunrisedate = date("d.m.Y", $sunrise);
+			$sunrisetime = date($timeformat, $sunrise);
+			$moonsetdate = $astronomyinfo['moonsetdate'];
+			$moonsettime = $astronomyinfo['moonsettime'];
+			$moonrisedate = $astronomyinfo['moonrisedate'];
+			$moonrisetime = $astronomyinfo['moonrisetime'];
+			$civiltwilightstart = date($timeformat, $astronomyinfo['CivilTwilightStart']);
+			$civiltwilightend = date($timeformat, $astronomyinfo['CivilTwilightEnd']);
+			$nautictwilightstart = date($timeformat, $astronomyinfo['NauticTwilightStart']);
+			$nautictwilightend = date($timeformat, $astronomyinfo['NauticTwilightEnd']);
+			$astronomictwilightstart = date($timeformat, $astronomyinfo['AstronomicTwilightStart']);
+			$astronomictwilightend = date($timeformat, $astronomyinfo['AstronomicTwilightEnd']);
+			$Latitude = $astronomyinfo['latitude']." Grad";
+			$Longitude = $astronomyinfo['longitude']." Grad";
+			$JD = $astronomyinfo['juliandate']." Tage";
+			$season = $astronomyinfo['season'];
+			if ($season == 1)
+			{
+				$season = "Frühling";
+			}
+			elseif ($season == 2)
+			{
+				$season = "Sommer";
+			}
+			if ($season == 3)
+			{
+				$season = "Herbst";
+			}
+			if ($season == 4)
+			{
+				$season = "Winter";
+			}
+			$sunazimut = $astronomyinfo['sunazimut'];
+			$SunDazimut = $astronomyinfo['sundirection'];
+			$sunaltitude = $astronomyinfo['sunaltitude'];
+			$rSun = $astronomyinfo['sundistance'];
+			$moonazimut = $astronomyinfo['moonazimut'];
+			$moonaltitude = $astronomyinfo['moonaltitude'];
+			$dazimut = $astronomyinfo['moondirection'];
+			$MoonDist = $astronomyinfo['moondistance'];
+			$Moonphase = $astronomyinfo['moonvisibility'];
+			$Moonpabl = round($astronomyinfo['moonbrightlimbangle'], 2)." Grad";
+			$alexaresponse = array("isday" => $isday, "sunrisetime" => $sunrisetime, "sunrisedate" => $sunrisedate, "sunsettime" => $sunsettime, "sunsetdate" => $sunsetdate, "moonsetdate" => $moonsetdate, "moonsettime" => $moonsettime, "moonrisedate" => $moonrisedate, "moonrisetime" => $moonrisetime,"CivilTwilightStart" => $civiltwilightstart, "CivilTwilightEnd" => $civiltwilightend, "NauticTwilightStart" => $nautictwilightstart, "NauticTwilightEnd" => $nautictwilightend, "AstronomicTwilightStart" => $astronomictwilightstart, "AstronomicTwilightEnd" => $astronomictwilightend,
+			"latitude" => $Latitude, "longitude" => $Longitude, "juliandate" => $JD, "season" => $season, "sunazimut" => $sunazimut, "sundirection" => $SunDazimut, "sunaltitude" => $sunaltitude, "sundistance" => $rSun, "moonazimut" => $moonazimut, "moonaltitude" => $moonaltitude, "moondirection" => $dazimut, "moondistance" => $MoonDist, "moonvisibility" => $Moonphase, "moonbrightlimbangle" => $Moonpabl);
+			return $alexaresponse;
+		}
+		
 		protected function GetIPSVersion ()
 		{
 			$ipsversion = IPS_GetKernelVersion ( );
