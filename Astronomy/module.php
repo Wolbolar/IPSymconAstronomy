@@ -4575,7 +4575,7 @@ class Astronomy extends IPSModule
 			return $form;
 		}
 		
-		public AlexaResponse()
+		public function AlexaResponse()
 		{
 			$astronomyinfo = $this->SetAstronomyValues();
 			$isday = $astronomyinfo['IsDay'];
