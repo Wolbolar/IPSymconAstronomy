@@ -3716,7 +3716,7 @@ class Astronomy extends IPSModule
 		{
 			SetValue($this->GetIDForIdent("moonphase"), $phase." - ".$mondphase."%");
 		}
-		$phasetext = array( "moonphasetext" => $phase, "moonphasepercent" => $mondphase)
+		$phasetext = array( "moonphasetext" => $phase, "moonphasepercent" => $mondphase);
 		return $phasetext;
 	}
 	
