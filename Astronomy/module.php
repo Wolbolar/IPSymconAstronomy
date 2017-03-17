@@ -1509,7 +1509,12 @@ class Astronomy extends IPSModule
 		$moonsettime = $moonset['moonsettime'];
 		$mondphase = $this->MoonphasePercent();
 		$picture = $this->GetMoonPicture($mondphase);
-		$this->CalculateMoonphase();
+		$moonphases = $this->CalculateMoonphase();
+		$newmoonstring = $moonphases['newmoon'];
+		$firstquarterstring = $moonphases['firstquarter'];
+		$fullmoonstring = $moonphases['fullmoon'];
+		$lastquarterstring = $moonphases['lastquarter'];
+				
 		$this->MoonphaseText();
 		$this->UpdateMedia($picture["picid"]);
 		
@@ -1707,7 +1712,9 @@ class Astronomy extends IPSModule
 
 
 		$astronomyinfo = array ("IsDay" => $isday, "Sunrise" => $sunrise, "Sunset" => $sunset, "moonsetdate" => $moonsetdate, "moonsettime" => $moonsettime, "moonrisedate" => $moonrisedate, "moonrisetime" => $moonrisetime,"CivilTwilightStart" => $civiltwilightstart, "CivilTwilightEnd" => $civiltwilightend, "NauticTwilightStart" => $nautictwilightstart, "NauticTwilightEnd" => $nautictwilightend, "AstronomicTwilightStart" => $astronomictwilightstart, "AstronomicTwilightEnd" => $astronomictwilightend,
-		"latitude" => $Latitude, "longitude" => $Longitude, "juliandate" => $JD, "season" => $season, "sunazimut" => $sunazimut, "sundirection" => $SunDazimut, "sunaltitude" => $sunaltitude, "sundistance" => $rSun, "moonazimut" => $moonazimut, "moonaltitude" => $moonaltitude, "moondirection" => $dazimut, "moondistance" => $MoonDist, "moonvisibility" => $Moonphase, "moonbrightlimbangle" => $Moonpabl);
+		"latitude" => $Latitude, "longitude" => $Longitude, "juliandate" => $JD, "season" => $season, "sunazimut" => $sunazimut, "sundirection" => $SunDazimut, "sunaltitude" => $sunaltitude, "sundistance" => $rSun, "moonazimut" => $moonazimut, "moonaltitude" => $moonaltitude, "moondirection" => $dazimut, "moondistance" => $MoonDist, "moonvisibility" => $Moonphase, "moonbrightlimbangle" => $Moonpabl,
+		"newmoon" => $newmoonstring, "firstquarter" => $firstquarterstring, "fullmoon" => $fullmoonstring, "lastquarter" => $lastquarterstring);
+		
 		return $astronomyinfo;
 	}
 	
@@ -4634,8 +4641,13 @@ class Astronomy extends IPSModule
 			$MoonDist = round($astronomyinfo['moondistance'], 0)." Kilometer";
 			$Moonphase = $astronomyinfo['moonvisibility']." Prozent";
 			$Moonpabl = round($astronomyinfo['moonbrightlimbangle'], 2)." Grad";
+			$newmoonstring = $astronomyinfo['newmoon'];
+			$firstquarterstring = $astronomyinfo['firstquarter'];
+			$fullmoonstring = $astronomyinfo['fullmoon'];
+			$lastquarterstring = $astronomyinfo['lastquarter'];
 			$alexaresponse = array("isday" => $isday, "sunrisetime" => $sunrisetime, "sunrisedate" => $sunrisedate, "sunsettime" => $sunsettime, "sunsetdate" => $sunsetdate, "moonsetdate" => $moonsetdate, "moonsettime" => $moonsettime, "moonrisedate" => $moonrisedate, "moonrisetime" => $moonrisetime,"CivilTwilightStart" => $civiltwilightstart, "CivilTwilightEnd" => $civiltwilightend, "NauticTwilightStart" => $nautictwilightstart, "NauticTwilightEnd" => $nautictwilightend, "AstronomicTwilightStart" => $astronomictwilightstart, "AstronomicTwilightEnd" => $astronomictwilightend,
-			"latitude" => $Latitude, "longitude" => $Longitude, "juliandate" => $JD, "season" => $season, "sunazimut" => $sunazimut, "sundirection" => $SunDazimut, "sunaltitude" => $sunaltitude, "sundistance" => $rSun, "moonazimut" => $moonazimut, "moonaltitude" => $moonaltitude, "moondirection" => $dazimut, "moondistance" => $MoonDist, "moonvisibility" => $Moonphase, "moonbrightlimbangle" => $Moonpabl);
+			"latitude" => $Latitude, "longitude" => $Longitude, "juliandate" => $JD, "season" => $season, "sunazimut" => $sunazimut, "sundirection" => $SunDazimut, "sunaltitude" => $sunaltitude, "sundistance" => $rSun, "moonazimut" => $moonazimut, "moonaltitude" => $moonaltitude, "moondirection" => $dazimut, "moondistance" => $MoonDist, "moonvisibility" => $Moonphase, "moonbrightlimbangle" => $Moonpabl,
+			"newmoon" => $newmoonstring, "firstquarter" => $firstquarterstring, "fullmoon" => $fullmoonstring, "lastquarter" => $lastquarterstring);
 			return $alexaresponse;
 		}
 		
