@@ -1515,7 +1515,9 @@ class Astronomy extends IPSModule
 		$fullmoonstring = $moonphases['fullmoon'];
 		$lastquarterstring = $moonphases['lastquarter'];
 				
-		$this->MoonphaseText();
+		$moonphasearr = $this->MoonphaseText();
+		$moonphasetext = $moonphasearr['moonphasetext'];
+		$moonphasepercent = $moonphasearr['moonphasepercent'];
 		$this->UpdateMedia($picture["picid"]);
 		
 		$limited = $this->ReadPropertyBoolean("picturetwilightlimited");
@@ -1713,7 +1715,7 @@ class Astronomy extends IPSModule
 
 		$astronomyinfo = array ("IsDay" => $isday, "Sunrise" => $sunrise, "Sunset" => $sunset, "moonsetdate" => $moonsetdate, "moonsettime" => $moonsettime, "moonrisedate" => $moonrisedate, "moonrisetime" => $moonrisetime,"CivilTwilightStart" => $civiltwilightstart, "CivilTwilightEnd" => $civiltwilightend, "NauticTwilightStart" => $nautictwilightstart, "NauticTwilightEnd" => $nautictwilightend, "AstronomicTwilightStart" => $astronomictwilightstart, "AstronomicTwilightEnd" => $astronomictwilightend,
 		"latitude" => $Latitude, "longitude" => $Longitude, "juliandate" => $JD, "season" => $season, "sunazimut" => $sunazimut, "sundirection" => $SunDazimut, "sunaltitude" => $sunaltitude, "sundistance" => $rSun, "moonazimut" => $moonazimut, "moonaltitude" => $moonaltitude, "moondirection" => $dazimut, "moondistance" => $MoonDist, "moonvisibility" => $Moonphase, "moonbrightlimbangle" => $Moonpabl,
-		"newmoon" => $newmoonstring, "firstquarter" => $firstquarterstring, "fullmoon" => $fullmoonstring, "lastquarter" => $lastquarterstring);
+		"newmoon" => $newmoonstring, "firstquarter" => $firstquarterstring, "fullmoon" => $fullmoonstring, "lastquarter" => $lastquarterstring, "moonphasetext" => $moonphasetext, "moonphasepercent" => $moonphasepercent);
 		
 		return $astronomyinfo;
 	}
@@ -3714,7 +3716,7 @@ class Astronomy extends IPSModule
 		{
 			SetValue($this->GetIDForIdent("moonphase"), $phase." - ".$mondphase."%");
 		}
-		$phasetext = $phase." - ".$mondphase."%";
+		$phasetext = array( "moonphasetext" => $phase, "moonphasepercent" => $mondphase);
 		return $phasetext;
 	}
 	
@@ -4645,9 +4647,11 @@ class Astronomy extends IPSModule
 			$firstquarterstring = $astronomyinfo['firstquarter'];
 			$fullmoonstring = $astronomyinfo['fullmoon'];
 			$lastquarterstring = $astronomyinfo['lastquarter'];
+			$moonphasepercent = $astronomyinfo['moonphasepercent'];
+			$moonphasetext = $astronomyinfo['moonphasetext'];
 			$alexaresponse = array("isday" => $isday, "sunrisetime" => $sunrisetime, "sunrisedate" => $sunrisedate, "sunsettime" => $sunsettime, "sunsetdate" => $sunsetdate, "moonsetdate" => $moonsetdate, "moonsettime" => $moonsettime, "moonrisedate" => $moonrisedate, "moonrisetime" => $moonrisetime,"CivilTwilightStart" => $civiltwilightstart, "CivilTwilightEnd" => $civiltwilightend, "NauticTwilightStart" => $nautictwilightstart, "NauticTwilightEnd" => $nautictwilightend, "AstronomicTwilightStart" => $astronomictwilightstart, "AstronomicTwilightEnd" => $astronomictwilightend,
 			"latitude" => $Latitude, "longitude" => $Longitude, "juliandate" => $JD, "season" => $season, "sunazimut" => $sunazimut, "sundirection" => $SunDazimut, "sunaltitude" => $sunaltitude, "sundistance" => $rSun, "moonazimut" => $moonazimut, "moonaltitude" => $moonaltitude, "moondirection" => $dazimut, "moondistance" => $MoonDist, "moonvisibility" => $Moonphase, "moonbrightlimbangle" => $Moonpabl,
-			"newmoon" => $newmoonstring, "firstquarter" => $firstquarterstring, "fullmoon" => $fullmoonstring, "lastquarter" => $lastquarterstring);
+			"newmoon" => $newmoonstring, "firstquarter" => $firstquarterstring, "fullmoon" => $fullmoonstring, "lastquarter" => $lastquarterstring, "moonphasetext" => $moonphasetext, "moonphasepercent" => $moonphasepercent);
 			return $alexaresponse;
 		}
 		
