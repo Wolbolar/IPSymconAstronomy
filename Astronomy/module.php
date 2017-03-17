@@ -1516,7 +1516,7 @@ class Astronomy extends IPSModule
 		$lastquarterstring = $moonphases['lastquarter'];
 				
 		$moonphasearr = $this->MoonphaseText();
-		$moonphasetext = $moonphasearr['moonphasetext']
+		$moonphasetext = $moonphasearr['moonphasetext'];
 		$moonphasepercent = $moonphasearr['moonphasepercent'];
 		$this->UpdateMedia($picture["picid"]);
 		
