@@ -150,7 +150,7 @@ class AstronomyTimer extends IPSModule
 		IPS_SetEventCyclic($id, 0, 0, 0, 0, 0, 0);
 		IPS_SetEventCyclicTimeFrom($id, $Stunde, $Minute, $Sekunde );
 		IPS_SetEventCyclicTimeTo($id, 0, 0, 0 );
-		IPS_SetEventActive($id, false);
+		IPS_SetEventActive($id, true);
 	}
 	
 	// Profil anlegen
