@@ -28,6 +28,7 @@ class AstronomyTimer extends IPSModule
 		$this->RegisterPropertyBoolean("friday", true);
 		$this->RegisterPropertyBoolean("saturday", true);
 		$this->RegisterPropertyBoolean("sunday", true);
+		$this->RegisterTimer('AstroTimerUpdate', 0, 'AstronomyTimer_Set('.$this->InstanceID.');');
     }
 
     public function ApplyChanges()
@@ -36,7 +37,7 @@ class AstronomyTimer extends IPSModule
         parent::ApplyChanges();
 		
 		$this->ValidateConfiguration(); 
-		$this->RegisterCyclicTimer('AstroTimerUpdate', 0, 5, 0, 'AstronomyTimer_Set('.$this->InstanceID.')');
+		$this->SetCyclicTimerInterval();
     }
 
 		/**
@@ -123,34 +124,15 @@ class AstronomyTimer extends IPSModule
 		
 	}
 		
-	protected function RegisterCyclicTimer($ident, $Stunde, $Minute, $Sekunde, $script)
+	protected function SetCyclicTimerInterval()
 	{
-		$id = @$this->GetIDForIdent($ident);
-		$name = "Astrotimer Update";
-		if ($id && IPS_GetEvent($id)['EventType'] <> 1)
-		{
-		  IPS_DeleteEvent($id);
-		  $id = 0;
-		}
-
-		if (!$id)
-		{
-		  $id = IPS_CreateEvent(1);
-		  IPS_SetParent($id, $this->InstanceID);
-		  IPS_SetIdent($id, $ident);
-		}
-
-		IPS_SetName($id, $name);
-		IPS_SetInfo($id, "Update AstroTimer");
-		IPS_SetHidden($id, true);
-		IPS_SetEventScript($id, "\$id = \$_IPS['TARGET'];\n$script;");
-
-		if (!IPS_EventExists($id)) throw new Exception("Ident with name $ident is used for wrong object type");
-
-		IPS_SetEventCyclic($id, 0, 0, 0, 0, 0, 0);
-		IPS_SetEventCyclicTimeFrom($id, $Stunde, $Minute, $Sekunde );
-		IPS_SetEventCyclicTimeTo($id, 0, 0, 0 );
-		IPS_SetEventActive($id, true);
+		$Now = new DateTime(); 
+		$Target = new DateTime(); 
+		$Target->modify('+1 day'); 
+		$Target->setTime(0,0,5); 
+		$Diff =  $Target->getTimestamp() - $Now->getTimestamp(); 
+		$Interval = $Diff *1000;  
+		$this->SetTimerInterval("AstroTimerUpdate", $Interval);
 	}
 	
 	// Profil anlegen
