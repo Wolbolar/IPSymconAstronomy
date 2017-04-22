@@ -144,7 +144,7 @@ class Astronomy extends IPSModule
 		}
 		if($this->ReadPropertyBoolean("moondirection") == true) // integer
 		{
-			$language = $this->ReadPropertyBoolean("language");
+			$language = $this->ReadPropertyInteger("language");
 			if($language == 1) //ger
 			{
 				$associations =  Array(
@@ -322,7 +322,7 @@ class Astronomy extends IPSModule
 		}
 		if($this->ReadPropertyBoolean("sundirection") == true) // integer
 		{
-			$language = $this->ReadPropertyBoolean("language");
+			$language = $this->ReadPropertyInteger("language");
 			if($language == 1) //ger
 			{
 				$associations =  Array(
@@ -374,7 +374,7 @@ class Astronomy extends IPSModule
 		}
 		if($this->ReadPropertyBoolean("season") == true) // integer
 		{
-			$language = $this->ReadPropertyBoolean("language");
+			$language = $this->ReadPropertyInteger("language");
 			if($language == 1) //ger
 			{
 				$associations =  Array(
