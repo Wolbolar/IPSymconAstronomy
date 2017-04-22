@@ -69,15 +69,15 @@ class Astronomy extends IPSModule
 		$this->RegisterPropertyInteger("framewidthtype", 2);
 		$this->RegisterPropertyBoolean("extinfoselection", false);
 		$this->RegisterPropertyInteger("timeformat", 1);
+		$this->RegisterTimer('Update', 360000, 'Astronomy_SetAstronomyValues('.$this->InstanceID.');');	
     }
 
     public function ApplyChanges()
     {
 	//Never delete this line!
         parent::ApplyChanges();
-		
 		$this->ValidateConfiguration(); 
-		$this->RegisterTimer('Update', 360000, 'Astronomy_SetAstronomyValues('.$this->InstanceID.');');	
+		
 		$this->SetAstronomyValues();
 	
     }
