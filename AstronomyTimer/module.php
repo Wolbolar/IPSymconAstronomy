@@ -74,7 +74,7 @@ class AstronomyTimer extends IPSModule
 		$triggerscript = $this->ReadPropertyInteger("triggerscript");
 		$triggervariable = $this->ReadPropertyInteger("triggervariable");
 		$cutoffselect = $this->ReadPropertyBoolean("cutoffselect");
-		$cutofftime = $this->GetCutoffTime();
+		$cutofftime = $this->GetCutoffTime("Sunset");
 		if ($cutoffselect == true && $cutofftime == false)
 		{
 			$this->SetStatus(210); //check format time
@@ -444,12 +444,12 @@ class AstronomyTimer extends IPSModule
 		return $timertype;
 	}
 	
-	protected function GetCutoffTime()
+	protected function GetCutoffTime($timertype)
 	{
 		$cutofftimeinput = $this->ReadPropertyString("cutofftime");
 		$locationinfo = $this->getlocationinfo();
-		$sunrisedate = date("d.m.Y", $locationinfo["Sunrise"]);
-		$cutofftime = $sunrisedate." ".$cutofftimeinput;
+		$sunastrodate = date("d.m.Y", $locationinfo[$timertype]);
+		$cutofftime = $sunastrodate." ".$cutofftimeinput;
 		$cutofftime = strtotime($cutofftime);
 		return $cutofftime;
 	}
@@ -543,7 +543,7 @@ class AstronomyTimer extends IPSModule
 		$astronomictwilightend = $locationinfo["AstronomicTwilightEnd"];
 		$offset = $this->GetOffset();
 		$cutoffselect = $this->ReadPropertyBoolean("cutoffselect");
-		$cutoff = $this->GetCutoffTime();
+		$cutoff = $this->GetCutoffTime($timertype);  
 		$timestamp = 0;
 		$direction = "";
 		$Stunde = 0;
