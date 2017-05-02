@@ -1456,7 +1456,7 @@ class Astronomy extends IPSModule
 					break;
 				case 5:
 					$moonsetdata = $this->Monduntergang();
-					$moonsettimestring = $moonsetdata["moonrisetime"];
+					$moonsettimestring = $moonsetdata["moonsettime"];
 					$moonsettime = strtotime($moonsettimestring);
 					$sunsettimestamp = $moonsettime + $sunsetoffset; // "Moonset"
 					break;	
