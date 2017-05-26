@@ -1487,13 +1487,13 @@ class Astronomy extends IPSModule
 		$P = $Latitude;
 		$L = $Longitude;
 		
-		$day = date("d");
-		$month = date("m");
-		$year = date("Y");
-		$Hour = date("H");
-		$Minute = date("i");
-		$Second = date("s");
-		$summer = date("I");
+		$day = intval(date("d"));
+		$month = intval(date("m"));
+		$year = intval(date("Y"));
+		$Hour = intval(date("H"));
+		$Minute = intval(date("i"));
+		$Second = intval(date("s"));
+		$summer = intval(date("I"));
 		if ($summer == 0)
 			{   //Summertime
 				$DS = 0;
@@ -1541,10 +1541,10 @@ class Astronomy extends IPSModule
 		
 		
 		$HMSDec = $this->HMSDH($Hour, $Minute, $Second); //Local Time HMS in Decimal Hours
-		$UTDec = $this->LctUT($Hour, $Minute, $Second, $DS, $ZC, $day, $month, $year)[0];
-		$GD = $this->LctUT($Hour, $Minute, $Second, $DS, $ZC, $day, $month, $year)[1];
-		$GM = $this->LctUT($Hour, $Minute, $Second, $DS, $ZC, $day, $month, $year)[2];
-		$GY = $this->LctUT($Hour, $Minute, $Second, $DS, $ZC, $day, $month, $year)[3];
+		$UTDec = $this->LctUT($Hour, $Minute, $Second, $DS, $ZC, $day, $month, $year)["UTDec"];
+		$GD = $this->LctUT($Hour, $Minute, $Second, $DS, $ZC, $day, $month, $year)["GD"];
+		$GM = $this->LctUT($Hour, $Minute, $Second, $DS, $ZC, $day, $month, $year)["GM"];
+		$GY = $this->LctUT($Hour, $Minute, $Second, $DS, $ZC, $day, $month, $year)["GY"];
 		$JD = $this->CDJD($GD, $GM, $GY);  //UT Julian Date
 		if($this->ReadPropertyBoolean("juliandate") == true)
 		{
@@ -2050,22 +2050,22 @@ class Astronomy extends IPSModule
 	}
 
 	// Conversion of Local Civil Time to UT (Universal Time) --- Achtung: hier wird ein Array ausgegeben !!!
-	public function LctUT($Hour, $Minute, $Second, $DS, $ZC, $day, $month, $year)
+	public function LctUT(int $Hour, int $Minute, int $Second, int $DS, float $ZC, int $day, int $month, int $year)
 	{
 		$A = $this->HMSDH($Hour, $Minute, $Second);     //LCT
 		$B = $A - $DS - $ZC;                   //UT
 		$C = $day + ($B / 24);                 //G day
 		$D = $this->CDJD($C, $month, $year);  //JD
 		$E = $this->JDCDay($D);                       //G day
-		$F = $this->JDCMonth($D);                    //G month
-		$G = $this->JDCYear($D);                      //G year
-		$E1 = $this->roundvariantfix($E);
-		$LctUT = 24 * ($E - $E1);
-		return array($LctUT,$E1,$F,$G);
+		$GM = $this->JDCMonth($D);                    //G month
+		$GY = $this->JDCYear($D);                      //G year
+		$GD = $this->roundvariantfix($E);
+		$UTDec = 24 * ($E - $E1);
+		return array( "UTDec " => $UTDec, "GD" => $GD, "GM" => $GM, "GY" => $GY);
 	}
 
 	// Conversion of UT (Universal Time) to Local Civil Time --- Achtung: hier wird ein Array ausgegeben !!!
-	public function UTLct($UH, $UM, $US, $DS, $ZC, $GD, $GM, $GY)
+	public function UTLct(float $UH, float $UM, float $US, int $DS, float $ZC, int $GD, int $GM, int $GY)
 	{
 		$A = $this->HMSDH($UH, $UM, $US);
 		$B = $A + $ZC;
@@ -2080,7 +2080,7 @@ class Astronomy extends IPSModule
 	}
 
 	//Conversion of UT to GST (Greenwich Sideral Time)
-	public function UTGST($UH, $UM, $US, $GD, $GM, $GY)
+	public function UTGST(float $UH, float $UM, float $US, int $GD, int $GM, int $GY)
 	{
 		$A = $this->CDJD($GD, $GM, $GY);
 		$B = $A - 2451545;
@@ -2095,7 +2095,7 @@ class Astronomy extends IPSModule
 	}
 
 	//Conversion of GST to UT --- Achtung: hier wird ein Array ausgegeben !!!
-	public function GSTUT($GSH, $GSM, $GSS, $GD, $GM, $GY)
+	public function GSTUT(int $GSH, int $GSM, int $GSS, int $GD, int $GM, int $GY)
 	{
 		$A = $this->CDJD($GD, $GM, $GY);
 		$B = $A - 2451545;
@@ -2114,7 +2114,7 @@ class Astronomy extends IPSModule
 	}
 
 	//Conversion of GST to LST (Local Sideral Time)
-	public function GSTLST($GH, $GM, $GS, $L)
+	public function GSTLST(int $GH, int $GM, int $GS, float $L)
 	{
 		$A = $this->HMSDH($GH, $GM, $GS);
 		$B = $L / 15;
@@ -2124,7 +2124,7 @@ class Astronomy extends IPSModule
 	}
 
 	//Conversion of LST to GST (Greenwich Sideral Time)
-	public function LSTGST($LH, $LM, $LS, $L)
+	public function LSTGST(int $LH, int $LM, int $LS, float $L)
 	{
 		$A = $this->HMSDH($LH, $LM, $LS);
 		$B = $L / 15;
@@ -2133,7 +2133,7 @@ class Astronomy extends IPSModule
 		return ($LSTGST);
 	}
 
-	public function UTDayAdjust($UT, $G1)
+	public function UTDayAdjust(int $UT, int $G1)
 	{
 			$UTDayAdjust = $UT;
 
@@ -2148,7 +2148,7 @@ class Astronomy extends IPSModule
 	}
 
 	//Converting degrees, minutes and seconds to decimal degrees
-	public function DMSDD($D, $M, $S)
+	public function DMSDD(int $D, int $M, int $S)
 	{
 		$A = abs($S) / 60;
 		$B = (abs($M) + $A) / 60;
@@ -2162,7 +2162,7 @@ class Astronomy extends IPSModule
 	}
 
 	//decimal degrees to degrees
-	protected function DDDeg($DD)
+	protected function DDDeg(float $DD)
 	{
 		$A = abs($DD);
 		$B = $A * 3600;
@@ -2670,7 +2670,7 @@ class Astronomy extends IPSModule
 		return ($Fpart);
 	}
 
-	function MoonHP($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR)
+	protected function MoonHP($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR)
 	{
 			$UT = $this->LctUT($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR)[0];
 			$GD = $this->LctGDay($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
@@ -3293,7 +3293,7 @@ class Astronomy extends IPSModule
 		return ($SunLong);
 	}
 
-	function SunDist($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY)
+	protected function SunDist($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY)
 	{
 			$AA = $this->LctGDay($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
 			$BB = $this->LctGMonth($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
@@ -3754,7 +3754,7 @@ class Astronomy extends IPSModule
 		return $lastquarter;
 	}
 	
-	public function GetMoonPicture($mondphase)
+	public function GetMoonPicture(float $mondphase)
 	{	
 		$language = $this->ReadPropertyInteger("language");
 		$picturemoonselection = $this->ReadPropertyBoolean("picturemoonselection");
