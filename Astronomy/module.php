@@ -2056,14 +2056,14 @@ class Astronomy extends IPSModule
 		$B = $A - $DS - $ZC;                   //UT
 		$C = $day + ($B / 24);                 //G day
 		$D = $this->CDJD($C, $month, $year);  //JD
-		$E = $this->JDCDay($D);                       //G day
+		$GD = $this->JDCDay($D);                       //G day
 		$GM = $this->JDCMonth($D);                    //G month
 		$GY = $this->JDCYear($D);                      //G year
-		$GD = $this->roundvariantfix($E);
-		$UTDec = 24 * ($E - $E1);
-		return array( "UTDec " => $UTDec, "GD" => $GD, "GM" => $GM, "GY" => $GY);
+		$GDfix = $this->roundvariantfix($GD);
+		$UTDec = 24 * ($GD - $GDfix);
+		return array( "UTDec" => $UTDec, "GD" => $GD, "GM" => $GM, "GY" => $GY);
 	}
-
+	
 	// Conversion of UT (Universal Time) to Local Civil Time --- Achtung: hier wird ein Array ausgegeben !!!
 	public function UTLct(float $UH, float $UM, float $US, int $DS, float $ZC, int $GD, int $GM, int $GY)
 	{
