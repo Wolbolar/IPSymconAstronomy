@@ -83,18 +83,17 @@ class Astronomy extends IPSModule
     }
 
 		/**
-        * Die folgenden Funktionen stehen automatisch zur Verfügung, wenn das Modul über die "Module Control" eingefügt wurden.
-        * Die Funktionen werden, mit dem selbst eingerichteten Prefix, in PHP und JSON-RPC wiefolgt zur Verfügung gestellt:
+        * Die folgenden Funktionen stehen automatisch zur VerfÃ¼gung, wenn das Modul Ã¼ber die "Module Control" eingefÃ¼gt wurden.
+        * Die Funktionen werden, mit dem selbst eingerichteten Prefix, in PHP und JSON-RPC wiefolgt zur VerfÃ¼gung gestellt:
         *
         *
         */
 		
 	private function ValidateConfiguration()
 	{
-		
+        $associations =  Array(	);
 		if($this->ReadPropertyBoolean("juliandate") == true) // float
 		{
-			$associations =  Array(	);
 			$this->SetupProfile(IPSVarType::vtFloat, "Astronomie.Julianisches_Datum", "Calendar", "", " Tage", 0, 0, 0, 1, $associations);
 			$this->SetupVariable("juliandate", "Julianisches Datum", "Astronomie.Julianisches_Datum", 1, IPSVarType::vtFloat, true);
 		}
@@ -104,8 +103,7 @@ class Astronomy extends IPSModule
 		}
 		if($this->ReadPropertyBoolean("moonazimut") == true) // float
 		{
-			$associations =  Array(	);
-			$this->SetupProfile(IPSVarType::vtFloat, "Astronomie.Mond_Azimut", "Moon", "", "°", 0, 0, 0, 2, $associations);
+			$this->SetupProfile(IPSVarType::vtFloat, "Astronomie.Mond_Azimut", "Moon", "", "Â°", 0, 0, 0, 2, $associations);
 			$this->SetupVariable("moonazimut", "Mond Azimut", "Astronomie.Mond_Azimut", 2, IPSVarType::vtFloat, true);
 		}
 		else
@@ -114,7 +112,6 @@ class Astronomy extends IPSModule
 		}
 		if($this->ReadPropertyBoolean("moondistance") == true) // float
 		{
-			$associations =  Array(	);
 			$this->SetupProfile(IPSVarType::vtFloat, "Astronomie.Mond_Entfernung", "Moon", "", " km", 0, 0, 0, 0, $associations);
 			$this->SetupVariable("moondistance", "Mond Entfernung", "Astronomie.Mond_Entfernung", 3, IPSVarType::vtFloat, true);
 		}
@@ -125,22 +122,22 @@ class Astronomy extends IPSModule
 		if($this->ReadPropertyBoolean("moonaltitude") == true) // float
 		{
 			$associations =  Array(	);
-			$this->SetupProfile(IPSVarType::vtFloat, "Astronomie.Mond_Hoehe", "Moon", "", "°", 0, 0, 0, 2, $associations);
-			$this->SetupVariable("moonaltitude", "Mond Höhe", "Astronomie.Mond_Hoehe", 4, IPSVarType::vtFloat, true);
+			$this->SetupProfile(IPSVarType::vtFloat, "Astronomie.Mond_Hoehe", "Moon", "", "Â°", 0, 0, 0, 2, $associations);
+			$this->SetupVariable("moonaltitude", "Mond HÃ¶he", "Astronomie.Mond_Hoehe", 4, IPSVarType::vtFloat, true);
 		}
 		else
 		{
-			$this->SetupVariable("moonaltitude", "Mond Höhe", "Astronomie.Mond_Hoehe", 4, IPSVarType::vtFloat, false);
+			$this->SetupVariable("moonaltitude", "Mond HÃ¶he", "Astronomie.Mond_Hoehe", 4, IPSVarType::vtFloat, false);
 		}
 		if($this->ReadPropertyBoolean("moonbrightlimbangle") == true) // float
 		{
 			$associations =  Array(	);
-			$this->SetupProfile(IPSVarType::vtFloat, "Astronomie.Mond_Positionswinkel", "Moon", "", "°", 0, 0, 0, 2, $associations);
-			$this->SetupVariable("moonbrightlimbangle", "Mond Positionswinkel der beleuchteten Fläche", "Astronomie.Mond_Positionswinkel", 5, IPSVarType::vtFloat, true);
+			$this->SetupProfile(IPSVarType::vtFloat, "Astronomie.Mond_Positionswinkel", "Moon", "", "Â°", 0, 0, 0, 2, $associations);
+			$this->SetupVariable("moonbrightlimbangle", "Mond Positionswinkel der beleuchteten FlÃ¤che", "Astronomie.Mond_Positionswinkel", 5, IPSVarType::vtFloat, true);
 		}
 		else
 		{
-			$this->SetupVariable("moonbrightlimbangle", "Mond Positionswinkel der beleuchteten Fläche", "Astronomie.Mond_Positionswinkel", 5, IPSVarType::vtFloat, false);
+			$this->SetupVariable("moonbrightlimbangle", "Mond Positionswinkel der beleuchteten FlÃ¤che", "Astronomie.Mond_Positionswinkel", 5, IPSVarType::vtFloat, false);
 		}
 		if($this->ReadPropertyBoolean("moondirection") == true) // integer
 		{
@@ -293,7 +290,7 @@ class Astronomy extends IPSModule
 		if($this->ReadPropertyBoolean("sunazimut") == true) // float
 		{
 			$associations =  Array(	);
-			$this->SetupProfile(IPSVarType::vtFloat, "Astronomie.Sonne_Azimut", "Sun", "", "°", 0, 0, 0, 2, $associations);
+			$this->SetupProfile(IPSVarType::vtFloat, "Astronomie.Sonne_Azimut", "Sun", "", "Â°", 0, 0, 0, 2, $associations);
 			$this->SetupVariable("sunazimut", "Sonne Azimut", "Astronomie.Sonne_Azimut", 15, IPSVarType::vtFloat, true);
 		}
 		else
@@ -313,12 +310,12 @@ class Astronomy extends IPSModule
 		if($this->ReadPropertyBoolean("sunaltitude") == true) // float
 		{
 			$associations =  Array(	);
-			$this->SetupProfile(IPSVarType::vtFloat, "Astronomie.Sonne_Hoehe", "Sun", "", "°", 0, 0, 0, 2, $associations);
-			$this->SetupVariable("sunaltitude", "Sonne Höhe", "Astronomie.Sonne_Hoehe", 17, IPSVarType::vtFloat, true);
+			$this->SetupProfile(IPSVarType::vtFloat, "Astronomie.Sonne_Hoehe", "Sun", "", "Â°", 0, 0, 0, 2, $associations);
+			$this->SetupVariable("sunaltitude", "Sonne HÃ¶he", "Astronomie.Sonne_Hoehe", 17, IPSVarType::vtFloat, true);
 		}
 		else
 		{
-			$this->SetupVariable("sunaltitude", "Sonne Höhe", "Astronomie.Sonne_Hoehe", 17, IPSVarType::vtFloat, false);
+			$this->SetupVariable("sunaltitude", "Sonne HÃ¶he", "Astronomie.Sonne_Hoehe", 17, IPSVarType::vtFloat, false);
 		}
 		if($this->ReadPropertyBoolean("sundirection") == true) // integer
 		{
@@ -378,7 +375,7 @@ class Astronomy extends IPSModule
 			if($language == 1) //ger
 			{
 				$associations =  Array(
-									Array(1, "Frühling",  "", -1),
+									Array(1, "FrÃ¼hling",  "", -1),
 									Array(2, "Sommer",  "", -1),
 									Array(3, "Herbst",  "", -1),
 									Array(4, "Winter",  "", -1)
@@ -453,7 +450,7 @@ class Astronomy extends IPSModule
 		{
 			//$MediaID = @IPS_GetObjectIDByIdent('picturemoon', $this->InstanceID);
 			$MediaID = @$this->GetIDForIdent('picturemoon');
-			//echo $MediaID." löschen";
+			//echo $MediaID." lÃ¶schen";
 			if($MediaID > 0)
 				IPS_DeleteMedia($MediaID, true);
 		}
@@ -610,13 +607,13 @@ class Astronomy extends IPSModule
 	protected function UpdateMedia($picid)
 	{
 			//testen ob im Medienpool existent
-			$modulid = $this->InstanceID;
 			$repository = "bitbucket"; //bitbucket, github
 			$picturename = $this->ReadPropertyString("picturename");
 			$selectionresize = $this->ReadPropertyBoolean("selectionresize");
 			$mediaimgwidth = $this->ReadPropertyInteger("mediaimgwidth");
 			$mediaimgheight = $this->ReadPropertyInteger("mediaimgheight");
 			$picturemoonselection = $this->ReadPropertyBoolean("picturemoonselection");
+            $ImageFile = "";
 			if ($picturemoonselection)
 			{
 				$path = $this->ReadPropertyString("picturemoonpath");
@@ -693,9 +690,9 @@ class Astronomy extends IPSModule
 					IPS_SetIdent ($MediaID, $Ident);
 					IPS_SetPosition($MediaID, $position);
 					IPS_SetMediaCached($MediaID, true);
-					// Das Cachen für das Mediaobjekt wird aktiviert.
+					// Das Cachen fÃ¼r das Mediaobjekt wird aktiviert.
 					// Beim ersten Zugriff wird dieses von der Festplatte ausgelesen
-					// und zukünftig nur noch im Arbeitsspeicher verarbeitet.
+					// und zukÃ¼nftig nur noch im Arbeitsspeicher verarbeitet.
 					IPS_SetName($MediaID, $name); // Medienobjekt benennen
 				}
 				
@@ -709,11 +706,18 @@ class Astronomy extends IPSModule
 	
 	protected function getimageinfo($imagefile)
 	{				
-		$imagesize = getimagesize($imagefile);
-		$imagewidth = $imagesize[0];
-		$imageheight = $imagesize[1];
-		$imagetype = $imagesize[2];
-		$imageinfo = array("imagewidth" => $imagewidth, "imageheight" => $imageheight, "imagetype" => $imagetype);
+		if($imagefile == "")
+        {
+            $imagesize = getimagesize($imagefile);
+            $imagewidth = $imagesize[0];
+            $imageheight = $imagesize[1];
+            $imagetype = $imagesize[2];
+            $imageinfo = array("imagewidth" => $imagewidth, "imageheight" => $imageheight, "imagetype" => $imagetype);
+        }
+	    else
+        {
+            $imageinfo = "";
+        }
 		return $imageinfo;
 	}
 	
@@ -742,34 +746,34 @@ class Astronomy extends IPSModule
   
   protected function createthumbnail($mediaimgwidth, $mediaimgheight, $imagewidth, $imageheight)
   {
-	// Maximalausmaße
+	// MaximalausmaÃŸe
 	$maxthumbwidth = $mediaimgwidth;
 	$maxthumbheight = $mediaimgheight;
-	// Ausmaße kopieren, wir gehen zuerst davon aus, dass das Bild schon Thumbnailgröße hat
+	// AusmaÃŸe kopieren, wir gehen zuerst davon aus, dass das Bild schon ThumbnailgrÃ¶ÃŸe hat
 	$thumbwidth = $imagewidth;
 	$thumbheight = $imageheight;
-	// Breite skalieren falls nötig
+	// Breite skalieren falls nÃ¶tig
 	if ($thumbwidth > $maxthumbwidth)
 	{                                    
 		$factor = $maxthumbwidth / $thumbwidth;
 		$thumbwidth *= $factor;
 		$thumbheight *= $factor;
 	}
-	// Höhe skalieren, falls nötig
+	// HÃ¶he skalieren, falls nÃ¶tig
 	if ($thumbheight > $maxthumbheight)
 	{
 			$factor = $maxthumbheight / $thumbheight;
 			$thumbwidth *= $factor;
 			$thumbheight *= $factor;
 	}
-	// Vergrößern Breite
+	// VergrÃ¶ÃŸern Breite
 	if ($thumbwidth < $maxthumbwidth)
 	{
 		$factor = $maxthumbheight / $thumbheight;
 		$thumbwidth *= $factor;
 		$thumbheight *= $factor;
 	}
-	//vergrößern Höhe
+	//vergrÃ¶ÃŸern HÃ¶he
 	if ($thumbheight < $maxthumbheight)
 	{
 			$factor = $maxthumbheight / $thumbheight;
@@ -804,18 +808,18 @@ class Astronomy extends IPSModule
 	
 	protected function TwilightDayPicture($type)
 	{
-		if($type == "Limited")
+        if($type == "Limited")
 		{
 			$filename = "Astronomy_Twilight_DayLimited";
 			$ImagePath = $this->GenerateClockGraphic($filename,   true);	
 		}
-		elseif($type == "Standard")
+		else($type == "Standard")
 		{
 			$filename = "Astronomy_Twilight_DayUnlimited";
 			$ImagePath = $this->GenerateClockGraphic($filename, false);
 		}
 		$ContentDay = @Sys_GetURLContent($ImagePath);
-		$nameday = "Dämmerungszeiten Tag";
+		$nameday = "DÃ¤mmerungszeiten Tag";
 		$picid = "TwilightDayPicture";
 		$MediaID = $this->CreateMediaImage('TwilightDayPicture', $nameday, $picid, $ContentDay, $ImagePath, 40, "picturedaytwilight");
 		return $MediaID;
@@ -828,13 +832,13 @@ class Astronomy extends IPSModule
 			$filename = "Astronomy_Twilight_DayLimited";
 			$ImagePath = $this->GenerateTwilightGraphic($filename, true,  4.4, 1.8);	
 		}
-		elseif($type == "Standard")
+		else($type == "Standard")
 		{
 			$filename = "Astronomy_Twilight_YearUnlimited";
 			$ImagePath = $this->GenerateTwilightGraphic($filename, false, 4.4, 1.8);
 		}
 		$ContentYear = @Sys_GetURLContent($ImagePath);
-		$nameyear = "Dämmerungszeiten Jahr";
+		$nameyear = "DÃ¤mmerungszeiten Jahr";
 		$picid = "TwilightYearPicture";
 		$MediaID = $this->CreateMediaImage('TwilightYearPicture', $nameyear, $picid, $ContentYear, $ImagePath, 41, "pictureyeartwilight");
 		return $MediaID;
@@ -989,15 +993,17 @@ class Astronomy extends IPSModule
 		$location = $this->getlocation();
 		$Latitude = $location["Latitude"];
 		$Longitude = $location["Longitude"];
-		$locationinfo = $this->getlocationinfo();
-		$sunrise = $locationinfo["Sunrise"];
-		$sunset = $locationinfo["Sunset"];
-		$civiltwilightstart = $locationinfo["CivilTwilightStart"];
-		$civiltwilightend = $locationinfo["CivilTwilightEnd"];
-		$nautictwilightstart = $locationinfo["NauticTwilightStart"];
-		$nautictwilightend = $locationinfo["NauticTwilightEnd"];
-		$astronomictwilightstart = $locationinfo["AstronomicTwilightStart"];
-		$astronomictwilightend = $locationinfo["AstronomicTwilightEnd"];
+        /*
+        $locationinfo = $this->getlocationinfo();
+        $sunrise = $locationinfo["Sunrise"];
+        $sunset = $locationinfo["Sunset"];
+        $civiltwilightstart = $locationinfo["CivilTwilightStart"];
+        $civiltwilightend = $locationinfo["CivilTwilightEnd"];
+        $nautictwilightstart = $locationinfo["NauticTwilightStart"];
+        $nautictwilightend = $locationinfo["NauticTwilightEnd"];
+        $astronomictwilightstart = $locationinfo["AstronomicTwilightStart"];
+        $astronomictwilightend = $locationinfo["AstronomicTwilightEnd"];
+        */
 		$dayHeight    = 1440/$dayDivisor;     //24h*60Min=1440Min, 1440/4=360
 		$marginLeft   = 20;
 		$marginTop    = 5;
@@ -1029,15 +1035,6 @@ class Astronomy extends IPSModule
 		$timestamp  = mktime(12, 0, 0, 1, 1, date("Y"))-15*3600*24;
 		for ($day=0; $day<365+30; $day++)
 		{
-			/*
-			$sunrise1   = $civiltwilightstart;
-			$sunset1    = $civiltwilightend;
-			$sunrise2   = $nautictwilightstart;
-			$sunset2    = $nautictwilightend;
-			$sunrise3   = $astronomictwilightstart;
-			$sunset3    = $astronomictwilightend;
-			*/
-			
 			$sunrise     = date_sunrise($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 90+50/60, date("O")/100);
 			$sunset      = date_sunset ($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 90+50/60, date("O")/100);
 			$sunrise1    = date_sunrise($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 96, date("O")/100);
@@ -1047,15 +1044,6 @@ class Astronomy extends IPSModule
 			$sunrise3    = date_sunrise($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 108, date("O")/100);
 			$sunset3     = date_sunset ($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 108, date("O")/100);
 
-			
-			/*
-			if ($useLimited ) {
-				LimitValues('SunriseLimits', $sunrise, $sunset);
-				LimitValues('CivilLimits', $sunrise1, $sunset1);
-				LimitValues('NauticLimits', $sunrise2, $sunset2);
-				LimitValues('AstronomicLimits', $sunrise3, $sunset3);
-			}
-			*/
 			
 			$sunriseMins = (date("H",$sunrise)*60 + date("i",$sunrise)) / $dayDivisor;
 			$sunsetMins  = (date("H",$sunset)*60 +  date("i",$sunset))  / $dayDivisor;
@@ -1158,7 +1146,7 @@ class Astronomy extends IPSModule
 		return $name;
 	}
 	
-	// Variable anlegen / löschen
+	// Variable anlegen / lÃ¶schen
 	protected function SetupVariable($ident, $name, $profile, $position, $vartype, $visible)
 	{
 		if($visible == true)
@@ -1198,29 +1186,29 @@ class Astronomy extends IPSModule
 		// siehe https://de.wikipedia.org/wiki/Canvas_(HTML-Element)
 		// 2016-04-25 Bernd Hoffmann
 
-		//Daten für Nullpunkt usw.------------------------------------------------------
+		//Daten fÃ¼r Nullpunkt usw.------------------------------------------------------
 		$npx = 50;        //Nullpunkt x-achse
 		$npy = 50;        //Nullpunkt y-achse
 		$z = 40;           //Offset y-achse
 
-		$lWt = 2;         //Linienstärke Teilstriche
-		$lWh = 2;         //Linienstärke Horizontlinie
+		$lWt = 2;         //LinienstÃ¤rke Teilstriche
+		$lWh = 2;         //LinienstÃ¤rke Horizontlinie
 
 		//Waagerechte Linie-------------------------------------------------------------
-		$l1 = 360;        //Länge der Horizontlinie
+		$l1 = 360;        //LÃ¤nge der Horizontlinie
 
 		$x1 = $npx;            //Nullpunkt waagerecht
 		$y1 = $npy+$z;        //Nullpunkt senkrecht
-		$x2 = $x1+$l1;        //Nullpunkt + Länge = waagerechte Linie
+		$x2 = $x1+$l1;        //Nullpunkt + LÃ¤nge = waagerechte Linie
 		$y2 = $npy+$z;
 
 		//Teilstriche-------------------------------------------------------------------
-		$l2 = 10;         //Länge der Teilstriche
-		//N 0°
+		$l2 = 10;         //LÃ¤nge der Teilstriche
+		//N 0Â°
 		$x3 = $npx;           //Nullpunkt waagerecht
 		$y3 = $y1-$l2/2;    //Nullpunkt senkrecht
 		$x4 = $x3;
-		$y4 = $y3+$l2;        //Nullpunkt + Länge = senkrechte Linie
+		$y4 = $y3+$l2;        //Nullpunkt + LÃ¤nge = senkrechte Linie
 		//O
 		$x5 = $npx+90;
 		$y5 = $y1-$l2/2;
@@ -1236,7 +1224,7 @@ class Astronomy extends IPSModule
 		$y9 = $y1-$l2/2;
 		$x10 = $x9;
 		$y10 = $y9+$l2;
-		//N 360°
+		//N 360Â°
 		$x11 = $npx+360;
 		$y11 = $y1-$l2/2;
 		$x12 = $x11;
@@ -1579,7 +1567,7 @@ class Astronomy extends IPSModule
 		$SunRAhms = $SunRAhour.":".$SunRAm.":".$SunRAs;
 
 		$season = "";
-		if(($SunRAh>=0)and($SunRAh<6)){$season = 1;}        //Frühling
+		if(($SunRAh>=0)and($SunRAh<6)){$season = 1;}        //FrÃ¼hling
 		if(($SunRAh>=6)and($SunRAh<12)){$season = 2;}        //Sommer
 		if(($SunRAh>=12)and($SunRAh<18)){$season = 3;}        //Herbst
 		if(($SunRAh>=18)and($SunRAh<24)){$season = 4;}        //Winter
@@ -1655,7 +1643,7 @@ class Astronomy extends IPSModule
 		if($Moonpabl<0){$Moonpabl = $Moonpabl+360;}
 		else{$Moonpabl = $Moonpabl;}
 		
-		$EcLonDeg = $this->DDDeg($Moonlongcorr); // Ecliptic Longitude Moon - geographische Länge (Längengrad)
+		$EcLonDeg = $this->DDDeg($Moonlongcorr); // Ecliptic Longitude Moon - geographische LÃ¤nge (LÃ¤ngengrad)
 		$EcLonMin = $this->DDMin($Moonlongcorr);
 		$EcLonSec = $this->DDSec($Moonlongcorr);
 
@@ -3416,7 +3404,7 @@ class Astronomy extends IPSModule
 		return ($EccentricAnomaly);
 	}
 
-	//Funktion um zu Prüfen ob der UNIX Time Stamp heute ist 
+	//Funktion um zu PrÃ¼fen ob der UNIX Time Stamp heute ist
 	protected function isToday($time)
 	{
 			$begin = mktime(0, 0, 0);
@@ -3492,12 +3480,12 @@ class Astronomy extends IPSModule
 	{
 		// ============================================================
 		//
-		// Phasen:    phase = 0 für Neumond
-		//            phase = 0.25 für erstes Viertel
-		//            phase = 0.5 für Vollmond
-		//            phase = 0.75 für letztes Viertel
-		//            Für Werte anders als 0, 0.25, 0.5 oder 0.75 ist nachstehendes Script ungültig.
-		// Angabe des Zeitpunktes als Fließkomma-Jahreszahl
+		// Phasen:    phase = 0 fÃ¼r Neumond
+		//            phase = 0.25 fÃ¼r erstes Viertel
+		//            phase = 0.5 fÃ¼r Vollmond
+		//            phase = 0.75 fÃ¼r letztes Viertel
+		//            FÃ¼r Werte anders als 0, 0.25, 0.5 oder 0.75 ist nachstehendes Script ungÃ¼ltig.
+		// Angabe des Zeitpunktes als FlieÃŸkomma-Jahreszahl
 		// Bsp.: 1.8.2006 = ca. 2006.581
 		//
 		// Ergebnis: $JDE
@@ -3523,7 +3511,7 @@ class Astronomy extends IPSModule
 		   $F = (160.7108+390.67050284*$k)*$rads;
 
 		   if ($phase == 0){
-		   // Korrekturterme JDE für Neumond
+		   // Korrekturterme JDE fÃ¼r Neumond
 			  $JDE += -0.40720*Sin($Ms);
 			  $JDE += 0.17241*Sin($M);
 			  $JDE += 0.01608*Sin(2*$Ms);
@@ -3534,7 +3522,7 @@ class Astronomy extends IPSModule
 			  $JDE += -0.00111*Sin($Ms-2*$F);
 			  }
 		   elseif ($phase == 0.5) {
-		   // Korrekturterme JDE für Vollmond
+		   // Korrekturterme JDE fÃ¼r Vollmond
 			  $JDE += -0.40614*Sin($Ms);
 			  $JDE += 0.17302*Sin($M);
 			  $JDE += 0.01614*Sin(2*$Ms);
@@ -3546,7 +3534,7 @@ class Astronomy extends IPSModule
 			  }
 
 		   if ($phase == 0.25 || $phase == 0.75){
-		   // Korrekturterme für JDE für das  1. bzw. letzte Viertel
+		   // Korrekturterme fÃ¼r JDE fÃ¼r das  1. bzw. letzte Viertel
 			  $JDE += -0.62801*Sin($Ms);
 			  $JDE += 0.17172*Sin($M);
 			  $JDE += -0.01183*Sin($Ms+$M);
@@ -3556,7 +3544,7 @@ class Astronomy extends IPSModule
 			  $JDE += 0.00204*Sin(2*$M);
 			  $JDE += -0.00180*Sin($Ms-2*$F);
 
-		   // Weiterer Korrekturterm für Viertelphasen
+		   // Weiterer Korrekturterm fÃ¼r Viertelphasen
 		   if ($phase == 0.25){
 			  $JDE += 0.00306;
 			  } else {
@@ -3612,16 +3600,19 @@ class Astronomy extends IPSModule
 
 		   switch ($phase){
 			  case 0:
-			  $ausgabe = 'Neumond';
+			  $phasename = 'Neumond';
 			  break;
 			  case 0.25:
-			  $ausgabe = 'erstes Viertel';
+			  $phasename = 'erstes Viertel';
 			  break;
 			  case 0.5:
-			  $ausgabe = 'Vollmond';
+			  $phasename = 'Vollmond';
 			  break;
 			  case 0.75:
-			  $ausgabe = 'letztes Viertel';
+			  $phasename = 'letztes Viertel';
+			  break;
+			  default:
+                  $phasename = 'Neumond';
 			  break;
 			  }
 			  
@@ -3644,7 +3635,7 @@ class Astronomy extends IPSModule
 			$timeformat = $this->GetTimeformat();
 			$moontime =  date($timeformat, $datum);
 		    $date = date("d.m.Y", $datum);		  
-		    $moondate[$i] = array("name" => $ausgabe, "date" => $date, "weekday" => $wt, "time" => $moontime);
+		    $moondate[$i] = array("name" => $phasename, "date" => $date, "weekday" => $wt, "time" => $moontime);
 		    $i++;
 		}
 		
@@ -3777,7 +3768,7 @@ class Astronomy extends IPSModule
 				$lastincreasingmoonpic = 352;
 				$firstnewmoonpic = 353;
 				$lastnewmoonpic = 362;
-				$firstdecreasingmoonpic = 008;
+				$firstdecreasingmoonpic = 8;
 				$lastdecreasingmoonpic = 171;
 			}
 		if ($mondphase <= 1 || $mondphase >= 99 )  //--Vollmond
@@ -3817,7 +3808,6 @@ class Astronomy extends IPSModule
 			   $pic_n = "00".$pic_n;}
 			elseif($pic_n<100){
 			   $pic_n = "0".$pic_n;}
-			else{$pic_n = $pic_n;}
 		}
 		elseif ($mondphase > 1 && $mondphase < 49){  //--abnehmender Mond
 			if($language == 1)
@@ -3834,7 +3824,6 @@ class Astronomy extends IPSModule
 			   $pic_n = "00".$pic_n;}
 			elseif($pic_n<100){
 			   $pic_n = "0".$pic_n;}
-			else{$pic_n = $pic_n;}
 		}
 		elseif ($mondphase >= 49 && $mondphase <= 51){  //--Neumond
 			if($language == 1)
@@ -3851,7 +3840,6 @@ class Astronomy extends IPSModule
 			   $pic_n = "00".$pic_n;}
 			elseif($pic_n<100){
 			   $pic_n = "0".$pic_n;}
-			else{$pic_n = $pic_n;}
 		}
 		else{  //--zunehmender Mond
 			if($language == 1)
@@ -3868,7 +3856,6 @@ class Astronomy extends IPSModule
 			   $pic_n = "00".$pic_n;}
 			elseif($pic_n<100){
 			   $pic_n = "0".$pic_n;}
-			else{$pic_n = $pic_n;}
 		}
 		
 		$picture = array("picid" => $pic_n, "phase" => $phase_text);
@@ -4099,7 +4086,7 @@ class Astronomy extends IPSModule
 			}
 			elseif($UTC == 11)
 			{
-				$form .= '{ "type": "Label", "label": "UTC +11 Großteil von Australien und 8 weitere AEDT Melbourne" },';
+				$form .= '{ "type": "Label", "label": "UTC +11 GroÃŸteil von Australien und 8 weitere AEDT Melbourne" },';
 			}
 			elseif($UTC == 10.5)
 			{
@@ -4115,7 +4102,7 @@ class Astronomy extends IPSModule
 			}
 			elseif($UTC == 9)
 			{
-				$form .= '{ "type": "Label", "label": "UTC +9 Japan, Südkorea und 4 weitere JST Tokio" },';
+				$form .= '{ "type": "Label", "label": "UTC +9 Japan, SÃ¼dkorea und 4 weitere JST Tokio" },';
 			}
 			elseif($UTC == 8.75)
 			{
@@ -4123,7 +4110,7 @@ class Astronomy extends IPSModule
 			}
 			elseif($UTC == 8.5)
 			{
-				$form .= '{ "type": "Label", "label": "UTC +8:30 Nordkorea PYT Pjöngjang" },';
+				$form .= '{ "type": "Label", "label": "UTC +8:30 Nordkorea PYT PjÃ¶ngjang" },';
 			}
 			elseif($UTC == 8)
 			{
@@ -4131,7 +4118,7 @@ class Astronomy extends IPSModule
 			}
 			elseif($UTC == 7)
 			{
-				$form .= '{ "type": "Label", "label": "UTC +7 Großteil von Indonesien und 8 weitere WIB Jakarta" },';
+				$form .= '{ "type": "Label", "label": "UTC +7 GroÃŸteil von Indonesien und 8 weitere WIB Jakarta" },';
 			}
 			elseif($UTC == 6.5)
 			{
@@ -4179,7 +4166,7 @@ class Astronomy extends IPSModule
 			}
 			elseif($UTC == 0)
 			{
-				$form .= '{ "type": "Label", "label": "UTC +0 Großbritannien und 26 weitere GMT London" },';
+				$form .= '{ "type": "Label", "label": "UTC +0 GroÃŸbritannien und 26 weitere GMT London" },';
 			}
 			elseif($UTC == -1)
 			{
@@ -4187,7 +4174,7 @@ class Astronomy extends IPSModule
 			}
 			elseif($UTC == -2)
 			{
-				$form .= '{ "type": "Label", "label": "UTC -2 Brasilien (manche Regionen) und Südgeorgien und die Südlichen Sandwichinseln BRST Rio de Janeiro" },';
+				$form .= '{ "type": "Label", "label": "UTC -2 Brasilien (manche Regionen) und SÃ¼dgeorgien und die SÃ¼dlichen Sandwichinseln BRST Rio de Janeiro" },';
 			}
 			elseif($UTC == -3)
 			{
@@ -4219,11 +4206,11 @@ class Astronomy extends IPSModule
 			}
 			elseif($UTC == -9)
 			{
-				$form .= '{ "type": "Label", "label": "UTC -9 Alaska/Vereinigte Staaten und Französisch-Polynesien (manche Regionen) AKST Anchorage" },';
+				$form .= '{ "type": "Label", "label": "UTC -9 Alaska/Vereinigte Staaten und FranzÃ¶sisch-Polynesien (manche Regionen) AKST Anchorage" },';
 			}
 			elseif($UTC == -9.5)
 			{
-				$form .= '{ "type": "Label", "label": "UTC -9:30 Marquesas/Französisch-Polynesien MART Taiohae" },';
+				$form .= '{ "type": "Label", "label": "UTC -9:30 Marquesas/FranzÃ¶sisch-Polynesien MART Taiohae" },';
 			}
 			elseif($UTC == -10)
 			{
@@ -4235,7 +4222,7 @@ class Astronomy extends IPSModule
 			}
 			elseif($UTC == -12)
 			{
-				$form .= '{ "type": "Label", "label": "UTC -12 Großteil von US Minor Outlying Islands AoE Bakerinsel" },';
+				$form .= '{ "type": "Label", "label": "UTC -12 GroÃŸteil von US Minor Outlying Islands AoE Bakerinsel" },';
 			}
 			return $form;
 		}
@@ -4254,7 +4241,7 @@ class Astronomy extends IPSModule
 						{ "label": "UTC +9:30 ACST Darwin", "value": 9.5 },
 						{ "label": "UTC +9 JST Tokio", "value": 9 },
 						{ "label": "UTC +8:45 ACWST Eucla", "value": 8.75 },
-						{ "label": "UTC +8:30 PYT Pjöngjang", "value": 8.5 },
+						{ "label": "UTC +8:30 PYT PjÃ¶ngjang", "value": 8.5 },
 						{ "label": "UTC +8 CST Peking", "value": 8 },
 						{ "label": "UTC +7 WIB Jakarta", "value": 7 },
 						{ "label": "UTC +6:30 MMT Rangun", "value": 6.5 },
@@ -4625,7 +4612,7 @@ class Astronomy extends IPSModule
 			$season = $astronomyinfo['season'];
 			if ($season == 1)
 			{
-				$season = "Frühling";
+				$season = "FrÃ¼hling";
 			}
 			elseif ($season == 2)
 			{
@@ -4685,31 +4672,31 @@ class Astronomy extends IPSModule
 			}
 			elseif($direction == 5)
 			{
-				$direction = "Ost Süd Ost";
+				$direction = "Ost SÃ¼d Ost";
 			}
 			elseif($direction == 6)
 			{
-				$direction = "Süd Ost";
+				$direction = "SÃ¼d Ost";
 			}
 			elseif($direction == 7)
 			{
-				$direction = "Süd Süd Ost";
+				$direction = "SÃ¼d SÃ¼d Ost";
 			}
 			elseif($direction == 8)
 			{
-				$direction = "Süd";
+				$direction = "SÃ¼d";
 			}
 			elseif($direction == 9)
 			{
-				$direction = "Süd Süd West";
+				$direction = "SÃ¼d SÃ¼d West";
 			}
 			elseif($direction == 10)
 			{
-				$direction = "Süd West";
+				$direction = "SÃ¼d West";
 			}
 			elseif($direction == 11)
 			{
-				$direction = "West Süd West";
+				$direction = "West SÃ¼d West";
 			}
 			elseif($direction == 12)
 			{
@@ -4734,7 +4721,6 @@ class Astronomy extends IPSModule
 		{
 			$ipsversion = IPS_GetKernelVersion ( );
 			$ipsversion = explode( ".", $ipsversion);
-			$ipsmajor = intval($ipsversion[0]);
 			$ipsminor = intval($ipsversion[1]);
 			if($ipsminor < 10)
 			{
@@ -4789,11 +4775,9 @@ class Moon extends stdClass
 
         $rise = false;
         $set = false;
-        $above = false;
         $hour = 1;
         $ym = self::sinAlt($date, $hour - 1, $lon, $cglat, $sglat) - $sinho;
 
-        $above = $ym > 0;
         while ($hour < 25 && (false == $set || false == $rise)) {
 
             $yz = self::sinAlt($date, $hour, $lon, $cglat, $sglat) - $sinho;
@@ -5002,7 +4986,7 @@ class Moon extends stdClass
             $year--;
         }
 
-        $a = 10000 /*[Info\FritzBox Project\WLAN 2,4 GHz - Status\SqueezeboxTouch (192.168.55.20)\Signalstärke]*/ * $year + 100 * $month + $day;
+        $a = 10000 * $year + 100 * $month + $day;
         $b = 0;
         if ($a <= 15821004.1) {
             $b = -2 * (int)(($year + 4716) / 4) - 1179;

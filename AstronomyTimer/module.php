@@ -41,8 +41,8 @@ class AstronomyTimer extends IPSModule
     }
 
 		/**
-        * Die folgenden Funktionen stehen automatisch zur Verfügung, wenn das Modul über die "Module Control" eingefügt wurden.
-        * Die Funktionen werden, mit dem selbst eingerichteten Prefix, in PHP und JSON-RPC wiefolgt zur Verfügung gestellt:
+        * Die folgenden Funktionen stehen automatisch zur VerfÃ¼gung, wenn das Modul Ã¼ber die "Module Control" eingefÃ¼gt wurden.
+        * Die Funktionen werden, mit dem selbst eingerichteten Prefix, in PHP und JSON-RPC wiefolgt zur VerfÃ¼gung gestellt:
         *
         *
         */
@@ -85,7 +85,6 @@ class AstronomyTimer extends IPSModule
 			if($triggervariable > 0)
 			{	
 				$varvalueinfo = $this->GetTriggerVarValue();
-				$varvalue = $varvalueinfo["Value"];
 				$varvaluetype = $varvalueinfo["VarType"];
 				$vartype = $this->GetVarType($triggervariable);
 				$vartypecheck = false;
@@ -159,10 +158,11 @@ class AstronomyTimer extends IPSModule
 		return $name;
 	}
 	
-	// Variable anlegen / löschen
+	// Variable anlegen / lÃ¶schen
 	protected function SetupVariable($ident, $name, $profile, $position, $vartype, $visible)
 	{
-		if($visible == true)
+        $objid = false;
+	    if($visible == true)
 		{
 			switch ($vartype)
 			{
@@ -371,7 +371,7 @@ class AstronomyTimer extends IPSModule
 			IPS_SetProperty($astrotimerobjid, 'offset', $offset);
 			if ($settype !== "Script" && $settype !== "Variable")
 				{
-					echo "Settype nicht gültig. Script oder Variable auswählen.";
+					echo "Settype nicht gÃ¼ltig. Script oder Variable auswÃ¤hlen.";
 				}
 			if ($settype == "Script")
 				{
@@ -456,7 +456,7 @@ class AstronomyTimer extends IPSModule
 	
 	protected function GetVarType($objectid)
 	{
-		// VariableType (ab 4.0)	integer	Enthält den Variablentyp (0: Boolean, 1: Integer, 2: Float, 3: String)
+		// VariableType (ab 4.0)	integer	EnthÃ¤lt den Variablentyp (0: Boolean, 1: Integer, 2: Float, 3: String)
 		$vartype = IPS_GetVariable($objectid)["VariableType"];
 		return $vartype;
 	}
@@ -513,7 +513,7 @@ class AstronomyTimer extends IPSModule
 		}
 		else
 		{
-			echo "Variablenwert und Variablentyp stimmen nicht überein.";
+			echo "Variablenwert und Variablentyp stimmen nicht Ã¼berein.";
 		}
 	}
 	
@@ -552,42 +552,34 @@ class AstronomyTimer extends IPSModule
 		switch ($timertype)
 			{
 				case "Sunrise":
-					$sunrise = $locationinfo["Sunrise"];
 					$direction = "up";
 					$timestamp = $sunrise + $offset;
 					break;
 				case "Sunset":
-					$sunset = $locationinfo["Sunset"];
 					$direction = "down";
 					$timestamp = $sunset + $offset;
 					break;
 				case "CivilTwilightStart":
-					$civiltwilightstart = $locationinfo["CivilTwilightStart"];
 					$direction = "up";
 					$timestamp = $civiltwilightstart + $offset;
 					break;
 				case "CivilTwilightEnd":
-					$civiltwilightend = $locationinfo["CivilTwilightEnd"];
 					$direction = "down";
 					$timestamp = $civiltwilightend + $offset;
 					break;
 				case "NauticTwilightStart":
-					$nautictwilightstart = $locationinfo["NauticTwilightStart"];
 					$direction = "up";
 					$timestamp = $nautictwilightstart + $offset;
 					break;
 				case "NauticTwilightEnd":
-					$nautictwilightend = $locationinfo["NauticTwilightEnd"];
 					$direction = "down";
 					$timestamp = $nautictwilightend + $offset;
 					break;
 				case "AstronomicTwilightStart":
-					$astronomictwilightstart = $locationinfo["AstronomicTwilightStart"];
 					$direction = "up";
 					$timestamp = $astronomictwilightstart + $offset;
 					break;
 				case "AstronomicTwilightEnd":
-					$astronomictwilightend = $locationinfo["AstronomicTwilightEnd"];
 					$direction = "down";
 					$timestamp = $astronomictwilightend + $offset;
 					break;
@@ -604,7 +596,7 @@ class AstronomyTimer extends IPSModule
 			}
 		if($cutoffselect)
 		{
-			if (($cutoff > $timestamp && $direction == "up")||($cutoff > $timestamp && $direction == "down"))
+			if (($cutoff > $timestamp && $direction == "up")||($cutoff < $timestamp && $direction == "down"))
 			{
 				$Stunde = intval(date("G", $cutoff));
 				$Minute = intval(date("i", $cutoff));
@@ -612,7 +604,7 @@ class AstronomyTimer extends IPSModule
 				$timestamp = $cutoff;
 				IPS_LogMessage("AstroTimer: ", "Cutoff Set");
 			}
-			if (($cutoff < $timestamp && $direction == "up") || ($cutoff < $timestamp && $direction == "down"))
+			if (($cutoff < $timestamp && $direction == "up") || ($cutoff > $timestamp && $direction == "down"))
 			{
 				$Stunde = intval(date("G", $timestamp));
 				$Minute = intval(date("i", $timestamp));
@@ -651,12 +643,10 @@ class AstronomyTimer extends IPSModule
 		
 		$timersettings = $this->GetTimerSettings($timertype);
 		$timestamp = $timersettings["timestamp"];
-		$direction = $timersettings["direction"];
 		$Stunde = $timersettings["Stunde"];
 		$Minute = $timersettings["Minute"];
 		$Sekunde = $timersettings["Sekunde"];
-		$cutofftime = $timersettings["cutofftime"];
-		
+        $eventid = false;
 		switch ($settype)
 			{
 				case "Script":
@@ -732,7 +722,7 @@ class AstronomyTimer extends IPSModule
 	protected function CheckActiveDay()
 	{
 		$activeday = true;
-		$currentday = date("w"); // Wochentag in Zahlenwert, 0 für Sonntag, 6 für Samstag
+		$currentday = date("w"); // Wochentag in Zahlenwert, 0 fÃ¼r Sonntag, 6 fÃ¼r Samstag
 		$monday = $this->ReadPropertyBoolean("monday");
 		$tuesday = $this->ReadPropertyBoolean("tuesday");
 		$wednesday = $this->ReadPropertyBoolean("wednesday");
@@ -800,9 +790,13 @@ class AstronomyTimer extends IPSModule
 	protected function roundvariantfix ($value)
 	{
 		if($value >= 0)
-			$roundvalue = floor($value);
-		elseif($value < 0)
-			$roundvalue = ceil($value);	
+        {
+            $roundvalue = floor($value);
+        }
+		else($value < 0)
+        {
+            $roundvalue = ceil($value);
+        }
 		return $roundvalue;
 	}
 
@@ -822,6 +816,7 @@ class AstronomyTimer extends IPSModule
 		elseif ($day == "Fri"){$daygerman = "Fr";}
 		elseif ($day == "Sat"){$daygerman = "Sa";}
 		elseif ($day == "Sun"){$daygerman = "So";}
+		else $daygerman = "Mo";
 		return ($daygerman);
 	}
 
@@ -1106,7 +1101,6 @@ class AstronomyTimer extends IPSModule
 		{
 			$ipsversion = IPS_GetKernelVersion ( );
 			$ipsversion = explode( ".", $ipsversion);
-			$ipsmajor = intval($ipsversion[0]);
 			$ipsminor = intval($ipsversion[1]);
 			if($ipsminor < 10)
 			{
@@ -1161,11 +1155,9 @@ class Moon extends stdClass
 
         $rise = false;
         $set = false;
-        $above = false;
         $hour = 1;
         $ym = self::sinAlt($date, $hour - 1, $lon, $cglat, $sglat) - $sinho;
 
-        $above = $ym > 0;
         while ($hour < 25 && (false == $set || false == $rise)) {
 
             $yz = self::sinAlt($date, $hour, $lon, $cglat, $sglat) - $sinho;
@@ -1374,7 +1366,7 @@ class Moon extends stdClass
             $year--;
         }
 
-        $a = 10000 /*[Info\FritzBox Project\WLAN 2,4 GHz - Status\SqueezeboxTouch (192.168.55.20)\Signalstärke]*/ * $year + 100 * $month + $day;
+        $a = 10000 * $year + 100 * $month + $day;
         $b = 0;
         if ($a <= 15821004.1) {
             $b = -2 * (int)(($year + 4716) / 4) - 1179;
