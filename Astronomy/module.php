@@ -3,6 +3,8 @@
 // Formeln aus "Practical Astronomy" von Peter Duffett-Smith und Jonathan Zwart, Fourth Edition
 // basiert auf den Skripten von ChokZul https://www.symcon.de/forum/threads/31467-Astronomische-Berechnungen?highlight=astronomie 
 // Twilight Grafiken generiert mit Skripten von Brownson aus der IPSLibrary
+use Fonzo\IPS\IPSVarType;
+use Fonzo\Moon\Moon;
 
 class Astronomy extends IPSModule
 {
@@ -808,47 +810,57 @@ class Astronomy extends IPSModule
 	
 	protected function TwilightDayPicture($type)
 	{
-        if($type == "Limited")
+        $ImagePath = false;
+        $MediaID = false;
+	    if($type == "Limited")
 		{
 			$filename = "Astronomy_Twilight_DayLimited";
 			$ImagePath = $this->GenerateClockGraphic($filename,   true);	
 		}
-		else($type == "Standard")
+		elseif($type == "Standard")
 		{
 			$filename = "Astronomy_Twilight_DayUnlimited";
 			$ImagePath = $this->GenerateClockGraphic($filename, false);
 		}
-		$ContentDay = @Sys_GetURLContent($ImagePath);
-		$nameday = "Dämmerungszeiten Tag";
-		$picid = "TwilightDayPicture";
-		$MediaID = $this->CreateMediaImage('TwilightDayPicture', $nameday, $picid, $ContentDay, $ImagePath, 40, "picturedaytwilight");
+		if(!$ImagePath)
+        {
+            $ContentDay = @Sys_GetURLContent($ImagePath);
+            $nameday = "Dämmerungszeiten Tag";
+            $picid = "TwilightDayPicture";
+            $MediaID = $this->CreateMediaImage('TwilightDayPicture', $nameday, $picid, $ContentDay, $ImagePath, 40, "picturedaytwilight");
+        }
 		return $MediaID;
 	}
 	
 	protected function TwilightYearPicture($type)
 	{
-		if($type == "Limited")
+        $ImagePath = false;
+        $MediaID = false;
+	    if($type == "Limited")
 		{
-			$filename = "Astronomy_Twilight_DayLimited";
-			$ImagePath = $this->GenerateTwilightGraphic($filename, true,  4.4, 1.8);	
+			$filename = "Astronomy_Twilight_YearLimited";
+            $ImagePath = $this->GenerateTwilightGraphic($filename, true, 4.4, 1.8);
 		}
-		else($type == "Standard")
+		elseif($type == "Standard")
 		{
 			$filename = "Astronomy_Twilight_YearUnlimited";
-			$ImagePath = $this->GenerateTwilightGraphic($filename, false, 4.4, 1.8);
+            $ImagePath = $this->GenerateTwilightGraphic($filename, false, 4.4, 1.8);
 		}
-		$ContentYear = @Sys_GetURLContent($ImagePath);
-		$nameyear = "Dämmerungszeiten Jahr";
-		$picid = "TwilightYearPicture";
-		$MediaID = $this->CreateMediaImage('TwilightYearPicture', $nameyear, $picid, $ContentYear, $ImagePath, 41, "pictureyeartwilight");
+        if(!$ImagePath)
+        {
+            $ContentYear = @Sys_GetURLContent($ImagePath);
+            $nameyear = "Dämmerungszeiten Jahr";
+            $picid = "TwilightYearPicture";
+            $MediaID = $this->CreateMediaImage('TwilightYearPicture', $nameyear, $picid, $ContentYear, $ImagePath, 41, "pictureyeartwilight");
+        }
 		return $MediaID;
 	}
 	
 	protected function GenerateClockGraphic($filename, $useLimited=false, $Width=180)
 	{
-		$location = $this->getlocation();
-		$Latitude = $location["Latitude"];
-		$Longitude = $location["Longitude"];
+		// $location = $this->getlocation();
+		// $Latitude = $location["Latitude"];
+		// $Longitude = $location["Longitude"];
 		$locationinfo = $this->getlocationinfo();
 		$sunrise = $locationinfo["Sunrise"];
 		$sunset = $locationinfo["Sunset"];
@@ -873,11 +885,11 @@ class Astronomy extends IPSModule
 		$white         = imagecolorallocate($image,255,255,255);
 		$textColor     = imagecolorallocate($image,250,250,250);
 		$transparent   = imagecolortransparent($image,$white);
-		$black         = imagecolorallocate($image,0,0,0);
-		$red           = imagecolorallocate($image,255,0,0);
-		$green         = imagecolorallocate($image,0,255,0);
-		$blue          = imagecolorallocate($image,0,0,255);
-		$grey_back     = imagecolorallocate($image, 100, 100, 100);
+		// $black         = imagecolorallocate($image,0,0,0);
+		// $red           = imagecolorallocate($image,255,0,0);
+		// $green         = imagecolorallocate($image,0,255,0);
+		// $blue          = imagecolorallocate($image,0,0,255);
+		// $grey_back     = imagecolorallocate($image, 100, 100, 100);
 		$grey_line     = imagecolorallocate($image, 120, 120, 120);
 		$grey_sunrise1 = imagecolorallocate($image, 200, 200, 200);
 		$grey_sunrise2 = imagecolorallocate($image, 170, 170, 170);
@@ -1019,9 +1031,9 @@ class Astronomy extends IPSModule
 		$transparent   = imagecolortransparent($image,$white);
 		$black         = imagecolorallocate($image,0,0,0);
 		$red           = imagecolorallocate($image,255,0,0);
-		$green         = imagecolorallocate($image,0,255,0);
+		//$green         = imagecolorallocate($image,0,255,0);
 		$blue          = imagecolorallocate($image,0,0,255);
-		$grey_back     = imagecolorallocate($image, 100, 100, 100);
+		//$grey_back     = imagecolorallocate($image, 100, 100, 100);
 		$grey_line     = imagecolorallocate($image, 120, 120, 120);
 		$grey_sunrise1 = imagecolorallocate($image, 200, 200, 200);
 		$grey_sunrise2 = imagecolorallocate($image, 170, 170, 170);
@@ -1149,7 +1161,8 @@ class Astronomy extends IPSModule
 	// Variable anlegen / löschen
 	protected function SetupVariable($ident, $name, $profile, $position, $vartype, $visible)
 	{
-		if($visible == true)
+        $objid = false;
+	    if($visible == true)
 		{
 			switch ($vartype)
 			{
@@ -1336,7 +1349,8 @@ class Astronomy extends IPSModule
 	
 	protected function GetFrameType($value)
 	{
-		if($value == 1)
+        $type = "px";
+	    if($value == 1)
 		{
 			$type = "px";
 		}
@@ -1350,6 +1364,7 @@ class Astronomy extends IPSModule
 	protected function GetTimeformat()
 	{
 		$formatselection = $this->ReadPropertyInteger("timeformat");
+        $timeformat = "H:i";
 		if($formatselection == 1)
 		{
 			$timeformat = "H:i";
@@ -1493,11 +1508,11 @@ class Astronomy extends IPSModule
 		$ZC = $this->ReadPropertyFloat("UTC"); // Zone Correction to Greenwich: 1 = UTC+1
 		
 	
-		$timestamp = time();
-		$mondphase = $this->moon_phase(date('Y', $timestamp), date('n', $timestamp), date('j', $timestamp));
+		// $timestamp = time();
+		// $mondphase = $this->moon_phase(date('Y', $timestamp), date('n', $timestamp), date('j', $timestamp));
 		$moonrise = $this->Mondaufgang();
-		$moonrisedate = $moonrise['moonrisedate'];
-		$moonrisetime = $moonrise['moonrisetime'];
+		// $moonrisedate = $moonrise['moonrisedate'];
+		// $moonrisetime = $moonrise['moonrisetime'];
 		$moonset = $this->Monduntergang();
 		$moonsetdate = $moonset['moonsetdate'];
 		$moonsettime = $moonset['moonsettime'];
@@ -1529,7 +1544,7 @@ class Astronomy extends IPSModule
 		
 		
 		$HMSDec = $this->HMSDH($Hour, $Minute, $Second); //Local Time HMS in Decimal Hours
-		$UTDec = $this->LctUT($Hour, $Minute, $Second, $DS, $ZC, $day, $month, $year)["UTDec"];
+		// $UTDec = $this->LctUT($Hour, $Minute, $Second, $DS, $ZC, $day, $month, $year)["UTDec"];
 		$GD = $this->LctUT($Hour, $Minute, $Second, $DS, $ZC, $day, $month, $year)["GD"];
 		$GM = $this->LctUT($Hour, $Minute, $Second, $DS, $ZC, $day, $month, $year)["GM"];
 		$GY = $this->LctUT($Hour, $Minute, $Second, $DS, $ZC, $day, $month, $year)["GY"];
@@ -1543,11 +1558,11 @@ class Astronomy extends IPSModule
 		$LCM = $this->DHMin($HMSDec);   //LCT Minute
 		$LCS = $this->DHSec($HMSDec);   //LCT Second
 		//Universal Time
-		$UH = $this->DHHour($UTDec);      //UT Hour
-		$UM = $this->DHMin($UTDec);    //UT Minute
-		$US = $this->DHSec($UTDec);    //UT Second
-		$UT_value = $UH.":".$UM.":".$US;
-		$UDate_value = $GD.":".$GM.":".$GY;
+		// $UH = $this->DHHour($UTDec);      //UT Hour
+		// $UM = $this->DHMin($UTDec);    //UT Minute
+		// $US = $this->DHSec($UTDec);    //UT Second
+		// $UT_value = $UH.":".$UM.":".$US;
+		// $UDate_value = $GD.":".$GM.":".$GY;
 
 		
 		//Calculation Sun---------------------------------------------------------------
@@ -1564,7 +1579,7 @@ class Astronomy extends IPSModule
 		$SunRAhour = $this->DHHour($SunRAh);
 		$SunRAm = $this->DHmin($SunRAh);
 		$SunRAs = $this->DHSec($SunRAh);
-		$SunRAhms = $SunRAhour.":".$SunRAm.":".$SunRAs;
+		// $SunRAhms = $SunRAhour.":".$SunRAm.":".$SunRAs;
 
 		$season = "";
 		if(($SunRAh>=0)and($SunRAh<6)){$season = 1;}        //Frühling
@@ -1581,8 +1596,8 @@ class Astronomy extends IPSModule
 		$SunDecd = $this->DDDeg($SunDec);
 		$SunDecm = $this->DDmin($SunDec);
 		$SunDecs = $this->DDSec($SunDec);
-		$SunDecdms = $SunDecd.":".$SunDecm.":".$SunDecs;
-		//echo $SunDecdms."\n";
+		// $SunDecdms = $SunDecd.":".$SunDecm.":".$SunDecs;
+		// echo $SunDecdms."\n";
 
 		//RH Right Ascension in HMS, LH Local Civil Time in HMS, DS Daylight saving, ZC Zonecorrection,
 		//LD Local Calender Date in DMY, L geographical Longitude in Degrees
@@ -1598,7 +1613,7 @@ class Astronomy extends IPSModule
 		$SunDazimut = $this->direction($sunazimut);
 
 
-		$SunDist = $this->SunDist($Hour, $Minute, $Second, $DS, $ZC, $day, $month, $year);
+		// $SunDist = $this->SunDist($Hour, $Minute, $Second, $DS, $ZC, $day, $month, $year);
 		$SunTA = $this->Radians($this->SunTrueAnomaly($Hour, $Minute, $Second, $DS, $ZC, $day, $month, $year));
 		$SunEcc = $this->SunEcc($GD, $GM, $GY);
 		$fSun = (1 + $SunEcc * cos($SunTA))/(1 - $SunEcc * $SunEcc);
@@ -1632,17 +1647,16 @@ class Astronomy extends IPSModule
 		$Nutation = $this->NutatLong($GD, $GM, $GY); //nutation in longitude (degrees)
 		//echo $Nutation."\n";
 		$Moonlongcorr = $MoonLong + $Nutation; //corrected longitude (degrees)
-		$MoonHP = $this->MoonHP($LCH, $LCM, $LCS, $DS, $ZC, $day, $month, $year);    //Moon's horizontal parallax (degrees)
-		//echo $MoonHP."\n";
+		// $MoonHP = $this->MoonHP($LCH, $LCM, $LCS, $DS, $ZC, $day, $month, $year);    //Moon's horizontal parallax (degrees)
+		// echo $MoonHP."\n";
 		$MoonDist = $this->MoonDist($LCH, $LCM, $LCS, $DS, $ZC, $day, $month, $year);   //Moon Distance to Earth
 		//echo round($MoonDist)."\n";
 		$Moonphase = $this->MoonPhase($LCH, $LCM, $LCS, $DS, $ZC, $day, $month, $year); //Moonphase in %
 		//echo $Moonphase."\n";
-		$Moonpabl = $this->MoonPABL($LCH, $LCM, $LCS, $DS, $ZC, $day, $month, $year);   //Moon Bright Limb Angle (degrees)
+		$MoonBrightLimbAngle = $this->MoonPABL($LCH, $LCM, $LCS, $DS, $ZC, $day, $month, $year);   //Moon Bright Limb Angle (degrees)
 
-		if($Moonpabl<0){$Moonpabl = $Moonpabl+360;}
-		else{$Moonpabl = $Moonpabl;}
-		
+		if($MoonBrightLimbAngle<0){$MoonBrightLimbAngle = $MoonBrightLimbAngle+360;}
+
 		$EcLonDeg = $this->DDDeg($Moonlongcorr); // Ecliptic Longitude Moon - geographische Länge (Längengrad)
 		$EcLonMin = $this->DDMin($Moonlongcorr);
 		$EcLonSec = $this->DDSec($Moonlongcorr);
@@ -1700,7 +1714,7 @@ class Astronomy extends IPSModule
 		}
 		if($this->ReadPropertyBoolean("moonbrightlimbangle") == true) // float
 		{
-			SetValue($this->GetIDForIdent("moonbrightlimbangle"), $Moonpabl);
+			SetValue($this->GetIDForIdent("moonbrightlimbangle"), $MoonBrightLimbAngle);
 		}
 				$moonrisedate = $moonrise['moonrisedate'];
 		$moonrisetime = $moonrise['moonrisetime'];
@@ -1708,7 +1722,7 @@ class Astronomy extends IPSModule
 
 
 		$astronomyinfo = array ("IsDay" => $isday, "Sunrise" => $sunrise, "Sunset" => $sunset, "moonsetdate" => $moonsetdate, "moonsettime" => $moonsettime, "moonrisedate" => $moonrisedate, "moonrisetime" => $moonrisetime,"CivilTwilightStart" => $civiltwilightstart, "CivilTwilightEnd" => $civiltwilightend, "NauticTwilightStart" => $nautictwilightstart, "NauticTwilightEnd" => $nautictwilightend, "AstronomicTwilightStart" => $astronomictwilightstart, "AstronomicTwilightEnd" => $astronomictwilightend,
-		"latitude" => $Latitude, "longitude" => $Longitude, "juliandate" => $JD, "season" => $season, "sunazimut" => $sunazimut, "sundirection" => $SunDazimut, "sunaltitude" => $sunaltitude, "sundistance" => $rSun, "moonazimut" => $moonazimut, "moonaltitude" => $moonaltitude, "moondirection" => $dazimut, "moondistance" => $MoonDist, "moonvisibility" => $Moonphase, "moonbrightlimbangle" => $Moonpabl,
+		"latitude" => $Latitude, "longitude" => $Longitude, "juliandate" => $JD, "season" => $season, "sunazimut" => $sunazimut, "sundirection" => $SunDazimut, "sunaltitude" => $sunaltitude, "sundistance" => $rSun, "moonazimut" => $moonazimut, "moonaltitude" => $moonaltitude, "moondirection" => $dazimut, "moondistance" => $MoonDist, "moonvisibility" => $Moonphase, "moonbrightlimbangle" => $MoonBrightLimbAngle,
 		"newmoon" => $newmoonstring, "firstquarter" => $firstquarterstring, "fullmoon" => $fullmoonstring, "lastquarter" => $lastquarterstring, "moonphasetext" => $moonphasetext, "moonphasepercent" => $moonphasepercent);
 		
 		return $astronomyinfo;
@@ -1741,8 +1755,9 @@ class Astronomy extends IPSModule
 	}
 	
 	protected function GetOffset($type)
-	{	
-		if($type == "Sunrise")
+	{
+        $offset = 0;
+	    if($type == "Sunrise")
 		{
 			$offset = $this->ReadPropertyInteger("sunriseoffset");
 		}
@@ -1762,7 +1777,8 @@ class Astronomy extends IPSModule
 
 	protected function roundvariantfix ($value)
 	{
-		if($value >= 0)
+        $roundvalue = 0;
+	    if($value >= 0)
 			$roundvalue = floor($value);
 		elseif($value < 0)
 			$roundvalue = ceil($value);	
@@ -1778,6 +1794,7 @@ class Astronomy extends IPSModule
 	protected function dayName($time)
 	{
 		$day = date("D",($time));
+        $daygerman = "So";
 		if     ($day == "Mon"){$daygerman = "Mo";}
 		elseif ($day == "Tue"){$daygerman = "Di";}
 		elseif ($day == "Wed"){$daygerman = "Mi";}
@@ -1790,7 +1807,7 @@ class Astronomy extends IPSModule
 
 	protected function direction($degree)
 	{
-		
+        $direction = 0;
 		if(($degree >= 0)and($degree < 22.5)){
 			$direction = 0;
 			}
@@ -1913,7 +1930,7 @@ class Astronomy extends IPSModule
 	protected function JDCMonth(float $JD)
 	{
 		$I = $this->roundvariantfix($JD + 0.5);
-		$F = $JD + 0.5 - $I;
+		// $F = $JD + 0.5 - $I;
 		$A = $this->roundvariantfix(($I - 1867216.25) / 36524.25);
 
 		if ($I > 2299160){
@@ -1936,7 +1953,7 @@ class Astronomy extends IPSModule
 	protected function JDCYear($JD)
 	{
 		$I = $this->roundvariantfix($JD + 0.5);
-		$F = $JD + 0.5 - $I;
+		// $F = $JD + 0.5 - $I;
 		$A = $this->roundvariantfix(($I - 1867216.25) / 36524.25);
 
 		if ($I > 2299160){
@@ -1993,10 +2010,10 @@ class Astronomy extends IPSModule
 		$C = round($B - 60 * $this->roundvariantfix($B / 60), 2);
 
 		if ($C == 60){
-			$D = 0;
+			// $D = 0;
 			$E = $B + 60;}
 		else{
-			$D = $C;
+			// $D = $C;
 			$E = $B;}
 
 		if ($DH < 0){
@@ -2013,10 +2030,10 @@ class Astronomy extends IPSModule
 		$C = round($B - 60 * $this->roundvariantfix($B / 60), 2);
 
 		if ($C == 60){
-			$D = 0;
+			// $D = 0;
 			$E = $B + 60;}
 		else{
-			$D = $C;
+			// $D = $C;
 			$E = $B;}
 			
 		$DHMin = fmod(floor($E / 60), 60);
@@ -2157,10 +2174,10 @@ class Astronomy extends IPSModule
 		$C = round($B - 60 * $this->roundvariantfix($B / 60), 2);
 
 		if ($C == 60){
-			$D = 0;
+			//$D = 0;
 			$E = $B + 60;}
 		else{
-			$D = $C;
+			//$D = $C;
 			$E = $B;}
 
 		if ($DD < 0){
@@ -2178,10 +2195,10 @@ class Astronomy extends IPSModule
 		$C = round($B - 60 * $this->roundvariantfix($B / 60), 2);
 
 		if ($C == 60){
-			$D = 0;
+			//$D = 0;
 			$E = $B + 60;}
 		else{
-			$D = $C;
+			//$D = $C;
 			$E = $B;}
 
 		$DDMin = fmod(floor($E / 60), 60);
@@ -2577,42 +2594,19 @@ class Astronomy extends IPSModule
 			$J0 = $this->CDJD(0, 1, $Y0) - 2415020;
 			$DJ = $this->CDJD($D0, $M0, $Y0) - 2415020;
 			$K = $this->LINT((($Y0 - 1900 + (($DJ - $J0) / 365)) * 12.3685) + 0.5);
-			$TN = $K / 1236.85;
-			  $TF = ($K + 0.5) / 1236.85;
-			$T = $TN;
-			  $T2 = $T * $T;
-			  $E = 29.53 * $K;
-			  $C = 166.56 + (132.87 - 0.009173 * $T) * $T;
-			$C = $this->Radians($C);
-			  $B = 0.00058868 * $K + (0.0001178 - 0.000000155 * $T) * $T2;
-			$B = $B + 0.00033 * sin($C) + 0.75933;
-			  $A = $K / 12.36886;
-			$A1 = 359.2242 + 360 * $this->FRACT($A) - (0.0000333 + 0.00000347 * $T) * $T2;
-			$A2 = 306.0253 + 360 * $this->FRACT($K / 0.9330851);
-			$A2 = $A2 + (0.0107306 + 0.00001236 * $T) * $T2;
-			  $A = $K / 0.9214926;
-			$F = 21.2964 + 360 * FRACT($A) - (0.0016528 + 0.00000239 * $T) * $T2;
-			$A1 = $this->UnwindDeg($A1);
-			  $A2 = $this->UnwindDeg($A2);
-			  $F = $this->UnwindDeg($F);
-			$A1 = $this->Radians($A1);
-			  $A2 = $this->Radians($A2);
-			  $F = $this->Radians($F);
+			// $TN = $K / 1236.85;
+            $TF = ($K + 0.5) / 1236.85;
 
-			$DD = (0.1734 - 0.000393 * $T) * sin($A1) + 0.0021 * sin(2 * $A1);
-			$DD = $DD - 0.4068 * sin($A2) + 0.0161 * sin(2 * $A2) - 0.0004 * sin(3 * $A2);
-			$DD = $DD + 0.0104 * sin(2 * $F) - 0.0051 * sin($A1 + $A2);
-			$DD = $DD - 0.0074 * sin($A1 - $A2) + 0.0004 * sin(2 * $F + $A1);
-			$DD = $DD - 0.0004 * sin(2 * $F - $A1) - 0.0006 * sin(2 * $F + $A2) + 0.001 * sin(2 * $F - $A2);
-			$DD = $DD + 0.0005 * sin($A1 + 2 * $A2);
-			  $E1 = $this->roundvariantint($E);
-			  $B = $B + $DD + ($E - $E1);
-			$B1 = $this->roundvariantint($B);
-			  $A = $E1 + $B1;
-			  $B = $B - $B1;
-			  $NI = $A;
-			  $NF = $B;
-			  $NB = $F;
+
+
+			  // $E1 = $this->roundvariantint($E);
+			  // $B = $B + $DD + ($E - $E1);
+			  // $B1 = $this->roundvariantint($B);
+			  // $A = $E1 + $B1;
+			  // $B = $B - $B1;
+			  //$NI = $A;
+			  //$NF = $B;
+			  //$NB = $F;
 			$T = $TF;
 			  $K = $K + 0.5;
 			  $T2 = $T * $T;
@@ -2647,7 +2641,7 @@ class Astronomy extends IPSModule
 			  $B = $B - $B1;
 			  $FI = $A;
 			  $FF = $B;
-			  $FB = $F;
+			  // $FB = $F;
 			  $FullMoon = $FI + 2415020 + $FF;
 		return ($FullMoon);
 	}
@@ -2667,27 +2661,27 @@ class Astronomy extends IPSModule
 			$T = (($this->CDJD($GD, $GM, $GY) - 2415020) / 36525) + ($UT / 876600);
 			$T2 = $T * $T;
 
-			$M1 = 27.32158213;
+			// $M1 = 27.32158213;
 			  $M2 = 365.2596407;
 			  $M3 = 27.55455094;
 			$M4 = 29.53058868;
 			  $M5 = 27.21222039;
 			  $M6 = 6798.363307;
 			$Q = $this->CDJD($GD, $GM, $GY) - 2415020 + ($UT / 24);
-			$M1 = $Q / $M1;
+			// $M1 = $Q / $M1;
 			  $M2 = $Q / $M2;
 			  $M3 = $Q / $M3;
 			$M4 = $Q / $M4;
 			  $M5 = $Q / $M5;
 			  $M6 = $Q / $M6;
-			$M1 = 360 * ($M1 - $this->roundvariantint($M1));
+			// $M1 = 360 * ($M1 - $this->roundvariantint($M1));
 			  $M2 = 360 * ($M2 - $this->roundvariantint($M2));
 			$M3 = 360 * ($M3 - $this->roundvariantint($M3));
 			  $M4 = 360 * ($M4 - $this->roundvariantint($M4));
 			$M5 = 360 * ($M5 - $this->roundvariantint($M5));
 			  $M6 = 360 * ($M6 - $this->roundvariantint($M6));
 
-			$ML = 270.434164 + $M1 - (0.001133 - 0.0000019 * $T) * $T2;
+			// $ML = 270.434164 + $M1 - (0.001133 - 0.0000019 * $T) * $T2;
 			$MS = 358.475833 + $M2 - (0.00015 + 0.0000033 * $T) * $T2;
 			$MD = 296.104608 + $M3 + (0.009192 + 0.0000144 * $T) * $T2;
 			$ME1 = 350.737486 + $M4 - (0.001436 - 0.0000019 * $T) * $T2;
@@ -2700,16 +2694,16 @@ class Astronomy extends IPSModule
 			$S3 = 0.003964 * sin($this->Radians($B));
 			$C = $this->Radians($NA + 275.05 - 2.3 * $T);
 			  $S4 = sin($C);
-			$ML = $ML + 0.000233 * $S1 + $S3 + 0.001964 * $S2;
+			// $ML = $ML + 0.000233 * $S1 + $S3 + 0.001964 * $S2;
 			$MS = $MS - 0.001778 * $S1;
 			$MD = $MD + 0.000817 * $S1 + $S3 + 0.002541 * $S2;
 			$MF = $MF + $S3 - 0.024691 * $S2 - 0.004328 * $S4;
 			$ME1 = $ME1 + 0.002011 * $S1 + $S3 + 0.001964 * $S2;
 			$E = 1 - (0.002495 + 0.00000752 * $T) * $T;
 			  $E2 = $E * $E;
-			$ML = $this->Radians($ML);
+			// $ML = $this->Radians($ML);
 			  $MS = $this->Radians($MS);
-			  $NA = $this->Radians($NA);
+			  // $NA = $this->Radians($NA);
 			$ME1 = $this->Radians($ME1);
 			  $MF = $this->Radians($MF);
 			  $MD = $this->Radians($MD);
@@ -2769,41 +2763,41 @@ class Astronomy extends IPSModule
 			$T = (($this->CDJD($GD, $GM, $GY) - 2415020) / 36525) + ($UT / 876600);
 			$T2 = $T * $T;
 
-			$M1 = 27.32158213;
-			  $M2 = 365.2596407;
+			// $M1 = 27.32158213;
+			// $M2 = 365.2596407;
 			  $M3 = 27.55455094;
-			$M4 = 29.53058868;
-			  $M5 = 27.21222039;
+			// $M4 = 29.53058868;
+			// $M5 = 27.21222039;
 			  $M6 = 6798.363307;
 			$Q = $this->CDJD($GD, $GM, $GY) - 2415020 + ($UT / 24);
-			$M1 = $Q / $M1;
-			  $M2 = $Q / $M2;
+			// $M1 = $Q / $M1;
+			// $M2 = $Q / $M2;
 			  $M3 = $Q / $M3;
-			$M4 = $Q / $M4;
-			  $M5 = $Q / $M5;
+			// $M4 = $Q / $M4;
+			// $M5 = $Q / $M5;
 			  $M6 = $Q / $M6;
-			$M1 = 360 * ($M1 - $this->roundvariantint($M1));
-			  $M2 = 360 * ($M2 - $this->roundvariantint($M2));
+			// $M1 = 360 * ($M1 - $this->roundvariantint($M1));
+			// $M2 = 360 * ($M2 - $this->roundvariantint($M2));
 			$M3 = 360 * ($M3 - $this->roundvariantint($M3));
-			  $M4 = 360 * ($M4 - $this->roundvariantint($M4));
-			$M5 = 360 * ($M5 - $this->roundvariantint($M5));
+			// $M4 = 360 * ($M4 - $this->roundvariantint($M4));
+			// $M5 = 360 * ($M5 - $this->roundvariantint($M5));
 			  $M6 = 360 * ($M6 - $this->roundvariantint($M6));
 
-			$ML = 270.434164 + $M1 - (0.001133 - 0.0000019 * $T) * $T2;
-			$MS = 358.475833 + $M2 - (0.00015 + 0.0000033 * $T) * $T2;
+			// $ML = 270.434164 + $M1 - (0.001133 - 0.0000019 * $T) * $T2;
+			// $MS = 358.475833 + $M2 - (0.00015 + 0.0000033 * $T) * $T2;
 			$MD = 296.104608 + $M3 + (0.009192 + 0.0000144 * $T) * $T2;
-			$ME1 = 350.737486 + $M4 - (0.001436 - 0.0000019 * $T) * $T2;
-			$MF = 11.250889 + $M5 - (0.003211 + 0.0000003 * $T) * $T2;
+			// $ME1 = 350.737486 + $M4 - (0.001436 - 0.0000019 * $T) * $T2;
+			// $MF = 11.250889 + $M5 - (0.003211 + 0.0000003 * $T) * $T2;
 			$NA = 259.183275 - $M6 + (0.002078 + 0.0000022 * $T) * $T2;
 			$A = $this->Radians(51.2 + 20.2 * $T);
 			  $S1 = sin($A);
 			  $S2 = sin($this->Radians($NA));
 			$B = 346.56 + (132.87 - 0.0091731 * $T) * $T;
 			$S3 = 0.003964 * sin($this->Radians($B));
-			$C = $this->Radians($NA + 275.05 - 2.3 * $T);
-			  $S4 = sin($C);
-			$ML = $ML + 0.000233 * $S1 + $S3 + 0.001964 * $S2;
-			$MS = $MS - 0.001778 * $S1;
+			// $C = $this->Radians($NA + 275.05 - 2.3 * $T);
+			// $S4 = sin($C);
+			// $ML = $ML + 0.000233 * $S1 + $S3 + 0.001964 * $S2;
+			// $MS = $MS - 0.001778 * $S1;
 			$MD = $MD + 0.000817 * $S1 + $S3 + 0.002541 * $S2;
 
 			$MoonMeanAnomaly = $this->Radians($MD);
@@ -2894,7 +2888,7 @@ class Astronomy extends IPSModule
 			  $E2 = $E * $E;
 			$ML = $this->Radians($ML);
 			  $MS = $this->Radians($MS);
-			  $NA = $this->Radians($NA);
+			// $NA = $this->Radians($NA);
 			$ME1 = $this->Radians($ME1);
 			  $MF = $this->Radians($MF);
 			  $MD = $this->Radians($MD);
@@ -2942,27 +2936,27 @@ class Astronomy extends IPSModule
 			$T = (($this->CDJD($GD, $GM, $GY) - 2415020) / 36525) + ($UT / 876600);
 			$T2 = $T * $T;
 
-			$M1 = 27.32158213;
+			// $M1 = 27.32158213;
 			  $M2 = 365.2596407;
 			  $M3 = 27.55455094;
 			$M4 = 29.53058868;
 			  $M5 = 27.21222039;
 			  $M6 = 6798.363307;
 			$Q = $this->CDJD($GD, $GM, $GY) - 2415020 + ($UT / 24);
-			$M1 = $Q / $M1;
+			// $M1 = $Q / $M1;
 			  $M2 = $Q / $M2;
 			  $M3 = $Q / $M3;
 			$M4 = $Q / $M4;
 			  $M5 = $Q / $M5;
 			  $M6 = $Q / $M6;
-			$M1 = 360 * ($M1 - $this->roundvariantint($M1));
+			//$M1 = 360 * ($M1 - $this->roundvariantint($M1));
 			  $M2 = 360 * ($M2 - $this->roundvariantint($M2));
 			$M3 = 360 * ($M3 - $this->roundvariantint($M3));
 			  $M4 = 360 * ($M4 - $this->roundvariantint($M4));
 			$M5 = 360 * ($M5 - $this->roundvariantint($M5));
 			  $M6 = 360 * ($M6 - $this->roundvariantint($M6));
 
-			$ML = 270.434164 + $M1 - (0.001133 - 0.0000019 * $T) * $T2;
+			// $ML = 270.434164 + $M1 - (0.001133 - 0.0000019 * $T) * $T2;
 			$MS = 358.475833 + $M2 - (0.00015 + 0.0000033 * $T) * $T2;
 			$MD = 296.104608 + $M3 + (0.009192 + 0.0000144 * $T) * $T2;
 			$ME1 = 350.737486 + $M4 - (0.001436 - 0.0000019 * $T) * $T2;
@@ -2975,14 +2969,14 @@ class Astronomy extends IPSModule
 			$S3 = 0.003964 * sin($this->Radians($B));
 			$C = $this->Radians($NA + 275.05 - 2.3 * $T);
 			  $S4 = sin($C);
-			$ML = $ML + 0.000233 * $S1 + $S3 + 0.001964 * $S2;
+			// $ML = $ML + 0.000233 * $S1 + $S3 + 0.001964 * $S2;
 			$MS = $MS - 0.001778 * $S1;
 			$MD = $MD + 0.000817 * $S1 + $S3 + 0.002541 * $S2;
 			$MF = $MF + $S3 - 0.024691 * $S2 - 0.004328 * $S4;
 			$ME1 = $ME1 + 0.002011 * $S1 + $S3 + 0.001964 * $S2;
 			$E = 1 - (0.002495 + 0.00000752 * $T) * $T;
 			  $E2 = $E * $E;
-			$ML = $this->Radians($ML);
+			// $ML = $this->Radians($ML);
 			  $MS = $this->Radians($MS);
 			  $NA = $this->Radians($NA);
 			$ME1 = $this->Radians($ME1);
@@ -3031,31 +3025,31 @@ class Astronomy extends IPSModule
 			$T = (($this->CDJD($GD, $GM, $GY) - 2415020) / 36525) + ($UT / 876600);
 			$T2 = $T * $T;
 
-			$M1 = 27.32158213;
-			  $M2 = 365.2596407;
-			  $M3 = 27.55455094;
-			$M4 = 29.53058868;
-			  $M5 = 27.21222039;
+			// $M1 = 27.32158213;
+			// $M2 = 365.2596407;
+			// $M3 = 27.55455094;
+			// $M4 = 29.53058868;
+			// $M5 = 27.21222039;
 			  $M6 = 6798.363307;
 			$Q = $this->CDJD($GD, $GM, $GY) - 2415020 + ($UT / 24);
-			$M1 = $Q / $M1;
-			  $M2 = $Q / $M2;
-			  $M3 = $Q / $M3;
-			$M4 = $Q / $M4;
-			  $M5 = $Q / $M5;
+			// $M1 = $Q / $M1;
+			// $M2 = $Q / $M2;
+			// $M3 = $Q / $M3;
+			// $M4 = $Q / $M4;
+			// $M5 = $Q / $M5;
 			  $M6 = $Q / $M6;
-			$M1 = 360 * ($M1 - $this->roundvariantint($M1));
-			  $M2 = 360 * ($M2 - $this->roundvariantint($M2));
-			$M3 = 360 * ($M3 - $this->roundvariantint($M3));
-			  $M4 = 360 * ($M4 - $this->roundvariantint($M4));
-			$M5 = 360 * ($M5 - $this->roundvariantint($M5));
+			// $M1 = 360 * ($M1 - $this->roundvariantint($M1));
+			// $M2 = 360 * ($M2 - $this->roundvariantint($M2));
+			// $M3 = 360 * ($M3 - $this->roundvariantint($M3));
+			// $M4 = 360 * ($M4 - $this->roundvariantint($M4));
+            // $M5 = 360 * ($M5 - $this->roundvariantint($M5));
 			  $M6 = 360 * ($M6 - $this->roundvariantint($M6));
 
-			$ML = 270.434164 + $M1 - (0.001133 - 0.0000019 * $T) * $T2;
-			$MS = 358.475833 + $M2 - (0.00015 + 0.0000033 * $T) * $T2;
-			$MD = 296.104608 + $M3 + (0.009192 + 0.0000144 * $T) * $T2;
-			$ME1 = 350.737486 + $M4 - (0.001436 - 0.0000019 * $T) * $T2;
-			$MF = 11.250889 + $M5 - (0.003211 + 0.0000003 * $T) * $T2;
+			// $ML = 270.434164 + $M1 - (0.001133 - 0.0000019 * $T) * $T2;
+			// $MS = 358.475833 + $M2 - (0.00015 + 0.0000033 * $T) * $T2;
+			// $MD = 296.104608 + $M3 + (0.009192 + 0.0000144 * $T) * $T2;
+			// $ME1 = 350.737486 + $M4 - (0.001436 - 0.0000019 * $T) * $T2;
+			// $MF = 11.250889 + $M5 - (0.003211 + 0.0000003 * $T) * $T2;
 			$NA = 259.183275 - $M6 + (0.002078 + 0.0000022 * $T) * $T2;
 
 			$MoonNodeLong = $NA;
@@ -3075,7 +3069,7 @@ class Astronomy extends IPSModule
 			$DJ = $this->CDJD($D0, $M0, $Y0) - 2415020;
 			$K = $this->LINT((($Y0 - 1900 + (($DJ - $J0) / 365)) * 12.3685) + 0.5);
 			$TN = $K / 1236.85;
-			  $TF = ($K + 0.5) / 1236.85;
+			//  $TF = ($K + 0.5) / 1236.85;
 			$T = $TN;
 			  $T2 = $T * $T;
 			  $E = 29.53 * $K;
@@ -3109,42 +3103,42 @@ class Astronomy extends IPSModule
 			  $B = $B - $B1;
 			  $NI = $A;
 			  $NF = $B;
-			  $NB = $F;
-			$T = $TF;
-			  $K = $K + 0.5;
-			  $T2 = $T * $T;
-			  $E = 29.53 * $K;
-			  $C = 166.56 + (132.87 - 0.009173 * $T) * $T;
-			$C = $this->Radians($C);
-			  $B = 0.00058868 * $K + (0.0001178 - 0.000000155 * $T) * $T2;
-			$B = $B + 0.00033 * sin($C) + 0.75933;
-			  $A = $K / 12.36886;
-			$A1 = 359.2242 + 360 * $this->FRACT($A) - (0.0000333 + 0.00000347 * $T) * $T2;
-			$A2 = 306.0253 + 360 * $this->FRACT($K / 0.9330851);
-			$A2 = $A2 + (0.0107306 + 0.00001236 * $T) * $T2;
-			  $A = $K / 0.9214926;
-			$F = 21.2964 + 360 * $this->FRACT($A) - (0.0016528 + 0.00000239 * $T) * $T2;
-			$A1 = $this->UnwindDeg($A1);
-			  $A2 = $this->UnwindDeg($A2);
-			  $F = $this->UnwindDeg($F);
-			$A1 = $this->Radians($A1);
-			  $A2 = $this->Radians($A2);
-			  $F = $this->Radians($F);
+			// $NB = $F;
+			// $T = $TF;
+			// $K = $K + 0.5;
+			// $T2 = $T * $T;
+			// $E = 29.53 * $K;
+			// $C = 166.56 + (132.87 - 0.009173 * $T) * $T;
+			// $C = $this->Radians($C);
+			// $B = 0.00058868 * $K + (0.0001178 - 0.000000155 * $T) * $T2;
+			// $B = $B + 0.00033 * sin($C) + 0.75933;
+			// $A = $K / 12.36886;
+			// $A1 = 359.2242 + 360 * $this->FRACT($A) - (0.0000333 + 0.00000347 * $T) * $T2;
+			// $A2 = 306.0253 + 360 * $this->FRACT($K / 0.9330851);
+			// $A2 = $A2 + (0.0107306 + 0.00001236 * $T) * $T2;
+			// $A = $K / 0.9214926;
+			// $F = 21.2964 + 360 * $this->FRACT($A) - (0.0016528 + 0.00000239 * $T) * $T2;
+			// $A1 = $this->UnwindDeg($A1);
+			//  $A2 = $this->UnwindDeg($A2);
+			//  $F = $this->UnwindDeg($F);
+            // $A1 = $this->Radians($A1);
+			// $A2 = $this->Radians($A2);
+			// $F = $this->Radians($F);
 
-			$DD = (0.1734 - 0.000393 * $T) * sin($A1) + 0.0021 * sin(2 * $A1);
-			$DD = $DD - 0.4068 * sin($A2) + 0.0161 * sin(2 * $A2) - 0.0004 * sin(3 * $A2);
-			$DD = $DD + 0.0104 * sin(2 * $F) - 0.0051 * sin($A1 + $A2);
-			$DD = $DD - 0.0074 * sin($A1 - $A2) + 0.0004 * sin(2 * $F + $A1);
-			$DD = $DD - 0.0004 * sin(2 * $F - $A1) - 0.0006 * sin(2 * $F + $A2) + 0.001 * sin(2 * $F - $A2);
-			$DD = $DD + 0.0005 * sin($A1 + 2 * $A2);
-			  $E1 = $this->roundvariantint($E);
-			  $B = $B + $DD + ($E - $E1);
-			$B1 = $this->roundvariantint($B);
-			  $A = $E1 + $B1;
-			  $B = $B - $B1;
-			  $FI = $A;
-			  $FF = $B;
-			  $FB = $F;
+			// $DD = (0.1734 - 0.000393 * $T) * sin($A1) + 0.0021 * sin(2 * $A1);
+			// $DD = $DD - 0.4068 * sin($A2) + 0.0161 * sin(2 * $A2) - 0.0004 * sin(3 * $A2);
+			// $DD = $DD + 0.0104 * sin(2 * $F) - 0.0051 * sin($A1 + $A2);
+			// $DD = $DD - 0.0074 * sin($A1 - $A2) + 0.0004 * sin(2 * $F + $A1);
+			// $DD = $DD - 0.0004 * sin(2 * $F - $A1) - 0.0006 * sin(2 * $F + $A2) + 0.001 * sin(2 * $F - $A2);
+			// $DD = $DD + 0.0005 * sin($A1 + 2 * $A2);
+			  // $E1 = $this->roundvariantint($E);
+			  // $B = $B + $DD + ($E - $E1);
+              // $B1 = $this->roundvariantint($B);
+			  // $A = $E1 + $B1;
+			  // $B = $B - $B1;
+			  // $FI = $A;
+			  // $FF = $B;
+			  // $FB = $F;
 			  $NewMoon = $NI + 2415020 + $NF;
 		return ($NewMoon);
 		}
@@ -3164,7 +3158,7 @@ class Astronomy extends IPSModule
 					$R1 = 0;
 			  step1: //3020
 					$Y = $Y1 + $R1;
-				   $Q = $Y;
+				   // $Q = $Y;
 					if ($Y < 0.2617994){
 					if ($Y < -0.087){
 						$Q = 0;
@@ -3249,7 +3243,7 @@ class Astronomy extends IPSModule
 
 			$AM = $this->Radians($M1);
 			$AT = $this->TrueAnomaly($AM, $EC);
-			  $AE = $this->EccentricAnomaly($AM, $EC);
+			//  $AE = $this->EccentricAnomaly($AM, $EC);
 
 			$A = 62.55209472 * $T;
 			  $B = 360 * ($A - $this->roundvariantint($A));
@@ -3264,15 +3258,15 @@ class Astronomy extends IPSModule
 			  $B = 360 * ($A - $this->roundvariantint($A));
 			$D1 = $this->Radians(350.74 - 0.00144 * $T2 + $B);
 			$E1 = $this->Radians(231.19 + 20.2 * $T);
-			$A = 183.1353208 * $T;
-			  $B = 360 * ($A - $this->roundvariantint($A));
-			$H1 = $this->Radians(353.4 + $B);
+			// $A = 183.1353208 * $T;
+			// $B = 360 * ($A - $this->roundvariantint($A));
+			// $H1 = $this->Radians(353.4 + $B);
 
 			$D2 = 0.00134 * cos($A1) + 0.00154 * cos($B1) + 0.002 * cos($C1);
 			$D2 = $D2 + 0.00179 * sin($D1) + 0.00178 * sin($E1);
-			$D3 = 0.00000543 * sin($A1) + 0.00001575 * sin($B1);
-			$D3 = $D3 + 0.00001627 * sin($C1) + 0.00003076 * cos($D1);
-			$D3 = $D3 + 0.00000927 * sin($H1);
+			// $D3 = 0.00000543 * sin($A1) + 0.00001575 * sin($B1);
+			// $D3 = $D3 + 0.00001627 * sin($C1) + 0.00003076 * cos($D1);
+			// $D3 = $D3 + 0.00000927 * sin($H1);
 
 			$SR = $AT + $this->Radians($L - $M1 + $D2);
 			  $TP = 6.283185308;
@@ -3290,16 +3284,16 @@ class Astronomy extends IPSModule
 			$DJ = $this->CDJD($AA, $BB, $CC) - 2415020;
 			$T = ($DJ / 36525) + ($UT / 876600);
 			  $T2 = $T * $T;
-			$A = 100.0021359 * $T;
-			  $B = 360 * ($A - $this->roundvariantint($A));
-			$L = 279.69668 + 0.0003025 * $T2 + $B;
+			// $A = 100.0021359 * $T;
+			// $B = 360 * ($A - $this->roundvariantint($A));
+			// $L = 279.69668 + 0.0003025 * $T2 + $B;
 			$A = 99.99736042 * $T;
-			  $B = 360 * ($A - $this->roundvariantint($A));
+            $B = 360 * ($A - $this->roundvariantint($A));
 			$M1 = 358.47583 - (0.00015 + 0.0000033 * $T) * $T2 + $B;
 			$EC = 0.01675104 - 0.0000418 * $T - 0.000000126 * $T2;
 
 			$AM = $this->Radians($M1);
-			$AT = $this->TrueAnomaly($AM, $EC);
+			// $AT = $this->TrueAnomaly($AM, $EC);
 			  $AE = $this->EccentricAnomaly($AM, $EC);
 
 			$A = 62.55209472 * $T;
@@ -3314,13 +3308,13 @@ class Astronomy extends IPSModule
 			$A = 1236.853095 * $T;
 			  $B = 360 * ($A - $this->roundvariantint($A));
 			$D1 = $this->Radians(350.74 - 0.00144 * $T2 + $B);
-			$E1 = $this->Radians(231.19 + 20.2 * $T);
+			// $E1 = $this->Radians(231.19 + 20.2 * $T);
 			$A = 183.1353208 * $T;
 			  $B = 360 * ($A - $this->roundvariantint($A));
 			$H1 = $this->Radians(353.4 + $B);
 
-			$D2 = 0.00134 * cos($A1) + 0.00154 * cos($B1) + 0.002 * cos($C1);
-			$D2 = $D2 + 0.00179 * sin($D1) + 0.00178 * sin($E1);
+			// $D2 = 0.00134 * cos($A1) + 0.00154 * cos($B1) + 0.002 * cos($C1);
+			// $D2 = $D2 + 0.00179 * sin($D1) + 0.00178 * sin($E1);
 			$D3 = 0.00000543 * sin($A1) + 0.00001575 * sin($B1);
 			$D3 = $D3 + 0.00001627 * sin($C1) + 0.00003076 * cos($D1);
 			$D3 = $D3 + 0.00000927 * sin($H1);
@@ -3338,12 +3332,12 @@ class Astronomy extends IPSModule
 			$UT = $this->LctUT($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY)["UTDec"];
 			$DJ = $this->CDJD($AA, $BB, $CC) - 2415020;
 			$T = ($DJ / 36525) + ($UT / 876600);
-			  $T2 = $T * $T;
-			$A = 100.0021359 * $T;
-			  $B = 360 * ($A - $this->roundvariantint($A));
-			$L = 279.69668 + 0.0003025 * $T2 + $B;
+            $T2 = $T * $T;
+			// $A = 100.0021359 * $T;
+			// $B = 360 * ($A - $this->roundvariantint($A));
+			// $L = 279.69668 + 0.0003025 * $T2 + $B;
 			$A = 99.99736042 * $T;
-			  $B = 360 * ($A - $this->roundvariantint($A));
+            $B = 360 * ($A - $this->roundvariantint($A));
 			$M1 = 358.47583 - (0.00015 + 0.0000033 * $T) * $T2 + $B;
 			$EC = 0.01675104 - 0.0000418 * $T - 0.000000126 * $T2;
 
@@ -3419,7 +3413,7 @@ class Astronomy extends IPSModule
 	protected function moon_phase($year, $month, $day)
 	{
 		/*    modified from http://www.voidware.com/moon_phase.htm    */
-		$c = $e = $jd = $b = 0;
+		// $c = $e = $jd = $b = 0;
 		if ($month < 3)
 		{
 			$year--;
@@ -3496,7 +3490,7 @@ class Astronomy extends IPSModule
 		//print_r(date("z"));
 		$rads = 3.14159265359/180;
 
-		$moondates = array();
+		$moondate = array();
 		$i = 0;
 
 		for ($phase = 0; $phase < 1; $phase += 0.25)
@@ -3617,6 +3611,7 @@ class Astronomy extends IPSModule
 			  }
 			  
 			$date = date("D",($datum));
+            $wt = "Mo";
 			if($date == "Mon"){
 				  $wt = "Mo";}
 				 elseif ($date == "Tue"){
@@ -3890,6 +3885,8 @@ class Astronomy extends IPSModule
 		$month = date("m");
 		$day = date("d");
 		$year = date("Y");
+        $latitude = false;
+        $longitude = false;
 		$InstanzenListe = IPS_GetInstanceListByModuleID("{45E97A63-F870-408A-B259-2933F7EABF74}");
 		foreach ($InstanzenListe as $InstanzID)
 			{
@@ -3921,6 +3918,8 @@ class Astronomy extends IPSModule
 		$month = date("m");
 		$day = date("d");
 		$year = date("Y");
+        $latitude = false;
+        $longitude = false;
 		$InstanzenListe = IPS_GetInstanceListByModuleID("{45E97A63-F870-408A-B259-2933F7EABF74}");
 		foreach ($InstanzenListe as $InstanzID)
 			{
@@ -4732,296 +4731,6 @@ class Astronomy extends IPSModule
 			}
 			return $ipsversion;
 		}
-}
-
-/******************************************************************************
-* The following is a PHP implementation of the JavaScript code found at:      *
-* http://bodmas.org/astronomy/riset.html                                      *
-*                                                                             *
-* Original maths and code written by Keith Burnett <bodmas.org>               *
-* PHP port written by Matt "dxprog" Hackmann <dxprog.com>                     *
-*                                                                             *
-* This program is free software: you can redistribute it and/or modify        *
-* it under the terms of the GNU General Public License as published by        *
-* the Free Software Foundation, either version 3 of the License, or           *
-* (at your option) any later version.                                         *
-*                                                                             *
-* This program is distributed in the hope that it will be useful,             *
-* but WITHOUT ANY WARRANTY; without even the implied warranty of              *
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the               *
-* GNU General Public License for more details.                                *
-*                                                                             *
-* You should have received a copy of the GNU General Public License           *
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.       *
-******************************************************************************/
-
-class Moon extends stdClass
-{
-
-    /**
-     * Calculates the moon rise/set for a given location and day of year
-     */
-    public static function calculateMoonTimes($month, $day, $year, $lat, $lon) {
-
-        $utrise = $utset = 0;
-
-        $timezone = (int)($lon / 15);
-        $date = self::modifiedJulianDate($month, $day, $year);
-        $date -= $timezone / 24;
-        $latRad = deg2rad($lat);
-        $sinho = 0.0023271056;
-        $sglat = sin($latRad);
-        $cglat = cos($latRad);
-
-        $rise = false;
-        $set = false;
-        $hour = 1;
-        $ym = self::sinAlt($date, $hour - 1, $lon, $cglat, $sglat) - $sinho;
-
-        while ($hour < 25 && (false == $set || false == $rise)) {
-
-            $yz = self::sinAlt($date, $hour, $lon, $cglat, $sglat) - $sinho;
-            $yp = self::sinAlt($date, $hour + 1, $lon, $cglat, $sglat) - $sinho;
-
-            $quadout = self::quad($ym, $yz, $yp);
-            $nz = $quadout[0];
-            $z1 = $quadout[1];
-            $z2 = $quadout[2];
-            $xe = $quadout[3];
-            $ye = $quadout[4];
-
-            if ($nz == 1) {
-                if ($ym < 0) {
-                    $utrise = $hour + $z1;
-                    $rise = true;
-                } else {
-                    $utset = $hour + $z1;
-                    $set = true;
-                }
-            }
-
-            if ($nz == 2) {
-                if ($ye < 0) {
-                    $utrise = $hour + $z2;
-                    $utset = $hour + $z1;
-                } else {
-                    $utrise = $hour + $z1;
-                    $utset = $hour + $z2;
-                }
-            }
-
-            $ym = $yp;
-            $hour += 2.0;
-
-        }
-        // Convert to unix timestamps and return as an object
-        $retVal = new stdClass();
-        $utrise = self::convertTime($utrise);
-        $utset = self::convertTime($utset);
-        $summertime = date("I");
-        if($summertime == 0){
-        $retVal->moonrise = $rise ? mktime($utrise['hrs'], $utrise['min'], 0+3600, $month, $day, $year) : mktime(0, 0, 0, $month, $day + 1, $year);
-        $retVal->moonset = $set ? mktime($utset['hrs'], $utset['min'], 0+3600, $month, $day, $year) : mktime(0, 0, 0, $month, $day + 1, $year);
-        }
-         else{
-         $retVal->moonrise = $rise ? mktime($utrise['hrs'], $utrise['min'], 0+7200, $month, $day, $year) : mktime(0, 0, 0, $month, $day + 1, $year);
-        $retVal->moonset = $set ? mktime($utset['hrs'], $utset['min'], 0+7200, $month, $day, $year) : mktime(0, 0, 0, $month, $day + 1, $year);
-        }
-        return $retVal;
-
-    }
-
-    /**
-     *    finds the parabola throuh the three points (-1,ym), (0,yz), (1, yp)
-     *  and returns the coordinates of the max/min (if any) xe, ye
-     *  the values of x where the parabola crosses zero (roots of the self::quadratic)
-     *  and the number of roots (0, 1 or 2) within the interval [-1, 1]
-     *
-     *    well, this routine is producing sensible answers
-     *
-     *  results passed as array [nz, z1, z2, xe, ye]
-     */
-    private static function quad($ym, $yz, $yp) {
-
-        $nz = $z1 = $z2 = 0;
-        $a = 0.5 * ($ym + $yp) - $yz;
-        $b = 0.5 * ($yp - $ym);
-        $c = $yz;
-        $xe = -$b / (2 * $a);
-        $ye = ($a * $xe + $b) * $xe + $c;
-        $dis = $b * $b - 4 * $a * $c;
-        if ($dis > 0) {
-            $dx = 0.5 * sqrt($dis) / abs($a);
-            $z1 = $xe - $dx;
-            $z2 = $xe + $dx;
-            $nz = abs($z1) < 1 ? $nz + 1 : $nz;
-            $nz = abs($z2) < 1 ? $nz + 1 : $nz;
-            $z1 = $z1 < -1 ? $z2 : $z1;
-        }
-
-        return array($nz, $z1, $z2, $xe, $ye);
-
-    }
-
-    /**
-     *    this rather mickey mouse function takes a lot of
-     *  arguments and then returns the sine of the altitude of the moon
-     */
-    private static function sinAlt($mjd, $hour, $glon, $cglat, $sglat) {
-
-        $mjd += $hour / 24;
-        $t = ($mjd - 51544.5) / 36525;
-        $objpos = self::minimoon($t);
-
-        $ra = $objpos[1];
-        $dec = $objpos[0];
-        $decRad = deg2rad($dec);
-        $tau = 15 * (self::lmst($mjd, $glon) - $ra);
-
-        return $sglat * sin($decRad) + $cglat * cos($decRad) * cos(deg2rad($tau));
-
-    }
-
-    /**
-     *    returns an angle in degrees in the range 0 to 360
-     */
-    private static function degRange($x) {
-        $b = $x / 360;
-        $a = 360 * ($b - (int)$b);
-        $retVal = $a < 0 ? $a + 360 : $a;
-        return $retVal;
-    }
-
-    private static function lmst($mjd, $glon) {
-        $d = $mjd - 51544.5;
-        $t = $d / 36525;
-        $lst = self::degRange(280.46061839 + 360.98564736629 * $d + 0.000387933 * $t * $t - $t * $t * $t / 38710000);
-        return $lst / 15 + $glon / 15;
-    }
-
-    /**
-     * takes t and returns the geocentric ra and dec in an array mooneq
-     * claimed good to 5' (angle) in ra and 1' in dec
-     * tallies with another approximate method and with ICE for a couple of dates
-     */
-    private static function minimoon($t) {
-
-        $p2 = 6.283185307;
-        $arc = 206264.8062;
-        $coseps = 0.91748;
-        $sineps = 0.39778;
-
-        $lo = self::frac(0.606433 + 1336.855225 * $t);
-        $l = $p2 * self::frac(0.374897 + 1325.552410 * $t);
-        $l2 = $l * 2;
-        $ls = $p2 * self::frac(0.993133 + 99.997361 * $t);
-        $d = $p2 * self::frac(0.827361 + 1236.853086 * $t);
-        $d2 = $d * 2;
-        $f = $p2 * self::frac(0.259086 + 1342.227825 * $t);
-        $f2 = $f * 2;
-
-        $sinls = sin($ls);
-        $sinf2 = sin($f2);
-
-        $dl = 22640 /*[Visualization\Mobile\Beschattung\Beschattungselemente\Kueche\Programme]*/ * sin($l);
-        $dl += -4586 * sin($l - $d2);
-        $dl += 2370 * sin($d2);
-        $dl += 769 * sin($l2);
-        $dl += -668 * $sinls;
-        $dl += -412 * $sinf2;
-        $dl += -212 * sin($l2 - $d2);
-        $dl += -206 * sin ($l + $ls - $d2);
-        $dl += 192 * sin($l + $d2);
-        $dl += -165 * sin($ls - $d2);
-        $dl += -125 * sin($d);
-        $dl += -110 * sin($l + $ls);
-        $dl += 148 * sin($l - $ls);
-        $dl += -55 * sin($f2 - $d2);
-
-        $s = $f + ($dl + 412 * $sinf2 + 541 * $sinls) / $arc;
-        $h = $f - $d2;
-        $n = -526 * sin($h);
-        $n += 44 * sin($l + $h);
-        $n += -31 * sin(-$l + $h);
-        $n += -23 * sin($ls + $h);
-        $n += 11 * sin(-$ls + $h);
-        $n += -25 * sin(-$l2 + $f);
-        $n += 21 * sin(-$l + $f);
-
-        $L_moon = $p2 * self::frac($lo + $dl / 1296000);
-        $B_moon = (18520.0 * sin($s) + $n) / $arc;
-
-        $cb = cos($B_moon);
-        $x = $cb * cos($L_moon);
-        $v = $cb * sin($L_moon);
-        $w = sin($B_moon);
-        $y = $coseps * $v - $sineps * $w;
-        $z = $sineps * $v + $coseps * $w;
-        $rho = sqrt(1 - $z * $z);
-        $dec = (360 / $p2) * atan($z / $rho);
-        $ra = (48 / $p2) * atan($y / ($x + $rho));
-        $ra = $ra < 0 ? $ra + 24 : $ra;
-
-        return array($dec, $ra);
-
-    }
-
-    /**
-     *    returns the self::fractional part of x as used in self::minimoon and minisun
-     */
-    private static function frac($x) {
-        $x -= (int)$x;
-        return $x < 0 ? $x + 1 : $x;
-    }
-
-    /**
-     * Takes the day, month, year and hours in the day and returns the
-     * modified julian day number defined as mjd = jd - 2400000.5
-     * checked OK for Greg era dates - 26th Dec 02
-     */
-    private static function modifiedJulianDate($month, $day, $year) {
-
-        if ($month <= 2) {
-            $month += 12;
-            $year--;
-        }
-
-        $a = 10000 * $year + 100 * $month + $day;
-        $b = 0;
-        if ($a <= 15821004.1) {
-            $b = -2 * (int)(($year + 4716) / 4) - 1179;
-        } else {
-            $b = (int)($year / 400) - (int)($year / 100) + (int)($year / 4);
-        }
-
-        $a = 365 * $year - 679004;
-        return $a + $b + (int)(30.6001 * ($month + 1)) + $day;
-
-    }
-
-    /**
-     * Converts an hours decimal to hours and minutes
-     */
-    private static function convertTime($hours) {
-
-        $hrs = (int)($hours * 60 + 0.5) / 60.0;
-        $h = (int)($hrs);
-        $m = (int)(60 * ($hrs - $h) + 0.5);
-        return array('hrs'=>$h, 'min'=>$m);
-
-    }
-}
-
-class IPSVarType extends stdClass
-{
-
-    const vtNone = -1;
-    const vtBoolean = 0;
-    const vtInteger = 1;
-    const vtFloat = 2;
-    const vtString = 3;
-    
-
 }
 
 ?>
