@@ -11,4 +11,4 @@
  */
 
 // Load the additional classes
-require_once(__DIR__ . '/libs/bootstrap.php');
+require_once(__DIR__ . 'libs'.DIRECTORY_SEPARATOR.'bootstrap.php');
