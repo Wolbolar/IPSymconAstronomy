@@ -4465,8 +4465,6 @@ class Astronomy extends IPSModule
                 { "type": "Label", "label": "Zero point y-axis:" },
                 { "type": "NumberSpinner", "name": "zeropointy", "caption": "zero point y" },
                 { "type": "Label", "label": "frame width in px or %:" },
-                { "type": "NumberSpinner", "name": "framewidth", "caption": "width" },
-				{ "type": "Label", "label": "frame width in px or %:" },
 				{ "type": "Select", "name": "framewidthtype", "caption": "frame width type",
 					"options": [
 						{ "label": "px", "value": 1 },
