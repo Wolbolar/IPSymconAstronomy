@@ -69,11 +69,15 @@ class Astronomy extends IPSModule
 		$this->RegisterPropertyInteger("sunsetoffset", 0);
 		$this->RegisterPropertyInteger("frameheight", 290);
 		$this->RegisterPropertyInteger("framewidth", 100);
+        $this->RegisterPropertyInteger("canvaswidth", 800);
+        $this->RegisterPropertyInteger("canvasheight", 250);
 		$this->RegisterPropertyInteger("frameheighttype", 1);
 		$this->RegisterPropertyInteger("framewidthtype", 2);
 		$this->RegisterPropertyBoolean("extinfoselection", false);
 		$this->RegisterPropertyInteger("timeformat", 1);
-		$this->RegisterTimer('Update', 360000, 'Astronomy_SetAstronomyValues('.$this->InstanceID.');');	
+		$this->RegisterTimer('Update', 360000, 'Astronomy_SetAstronomyValues('.$this->InstanceID.');');
+        $this->RegisterPropertyInteger("zeropointy", 50);
+        $this->RegisterPropertyInteger("zeropointx", 50);
     }
 
     public function ApplyChanges()
@@ -1202,9 +1206,11 @@ class Astronomy extends IPSModule
 		// 2016-04-25 Bernd Hoffmann
 
 		//Daten für Nullpunkt usw.------------------------------------------------------
-		$npx = 50;        //Nullpunkt x-achse
-		$npy = 50;        //Nullpunkt y-achse
-		$z = 40;           //Offset y-achse
+        $npx = $this->ReadPropertyInteger("zeropointx"); //Nullpunkt x-achse
+        $npy = $this->ReadPropertyInteger("zeropointy"); //Nullpunkt y-achse
+        $canvaswidth = $this->ReadPropertyInteger("canvaswidth"); //canvas width
+        $canvasheight = $this->ReadPropertyInteger("canvasheight"); //canvas height
+        $z = 40;           //Offset y-achse
 
 		$lWt = 2;         //Linienstärke Teilstriche
 		$lWh = 2;         //Linienstärke Horizontlinie
@@ -1324,7 +1330,7 @@ class Astronomy extends IPSModule
 		</head>
 
 		<body onload="draw()">
-		<canvas id="canvas1" width="800" height="250" > //style="border:1px solid yellow;"
+		<canvas id="canvas1" width="'.$canvaswidth.'" height="'.$canvasheight.'" > //style="border:1px solid yellow;"
 		</canvas>
 		</body>
 
@@ -1342,7 +1348,7 @@ class Astronomy extends IPSModule
 		$handle = fopen($fullFilename, "w");
 		fwrite($handle, $html);
 		fclose($handle);
-		$HTMLData = '<iframe src="user'.DIRECTORY_SEPARATOR.'sunmoonline.php" border="0" frameborder="0" style= "width:'.$framewidth.$framewidthtype.'; height:'.$frameheight.$frameheighttype.';"/></iframe>';
+		$HTMLData = '<iframe src="user'.DIRECTORY_SEPARATOR.'sunmoonline.php" border="0" frameborder="0" scrolling="no" style= "width:'.$framewidth.$framewidthtype.'; height:'.$frameheight.$frameheighttype.';"/></iframe>';
 		if($this->ReadPropertyBoolean("sunmoonview") == true)
 		{
 			SetValue($this->GetIDForIdent("sunmoonview"), $HTMLData);
@@ -4448,12 +4454,17 @@ class Astronomy extends IPSModule
 				{ "type": "NumberSpinner", "name": "lastdecreasingmoonpic", "caption": "last picture" },
 				{ "type": "Label", "label": "path of the moonphase pictures relative to the IP-Symcon folder:" },
 				{ "type": "ValidationTextBox", "name": "picturemoonpath", "caption": "path moon pictures" },
+				{ "type": "Label", "label": "____________________________________________________________________" },
 				{
                     "name": "sunmoonview",
                     "type": "CheckBox",
                     "caption": "view position sun and moon"
                 },
-				{ "type": "Label", "label": "frame width in px or %:" },
+                { "type": "Label", "label": "Zero point x-axis:" },
+                { "type": "NumberSpinner", "name": "zeropointx", "caption": "zero point x" },
+                { "type": "Label", "label": "Zero point y-axis:" },
+                { "type": "NumberSpinner", "name": "zeropointy", "caption": "zero point y" },
+                { "type": "Label", "label": "frame width in px or %:" },
 				{ "type": "Select", "name": "framewidthtype", "caption": "frame width type",
 					"options": [
 						{ "label": "px", "value": 1 },
@@ -4469,6 +4480,10 @@ class Astronomy extends IPSModule
 					]
 				},
 				{ "type": "NumberSpinner", "name": "frameheight", "caption": "height" },
+				{ "type": "Label", "label": "canvas width in px:" },
+				{ "type": "NumberSpinner", "name": "canvaswidth", "caption": "canvas width" },
+				{ "type": "Label", "label": "canvas height in px:" },
+				{ "type": "NumberSpinner", "name": "canvasheight", "caption": "canvas height" },
 				{ "type": "Label", "label": "____________________________________________________________________" },
 				{ "type": "Label", "label": "sunrise and sunset with offset:" },
 				{ "type": "Label", "label": "sunrise with offset:" },
