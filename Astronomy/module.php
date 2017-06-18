@@ -3,6 +3,8 @@
 // Formeln aus "Practical Astronomy" von Peter Duffett-Smith und Jonathan Zwart, Fourth Edition
 // basiert auf den Skripten von ChokZul https://www.symcon.de/forum/threads/31467-Astronomische-Berechnungen?highlight=astronomie 
 // Twilight Grafiken generiert mit Skripten von Brownson aus der IPSLibrary
+
+require_once(__DIR__ . "/../bootstrap.php");
 use Fonzo\IPS\IPSVarType;
 use Fonzo\Moon\Moon;
 

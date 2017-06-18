@@ -1,5 +1,7 @@
 <?
 // Modul AstronomieTimer
+require_once(__DIR__ . "/../bootstrap.php");
+
 use Fonzo\IPS\IPSVarType;
 use Fonzo\Moon\Moon;
 

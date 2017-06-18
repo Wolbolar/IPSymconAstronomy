@@ -16,5 +16,4 @@ class IPSVarType extends \stdClass
     const vtFloat = 2;
     const vtString = 3;
 
-
 }
