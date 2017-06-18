@@ -630,17 +630,18 @@ class AstronomyTimer extends IPSModule
 	
 	protected function RegisterAstroTimer($timertype, $offset, $settype, $objectid, $varvalue)
 	{
-		if($varvalue == "true")
+		$identoffset = str_replace("-", "minus", $offset);
+	    if($varvalue == "true")
 		{
-		$ident = $timertype.$objectid."_".$offset."_on";
+		$ident = $timertype.$objectid."_".$identoffset."_on";
 		}
 		elseif($varvalue == "false")
 		{
-		$ident = $timertype."_".$objectid."_".$offset."_off";
+		$ident = $timertype."_".$objectid."_".$identoffset."_off";
 		}
 		else
 		{
-			$ident = $timertype."_".$objectid."_".$offset;
+			$ident = $timertype."_".$objectid."_".$identoffset;
 		}
 		
 		$name = $timertype." + ".$offset." Minuten";
