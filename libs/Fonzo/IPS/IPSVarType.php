@@ -7,7 +7,7 @@
  */
 namespace Fonzo\IPS;
 
-class IPSVarType extends stdClass
+class IPSVarType extends \stdClass
 {
 
     const vtNone = -1;

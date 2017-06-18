@@ -29,7 +29,7 @@ namespace Fonzo\Moon;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.       *
  ******************************************************************************/
 
-class Moon extends stdClass
+class Moon extends \stdClass
 {
 
     /**
@@ -89,7 +89,7 @@ class Moon extends stdClass
 
         }
         // Convert to unix timestamps and return as an object
-        $retVal = new stdClass();
+        $retVal = new \stdClass();
         $utrise = self::convertTime($utrise);
         $utset = self::convertTime($utset);
         $summertime = date("I");
