@@ -671,12 +671,19 @@ class Astronomy extends IPSModule
 			{
 				$picturename = $picturename.$picid;
 				$imageinfo = $this->getimageinfo($ImageFile);
-				$image = $this->createimage($ImageFile, $imageinfo["imagetype"]);
-				$thumb = $this->createthumbnail($mediaimgwidth, $mediaimgheight, $imageinfo["imagewidth"],$imageinfo["imageheight"]);
-				$thumbimg = $thumb["img"];
-				$thumbwidth = $thumb["width"];
-				$thumbheight = $thumb["height"];
-				$ImageFile = $this->copyimgtothumbnail($thumbimg, $image, $thumbwidth, $thumbheight, $imageinfo["imagewidth"],$imageinfo["imageheight"], $picturename);
+				if($imageinfo)
+                {
+                    $image = $this->createimage($ImageFile, $imageinfo["imagetype"]);
+                    $thumb = $this->createthumbnail($mediaimgwidth, $mediaimgheight, $imageinfo["imagewidth"],$imageinfo["imageheight"]);
+                    $thumbimg = $thumb["img"];
+                    $thumbwidth = $thumb["width"];
+                    $thumbheight = $thumb["height"];
+                    $ImageFile = $this->copyimgtothumbnail($thumbimg, $image, $thumbwidth, $thumbheight, $imageinfo["imagewidth"],$imageinfo["imageheight"], $picturename);
+                }
+				else
+                {
+                    IPS_LogMessage("Astronomy", "Bild wurde nicht gefunden.");
+                }
 				
 			}
 			$Content = @Sys_GetURLContent($ImageFile); 
@@ -714,7 +721,7 @@ class Astronomy extends IPSModule
 	
 	protected function getimageinfo($imagefile)
 	{				
-		if($imagefile == "")
+		if(!$imagefile == "")
         {
             $imagesize = getimagesize($imagefile);
             $imagewidth = $imagesize[0];
