@@ -423,6 +423,7 @@ class Astronomy extends IPSModule
 			$MediaID = @IPS_GetObjectIDByIdent('TwilightYearPicture', $this->InstanceID);
 			if($MediaID > 0)
 				IPS_DeleteMedia($MediaID, true);
+                $this->SendDebug("Astronomy:","TwilightYearPicture gelöscht",0);
 		}
 		if($this->ReadPropertyBoolean("picturedaytwilight") == true) 
 		{
@@ -835,7 +836,7 @@ class Astronomy extends IPSModule
 			$filename = "Astronomy_Twilight_DayUnlimited";
 			$ImagePath = $this->GenerateClockGraphic($filename, false);
 		}
-		if(!$ImagePath)
+		if($ImagePath)
         {
             $ContentDay = @Sys_GetURLContent($ImagePath);
             $nameday = "Dämmerungszeiten Tag";
@@ -859,7 +860,7 @@ class Astronomy extends IPSModule
 			$filename = "Astronomy_Twilight_YearUnlimited";
             $ImagePath = $this->GenerateTwilightGraphic($filename, false, 4.4, 1.8);
 		}
-        if(!$ImagePath)
+        if($ImagePath)
         {
             $ContentYear = @Sys_GetURLContent($ImagePath);
             $nameyear = "Dämmerungszeiten Jahr";
