@@ -1586,74 +1586,70 @@ class Astronomy extends IPSModule
         $currentfullmoonstring = $moonphasescurrent['fullmoon'];
         $currentlastquarterstring = $moonphasescurrent['lastquarter'];
 
-        // Datum für nächsten Zyklus in Jahre umrechnen
-        $year = ((((((date("s") / 60)+ date("i")) / 60)+date("G")) / 24) + date("z") - 1) / (365 + (date("L"))) + date("Y");
-        $moonphases = $this->CalculateMoonphase($year);
-        $newmoonstring = $moonphases['newmoon'];
-        $firstquarterstring = $moonphases['firstquarter'];
-        $fullmoonstring = $moonphases['fullmoon'];
-        $lastquarterstring = $moonphases['lastquarter'];
-        $moondate = $moonphases['moondate'];
+        $newmoonstring = $this->Moon_Newmoon();
+        $firstquarterstring = $this->Moon_FirstQuarter();
+        $fullmoonstring = $this->Moon_Fullmoon();
+        $lastquarterstring = $this->Moon_LastQuarter();
 
         if($this->ReadPropertyBoolean("newmoon") == true)
         {
-            SetValue($this->GetIDForIdent("newmoon"), $newmoonstring);
+            SetValue($this->GetIDForIdent("newmoon"), $newmoonstring["newmoon"]);
             if($this->ReadPropertyBoolean("extinfoselection") == true) // float
             {
-                $newmoondate = $moondate[0]["date"];
-                $newmoontime = $moondate[0]["time"];
+                $newmoondate = $newmoonstring["newmoondate"];
+                $newmoontime = $newmoonstring["newmoontime"];
                 SetValue($this->GetIDForIdent("newmoondate"), $newmoondate);
                 SetValue($this->GetIDForIdent("newmoontime"), $newmoontime);
             }
         }
         if($this->ReadPropertyBoolean("currentnewmoon") == true)
         {
-            SetValue($this->GetIDForIdent("currentnewmoon"), $newmoonstring);
+            SetValue($this->GetIDForIdent("currentnewmoon"), $currentnewmoonstring["newmoon"]);
         }
         if($this->ReadPropertyBoolean("firstquarter") == true)
         {
-            SetValue($this->GetIDForIdent("firstquarter"), $firstquarterstring);
+            SetValue($this->GetIDForIdent("firstquarter"), $firstquarterstring["firstquarter"]);
             if($this->ReadPropertyBoolean("extinfoselection") == true) // float
             {
-                $firstquarterdate = $moondate[1]["date"];
-                $firstquartertime = $moondate[1]["time"];
+                $firstquarterdate = $firstquarterstring["firstquarterdate"];
+                $firstquartertime = $firstquarterstring["firstquartertime"];
                 SetValue($this->GetIDForIdent("firstquarterdate"), $firstquarterdate);
                 SetValue($this->GetIDForIdent("firstquartertime"), $firstquartertime);
             }
         }
         if($this->ReadPropertyBoolean("currentfirstquarter") == true)
         {
-            SetValue($this->GetIDForIdent("currentfirstquarter"), $currentfirstquarterstring);
+            SetValue($this->GetIDForIdent("currentfirstquarter"), $currentfirstquarterstring["firstquarter"]);
         }
         if($this->ReadPropertyBoolean("fullmoon") == true)
         {
-            SetValue($this->GetIDForIdent("fullmoon"), $fullmoonstring);
+            SetValue($this->GetIDForIdent("fullmoon"), $fullmoonstring["fullmoon"]);
             if($this->ReadPropertyBoolean("extinfoselection") == true) // float
             {
-                $fullmoondate = $moondate[2]["date"];
-                $fullmoontime = $moondate[2]["time"];
+                $fullmoondate = $fullmoonstring["fullmoondate"];
+                $fullmoontime = $fullmoonstring["fullmoontime"];
                 SetValue($this->GetIDForIdent("fullmoondate"), $fullmoondate);
                 SetValue($this->GetIDForIdent("fullmoontime"), $fullmoontime);
             }
         }
         if($this->ReadPropertyBoolean("currentfullmoon") == true)
         {
-            SetValue($this->GetIDForIdent("currentfullmoon"), $fullmoonstring);
+            SetValue($this->GetIDForIdent("currentfullmoon"), $currentfullmoonstring["fullmoon"]);
         }
         if($this->ReadPropertyBoolean("lastquarter") == true)
         {
-            SetValue($this->GetIDForIdent("lastquarter"), $lastquarterstring);
+            SetValue($this->GetIDForIdent("lastquarter"), $lastquarterstring["lastquarter"]);
             if($this->ReadPropertyBoolean("extinfoselection") == true) // float
             {
-                $lastquarterdate = $moondate[3]["date"];
-                $lastquartertime = $moondate[3]["time"];
+                $lastquarterdate = $lastquarterstring["lastquarterdate"];
+                $lastquartertime = $lastquarterstring["lastquartertime"];
                 SetValue($this->GetIDForIdent("lastquarterdate"), $lastquarterdate);
                 SetValue($this->GetIDForIdent("lastquartertime"), $lastquartertime);
             }
         }
         if($this->ReadPropertyBoolean("currentlastquarter") == true)
         {
-            SetValue($this->GetIDForIdent("currentlastquarter"), $lastquarterstring);
+            SetValue($this->GetIDForIdent("currentlastquarter"), $currentlastquarterstring["lastquarter"]);
         }
 				
 		$moonphasearr = $this->MoonphaseText();
@@ -1673,7 +1669,7 @@ class Astronomy extends IPSModule
 		$this->TwilightYearPicture($type);
 		$this->TwilightDayPicture($type);
 		
-        
+
 		$HMSDec = $this->HMSDH($Hour, $Minute, $Second); //Local Time HMS in Decimal Hours
 		// $UTDec = $this->LctUT($Hour, $Minute, $Second, $DS, $ZC, $day, $month, $year)["UTDec"];
 		$GD = $this->LctUT($Hour, $Minute, $Second, $DS, $ZC, $day, $month, $year)["GD"];
@@ -3802,7 +3798,9 @@ class Astronomy extends IPSModule
         $year = ((((((date("s") / 60)+ date("i")) / 60)+date("G")) / 24) + date("z") - 1) / (365 + (date("L"))) + date("Y");
 	    $moonphase = $this->CalculateMoonphase($year);
 		$firstquarter = $moonphase["firstquarter"];
-		return $firstquarter;
+        $firstquarterdate = $moonphase[1]["date"];
+        $firstquartertime = $moonphase[1]["time"];
+		return array("firstquarter" => $firstquarter, "firstquarterdate" => $firstquarterdate, "firstquartertime" => $firstquartertime);
 	}
 	
 	public function Moon_Newmoon()
@@ -3810,8 +3808,12 @@ class Astronomy extends IPSModule
         // Datum in Jahre umrechnen
         $year = ((((((date("s") / 60)+ date("i")) / 60)+date("G")) / 24) + date("z") - 1) / (365 + (date("L"))) + date("Y");
 	    $moonphase = $this->CalculateMoonphase($year);
+	    //$currentdate = date();
+	    //if $currentdate
 		$newmoon = $moonphase["newmoon"];
-		return $newmoon;
+        $newmoondate = $moonphase[0]["date"];
+        $newmoontime = $moonphase[0]["time"];
+		return array("newmoon" => $newmoon, "newmoondate" => $newmoondate, "newmoontime" => $newmoontime);
 	}
 	
 	public function Moon_Fullmoon()
@@ -3820,7 +3822,9 @@ class Astronomy extends IPSModule
         $year = ((((((date("s") / 60)+ date("i")) / 60)+date("G")) / 24) + date("z") - 1) / (365 + (date("L"))) + date("Y");
 	    $moonphase = $this->CalculateMoonphase($year);
 		$fullmoon = $moonphase["fullmoon"];
-		return $fullmoon;
+        $fullmoondate = $moonphase[2]["date"];
+        $fullmoontime = $moonphase[2]["time"];
+		return array("fullmoonmoon" => $fullmoon, "fullmoondate" => $fullmoondate, "fullmoontime" => $fullmoontime);
 	}
 	
 	public function Moon_LastQuarter()
@@ -3829,7 +3833,9 @@ class Astronomy extends IPSModule
         $year = ((((((date("s") / 60)+ date("i")) / 60)+date("G")) / 24) + date("z") - 1) / (365 + (date("L"))) + date("Y");
 	    $moonphase = $this->CalculateMoonphase($year);
 		$lastquarter = $moonphase["lastquarter"];
-		return $lastquarter;
+        $lastquarterdate = $moonphase[3]["date"];
+        $lastquartertime = $moonphase[3]["time"];
+        return array("lastquarter" => $lastquarter, "lastquarterdate" => $lastquarterdate, "lastquartertime" => $lastquartertime);
 	}
 
     public function Moon_CurrentFirstQuarter()
@@ -3838,7 +3844,9 @@ class Astronomy extends IPSModule
         $year = ((((((date("s") / 60)+ date("i")) / 60)+date("G")) / 24) + date("z") - 1) / (365 + (date("L"))) + date("Y");
         $moonphase = $this->CalculateMoonphase($year);
         $firstquarter = $moonphase["firstquarter"];
-        return $firstquarter;
+        $firstquarterdate = $moonphase[1]["date"];
+        $firstquartertime = $moonphase[1]["time"];
+        return array("firstquarter" => $firstquarter, "firstquarterdate" => $firstquarterdate, "firstquartertime" => $firstquartertime);
     }
 
     public function Moon_CurrentNewmoon()
@@ -3847,7 +3855,9 @@ class Astronomy extends IPSModule
         $year = ((((((date("s") / 60)+ date("i")) / 60)+date("G")) / 24) + date("z") - 1) / (365 + (date("L"))) + date("Y");
         $moonphase = $this->CalculateMoonphase($year);
         $newmoon = $moonphase["newmoon"];
-        return $newmoon;
+        $newmoondate = $moonphase[0]["date"];
+        $newmoontime = $moonphase[0]["time"];
+        return array("newmoon" => $newmoon, "newmoondate" => $newmoondate, "newmoontime" => $newmoontime);
     }
 
     public function Moon_CurrentFullmoon()
@@ -3856,7 +3866,9 @@ class Astronomy extends IPSModule
         $year = ((((((date("s") / 60)+ date("i")) / 60)+date("G")) / 24) + date("z") - 1) / (365 + (date("L"))) + date("Y");
         $moonphase = $this->CalculateMoonphase($year);
         $fullmoon = $moonphase["fullmoon"];
-        return $fullmoon;
+        $fullmoondate = $moonphase[2]["date"];
+        $fullmoontime = $moonphase[2]["time"];
+        return array("fullmoonmoon" => $fullmoon, "fullmoondate" => $fullmoondate, "fullmoontime" => $fullmoontime);
     }
 
     public function Moon_CurrentLastQuarter()
@@ -3865,7 +3877,57 @@ class Astronomy extends IPSModule
         $year = ((((((date("s") / 60)+ date("i")) / 60)+date("G")) / 24) + date("z") - 1) / (365 + (date("L"))) + date("Y");
         $moonphase = $this->CalculateMoonphase($year);
         $lastquarter = $moonphase["lastquarter"];
-        return $lastquarter;
+        $lastquarterdate = $moonphase[3]["date"];
+        $lastquartertime = $moonphase[3]["time"];
+        return array("lastquarter" => $lastquarter, "lastquarterdate" => $lastquarterdate, "lastquartertime" => $lastquartertime);
+    }
+
+    public function Moon_FirstQuarterDate(string $date)
+    {
+        $year = $date;
+        // Datum in Jahre umrechnen
+       // $year = ((((((date("s") / 60)+ date("i")) / 60)+date("G")) / 24) + date("z") - 1) / (365 + (date("L"))) + date("Y");
+        $moonphase = $this->CalculateMoonphase($year);
+        $firstquarter = $moonphase["firstquarter"];
+        $firstquarterdate = $moonphase[1]["date"];
+        $firstquartertime = $moonphase[1]["time"];
+        return array("firstquarter" => $firstquarter, "firstquarterdate" => $firstquarterdate, "firstquartertime" => $firstquartertime);
+    }
+
+    public function Moon_NewmoonDate(string $date)
+    {
+        $year = $date;
+        // Datum in Jahre umrechnen
+        // $year = ((((((date("s") / 60)+ date("i")) / 60)+date("G")) / 24) + date("z") - 1) / (365 + (date("L"))) + date("Y");
+        $moonphase = $this->CalculateMoonphase($year);
+        $newmoon = $moonphase["newmoon"];
+        $newmoondate = $moonphase[0]["date"];
+        $newmoontime = $moonphase[0]["time"];
+        return array("newmoon" => $newmoon, "newmoondate" => $newmoondate, "newmoontime" => $newmoontime);
+    }
+
+    public function Moon_FullmoonDate(string $date)
+    {
+        $year = $date;
+        // Datum in Jahre umrechnen
+        // $year = ((((((date("s") / 60)+ date("i")) / 60)+date("G")) / 24) + date("z") - 1) / (365 + (date("L"))) + date("Y");
+        $moonphase = $this->CalculateMoonphase($year);
+        $fullmoon = $moonphase["fullmoon"];
+        $fullmoondate = $moonphase[2]["date"];
+        $fullmoontime = $moonphase[2]["time"];
+        return array("fullmoonmoon" => $fullmoon, "fullmoondate" => $fullmoondate, "fullmoontime" => $fullmoontime);
+    }
+
+    public function Moon_LastQuarterDate(string $date)
+    {
+        $year = $date;
+        // Datum in Jahre umrechnen
+        // $year = ((((((date("s") / 60)+ date("i")) / 60)+date("G")) / 24) + date("z") - 1) / (365 + (date("L"))) + date("Y");
+        $moonphase = $this->CalculateMoonphase($year);
+        $lastquarter = $moonphase["lastquarter"];
+        $lastquarterdate = $moonphase[3]["date"];
+        $lastquartertime = $moonphase[3]["time"];
+        return array("lastquarter" => $lastquarter, "lastquarterdate" => $lastquarterdate, "lastquartertime" => $lastquartertime);
     }
 
 	public function GetMoonPicture(float $mondphase)
