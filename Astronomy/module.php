@@ -36,6 +36,10 @@ class Astronomy extends IPSModule
 		$this->RegisterPropertyBoolean("firstquarter", false);
 		$this->RegisterPropertyBoolean("fullmoon", false);
 		$this->RegisterPropertyBoolean("lastquarter", false);
+        $this->RegisterPropertyBoolean("currentnewmoon", false);
+        $this->RegisterPropertyBoolean("currentfirstquarter", false);
+        $this->RegisterPropertyBoolean("currentfullmoon", false);
+        $this->RegisterPropertyBoolean("currentlastquarter", false);
 		$this->RegisterPropertyBoolean("sunazimut", false);
 		$this->RegisterPropertyBoolean("sundistance", false);
 		$this->RegisterPropertyBoolean("sunaltitude", false);
@@ -295,35 +299,75 @@ class Astronomy extends IPSModule
 		{
 			$this->SetupVariable("lastquarter", "Letztes Viertel", "Astronomie.Mond_LetztesViertel", 14, IPSVarType::vtString, false);
 		}
+        if($this->ReadPropertyBoolean("currentnewmoon") == true) // string
+        {
+            $associations =  Array(	);
+            $this->SetupProfile(IPSVarType::vtString, "Astronomie.Mond_Neumond", "Moon", "", "", 0, 0, 0, 0, $associations);
+            $this->SetupVariable("currentnewmoon", "Neumond Aktueller Zyklus", "Astronomie.Mond_Neumond", 15, IPSVarType::vtString, true);
+        }
+        else
+        {
+            $this->SetupVariable("currentnewmoon", "Neumond Aktueller Zyklus", "Astronomie.Mond_Neumond", 15, IPSVarType::vtString, false);
+        }
+        if($this->ReadPropertyBoolean("currentfirstquarter") == true) // string
+        {
+            $associations =  Array(	);
+            $this->SetupProfile(IPSVarType::vtString, "Astronomie.Mond_ErstesViertel", "Moon", "", "", 0, 0, 0, 0, $associations);
+            $this->SetupVariable("currentfirstquarter", "Erstes Viertel Aktueller Zyklus", "Astronomie.Mond_ErstesViertel", 16, IPSVarType::vtString, true);
+        }
+        else
+        {
+            $this->SetupVariable("currentfirstquarter", "Erstes Viertel Aktueller Zyklus", "Astronomie.Mond_ErstesViertel", 16, IPSVarType::vtString, false);
+        }
+        if($this->ReadPropertyBoolean("currentfullmoon") == true) // string
+        {
+            $associations =  Array(	);
+            $this->SetupProfile(IPSVarType::vtString, "Astronomie.Mond_Vollmond", "Moon", "", "", 0, 0, 0, 0, $associations);
+            $this->SetupVariable("currentfullmoon", "Vollmond Aktueller Zyklus", "Astronomie.Mond_Vollmond", 17, IPSVarType::vtString, true);
+        }
+        else
+        {
+            $this->SetupVariable("currentfullmoon", "Vollmond Aktueller Zyklus", "Astronomie.Mond_Vollmond", 17, IPSVarType::vtString, false);
+        }
+        if($this->ReadPropertyBoolean("currentlastquarter") == true) // string
+        {
+            $associations =  Array(	);
+            $this->SetupProfile(IPSVarType::vtString, "Astronomie.Mond_LetztesViertel", "Moon", "", "", 0, 0, 0, 0, $associations);
+            $this->SetupVariable("currentlastquarter", "Letztes Viertel Aktueller Zyklus", "Astronomie.Mond_LetztesViertel", 18, IPSVarType::vtString, true);
+        }
+        else
+        {
+            $this->SetupVariable("currentlastquarter", "Letztes Viertel Aktueller Zyklus", "Astronomie.Mond_LetztesViertel", 18, IPSVarType::vtString, false);
+        }
 		if($this->ReadPropertyBoolean("sunazimut") == true) // float
 		{
 			$associations =  Array(	);
 			$this->SetupProfile(IPSVarType::vtFloat, "Astronomie.Sonne_Azimut", "Sun", "", "°", 0, 0, 0, 2, $associations);
-			$this->SetupVariable("sunazimut", "Sonne Azimut", "Astronomie.Sonne_Azimut", 15, IPSVarType::vtFloat, true);
+			$this->SetupVariable("sunazimut", "Sonne Azimut", "Astronomie.Sonne_Azimut", 19, IPSVarType::vtFloat, true);
 		}
 		else
 		{
-			$this->SetupVariable("sunazimut", "Sonne Azimut", "Astronomie.Sonne_Azimut", 15, IPSVarType::vtFloat, false);
+			$this->SetupVariable("sunazimut", "Sonne Azimut", "Astronomie.Sonne_Azimut", 19, IPSVarType::vtFloat, false);
 		}
 		if($this->ReadPropertyBoolean("sundistance") == true) // float
 		{
 			$associations =  Array(	);
 			$this->SetupProfile(IPSVarType::vtFloat, "Astronomie.Sonne_Entfernung", "Sun", "", " km", 0, 0, 0, 0, $associations);
-			$this->SetupVariable("sundistance", "Sonne Entfernung", "Astronomie.Sonne_Entfernung", 16, IPSVarType::vtFloat, true);
+			$this->SetupVariable("sundistance", "Sonne Entfernung", "Astronomie.Sonne_Entfernung", 20, IPSVarType::vtFloat, true);
 		}
 		else
 		{
-			$this->SetupVariable("sundistance", "Sonne Entfernung", "Astronomie.Sonne_Entfernung", 16, IPSVarType::vtFloat, false);
+			$this->SetupVariable("sundistance", "Sonne Entfernung", "Astronomie.Sonne_Entfernung", 20, IPSVarType::vtFloat, false);
 		}
 		if($this->ReadPropertyBoolean("sunaltitude") == true) // float
 		{
 			$associations =  Array(	);
 			$this->SetupProfile(IPSVarType::vtFloat, "Astronomie.Sonne_Hoehe", "Sun", "", "°", 0, 0, 0, 2, $associations);
-			$this->SetupVariable("sunaltitude", "Sonne Höhe", "Astronomie.Sonne_Hoehe", 17, IPSVarType::vtFloat, true);
+			$this->SetupVariable("sunaltitude", "Sonne Höhe", "Astronomie.Sonne_Hoehe", 21, IPSVarType::vtFloat, true);
 		}
 		else
 		{
-			$this->SetupVariable("sunaltitude", "Sonne Höhe", "Astronomie.Sonne_Hoehe", 17, IPSVarType::vtFloat, false);
+			$this->SetupVariable("sunaltitude", "Sonne Höhe", "Astronomie.Sonne_Hoehe", 21, IPSVarType::vtFloat, false);
 		}
 		if($this->ReadPropertyBoolean("sundirection") == true) // integer
 		{
@@ -371,11 +415,11 @@ class Astronomy extends IPSModule
 									);
 			}
 			$this->SetupProfile(IPSVarType::vtInteger, "Astronomie.Sonne_Himmelsrichtung", "Sun", "", "", 0, 0, 0, 0, $associations);
-			$this->SetupVariable("sundirection", "Sonne Richtung", "Astronomie.Sonne_Himmelsrichtung", 18, IPSVarType::vtInteger, true);
+			$this->SetupVariable("sundirection", "Sonne Richtung", "Astronomie.Sonne_Himmelsrichtung", 22, IPSVarType::vtInteger, true);
 		}
 		else
 		{
-			$this->SetupVariable("sundirection", "Sonne Richtung", "Astronomie.Sonne_Himmelsrichtung", 18, IPSVarType::vtInteger, false);
+			$this->SetupVariable("sundirection", "Sonne Richtung", "Astronomie.Sonne_Himmelsrichtung", 22, IPSVarType::vtInteger, false);
 		}
 		if($this->ReadPropertyBoolean("season") == true) // integer
 		{
@@ -399,11 +443,11 @@ class Astronomy extends IPSModule
 									);
 			}
 			$this->SetupProfile(IPSVarType::vtInteger, "Astronomie.Jahreszeit", "Sun", "", "", 0, 0, 0, 0, $associations);
-			$this->SetupVariable("season", "Jahreszeit", "Astronomie.Jahreszeit", 20, IPSVarType::vtInteger, true);
+			$this->SetupVariable("season", "Jahreszeit", "Astronomie.Jahreszeit", 23, IPSVarType::vtInteger, true);
 		}
 		else
 		{
-			$this->SetupVariable("season", "Jahreszeit", "Astronomie.Jahreszeit", 20, IPSVarType::vtInteger, false);
+			$this->SetupVariable("season", "Jahreszeit", "Astronomie.Jahreszeit", 23, IPSVarType::vtInteger, false);
 		}
 		if($this->ReadPropertyBoolean("pictureyeartwilight") == true) 
 		{
@@ -465,30 +509,30 @@ class Astronomy extends IPSModule
 		}
 		if($this->ReadPropertyBoolean("sunmoonview") == true) // string
 		{
-			$objid = $this->SetupVariable("sunmoonview", "Position Sonne und Mond", "~HTMLBox", 22, IPSVarType::vtString, true);
+			$objid = $this->SetupVariable("sunmoonview", "Position Sonne und Mond", "~HTMLBox", 24, IPSVarType::vtString, true);
 			IPS_SetIcon($objid, "Sun");
 		}
 		else
 		{
-			$this->SetupVariable("sunmoonview", "Position Sonne und Mond", "~HTMLBox", 22, IPSVarType::vtString, false);
+			$this->SetupVariable("sunmoonview", "Position Sonne und Mond", "~HTMLBox", 24, IPSVarType::vtString, false);
 		}
 		if($this->ReadPropertyBoolean("sunsetselect") == true) // string
 		{
-			$objid = $this->SetupVariable("sunset", "Sonnenuntergang", "~UnixTimestamp", 23, IPSVarType::vtInteger, true);
+			$objid = $this->SetupVariable("sunset", "Sonnenuntergang", "~UnixTimestamp", 25, IPSVarType::vtInteger, true);
 			IPS_SetIcon($objid, "Sun");
 		}
 		else
 		{
-			$this->SetupVariable("sunset", "Sonnenuntergang", "~UnixTimestamp", 23, IPSVarType::vtInteger, false);
+			$this->SetupVariable("sunset", "Sonnenuntergang", "~UnixTimestamp", 25, IPSVarType::vtInteger, false);
 		}
 		if($this->ReadPropertyBoolean("sunriseselect") == true) // string
 		{
-			$objid = $this->SetupVariable("sunrise", "Sonnenaufgang", "~UnixTimestamp", 24, IPSVarType::vtInteger, true);
+			$objid = $this->SetupVariable("sunrise", "Sonnenaufgang", "~UnixTimestamp", 26, IPSVarType::vtInteger, true);
 			IPS_SetIcon($objid, "Sun");
 		}
 		else
 		{
-			$this->SetupVariable("sunrise", "Sonnenaufgang", "~UnixTimestamp", 24, IPSVarType::vtInteger, false);
+			$this->SetupVariable("sunrise", "Sonnenaufgang", "~UnixTimestamp", 26, IPSVarType::vtInteger, false);
 		}
 		if($this->ReadPropertyBoolean("extinfoselection") == true) // string
 		{
@@ -496,117 +540,117 @@ class Astronomy extends IPSModule
 			{
 				$associations =  Array(	);
 				$this->SetupProfile(IPSVarType::vtString, "Astronomie.Sonnenuntergang_Zeit", "Sun", "", "", 0, 0, 0, 0, $associations);
-				$this->SetupVariable("sunsettime", "Sonnenuntergang Uhrzeit", "Astronomie.Sonnenuntergang_Zeit", 25, IPSVarType::vtString, true);
+				$this->SetupVariable("sunsettime", "Sonnenuntergang Uhrzeit", "Astronomie.Sonnenuntergang_Zeit", 27, IPSVarType::vtString, true);
 			}
 			else
 			{
-				$this->SetupVariable("sunsettime", "Sonnenuntergang Uhrzeit", "Astronomie.Sonnenuntergang_Zeit", 25, IPSVarType::vtInteger, false);
+				$this->SetupVariable("sunsettime", "Sonnenuntergang Uhrzeit", "Astronomie.Sonnenuntergang_Zeit", 27, IPSVarType::vtInteger, false);
 			}
 			if($this->ReadPropertyBoolean("sunriseselect") == true) // string
 			{
 				$associations =  Array(	);
 				$this->SetupProfile(IPSVarType::vtString, "Astronomie.Sonnenaufgang_Zeit", "Sun", "", "", 0, 0, 0, 0, $associations);
-				$this->SetupVariable("sunrisetime", "Sonnenaufgang Uhrzeit", "Astronomie.Sonnenaufgang_Zeit", 26, IPSVarType::vtString, true);
+				$this->SetupVariable("sunrisetime", "Sonnenaufgang Uhrzeit", "Astronomie.Sonnenaufgang_Zeit", 28, IPSVarType::vtString, true);
 			}
 			else
 			{
-				$this->SetupVariable("sunrisetime", "Sonnenaufgang Uhrzeit", "Astronomie.Sonnenaufgang_Zeit", 26, IPSVarType::vtInteger, false);
+				$this->SetupVariable("sunrisetime", "Sonnenaufgang Uhrzeit", "Astronomie.Sonnenaufgang_Zeit", 28, IPSVarType::vtInteger, false);
 			}
 			if($this->ReadPropertyBoolean("newmoon") == true) // string
 			{
 				$associations =  Array(	);
 				$this->SetupProfile(IPSVarType::vtString, "Astronomie.Mond_Neumond_Datum", "Moon", "", "", 0, 0, 0, 0, $associations);
-				$this->SetupVariable("newmoondate", "Neumond Datum", "Astronomie.Mond_Neumond_Datum", 27, IPSVarType::vtString, true);
+				$this->SetupVariable("newmoondate", "Neumond Datum", "Astronomie.Mond_Neumond_Datum", 29, IPSVarType::vtString, true);
 				$this->SetupProfile(IPSVarType::vtString, "Astronomie.Mond_Neumond_Zeit", "Moon", "", "", 0, 0, 0, 0, $associations);
-				$this->SetupVariable("newmoontime", "Neumond Uhrzeit", "Astronomie.Mond_Neumond_Zeit", 28, IPSVarType::vtString, true);
+				$this->SetupVariable("newmoontime", "Neumond Uhrzeit", "Astronomie.Mond_Neumond_Zeit", 30, IPSVarType::vtString, true);
 			}
 			else
 			{
-				$this->SetupVariable("newmoondate", "Neumond Datum", "Astronomie.Mond_Neumond_Datum", 27, IPSVarType::vtString, false);
-				$this->SetupVariable("newmoontime", "Neumond Uhrzeit", "Astronomie.Mond_Neumond_Zeit", 28, IPSVarType::vtString, false);
+				$this->SetupVariable("newmoondate", "Neumond Datum", "Astronomie.Mond_Neumond_Datum", 29, IPSVarType::vtString, false);
+				$this->SetupVariable("newmoontime", "Neumond Uhrzeit", "Astronomie.Mond_Neumond_Zeit", 30, IPSVarType::vtString, false);
 			}
 			if($this->ReadPropertyBoolean("firstquarter") == true) // string
 			{
 				$associations =  Array(	);
 				$this->SetupProfile(IPSVarType::vtString, "Astronomie.Mond_ErstesViertel_Datum", "Moon", "", "", 0, 0, 0, 0, $associations);
-				$this->SetupVariable("firstquarterdate", "Erstes Viertel Datum", "Astronomie.Mond_ErstesViertel_Datum", 29, IPSVarType::vtString, true);
+				$this->SetupVariable("firstquarterdate", "Erstes Viertel Datum", "Astronomie.Mond_ErstesViertel_Datum", 31, IPSVarType::vtString, true);
 				$this->SetupProfile(IPSVarType::vtString, "Astronomie.Mond_ErstesViertel_Zeit", "Moon", "", "", 0, 0, 0, 0, $associations);
-				$this->SetupVariable("firstquartertime", "Erstes Viertel Uhrzeit", "Astronomie.Mond_ErstesViertel_Zeit", 30, IPSVarType::vtString, true);
+				$this->SetupVariable("firstquartertime", "Erstes Viertel Uhrzeit", "Astronomie.Mond_ErstesViertel_Zeit", 32, IPSVarType::vtString, true);
 			}
 			else
 			{
-				$this->SetupVariable("firstquarterdate", "Erstes Viertel Datum", "Astronomie.Mond_ErstesViertel_Datum", 29, IPSVarType::vtString, false);
-				$this->SetupVariable("firstquartertime", "Erstes Viertel Uhrzeit", "Astronomie.Mond_ErstesViertel_Zeit", 30, IPSVarType::vtString, false);
+				$this->SetupVariable("firstquarterdate", "Erstes Viertel Datum", "Astronomie.Mond_ErstesViertel_Datum", 31, IPSVarType::vtString, false);
+				$this->SetupVariable("firstquartertime", "Erstes Viertel Uhrzeit", "Astronomie.Mond_ErstesViertel_Zeit", 32, IPSVarType::vtString, false);
 			}
 			if($this->ReadPropertyBoolean("fullmoon") == true) // string
 			{
 				$associations =  Array(	);
 				$this->SetupProfile(IPSVarType::vtString, "Astronomie.Mond_Vollmond_Datum", "Moon", "", "", 0, 0, 0, 0, $associations);
-				$this->SetupVariable("fullmoondate", "Vollmond Datum", "Astronomie.Mond_Vollmond_Datum", 31, IPSVarType::vtString, true);
+				$this->SetupVariable("fullmoondate", "Vollmond Datum", "Astronomie.Mond_Vollmond_Datum", 33, IPSVarType::vtString, true);
 				$this->SetupProfile(IPSVarType::vtString, "Astronomie.Mond_Vollmond_Zeit", "Moon", "", "", 0, 0, 0, 0, $associations);
-				$this->SetupVariable("fullmoontime", "Vollmond Uhrzeit", "Astronomie.Mond_Vollmond_Zeit", 32, IPSVarType::vtString, true);
+				$this->SetupVariable("fullmoontime", "Vollmond Uhrzeit", "Astronomie.Mond_Vollmond_Zeit", 34, IPSVarType::vtString, true);
 			}
 			else
 			{
-				$this->SetupVariable("fullmoondate", "Vollmond", "Astronomie.Mond_Vollmond_Datum", 31, IPSVarType::vtString, false);
-				$this->SetupVariable("fullmoontime", "Vollmond", "Astronomie.Mond_Vollmond_Zeit", 32, IPSVarType::vtString, false);
+				$this->SetupVariable("fullmoondate", "Vollmond", "Astronomie.Mond_Vollmond_Datum", 33, IPSVarType::vtString, false);
+				$this->SetupVariable("fullmoontime", "Vollmond", "Astronomie.Mond_Vollmond_Zeit", 34, IPSVarType::vtString, false);
 			}
 			if($this->ReadPropertyBoolean("lastquarter") == true) // string
 			{
 				$associations =  Array(	);
 				$this->SetupProfile(IPSVarType::vtString, "Astronomie.Mond_LetztesViertel_Datum", "Moon", "", "", 0, 0, 0, 0, $associations);
-				$this->SetupVariable("lastquarterdate", "Letztes Viertel Datum", "Astronomie.Mond_LetztesViertel_Datum", 33, IPSVarType::vtString, true);
+				$this->SetupVariable("lastquarterdate", "Letztes Viertel Datum", "Astronomie.Mond_LetztesViertel_Datum", 35, IPSVarType::vtString, true);
 				$this->SetupProfile(IPSVarType::vtString, "Astronomie.Mond_LetztesViertel_Zeit", "Moon", "", "", 0, 0, 0, 0, $associations);
-				$this->SetupVariable("lastquartertime", "Letztes Viertel Uhrzeit", "Astronomie.Mond_LetztesViertel_Zeit", 34, IPSVarType::vtString, true);
+				$this->SetupVariable("lastquartertime", "Letztes Viertel Uhrzeit", "Astronomie.Mond_LetztesViertel_Zeit", 36, IPSVarType::vtString, true);
 			}
 			else
 			{
-				$this->SetupVariable("lastquarterdate", "Letztes Viertel Datum", "Astronomie.Mond_LetztesViertel_Datum", 33, IPSVarType::vtString, false);
-				$this->SetupVariable("lastquartertime", "Letztes Viertel Zeit", "Astronomie.Mond_LetztesViertel_Zeit", 34, IPSVarType::vtString, false);
+				$this->SetupVariable("lastquarterdate", "Letztes Viertel Datum", "Astronomie.Mond_LetztesViertel_Datum", 35, IPSVarType::vtString, false);
+				$this->SetupVariable("lastquartertime", "Letztes Viertel Zeit", "Astronomie.Mond_LetztesViertel_Zeit", 36, IPSVarType::vtString, false);
 			}
 			if($this->ReadPropertyBoolean("moonrise") == true) // int
 			{
 				$associations =  Array(	);
 				$this->SetupProfile(IPSVarType::vtString, "Astronomie.Mond_Mondaufgang_Datum", "Moon", "", "", 0, 0, 0, 0, $associations);
-				$this->SetupVariable("moonrisedate", "Mondaufgang Datum", "Astronomie.Mond_Mondaufgang_Datum", 35, IPSVarType::vtString, true);
+				$this->SetupVariable("moonrisedate", "Mondaufgang Datum", "Astronomie.Mond_Mondaufgang_Datum", 37, IPSVarType::vtString, true);
 				$this->SetupProfile(IPSVarType::vtString, "Astronomie.Mond_Mondaufgang_Zeit", "Moon", "", "", 0, 0, 0, 0, $associations);
-				$this->SetupVariable("moonrisetime", "Mondaufgang Uhrzeit", "Astronomie.Mond_Mondaufgang_Zeit", 36, IPSVarType::vtString, true);
+				$this->SetupVariable("moonrisetime", "Mondaufgang Uhrzeit", "Astronomie.Mond_Mondaufgang_Zeit", 38, IPSVarType::vtString, true);
 			}
 			else
 			{
-				$this->SetupVariable("moonrisedate", "Mondaufgang Datum", "Astronomie.Mond_Mondaufgang_Datum", 35, IPSVarType::vtInteger, false);
-				$this->SetupVariable("moonrisetime", "Mondaufgang Uhrzeit", "Astronomie.Mond_Mondaufgang_Zeit", 36, IPSVarType::vtInteger, false);
+				$this->SetupVariable("moonrisedate", "Mondaufgang Datum", "Astronomie.Mond_Mondaufgang_Datum", 37, IPSVarType::vtInteger, false);
+				$this->SetupVariable("moonrisetime", "Mondaufgang Uhrzeit", "Astronomie.Mond_Mondaufgang_Zeit", 38, IPSVarType::vtInteger, false);
 			}
 			if($this->ReadPropertyBoolean("moonset") == true) // int
 			{
 				$associations =  Array(	);
 				$this->SetupProfile(IPSVarType::vtString, "Astronomie.Mond_Monduntergang_Datum", "Moon", "", "", 0, 0, 0, 0, $associations);
-				$this->SetupVariable("moonsetdate", "Monduntergang Datum", "Astronomie.Mond_Monduntergang_Datum", 37, IPSVarType::vtString, true);
+				$this->SetupVariable("moonsetdate", "Monduntergang Datum", "Astronomie.Mond_Monduntergang_Datum", 39, IPSVarType::vtString, true);
 				$this->SetupProfile(IPSVarType::vtString, "Astronomie.Mond_Monduntergang_Zeit", "Moon", "", "", 0, 0, 0, 0, $associations);
-				$this->SetupVariable("moonsettime", "Monduntergang Uhrzeit", "Astronomie.Mond_Monduntergang_Zeit", 38, IPSVarType::vtString, true);
+				$this->SetupVariable("moonsettime", "Monduntergang Uhrzeit", "Astronomie.Mond_Monduntergang_Zeit", 40, IPSVarType::vtString, true);
 			}
 			else
 			{
-				$this->SetupVariable("moonsetdate", "Monduntergang Datum", "Astronomie.Mond_Monduntergang_Datum", 37, IPSVarType::vtInteger, false);
-				$this->SetupVariable("moonsettime", "Monduntergang Zeit", "Astronomie.Mond_Monduntergang_Zeit", 38, IPSVarType::vtInteger, false);
+				$this->SetupVariable("moonsetdate", "Monduntergang Datum", "Astronomie.Mond_Monduntergang_Datum", 39, IPSVarType::vtInteger, false);
+				$this->SetupVariable("moonsettime", "Monduntergang Zeit", "Astronomie.Mond_Monduntergang_Zeit", 40, IPSVarType::vtInteger, false);
 			}
 		}
 		else
 		{
-			$this->SetupVariable("sunsettime", "Sonnenuntergang Uhrzeit", "Astronomie.Sonnenuntergang_Zeit", 25, IPSVarType::vtInteger, false);
-			$this->SetupVariable("sunrisetime", "Sonnenaufgang Uhrzeit", "Astronomie.Sonnenaufgang_Zeit", 26, IPSVarType::vtInteger, false);
-			$this->SetupVariable("newmoondate", "Neumond Datum", "Astronomie.Mond_Neumond_Datum", 27, IPSVarType::vtString, false);
-			$this->SetupVariable("newmoontime", "Neumond Uhrzeit", "Astronomie.Mond_Neumond_Zeit", 28, IPSVarType::vtString, false);
-			$this->SetupVariable("firstquarterdate", "Erstes Viertel Datum", "Astronomie.Mond_ErstesViertel_Datum", 29, IPSVarType::vtString, false);
-			$this->SetupVariable("firstquartertime", "Erstes Viertel Uhrzeit", "Astronomie.Mond_ErstesViertel_Zeit", 30, IPSVarType::vtString, false);
-			$this->SetupVariable("fullmoondate", "Vollmond", "Astronomie.Mond_Vollmond_Datum", 31, IPSVarType::vtString, false);
-			$this->SetupVariable("fullmoontime", "Vollmond", "Astronomie.Mond_Vollmond_Zeit", 32, IPSVarType::vtString, false);
-			$this->SetupVariable("lastquarterdate", "Letztes Viertel Datum", "Astronomie.Mond_LetztesViertel_Datum", 33, IPSVarType::vtString, false);
-			$this->SetupVariable("lastquartertime", "Letztes Viertel Zeit", "Astronomie.Mond_LetztesViertel_Zeit", 34, IPSVarType::vtString, false);
-			$this->SetupVariable("moonrisedate", "Mondaufgang Datum", "Astronomie.Mond_Mondaufgang_Datum", 35, IPSVarType::vtInteger, false);
-			$this->SetupVariable("moonrisetime", "Mondaufgang Uhrzeit", "Astronomie.Mond_Mondaufgang_Zeit", 36, IPSVarType::vtInteger, false);
-			$this->SetupVariable("moonsetdate", "Monduntergang Datum", "Astronomie.Mond_Monduntergang_Datum", 37, IPSVarType::vtInteger, false);
-			$this->SetupVariable("moonsettime", "Monduntergang Zeit", "Astronomie.Mond_Monduntergang_Zeit", 38, IPSVarType::vtInteger, false);
+			$this->SetupVariable("sunsettime", "Sonnenuntergang Uhrzeit", "Astronomie.Sonnenuntergang_Zeit", 27, IPSVarType::vtInteger, false);
+			$this->SetupVariable("sunrisetime", "Sonnenaufgang Uhrzeit", "Astronomie.Sonnenaufgang_Zeit", 28, IPSVarType::vtInteger, false);
+			$this->SetupVariable("newmoondate", "Neumond Datum", "Astronomie.Mond_Neumond_Datum", 29, IPSVarType::vtString, false);
+			$this->SetupVariable("newmoontime", "Neumond Uhrzeit", "Astronomie.Mond_Neumond_Zeit", 30, IPSVarType::vtString, false);
+			$this->SetupVariable("firstquarterdate", "Erstes Viertel Datum", "Astronomie.Mond_ErstesViertel_Datum", 31, IPSVarType::vtString, false);
+			$this->SetupVariable("firstquartertime", "Erstes Viertel Uhrzeit", "Astronomie.Mond_ErstesViertel_Zeit", 32, IPSVarType::vtString, false);
+			$this->SetupVariable("fullmoondate", "Vollmond", "Astronomie.Mond_Vollmond_Datum", 33, IPSVarType::vtString, false);
+			$this->SetupVariable("fullmoontime", "Vollmond", "Astronomie.Mond_Vollmond_Zeit", 34, IPSVarType::vtString, false);
+			$this->SetupVariable("lastquarterdate", "Letztes Viertel Datum", "Astronomie.Mond_LetztesViertel_Datum", 35, IPSVarType::vtString, false);
+			$this->SetupVariable("lastquartertime", "Letztes Viertel Zeit", "Astronomie.Mond_LetztesViertel_Zeit", 36, IPSVarType::vtString, false);
+			$this->SetupVariable("moonrisedate", "Mondaufgang Datum", "Astronomie.Mond_Mondaufgang_Datum", 37, IPSVarType::vtInteger, false);
+			$this->SetupVariable("moonrisetime", "Mondaufgang Uhrzeit", "Astronomie.Mond_Mondaufgang_Zeit", 38, IPSVarType::vtInteger, false);
+			$this->SetupVariable("moonsetdate", "Monduntergang Datum", "Astronomie.Mond_Monduntergang_Datum", 39, IPSVarType::vtInteger, false);
+			$this->SetupVariable("moonsettime", "Monduntergang Zeit", "Astronomie.Mond_Monduntergang_Zeit", 40, IPSVarType::vtInteger, false);
 		}	
 		// Status Aktiv
 		$this->SetStatus(102);	
@@ -3486,7 +3530,7 @@ class Astronomy extends IPSModule
 		}
 	}
 	
-	protected function CalculateMoonphase()
+	protected function CalculateMoonphase($year)
 	{
 		// ============================================================
 		//
@@ -3501,9 +3545,7 @@ class Astronomy extends IPSModule
 		// Ergebnis: $JDE
 		// ============================================================
 
-		// aktuelles Datum in Jahre umrechnen
-		$year = ((((((date("s") / 60)+ date("i")) / 60)+date("G")) / 24) + date("z") - 1) / (365 + (date("L"))) + date("Y");
-		//print_r(date("z"));
+
 		$rads = 3.14159265359/180;
 
 		$moondate = array();
@@ -3730,32 +3772,76 @@ class Astronomy extends IPSModule
 	
 	public function Moon_FirstQuarter()
 	{
-		$moonphase = $this->CalculateMoonphase();
+        // Datum in Jahre umrechnen
+        $year = ((((((date("s") / 60)+ date("i")) / 60)+date("G")) / 24) + date("z") - 1) / (365 + (date("L"))) + date("Y");
+	    $moonphase = $this->CalculateMoonphase($year);
 		$firstquarter = $moonphase["firstquarter"];
 		return $firstquarter;
 	}
 	
 	public function Moon_Newmoon()
 	{
-		$moonphase = $this->CalculateMoonphase();
+        // Datum in Jahre umrechnen
+        $year = ((((((date("s") / 60)+ date("i")) / 60)+date("G")) / 24) + date("z") - 1) / (365 + (date("L"))) + date("Y");
+	    $moonphase = $this->CalculateMoonphase($year);
 		$newmoon = $moonphase["newmoon"];
 		return $newmoon;
 	}
 	
 	public function Moon_Fullmoon()
 	{
-		$moonphase = $this->CalculateMoonphase();
+        // Datum in Jahre umrechnen
+        $year = ((((((date("s") / 60)+ date("i")) / 60)+date("G")) / 24) + date("z") - 1) / (365 + (date("L"))) + date("Y");
+	    $moonphase = $this->CalculateMoonphase($year);
 		$fullmoon = $moonphase["fullmoon"];
 		return $fullmoon;
 	}
 	
 	public function Moon_LastQuarter()
 	{
-		$moonphase = $this->CalculateMoonphase();
+        // Datum in Jahre umrechnen
+        $year = ((((((date("s") / 60)+ date("i")) / 60)+date("G")) / 24) + date("z") - 1) / (365 + (date("L"))) + date("Y");
+	    $moonphase = $this->CalculateMoonphase($year);
 		$lastquarter = $moonphase["lastquarter"];
 		return $lastquarter;
 	}
-	
+
+    public function Moon_CurrentFirstQuarter()
+    {
+        // aktuelles Datum in Jahre umrechnen
+        $year = ((((((date("s") / 60)+ date("i")) / 60)+date("G")) / 24) + date("z") - 1) / (365 + (date("L"))) + date("Y");
+        $moonphase = $this->CalculateMoonphase($year);
+        $firstquarter = $moonphase["firstquarter"];
+        return $firstquarter;
+    }
+
+    public function Moon_CurrentNewmoon()
+    {
+        // aktuelles Datum in Jahre umrechnen
+        $year = ((((((date("s") / 60)+ date("i")) / 60)+date("G")) / 24) + date("z") - 1) / (365 + (date("L"))) + date("Y");
+        $moonphase = $this->CalculateMoonphase($year);
+        $newmoon = $moonphase["newmoon"];
+        return $newmoon;
+    }
+
+    public function Moon_CurrentFullmoon()
+    {
+        // aktuelles Datum in Jahre umrechnen
+        $year = ((((((date("s") / 60)+ date("i")) / 60)+date("G")) / 24) + date("z") - 1) / (365 + (date("L"))) + date("Y");
+        $moonphase = $this->CalculateMoonphase($year);
+        $fullmoon = $moonphase["fullmoon"];
+        return $fullmoon;
+    }
+
+    public function Moon_CurrentLastQuarter()
+    {
+        // aktuelles Datum in Jahre umrechnen
+        $year = ((((((date("s") / 60)+ date("i")) / 60)+date("G")) / 24) + date("z") - 1) / (365 + (date("L"))) + date("Y");
+        $moonphase = $this->CalculateMoonphase($year);
+        $lastquarter = $moonphase["lastquarter"];
+        return $lastquarter;
+    }
+
 	public function GetMoonPicture(float $mondphase)
 	{	
 		$language = $this->ReadPropertyInteger("language");
@@ -4357,7 +4443,27 @@ class Astronomy extends IPSModule
                     "name": "lastquarter",
                     "type": "CheckBox",
                     "caption": "last quarter"
+                },
+                {
+                    "name": "currentnewmoon",
+                    "type": "CheckBox",
+                    "caption": "current cycle new moon"
                 },	
+				{
+                    "name": "currentfirstquarter",
+                    "type": "CheckBox",
+                    "caption": "current cycle first quarter"
+                },	
+				{
+                    "name": "currentfullmoon",
+                    "type": "CheckBox",
+                    "caption": "current cycle full moon"
+                },	
+				{
+                    "name": "currentlastquarter",
+                    "type": "CheckBox",
+                    "caption": "current cycle last quarter"
+                },		
 				{
                     "name": "sunazimut",
                     "type": "CheckBox",
