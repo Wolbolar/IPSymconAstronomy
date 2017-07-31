@@ -1578,11 +1578,83 @@ class Astronomy extends IPSModule
 		$moonsettime = $moonset['moonsettime'];
 		$mondphase = $this->MoonphasePercent();
 		$picture = $this->GetMoonPicture($mondphase);
-		$moonphases = $this->CalculateMoonphase();
-		$newmoonstring = $moonphases['newmoon'];
-		$firstquarterstring = $moonphases['firstquarter'];
-		$fullmoonstring = $moonphases['fullmoon'];
-		$lastquarterstring = $moonphases['lastquarter'];
+        // aktuelles Datum in Jahre umrechnen
+        $year = ((((((date("s") / 60)+ date("i")) / 60)+date("G")) / 24) + date("z") - 1) / (365 + (date("L"))) + date("Y");
+        $moonphasescurrent = $this->CalculateMoonphase($year);
+        $currentnewmoonstring = $moonphasescurrent['newmoon'];
+        $currentfirstquarterstring = $moonphasescurrent['firstquarter'];
+        $currentfullmoonstring = $moonphasescurrent['fullmoon'];
+        $currentlastquarterstring = $moonphasescurrent['lastquarter'];
+
+        // Datum für nächsten Zyklus in Jahre umrechnen
+        $year = ((((((date("s") / 60)+ date("i")) / 60)+date("G")) / 24) + date("z") - 1) / (365 + (date("L"))) + date("Y");
+        $moonphases = $this->CalculateMoonphase($year);
+        $newmoonstring = $moonphases['newmoon'];
+        $firstquarterstring = $moonphases['firstquarter'];
+        $fullmoonstring = $moonphases['fullmoon'];
+        $lastquarterstring = $moonphases['lastquarter'];
+        $moondate = $moonphases['moondate'];
+
+        if($this->ReadPropertyBoolean("newmoon") == true)
+        {
+            SetValue($this->GetIDForIdent("newmoon"), $newmoonstring);
+            if($this->ReadPropertyBoolean("extinfoselection") == true) // float
+            {
+                $newmoondate = $moondate[0]["date"];
+                $newmoontime = $moondate[0]["time"];
+                SetValue($this->GetIDForIdent("newmoondate"), $newmoondate);
+                SetValue($this->GetIDForIdent("newmoontime"), $newmoontime);
+            }
+        }
+        if($this->ReadPropertyBoolean("currentnewmoon") == true)
+        {
+            SetValue($this->GetIDForIdent("currentnewmoon"), $newmoonstring);
+        }
+        if($this->ReadPropertyBoolean("firstquarter") == true)
+        {
+            SetValue($this->GetIDForIdent("firstquarter"), $firstquarterstring);
+            if($this->ReadPropertyBoolean("extinfoselection") == true) // float
+            {
+                $firstquarterdate = $moondate[1]["date"];
+                $firstquartertime = $moondate[1]["time"];
+                SetValue($this->GetIDForIdent("firstquarterdate"), $firstquarterdate);
+                SetValue($this->GetIDForIdent("firstquartertime"), $firstquartertime);
+            }
+        }
+        if($this->ReadPropertyBoolean("currentfirstquarter") == true)
+        {
+            SetValue($this->GetIDForIdent("currentfirstquarter"), $currentfirstquarterstring);
+        }
+        if($this->ReadPropertyBoolean("fullmoon") == true)
+        {
+            SetValue($this->GetIDForIdent("fullmoon"), $fullmoonstring);
+            if($this->ReadPropertyBoolean("extinfoselection") == true) // float
+            {
+                $fullmoondate = $moondate[2]["date"];
+                $fullmoontime = $moondate[2]["time"];
+                SetValue($this->GetIDForIdent("fullmoondate"), $fullmoondate);
+                SetValue($this->GetIDForIdent("fullmoontime"), $fullmoontime);
+            }
+        }
+        if($this->ReadPropertyBoolean("currentfullmoon") == true)
+        {
+            SetValue($this->GetIDForIdent("currentfullmoon"), $fullmoonstring);
+        }
+        if($this->ReadPropertyBoolean("lastquarter") == true)
+        {
+            SetValue($this->GetIDForIdent("lastquarter"), $lastquarterstring);
+            if($this->ReadPropertyBoolean("extinfoselection") == true) // float
+            {
+                $lastquarterdate = $moondate[3]["date"];
+                $lastquartertime = $moondate[3]["time"];
+                SetValue($this->GetIDForIdent("lastquarterdate"), $lastquarterdate);
+                SetValue($this->GetIDForIdent("lastquartertime"), $lastquartertime);
+            }
+        }
+        if($this->ReadPropertyBoolean("currentlastquarter") == true)
+        {
+            SetValue($this->GetIDForIdent("currentlastquarter"), $lastquarterstring);
+        }
 				
 		$moonphasearr = $this->MoonphaseText();
 		$moonphasetext = $moonphasearr['moonphasetext'];
@@ -1783,7 +1855,7 @@ class Astronomy extends IPSModule
 
 		$astronomyinfo = array ("IsDay" => $isday, "Sunrise" => $sunrise, "Sunset" => $sunset, "moonsetdate" => $moonsetdate, "moonsettime" => $moonsettime, "moonrisedate" => $moonrisedate, "moonrisetime" => $moonrisetime,"CivilTwilightStart" => $civiltwilightstart, "CivilTwilightEnd" => $civiltwilightend, "NauticTwilightStart" => $nautictwilightstart, "NauticTwilightEnd" => $nautictwilightend, "AstronomicTwilightStart" => $astronomictwilightstart, "AstronomicTwilightEnd" => $astronomictwilightend,
 		"latitude" => $Latitude, "longitude" => $Longitude, "juliandate" => $JD, "season" => $season, "sunazimut" => $sunazimut, "sundirection" => $SunDazimut, "sunaltitude" => $sunaltitude, "sundistance" => $rSun, "moonazimut" => $moonazimut, "moonaltitude" => $moonaltitude, "moondirection" => $dazimut, "moondistance" => $MoonDist, "moonvisibility" => $Moonphase, "moonbrightlimbangle" => $MoonBrightLimbAngle,
-		"newmoon" => $newmoonstring, "firstquarter" => $firstquarterstring, "fullmoon" => $fullmoonstring, "lastquarter" => $lastquarterstring, "moonphasetext" => $moonphasetext, "moonphasepercent" => $moonphasepercent);
+		"newmoon" => $currentnewmoonstring, "firstquarter" => $currentfirstquarterstring, "fullmoon" => $currentfullmoonstring, "lastquarter" => $currentlastquarterstring, "moonphasetext" => $moonphasetext, "moonphasepercent" => $moonphasepercent);
 		
 		return $astronomyinfo;
 	}
@@ -3696,53 +3768,8 @@ class Astronomy extends IPSModule
 		$firstquarterstring = $moondate[1]["weekday"].", ".$moondate[1]["date"]." ".$moondate[1]["time"];
 		$fullmoonstring = $moondate[2]["weekday"].", ".$moondate[2]["date"]." ".$moondate[2]["time"];
 		$lastquarterstring = $moondate[3]["weekday"].", ".$moondate[3]["date"]." ".$moondate[3]["time"];
-		
-		if($this->ReadPropertyBoolean("newmoon") == true)
-		{
-			SetValue($this->GetIDForIdent("newmoon"), $newmoonstring);	
-			if($this->ReadPropertyBoolean("extinfoselection") == true) // float
-			{
-				$newmoondate = $moondate[0]["date"];
-				$newmoontime = $moondate[0]["time"];
-				SetValue($this->GetIDForIdent("newmoondate"), $newmoondate);
-				SetValue($this->GetIDForIdent("newmoontime"), $newmoontime);
-			}
-		}
-		if($this->ReadPropertyBoolean("firstquarter") == true)
-		{
-			SetValue($this->GetIDForIdent("firstquarter"), $firstquarterstring);	
-			if($this->ReadPropertyBoolean("extinfoselection") == true) // float
-			{
-				$firstquarterdate = $moondate[1]["date"];
-				$firstquartertime = $moondate[1]["time"];
-				SetValue($this->GetIDForIdent("firstquarterdate"), $firstquarterdate);
-				SetValue($this->GetIDForIdent("firstquartertime"), $firstquartertime);
-			}
-		}
-		if($this->ReadPropertyBoolean("fullmoon") == true)
-		{
-			SetValue($this->GetIDForIdent("fullmoon"), $fullmoonstring);	
-			if($this->ReadPropertyBoolean("extinfoselection") == true) // float
-			{
-				$fullmoondate = $moondate[2]["date"];
-				$fullmoontime = $moondate[2]["time"];
-				SetValue($this->GetIDForIdent("fullmoondate"), $fullmoondate);
-				SetValue($this->GetIDForIdent("fullmoontime"), $fullmoontime);
-			}
-		}
-		if($this->ReadPropertyBoolean("lastquarter") == true)
-		{
-			SetValue($this->GetIDForIdent("lastquarter"), $lastquarterstring);	
-			if($this->ReadPropertyBoolean("extinfoselection") == true) // float
-			{
-				$lastquarterdate = $moondate[3]["date"];
-				$lastquartertime = $moondate[3]["time"];
-				SetValue($this->GetIDForIdent("lastquarterdate"), $lastquarterdate);
-				SetValue($this->GetIDForIdent("lastquartertime"), $lastquartertime);
-			}
-		}
-		
-		$moonphase = array ("newmoon" => $newmoonstring, "firstquarter" => $firstquarterstring, "fullmoon" => $fullmoonstring, "lastquarter" => $lastquarterstring);
+
+		$moonphase = array ("newmoon" => $newmoonstring, "firstquarter" => $firstquarterstring, "fullmoon" => $fullmoonstring, "lastquarter" => $lastquarterstring, "moondate" => $moondate);
 		return $moonphase;
 	}
 	
