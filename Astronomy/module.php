@@ -1673,8 +1673,7 @@ class Astronomy extends IPSModule
 		$this->TwilightYearPicture($type);
 		$this->TwilightDayPicture($type);
 		
-		
-		
+        
 		$HMSDec = $this->HMSDH($Hour, $Minute, $Second); //Local Time HMS in Decimal Hours
 		// $UTDec = $this->LctUT($Hour, $Minute, $Second, $DS, $ZC, $day, $month, $year)["UTDec"];
 		$GD = $this->LctUT($Hour, $Minute, $Second, $DS, $ZC, $day, $month, $year)["GD"];
