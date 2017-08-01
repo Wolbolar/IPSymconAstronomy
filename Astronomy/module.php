@@ -1578,13 +1578,11 @@ class Astronomy extends IPSModule
 		$moonsettime = $moonset['moonsettime'];
 		$mondphase = $this->MoonphasePercent();
 		$picture = $this->GetMoonPicture($mondphase);
-        // aktuelles Datum in Jahre umrechnen
-        $year = ((((((date("s") / 60)+ date("i")) / 60)+date("G")) / 24) + date("z") - 1) / (365 + (date("L"))) + date("Y");
-        $moonphasescurrent = $this->CalculateMoonphase($year);
-        $currentnewmoonstring = $moonphasescurrent['newmoon'];
-        $currentfirstquarterstring = $moonphasescurrent['firstquarter'];
-        $currentfullmoonstring = $moonphasescurrent['fullmoon'];
-        $currentlastquarterstring = $moonphasescurrent['lastquarter'];
+
+        $currentnewmoonstring = $this->Moon_CurrentNewmoon();
+        $currentfirstquarterstring = $this->Moon_CurrentFirstQuarter();
+        $currentfullmoonstring = $this->Moon_CurrentFullmoon();
+        $currentlastquarterstring = $this->Moon_CurrentLastQuarter();
 
         $newmoonstring = $this->Moon_Newmoon();
         $firstquarterstring = $this->Moon_FirstQuarter();
@@ -1596,10 +1594,8 @@ class Astronomy extends IPSModule
             SetValue($this->GetIDForIdent("newmoon"), $newmoonstring["newmoon"]);
             if($this->ReadPropertyBoolean("extinfoselection") == true) // float
             {
-                $newmoondate = $newmoonstring["newmoondate"];
-                $newmoontime = $newmoonstring["newmoontime"];
-                SetValue($this->GetIDForIdent("newmoondate"), $newmoondate);
-                SetValue($this->GetIDForIdent("newmoontime"), $newmoontime);
+                SetValue($this->GetIDForIdent("newmoondate"), $newmoonstring["newmoondate"]);
+                SetValue($this->GetIDForIdent("newmoontime"), $newmoonstring["newmoontime"]);
             }
         }
         if($this->ReadPropertyBoolean("currentnewmoon") == true)
@@ -1611,10 +1607,8 @@ class Astronomy extends IPSModule
             SetValue($this->GetIDForIdent("firstquarter"), $firstquarterstring["firstquarter"]);
             if($this->ReadPropertyBoolean("extinfoselection") == true) // float
             {
-                $firstquarterdate = $firstquarterstring["firstquarterdate"];
-                $firstquartertime = $firstquarterstring["firstquartertime"];
-                SetValue($this->GetIDForIdent("firstquarterdate"), $firstquarterdate);
-                SetValue($this->GetIDForIdent("firstquartertime"), $firstquartertime);
+                SetValue($this->GetIDForIdent("firstquarterdate"), $firstquarterstring["firstquarterdate"]);
+                SetValue($this->GetIDForIdent("firstquartertime"), $firstquarterstring["firstquartertime"]);
             }
         }
         if($this->ReadPropertyBoolean("currentfirstquarter") == true)
@@ -1626,10 +1620,8 @@ class Astronomy extends IPSModule
             SetValue($this->GetIDForIdent("fullmoon"), $fullmoonstring["fullmoon"]);
             if($this->ReadPropertyBoolean("extinfoselection") == true) // float
             {
-                $fullmoondate = $fullmoonstring["fullmoondate"];
-                $fullmoontime = $fullmoonstring["fullmoontime"];
-                SetValue($this->GetIDForIdent("fullmoondate"), $fullmoondate);
-                SetValue($this->GetIDForIdent("fullmoontime"), $fullmoontime);
+                SetValue($this->GetIDForIdent("fullmoondate"), $fullmoonstring["fullmoondate"]);
+                SetValue($this->GetIDForIdent("fullmoontime"), $fullmoonstring["fullmoontime"]);
             }
         }
         if($this->ReadPropertyBoolean("currentfullmoon") == true)
@@ -1641,10 +1633,8 @@ class Astronomy extends IPSModule
             SetValue($this->GetIDForIdent("lastquarter"), $lastquarterstring["lastquarter"]);
             if($this->ReadPropertyBoolean("extinfoselection") == true) // float
             {
-                $lastquarterdate = $lastquarterstring["lastquarterdate"];
-                $lastquartertime = $lastquarterstring["lastquartertime"];
-                SetValue($this->GetIDForIdent("lastquarterdate"), $lastquarterdate);
-                SetValue($this->GetIDForIdent("lastquartertime"), $lastquartertime);
+                SetValue($this->GetIDForIdent("lastquarterdate"), $lastquarterstring["lastquarterdate"]);
+                SetValue($this->GetIDForIdent("lastquartertime"), $lastquarterstring["lastquartertime"]);
             }
         }
         if($this->ReadPropertyBoolean("currentlastquarter") == true)
