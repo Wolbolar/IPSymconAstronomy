@@ -31,6 +31,10 @@ Berechung der Werte erfolgt über Formeln aus _"Practical Astronomy with your Ca
 * Mond Aufgang
 * Mond Untergang
 * Mond Phase
+* Zeitpunkt Aktueller Zyklus Neumond
+* Zeitpunkt Aktueller Zyklus Erstes Viertel
+* Zeitpunkt Aktueller Zyklus Vollmond
+* Zeitpunkt Aktueller Zyklus Letztes Viertel
 * Zeitpunkt Neumond
 * Zeitpunkt Erstes Viertel
 * Zeitpunkt Vollmond
@@ -43,6 +47,10 @@ Berechung der Werte erfolgt über Formeln aus _"Practical Astronomy with your Ca
 * Jahreszeit
 * Sonnenaufgang mit einstellbaren Offset
 * Sonnenuntergang mit einstellbaren Offset
+* Bildansicht Sonne und Mond
+* konfigurierbare Bildansicht Mondphase (eigene Grafiken möglich)
+* Grafik Dämmerungszeiten Tag
+* Grafik Dämmerungszeiten Jahr
 
 ### Astronomischer Timer: 
 Es können für ein Skript oder eine Variable ein Timer angelegt werden der sich nach einem Astronomischen Ereignis richtet.
@@ -131,6 +139,10 @@ In IP-Symcon unter Kern Instanzen Instanz hinzufügen auswählen und Astronomie 
 | firstquarter        | string  | Erstes Viertel  | Zeitpunkt Erstes Viertel                     |
 | fullmoon            | string  | Vollmond        | Zeitpunkt Vollmond                           |
 | lastquarter         | string  | letztes Viertel | Zeitpunkt Letztes Viertel                    |
+| currentnewmoon      | string  | Neumond         | Zeitpunkt Neumond Aktueller Zyklus                           |
+| currentfirstquarter | string  | Erstes Viertel  | Zeitpunkt Erstes Viertel Aktueller Zyklus                    |
+| currentfullmoon     | string  | Vollmond        | Zeitpunkt Vollmond Aktueller Zyklus                           |
+| currentlastquarter  | string  | letztes Viertel | Zeitpunkt Letztes Viertel Aktueller Zyklus
 | sunazimut           | float   | Sonne Azimut    | Sonne Azimut                                 |
 | sundistance         | float   | Sonne Entfernung| Sonne Entfernung                             |
 | sunaltitude         | float   | Sonne Höhe      | Sonne Höhe                                   |
@@ -186,17 +198,73 @@ Liefert die Mondphase als Ausgabe Text - % z.B. zunehmender Mond - 84%
 ```php
 Astronomy_Moon_FirstQuarter(int $InstanceID)
 ```
-Zeitpunkt Erstes Viertel
+Zeitpunkt Erstes Viertel, sollte der Zeitpunkt in der Vergangenheit liegen wird das wird der nächste Zeitpunkt der nächsten Mondphase ausgegeben
 
 ```php
 Astronomy_Moon_Newmoon(int $InstanceID)
 ```
-Zeitpunkt Neumond
+Zeitpunkt Neumond, sollte der Zeitpunkt in der Vergangenheit liegen wird das wird der nächste Zeitpunkt der nächsten Mondphase ausgegeben
+
 
 ```php
 Astronomy_Moon_Fullmoon(int $InstanceID)
 ```
-Zeitpunkt Vollmond
+Zeitpunkt Vollmond, sollte der Zeitpunkt in der Vergangenheit liegen wird das wird der nächste Zeitpunkt der nächsten Mondphase ausgegeben
+
+
+```php
+Astronomy_Moon_LastQuarter(int $InstanceID)
+```
+Zeitpunkt Letztes Viertel, Zeitpunkt Erstes Viertel, sollte der Zeitpunkt in der Vergangenheit liegen wird das wird der nächste Zeitpunkt der nächsten Mondphase ausgegeben
+
+
+```php
+Astronomy_Moon_CurrentFirstQuarter(int $InstanceID)
+```
+Zeitpunkt Erstes Viertel des aktuellen Zyklus
+
+```php
+Astronomy_Moon_CurrentNewmoon(int $InstanceID)
+```
+Zeitpunkt Neumond des aktuellen Zyklus
+
+```php
+Astronomy_Moon_CurrentFullmoon(int $InstanceID)
+```
+Zeitpunkt Vollmond des aktuellen Zyklus
+
+```php
+Astronomy_Moon_CurrentLastQuarter(int $InstanceID)
+```
+Zeitpunkt Letztes Viertel des aktuellen Zyklus
+
+```php
+Astronomy_Moon_FirstQuarterDate(int $InstanceID, string $date)
+```
+Zeitpunkt Erstes Viertel zum übergebenen Datum
+
+_$date_ Datum
+
+```php
+Astronomy_Moon_NewmoonDate(int $InstanceID, string $date)
+```
+Zeitpunkt Neumond zum übergebenen Datum
+
+_$date_ Datum
+
+```php
+Astronomy_Moon_FullmoonDate(int $InstanceID, string $date)
+```
+Zeitpunkt Vollmond zum übergebenen Datum
+
+_$date_ Datum
+
+```php
+Astronomy_Moon_LastQuarterDate(int $InstanceID, string $date)
+```
+Zeitpunkt Letztes Viertel zum übergebenen Datum
+
+_$date_ Datum
 
 #### Astronomie Timer:
 
