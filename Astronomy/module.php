@@ -3863,7 +3863,7 @@ class Astronomy extends IPSModule
         }
         else
         {
-            return array("fullmoonmoon" => $fullmoon, "fullmoondate" => $fullmoondate, "fullmoontime" => $fullmoontime);
+            return array("fullmoon" => $fullmoon, "fullmoondate" => $fullmoondate, "fullmoontime" => $fullmoontime);
         }
 	}
 	
