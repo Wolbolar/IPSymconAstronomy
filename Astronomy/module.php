@@ -3800,7 +3800,21 @@ class Astronomy extends IPSModule
 		$firstquarter = $moonphase["firstquarter"];
         $firstquarterdate = $moonphase["moondate"][1]["date"];
         $firstquartertime = $moonphase["moondate"][1]["time"];
-		return array("firstquarter" => $firstquarter, "firstquarterdate" => $firstquarterdate, "firstquartertime" => $firstquartertime);
+
+        $ispast = $this->CompareDateWithToday($firstquarterdate);
+        if($ispast)
+        {
+            $year = $this->GetNextPhase();
+            $nextmoonphase = $this->CalculateMoonphase($year);
+            $nextfirstquarter = $nextmoonphase["firstquarter"];
+            $nextfirstquarterdate = $nextmoonphase["moondate"][1]["date"];
+            $nextfirstquartertime = $nextmoonphase["moondate"][1]["time"];
+            return array("firstquarter" => $nextfirstquarter, "firstquarterdate" => $nextfirstquarterdate, "firstquartertime" => $nextfirstquartertime);
+        }
+        else
+        {
+            return array("firstquarter" => $firstquarter, "firstquarterdate" => $firstquarterdate, "firstquartertime" => $firstquartertime);
+        }
 	}
 	
 	public function Moon_Newmoon()
@@ -3808,12 +3822,24 @@ class Astronomy extends IPSModule
         // Datum in Jahre umrechnen
         $year = ((((((date("s") / 60)+ date("i")) / 60)+date("G")) / 24) + date("z") - 1) / (365 + (date("L"))) + date("Y");
 	    $moonphase = $this->CalculateMoonphase($year);
-	    //$currentdate = date();
-	    //if $currentdate
 		$newmoon = $moonphase["newmoon"];
         $newmoondate = $moonphase["moondate"][0]["date"];
         $newmoontime = $moonphase["moondate"][0]["time"];
-		return array("newmoon" => $newmoon, "newmoondate" => $newmoondate, "newmoontime" => $newmoontime);
+
+        $ispast = $this->CompareDateWithToday($newmoondate);
+        if($ispast)
+        {
+            $year = $this->GetNextPhase();
+            $nextmoonphase = $this->CalculateMoonphase($year);
+            $nextnewmoon = $nextmoonphase["newmoon"];
+            $nextnewmoondate = $nextmoonphase["moondate"][0]["date"];
+            $nextnewmoontime = $nextmoonphase["moondate"][0]["time"];
+            return array("newmoon" => $nextnewmoon, "newmoondate" => $nextnewmoondate, "newmoontime" => $nextnewmoontime);
+        }
+        else
+        {
+            return array("newmoon" => $newmoon, "newmoondate" => $newmoondate, "newmoontime" => $newmoontime);
+        }
 	}
 	
 	public function Moon_Fullmoon()
@@ -3824,7 +3850,21 @@ class Astronomy extends IPSModule
 		$fullmoon = $moonphase["fullmoon"];
         $fullmoondate = $moonphase["moondate"][2]["date"];
         $fullmoontime = $moonphase["moondate"][2]["time"];
-		return array("fullmoonmoon" => $fullmoon, "fullmoondate" => $fullmoondate, "fullmoontime" => $fullmoontime);
+
+        $ispast = $this->CompareDateWithToday($fullmoondate);
+        if($ispast)
+        {
+            $year = $this->GetNextPhase();
+            $nextmoonphase = $this->CalculateMoonphase($year);
+            $nextfullmoon = $nextmoonphase["fullmoon"];
+            $nextfullmoondate = $nextmoonphase["moondate"][2]["date"];
+            $nextfullmoontime = $nextmoonphase["moondate"][2]["time"];
+            return array("fullmoonmoon" => $nextfullmoon, "fullmoondate" => $nextfullmoondate, "fullmoontime" => $nextfullmoontime);
+        }
+        else
+        {
+            return array("fullmoonmoon" => $fullmoon, "fullmoondate" => $fullmoondate, "fullmoontime" => $fullmoontime);
+        }
 	}
 	
 	public function Moon_LastQuarter()
@@ -3835,7 +3875,21 @@ class Astronomy extends IPSModule
 		$lastquarter = $moonphase["lastquarter"];
         $lastquarterdate = $moonphase["moondate"][3]["date"];
         $lastquartertime = $moonphase["moondate"][3]["time"];
-        return array("lastquarter" => $lastquarter, "lastquarterdate" => $lastquarterdate, "lastquartertime" => $lastquartertime);
+
+        $ispast = $this->CompareDateWithToday($lastquarterdate);
+        if($ispast)
+        {
+            $year = $this->GetNextPhase();
+            $nextmoonphase = $this->CalculateMoonphase($year);
+            $nextlastquarter = $nextmoonphase["lastquarter"];
+            $nextlastquarterdate = $nextmoonphase["moondate"][3]["date"];
+            $nextlastquartertime = $nextmoonphase["moondate"][3]["time"];
+            return array("lastquarter" => $nextlastquarter, "lastquarterdate" => $nextlastquarterdate, "lastquartertime" => $nextlastquartertime);
+        }
+        else
+        {
+            return array("lastquarter" => $lastquarter, "lastquarterdate" => $lastquarterdate, "lastquartertime" => $lastquartertime);
+        }
 	}
 
     public function Moon_CurrentFirstQuarter()
@@ -3884,9 +3938,9 @@ class Astronomy extends IPSModule
 
     public function Moon_FirstQuarterDate(string $date)
     {
-        $year = $date;
+        $timestamp = strtotime($date);
         // Datum in Jahre umrechnen
-       // $year = ((((((date("s") / 60)+ date("i")) / 60)+date("G")) / 24) + date("z") - 1) / (365 + (date("L"))) + date("Y");
+        $year = ((((((date("s") / 60)+ date("i")) / 60)+date("G")) / 24) + date("z", $timestamp) - 1) / (365 + (date("L", $timestamp))) + date("Y", $timestamp);
         $moonphase = $this->CalculateMoonphase($year);
         $firstquarter = $moonphase["firstquarter"];
         $firstquarterdate = $moonphase["moondate"][1]["date"];
@@ -3896,9 +3950,9 @@ class Astronomy extends IPSModule
 
     public function Moon_NewmoonDate(string $date)
     {
-        $year = $date;
+        $timestamp = strtotime($date);
         // Datum in Jahre umrechnen
-        // $year = ((((((date("s") / 60)+ date("i")) / 60)+date("G")) / 24) + date("z") - 1) / (365 + (date("L"))) + date("Y");
+        $year = ((((((date("s") / 60)+ date("i")) / 60)+date("G")) / 24) + date("z", $timestamp) - 1) / (365 + (date("L", $timestamp))) + date("Y", $timestamp);
         $moonphase = $this->CalculateMoonphase($year);
         $newmoon = $moonphase["newmoon"];
         $newmoondate = $moonphase["moondate"][0]["date"];
@@ -3908,9 +3962,9 @@ class Astronomy extends IPSModule
 
     public function Moon_FullmoonDate(string $date)
     {
-        $year = $date;
+        $timestamp = strtotime($date);
         // Datum in Jahre umrechnen
-        // $year = ((((((date("s") / 60)+ date("i")) / 60)+date("G")) / 24) + date("z") - 1) / (365 + (date("L"))) + date("Y");
+        $year = ((((((date("s") / 60)+ date("i")) / 60)+date("G")) / 24) + date("z", $timestamp) - 1) / (365 + (date("L", $timestamp))) + date("Y", $timestamp);
         $moonphase = $this->CalculateMoonphase($year);
         $fullmoon = $moonphase["fullmoon"];
         $fullmoondate = $moonphase["moondate"][2]["date"];
@@ -3920,14 +3974,41 @@ class Astronomy extends IPSModule
 
     public function Moon_LastQuarterDate(string $date)
     {
-        $year = $date;
+        $timestamp = strtotime($date);
         // Datum in Jahre umrechnen
-        // $year = ((((((date("s") / 60)+ date("i")) / 60)+date("G")) / 24) + date("z") - 1) / (365 + (date("L"))) + date("Y");
+        $year = ((((((date("s") / 60)+ date("i")) / 60)+date("G")) / 24) + date("z", $timestamp) - 1) / (365 + (date("L", $timestamp))) + date("Y", $timestamp);
         $moonphase = $this->CalculateMoonphase($year);
         $lastquarter = $moonphase["lastquarter"];
         $lastquarterdate = $moonphase["moondate"][3]["date"];
         $lastquartertime = $moonphase["moondate"][3]["time"];
         return array("lastquarter" => $lastquarter, "lastquarterdate" => $lastquarterdate, "lastquartertime" => $lastquartertime);
+    }
+
+    protected function CompareDateWithToday($datetocompare)
+    {
+        $datetimetoday = new DateTime(date("d.m.Y",time()));
+        $datetimecompare = new DateTime($datetocompare);
+        $interval = $datetimetoday->diff($datetimecompare);
+        $daydifference = intval($interval->format('%R%a')); // int
+        if($daydifference >= 0) // present or future
+        {
+            return false;
+        }
+        else // past
+        {
+            return true;
+        }
+    }
+
+    protected function GetNextPhase()
+    {
+        $currentnewmoon = $this->Moon_CurrentNewmoon();
+        $currentnewmoondate = $currentnewmoon["newmoondate"];
+        $datetimenewmoon = new DateTime($currentnewmoondate);
+        $datetimenewmoon->add(new DateInterval('P30D'));
+        // Datum für nächsten Zyklus in Jahre umrechnen
+        $year = ((((((date("s") / 60)+ date("i")) / 60)+date("G")) / 24) + $datetimenewmoon->format('z') - 1) / (365 + ($datetimenewmoon->format('L'))) + $datetimenewmoon->format('Y');
+        return $year;
     }
 
 	public function GetMoonPicture(float $mondphase)
