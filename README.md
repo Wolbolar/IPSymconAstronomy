@@ -198,22 +198,25 @@ Liefert die Mondphase als Ausgabe Text - % z.B. zunehmender Mond - 84%
 ```php
 Astronomy_Moon_FirstQuarter(int $InstanceID)
 ```
-Zeitpunkt Erstes Viertel, sollte der Zeitpunkt hinter dem aktuellen Datum liegen wird der nächste Zeitpunkt ausgegeben
+Zeitpunkt Erstes Viertel, sollte der Zeitpunkt in der Vergangenheit liegen wird das wird der nächste Zeitpunkt der nächsten Mondphase ausgegeben
 
 ```php
 Astronomy_Moon_Newmoon(int $InstanceID)
 ```
-Zeitpunkt Neumond, sollte der Zeitpunkt hinter dem aktuellen Datum liegen wird der nächste Zeitpunkt ausgegeben
+Zeitpunkt Neumond, sollte der Zeitpunkt in der Vergangenheit liegen wird das wird der nächste Zeitpunkt der nächsten Mondphase ausgegeben
+
 
 ```php
 Astronomy_Moon_Fullmoon(int $InstanceID)
 ```
-Zeitpunkt Vollmond, sollte der Zeitpunkt hinter dem aktuellen Datum liegen wird der nächste Zeitpunkt ausgegeben
+Zeitpunkt Vollmond, sollte der Zeitpunkt in der Vergangenheit liegen wird das wird der nächste Zeitpunkt der nächsten Mondphase ausgegeben
+
 
 ```php
 Astronomy_Moon_LastQuarter(int $InstanceID)
 ```
-Zeitpunkt Letztes Viertel, sollte der Zeitpunkt hinter dem aktuellen Datum liegen wird der nächste Zeitpunkt ausgegeben
+Zeitpunkt Letztes Viertel, Zeitpunkt Erstes Viertel, sollte der Zeitpunkt in der Vergangenheit liegen wird das wird der nächste Zeitpunkt der nächsten Mondphase ausgegeben
+
 
 ```php
 Astronomy_Moon_CurrentFirstQuarter(int $InstanceID)
