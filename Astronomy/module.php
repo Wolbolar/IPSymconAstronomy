@@ -3849,7 +3849,7 @@ class Astronomy extends IPSModule
             $nextfullmoon = $nextmoonphase["fullmoon"];
             $nextfullmoondate = $nextmoonphase["moondate"][2]["date"];
             $nextfullmoontime = $nextmoonphase["moondate"][2]["time"];
-            return array("fullmoonmoon" => $nextfullmoon, "fullmoondate" => $nextfullmoondate, "fullmoontime" => $nextfullmoontime);
+            return array("fullmoon" => $nextfullmoon, "fullmoondate" => $nextfullmoondate, "fullmoontime" => $nextfullmoontime);
         }
         else
         {
@@ -3912,7 +3912,7 @@ class Astronomy extends IPSModule
         $fullmoon = $moonphase["fullmoon"];
         $fullmoondate = $moonphase["moondate"][2]["date"];
         $fullmoontime = $moonphase["moondate"][2]["time"];
-        return array("fullmoonmoon" => $fullmoon, "fullmoondate" => $fullmoondate, "fullmoontime" => $fullmoontime);
+        return array("fullmoon" => $fullmoon, "fullmoondate" => $fullmoondate, "fullmoontime" => $fullmoontime);
     }
 
     public function Moon_CurrentLastQuarter()
@@ -3959,7 +3959,7 @@ class Astronomy extends IPSModule
         $fullmoon = $moonphase["fullmoon"];
         $fullmoondate = $moonphase["moondate"][2]["date"];
         $fullmoontime = $moonphase["moondate"][2]["time"];
-        return array("fullmoonmoon" => $fullmoon, "fullmoondate" => $fullmoondate, "fullmoontime" => $fullmoontime);
+        return array("fullmoon" => $fullmoon, "fullmoondate" => $fullmoondate, "fullmoontime" => $fullmoontime);
     }
 
     public function Moon_LastQuarterDate(string $date)
