@@ -1840,7 +1840,7 @@ class Astronomy extends IPSModule
 
 		$astronomyinfo = array ("IsDay" => $isday, "Sunrise" => $sunrise, "Sunset" => $sunset, "moonsetdate" => $moonsetdate, "moonsettime" => $moonsettime, "moonrisedate" => $moonrisedate, "moonrisetime" => $moonrisetime,"CivilTwilightStart" => $civiltwilightstart, "CivilTwilightEnd" => $civiltwilightend, "NauticTwilightStart" => $nautictwilightstart, "NauticTwilightEnd" => $nautictwilightend, "AstronomicTwilightStart" => $astronomictwilightstart, "AstronomicTwilightEnd" => $astronomictwilightend,
 		"latitude" => $Latitude, "longitude" => $Longitude, "juliandate" => $JD, "season" => $season, "sunazimut" => $sunazimut, "sundirection" => $SunDazimut, "sunaltitude" => $sunaltitude, "sundistance" => $rSun, "moonazimut" => $moonazimut, "moonaltitude" => $moonaltitude, "moondirection" => $dazimut, "moondistance" => $MoonDist, "moonvisibility" => $Moonphase, "moonbrightlimbangle" => $MoonBrightLimbAngle,
-		"newmoon" => $currentnewmoonstring, "firstquarter" => $currentfirstquarterstring, "fullmoon" => $currentfullmoonstring, "lastquarter" => $currentlastquarterstring, "moonphasetext" => $moonphasetext, "moonphasepercent" => $moonphasepercent);
+		"newmoon" => $currentnewmoonstring, "firstquarter" => $currentfirstquarterstring, "fullmoon" => $currentfullmoonstring, "lastquarter" => $currentlastquarterstring, "moonphasetext" => $moonphasetext, "moonphasepercent" => $moonphasepercent, "picid" => $picture["picid"]);
 		
 		return $astronomyinfo;
 	}
