@@ -880,14 +880,16 @@ class Astronomy extends IPSModule
 			$filename = "Astronomy_Twilight_DayUnlimited";
 			$ImagePath = $this->GenerateClockGraphic($filename, false);
 		}
+        $this->SendDebug("Astronomy:","Twilight image path ".print_r($ImagePath),0);
 		if($ImagePath)
         {
-            $ContentDay = @Sys_GetURLContent($ImagePath);
+            $ContentDay = file_get_contents($ImagePath);
+            // $ContentDay = @Sys_GetURLContent($ImagePath);
             $nameday = "Dämmerungszeiten Tag";
             $picid = "TwilightDayPicture";
             $MediaID = $this->CreateMediaImage('TwilightDayPicture', $nameday, $picid, $ContentDay, $ImagePath, 40, "picturedaytwilight");
         }
-		return $MediaID;
+        return array ("mediaid_twilight_day" => $MediaID, "twilight_day_image_path" => $ImagePath);
 	}
 	
 	protected function TwilightYearPicture($type)
@@ -906,12 +908,13 @@ class Astronomy extends IPSModule
 		}
         if($ImagePath)
         {
-            $ContentYear = @Sys_GetURLContent($ImagePath);
+            $ContentYear = file_get_contents($ImagePath);
+            // $ContentYear = @Sys_GetURLContent($ImagePath);
             $nameyear = "Dämmerungszeiten Jahr";
             $picid = "TwilightYearPicture";
             $MediaID = $this->CreateMediaImage('TwilightYearPicture', $nameyear, $picid, $ContentYear, $ImagePath, 41, "pictureyeartwilight");
         }
-		return $MediaID;
+		return array ("mediaid_twilight_year" => $MediaID, "twilight_year_image_path" => $ImagePath);
 	}
 	
 	protected function GenerateClockGraphic($filename, $useLimited=false, $Width=180)
@@ -1656,9 +1659,12 @@ class Astronomy extends IPSModule
 		{
 			$type = "Standard";
 		}
-		$this->TwilightYearPicture($type);
-		$this->TwilightDayPicture($type);
-		
+		$twilightyearpic = $this->TwilightYearPicture($type);
+		$mediaid_twilight_year = $twilightyearpic["mediaid_twilight_year"];
+        $twilight_year_image_path = $twilightyearpic["twilight_year_image_path"];
+        $twilightdaypic = $this->TwilightDayPicture($type);
+        $mediaid_twilight_day = $twilightdaypic["mediaid_twilight_day"];
+        $twilight_day_image_path = $twilightdaypic["twilight_day_image_path"];
 
 		$HMSDec = $this->HMSDH($Hour, $Minute, $Second); //Local Time HMS in Decimal Hours
 		// $UTDec = $this->LctUT($Hour, $Minute, $Second, $DS, $ZC, $day, $month, $year)["UTDec"];
@@ -1840,7 +1846,7 @@ class Astronomy extends IPSModule
 
 		$astronomyinfo = array ("IsDay" => $isday, "Sunrise" => $sunrise, "Sunset" => $sunset, "moonsetdate" => $moonsetdate, "moonsettime" => $moonsettime, "moonrisedate" => $moonrisedate, "moonrisetime" => $moonrisetime,"CivilTwilightStart" => $civiltwilightstart, "CivilTwilightEnd" => $civiltwilightend, "NauticTwilightStart" => $nautictwilightstart, "NauticTwilightEnd" => $nautictwilightend, "AstronomicTwilightStart" => $astronomictwilightstart, "AstronomicTwilightEnd" => $astronomictwilightend,
 		"latitude" => $Latitude, "longitude" => $Longitude, "juliandate" => $JD, "season" => $season, "sunazimut" => $sunazimut, "sundirection" => $SunDazimut, "sunaltitude" => $sunaltitude, "sundistance" => $rSun, "moonazimut" => $moonazimut, "moonaltitude" => $moonaltitude, "moondirection" => $dazimut, "moondistance" => $MoonDist, "moonvisibility" => $Moonphase, "moonbrightlimbangle" => $MoonBrightLimbAngle,
-		"newmoon" => $currentnewmoonstring, "firstquarter" => $currentfirstquarterstring, "fullmoon" => $currentfullmoonstring, "lastquarter" => $currentlastquarterstring, "moonphasetext" => $moonphasetext, "moonphasepercent" => $moonphasepercent);
+		"newmoon" => $currentnewmoonstring, "firstquarter" => $currentfirstquarterstring, "fullmoon" => $currentfullmoonstring, "lastquarter" => $currentlastquarterstring, "moonphasetext" => $moonphasetext, "moonphasepercent" => $moonphasepercent, "picid" => $picture["picid"], "mediaid_twilight_year" => $mediaid_twilight_year, "twilight_year_image_path" => $twilight_year_image_path, "mediaid_twilight_day" => $mediaid_twilight_day, "twilight_day_image_path" => $twilight_day_image_path);
 		
 		return $astronomyinfo;
 	}
