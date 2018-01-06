@@ -883,7 +883,8 @@ class Astronomy extends IPSModule
         $this->SendDebug("Astronomy:","Twilight image path ".print_r($ImagePath),0);
 		if($ImagePath)
         {
-            $ContentDay = @Sys_GetURLContent($ImagePath);
+            $ContentDay = file_get_contents($ImagePath);
+            // $ContentDay = @Sys_GetURLContent($ImagePath);
             $nameday = "Dämmerungszeiten Tag";
             $picid = "TwilightDayPicture";
             $MediaID = $this->CreateMediaImage('TwilightDayPicture', $nameday, $picid, $ContentDay, $ImagePath, 40, "picturedaytwilight");
@@ -907,7 +908,8 @@ class Astronomy extends IPSModule
 		}
         if($ImagePath)
         {
-            $ContentYear = @Sys_GetURLContent($ImagePath);
+            $ContentYear = file_get_contents($ImagePath);
+            // $ContentYear = @Sys_GetURLContent($ImagePath);
             $nameyear = "Dämmerungszeiten Jahr";
             $picid = "TwilightYearPicture";
             $MediaID = $this->CreateMediaImage('TwilightYearPicture', $nameyear, $picid, $ContentYear, $ImagePath, 41, "pictureyeartwilight");
