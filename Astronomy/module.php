@@ -503,9 +503,12 @@ class Astronomy extends IPSModule
 		{
 			//$MediaID = @IPS_GetObjectIDByIdent('picturemoon', $this->InstanceID);
 			$MediaID = @$this->GetIDForIdent('picturemoon');
-			//echo $MediaID." löschen";
 			if($MediaID > 0)
-				IPS_DeleteMedia($MediaID, true);
+            {
+                $this->SendDebug("Astronomy:","Delete MediaID ".$MediaID,0);
+                IPS_DeleteMedia($MediaID, true);
+            }
+
 		}
 		if($this->ReadPropertyBoolean("sunmoonview") == true) // string
 		{
@@ -880,7 +883,7 @@ class Astronomy extends IPSModule
 			$filename = "Astronomy_Twilight_DayUnlimited";
 			$ImagePath = $this->GenerateClockGraphic($filename, false);
 		}
-        $this->SendDebug("Astronomy:","Twilight image path ".print_r($ImagePath),0);
+        $this->SendDebug("Astronomy:","Twilight image path ".$ImagePath,0);
 		if($ImagePath)
         {
             $ContentDay = file_get_contents($ImagePath);
@@ -1692,7 +1695,7 @@ class Astronomy extends IPSModule
 
 		//Sun's ecliptic longitude in decimal degrees
 		$Sunlong = $this->SunLong($LCH, $LCM, $LCS, $DS, $ZC, $day, $month, $year);
-		//echo $Sunlong."\n";
+        $this->SendDebug("Astronomy:","Sun's ecliptic longitude".$Sunlong,0);
 		$SunlongDeg = $this->DDDeg($Sunlong);
 		$SunlongMin = $this->DDMin($Sunlong);
 		$SunlongSec = $this->DDSec($Sunlong);
@@ -1719,8 +1722,9 @@ class Astronomy extends IPSModule
 		$SunDecd = $this->DDDeg($SunDec);
 		$SunDecm = $this->DDmin($SunDec);
 		$SunDecs = $this->DDSec($SunDec);
-		// $SunDecdms = $SunDecd.":".$SunDecm.":".$SunDecs;
-		// echo $SunDecdms."\n";
+		$SunDecdms = $SunDecd.":".$SunDecm.":".$SunDecs;
+        $this->SendDebug("Astronomy:","Sun decimal degrees".$SunDecdms,0);
+
 
 		//RH Right Ascension in HMS, LH Local Civil Time in HMS, DS Daylight saving, ZC Zonecorrection,
 		//LD Local Calender Date in DMY, L geographical Longitude in Degrees
@@ -1764,19 +1768,20 @@ class Astronomy extends IPSModule
 		//Calculation Moon--------------------------------------------------------------
 
 		$MoonLong = $this->MoonLong($LCH, $LCM, $LCS, $DS, $ZC, $day, $month, $year); //Moon ecliptic longitude (degrees)
-		//echo $MoonLong."\n";
+        $this->SendDebug("Astronomy:","Moon ecliptic longitude ".$MoonLong,0);
 		$MoonLat = $this->MoonLat($LCH, $LCM, $LCS, $DS, $ZC, $day, $month, $year); //Moon elciptic latitude (degrees)
-		//echo $MoonLat."\n";
+        $this->SendDebug("Astronomy:","Moon elciptic latitude ".$MoonLat,0);
 		$Nutation = $this->NutatLong($GD, $GM, $GY); //nutation in longitude (degrees)
-		//echo $Nutation."\n";
+        $this->SendDebug("Astronomy:","nutation in longitude ".$Nutation,0);
 		$Moonlongcorr = $MoonLong + $Nutation; //corrected longitude (degrees)
-		// $MoonHP = $this->MoonHP($LCH, $LCM, $LCS, $DS, $ZC, $day, $month, $year);    //Moon's horizontal parallax (degrees)
-		// echo $MoonHP."\n";
+        $MoonHP = $this->MoonHP($LCH, $LCM, $LCS, $DS, $ZC, $day, $month, $year);    //Moon's horizontal parallax (degrees)
+        $this->SendDebug("Astronomy:","Moon's horizontal parallax ".$MoonHP,0);
 		$MoonDist = $this->MoonDist($LCH, $LCM, $LCS, $DS, $ZC, $day, $month, $year);   //Moon Distance to Earth
-		//echo round($MoonDist)."\n";
+        $this->SendDebug("Astronomy:","Moon Distance to Earth ".$MoonDist,0);
 		$Moonphase = $this->MoonPhase($LCH, $LCM, $LCS, $DS, $ZC, $day, $month, $year); //Moonphase in %
-		//echo $Moonphase."\n";
+        $this->SendDebug("Astronomy:","Moonphase ".$Moonphase."%",0);
 		$MoonBrightLimbAngle = $this->MoonPABL($LCH, $LCM, $LCS, $DS, $ZC, $day, $month, $year);   //Moon Bright Limb Angle (degrees)
+        $this->SendDebug("Astronomy:","Moon Bright Limb Angle ".$MoonBrightLimbAngle,0);
 
 		if($MoonBrightLimbAngle<0){$MoonBrightLimbAngle = $MoonBrightLimbAngle+360;}
 
@@ -1792,15 +1797,14 @@ class Astronomy extends IPSModule
 		//ELD Ecliptic Longitude in DMS, BD Ecliptic Latitude in DMS, GD Greenwich Calendar Date in DMY
 		$MoonRA = $this->DDDH($this->ECRA($EcLonDeg, $EcLonMin, $EcLonSec, $EcLatDeg, $EcLatMin, $EcLatSec, $GD, $GM, $GY));
 		$MoonDec = $this->ECDec($EcLonDeg, $EcLonMin, $EcLonSec, $EcLatDeg, $EcLatMin, $EcLatSec, $GD, $GM, $GY);
-		//echo $MoonRA."\n";
 		$MoonRAh = $this->DHHour($MoonRA);    //Right Ascension Hours
 		$MoonRAm = $this->DHMin($MoonRA);
 		$MoonRAs = $this->DHSec($MoonRA);
-		//echo $MoonRAh.":".$MoonRAm.":".$MoonRAs."\n";
+        $this->SendDebug("Astronomy:","Moon Right Ascension Hours ".$MoonRAh.":".$MoonRAm.":".$MoonRAs,0);
 		$MoonDECd = $this->DDDeg($MoonDec);  //Declination Degrees
 		$MoonDECm = $this->DDMin($MoonDec);
 		$MoonDECs = $this->DDSec($MoonDec);
-		//echo $MoonDECd.":".$MoonDECm.":".$MoonDECs."\n";
+        $this->SendDebug("Astronomy:","Moon Declination Degrees ".$MoonDECd.":".$MoonDECm.":".$MoonDECs,0);
 
 		//RH Right Ascension in HMS, LH Local Civil Time in HMS, DS Daylight saving, ZC Zonecorrection,
 		//LD Local Calender Date in DMY, L geographical Longitude in Degrees
