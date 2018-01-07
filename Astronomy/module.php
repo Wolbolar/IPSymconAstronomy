@@ -883,7 +883,7 @@ class Astronomy extends IPSModule
 			$filename = "Astronomy_Twilight_DayUnlimited";
 			$ImagePath = $this->GenerateClockGraphic($filename, false);
 		}
-        $this->SendDebug("Astronomy:","Twilight image path ".print_r($ImagePath),0);
+        $this->SendDebug("Astronomy:","Twilight image path ".$ImagePath,0);
 		if($ImagePath)
         {
             $ContentDay = file_get_contents($ImagePath);
