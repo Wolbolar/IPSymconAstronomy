@@ -734,7 +734,7 @@ class Astronomy extends IPSModule
                 }
 				
 			}
-			$Content = @Sys_GetURLContent($ImageFile); 
+			$Content = file_get_contents($ImageFile);
 			$name = "Mond Ansicht";
 			$MediaID = $this->CreateMediaImage('picturemoon', $name, $picid, $Content, $ImageFile, 21, "picturemoonvisible");
 			return $MediaID;
@@ -887,7 +887,6 @@ class Astronomy extends IPSModule
 		if($ImagePath)
         {
             $ContentDay = file_get_contents($ImagePath);
-            // $ContentDay = @Sys_GetURLContent($ImagePath);
             $nameday = "Dämmerungszeiten Tag";
             $picid = "TwilightDayPicture";
             $MediaID = $this->CreateMediaImage('TwilightDayPicture', $nameday, $picid, $ContentDay, $ImagePath, 40, "picturedaytwilight");
@@ -912,7 +911,6 @@ class Astronomy extends IPSModule
         if($ImagePath)
         {
             $ContentYear = file_get_contents($ImagePath);
-            // $ContentYear = @Sys_GetURLContent($ImagePath);
             $nameyear = "Dämmerungszeiten Jahr";
             $picid = "TwilightYearPicture";
             $MediaID = $this->CreateMediaImage('TwilightYearPicture', $nameyear, $picid, $ContentYear, $ImagePath, 41, "pictureyeartwilight");
