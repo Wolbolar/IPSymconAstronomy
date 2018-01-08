@@ -523,6 +523,25 @@ class Astronomy extends IPSModule
 		{
 			$objid = $this->SetupVariable("sunset", "Sonnenuntergang", "~UnixTimestamp", 25, IPSVarType::vtInteger, true);
 			IPS_SetIcon($objid, "Sun");
+
+			//Moon
+            $settype = $this->ReadPropertyInteger("settype");
+            if ($settype == 5)
+            {
+                $ipsversion = $this->GetIPSVersion ();
+                if($ipsversion == 1)
+                {
+                    $objid = $this->SetupVariable("moonset", "Monduntergang", "~UnixTimestamp", 9, IPSVarType::vtInteger, true);
+                }
+                else
+                {
+                    $objid = $this->SetupVariable("moonset", "Monduntergang", "~UnixTimestampTime", 9, IPSVarType::vtInteger, true);
+                }
+
+                IPS_SetIcon($objid, "Moon");
+            }
+            IPS_SetProperty($this->InstanceID, "moonset", true);
+            IPS_ApplyChanges($this->InstanceID);
 		}
 		else
 		{
@@ -532,6 +551,25 @@ class Astronomy extends IPSModule
 		{
 			$objid = $this->SetupVariable("sunrise", "Sonnenaufgang", "~UnixTimestamp", 26, IPSVarType::vtInteger, true);
 			IPS_SetIcon($objid, "Sun");
+
+			// Moon
+            $risetype = $this->ReadPropertyInteger("risetype");
+            if ($risetype == 5)
+            {
+                $ipsversion = $this->GetIPSVersion ();
+                if($ipsversion == 1)
+                {
+                    $objid = $this->SetupVariable("moonrise", "Mondaufgang", "~UnixTimestamp", 8, IPSVarType::vtInteger, true);
+                }
+                else
+                {
+                    $objid = $this->SetupVariable("moonrise", "Mondaufgang", "~UnixTimestampTime", 8, IPSVarType::vtInteger, true);
+                }
+
+                IPS_SetIcon($objid, "Moon");
+            }
+            IPS_SetProperty($this->InstanceID, "moonrise", true);
+            IPS_ApplyChanges($this->InstanceID);
 		}
 		else
 		{
