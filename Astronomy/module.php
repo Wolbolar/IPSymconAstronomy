@@ -89,9 +89,7 @@ class Astronomy extends IPSModule
 	//Never delete this line!
         parent::ApplyChanges();
 		$this->ValidateConfiguration(); 
-		
-		$this->SetAstronomyValues();
-	
+
     }
 
 		/**
