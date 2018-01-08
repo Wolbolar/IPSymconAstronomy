@@ -89,9 +89,7 @@ class Astronomy extends IPSModule
 	//Never delete this line!
         parent::ApplyChanges();
 		$this->ValidateConfiguration(); 
-		
-		$this->SetAstronomyValues();
-	
+
     }
 
 		/**
@@ -528,20 +526,17 @@ class Astronomy extends IPSModule
             $settype = $this->ReadPropertyInteger("settype");
             if ($settype == 5)
             {
-                $ipsversion = $this->GetIPSVersion ();
-                if($ipsversion == 1)
+                $moonset = $this->ReadPropertyBoolean("moonset");
+                if($moonset)
                 {
-                    $objid = $this->SetupVariable("moonset", "Monduntergang", "~UnixTimestamp", 9, IPSVarType::vtInteger, true);
+                    $this->SendDebug("Astronomy:","Moonset selected",0);
                 }
                 else
                 {
-                    $objid = $this->SetupVariable("moonset", "Monduntergang", "~UnixTimestampTime", 9, IPSVarType::vtInteger, true);
+                    $this->SendDebug("Astronomy:","Moonset is not selected, first select moonset to setup variable",0);
+                    $this->SetStatus(210);
                 }
-
-                IPS_SetIcon($objid, "Moon");
             }
-            IPS_SetProperty($this->InstanceID, "moonset", true);
-            IPS_ApplyChanges($this->InstanceID);
 		}
 		else
 		{
@@ -556,20 +551,17 @@ class Astronomy extends IPSModule
             $risetype = $this->ReadPropertyInteger("risetype");
             if ($risetype == 5)
             {
-                $ipsversion = $this->GetIPSVersion ();
-                if($ipsversion == 1)
+                $moonrise = $this->ReadPropertyBoolean("moonrise");
+                if($moonrise)
                 {
-                    $objid = $this->SetupVariable("moonrise", "Mondaufgang", "~UnixTimestamp", 8, IPSVarType::vtInteger, true);
+                    $this->SendDebug("Astronomy:","Moonrise selected",0);
                 }
                 else
                 {
-                    $objid = $this->SetupVariable("moonrise", "Mondaufgang", "~UnixTimestampTime", 8, IPSVarType::vtInteger, true);
+                    $this->SendDebug("Astronomy:","Moonrise is not selected, first select moonset to setup variable",0);
+                    $this->SetStatus(211);
                 }
-
-                IPS_SetIcon($objid, "Moon");
             }
-            IPS_SetProperty($this->InstanceID, "moonrise", true);
-            IPS_ApplyChanges($this->InstanceID);
 		}
 		else
 		{
@@ -4907,6 +4899,16 @@ class Astronomy extends IPSModule
                     "code": 104,
                     "icon": "inactive",
                     "caption": "interface closed."
+                },
+                {
+                    "code": 210,
+                    "icon": "inactive",
+                    "caption": "select moonset first to setup variable"
+                },
+				{
+                    "code": 211,
+                    "icon": "inactive",
+                    "caption": "select moonrise first to setup variable"
                 }
             ]';
 			return $form;
