@@ -214,7 +214,7 @@ class Astronomy extends IPSModule
 		if($this->ReadPropertyBoolean("moonrise") == true) // int
 		{
 			$ipsversion = $this->GetIPSVersion ();
-			if($ipsversion == 1)
+			if($ipsversion == 0 || $ipsversion == 1)
 			{
 				$objid = $this->SetupVariable("moonrise", "Mondaufgang", "~UnixTimestamp", 8, IPSVarType::vtInteger, true);
 			}
@@ -232,7 +232,7 @@ class Astronomy extends IPSModule
 		if($this->ReadPropertyBoolean("moonset") == true) // int
 		{
 			$ipsversion = $this->GetIPSVersion ();
-			if($ipsversion == 1)
+			if($ipsversion == 0 || $ipsversion == 1)
 			{
 				$objid = $this->SetupVariable("moonset", "Monduntergang", "~UnixTimestamp", 9, IPSVarType::vtInteger, true);
 			}
@@ -1887,8 +1887,18 @@ class Astronomy extends IPSModule
 	{
 		//Location auslesen
 		$LocationID = IPS_GetInstanceListByModuleID("{45E97A63-F870-408A-B259-2933F7EABF74}")[0];
-		$Latitude = IPS_GetProperty($LocationID, "Latitude");
-		$Longitude = IPS_GetProperty($LocationID, "Longitude");
+        $ipsversion = $this->GetIPSVersion ();
+        if($ipsversion == 5)
+        {
+            $Location = json_decode(IPS_GetProperty($LocationID, "Location"));
+            $Latitude = $Location->latitude;
+            $Longitude = $Location->longitude;
+        }
+        else
+        {
+            $Latitude = IPS_GetProperty($LocationID, "Latitude");
+            $Longitude = IPS_GetProperty($LocationID, "Longitude");
+        }
 		$location = array ("Latitude" => $Latitude, "Longitude" => $Longitude);
 		return $location;
 	}
@@ -5056,18 +5066,33 @@ class Astronomy extends IPSModule
 		
 		protected function GetIPSVersion ()
 		{
-			$ipsversion = IPS_GetKernelVersion ( );
-			$ipsversion = explode( ".", $ipsversion);
-			$ipsminor = intval($ipsversion[1]);
-			if($ipsminor < 10)
-			{
-			$ipsversion = 1;
-			}
-			else
-			{
-			$ipsversion = 2;
-			}
-			return $ipsversion;
+            $ipsversion = floatval(IPS_GetKernelVersion());
+            if($ipsversion < 4.1) // 4.0
+            {
+                $ipsversion = 0;
+            }
+            elseif ($ipsversion >= 4.1 && $ipsversion < 4.2) // 4.1
+            {
+                $ipsversion = 1;
+            }
+            elseif ($ipsversion >= 4.2 && $ipsversion < 4.3) // 4.2
+            {
+                $ipsversion = 2;
+            }
+            elseif ($ipsversion >= 4.3 && $ipsversion < 4.4) // 4.3
+            {
+                $ipsversion = 3;
+            }
+            elseif ($ipsversion >= 4.4 && $ipsversion < 5) // 4.4
+            {
+                $ipsversion = 4;
+            }
+            else   // 5
+            {
+                $ipsversion = 5;
+            }
+
+            return $ipsversion;
 		}
 }
 
