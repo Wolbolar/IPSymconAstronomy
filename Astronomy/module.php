@@ -4194,15 +4194,9 @@ class Astronomy extends IPSModule
 		$month = date("m");
 		$day = date("d");
 		$year = date("Y");
-        $latitude = false;
-        $longitude = false;
-		$InstanzenListe = IPS_GetInstanceListByModuleID("{45E97A63-F870-408A-B259-2933F7EABF74}");
-		foreach ($InstanzenListe as $InstanzID)
-			{
-		   
-				$latitude = IPS_GetProperty($InstanzID, "Latitude"); // Location
-				$longitude = IPS_GetProperty($InstanzID, "Longitude");
-			}
+        $location = $this->getlocation();
+        $latitude = $location["Latitude"];
+        $longitude = $location["Longitude"];
 		$data = (Moon::calculateMoonTimes($month, $day, $year, $latitude, $longitude));
 
 		$moonrise = $data->{'moonrise'}; //Aufgang
@@ -4227,15 +4221,9 @@ class Astronomy extends IPSModule
 		$month = date("m");
 		$day = date("d");
 		$year = date("Y");
-        $latitude = false;
-        $longitude = false;
-		$InstanzenListe = IPS_GetInstanceListByModuleID("{45E97A63-F870-408A-B259-2933F7EABF74}");
-		foreach ($InstanzenListe as $InstanzID)
-			{
-		   
-				$latitude = IPS_GetProperty($InstanzID, "Latitude"); // Location
-				$longitude = IPS_GetProperty($InstanzID, "Longitude");
-			}
+        $location = $this->getlocation();
+        $latitude = $location["Latitude"];
+        $longitude = $location["Longitude"];
 		$data = (Moon::calculateMoonTimes($month, $day, $year, $latitude, $longitude));
 
 		$moonset = $data->{'moonset'}; //Untergang
