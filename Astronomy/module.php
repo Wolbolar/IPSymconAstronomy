@@ -5,24 +5,25 @@
 // Twilight Grafiken generiert mit Skripten von Brownson aus der IPSLibrary
 
 require_once(__DIR__ . "/../bootstrap.php");
+
 use Fonzo\IPS\IPSVarType;
 use Fonzo\Moon\Moon;
 
 class Astronomy extends IPSModule
 {
 
-    public function Create()
-    {
+	public function Create()
+	{
 //Never delete this line!
-        parent::Create();
-		
+		parent::Create();
+
 		//These lines are parsed on Symcon Startup or Instance creation
-        //You cannot use variables here. Just static values.
-		
+		//You cannot use variables here. Just static values.
+
 		$this->RegisterPropertyFloat("UTC", 1);
 		$this->RegisterPropertyInteger("language", 1);
 		$this->RegisterPropertyInteger("moonbackground", 1);
-        $this->RegisterPropertyBoolean("juliandate", false);
+		$this->RegisterPropertyBoolean("juliandate", false);
 		$this->RegisterPropertyBoolean("moonazimut", false);
 		$this->RegisterPropertyBoolean("moondistance", false);
 		$this->RegisterPropertyBoolean("moonaltitude", false);
@@ -36,10 +37,10 @@ class Astronomy extends IPSModule
 		$this->RegisterPropertyBoolean("firstquarter", false);
 		$this->RegisterPropertyBoolean("fullmoon", false);
 		$this->RegisterPropertyBoolean("lastquarter", false);
-        $this->RegisterPropertyBoolean("currentnewmoon", false);
-        $this->RegisterPropertyBoolean("currentfirstquarter", false);
-        $this->RegisterPropertyBoolean("currentfullmoon", false);
-        $this->RegisterPropertyBoolean("currentlastquarter", false);
+		$this->RegisterPropertyBoolean("currentnewmoon", false);
+		$this->RegisterPropertyBoolean("currentfirstquarter", false);
+		$this->RegisterPropertyBoolean("currentfullmoon", false);
+		$this->RegisterPropertyBoolean("currentlastquarter", false);
 		$this->RegisterPropertyBoolean("sunazimut", false);
 		$this->RegisterPropertyBoolean("sundistance", false);
 		$this->RegisterPropertyBoolean("sunaltitude", false);
@@ -73,603 +74,499 @@ class Astronomy extends IPSModule
 		$this->RegisterPropertyInteger("sunsetoffset", 0);
 		$this->RegisterPropertyInteger("frameheight", 290);
 		$this->RegisterPropertyInteger("framewidth", 100);
-        $this->RegisterPropertyInteger("canvaswidth", 800);
-        $this->RegisterPropertyInteger("canvasheight", 250);
+		$this->RegisterPropertyInteger("canvaswidth", 800);
+		$this->RegisterPropertyInteger("canvasheight", 250);
 		$this->RegisterPropertyInteger("frameheighttype", 1);
 		$this->RegisterPropertyInteger("framewidthtype", 2);
 		$this->RegisterPropertyBoolean("extinfoselection", false);
 		$this->RegisterPropertyInteger("timeformat", 1);
-		$this->RegisterTimer('Update', 360000, 'Astronomy_SetAstronomyValues('.$this->InstanceID.');');
-        $this->RegisterPropertyInteger("zeropointy", 50);
-        $this->RegisterPropertyInteger("zeropointx", 50);
-    }
+		$this->RegisterTimer('Update', 360000, 'Astronomy_SetAstronomyValues(' . $this->InstanceID . ');');
+		$this->RegisterPropertyInteger("zeropointy", 50);
+		$this->RegisterPropertyInteger("zeropointx", 50);
+	}
 
-    public function ApplyChanges()
-    {
-	//Never delete this line!
-        parent::ApplyChanges();
-		$this->ValidateConfiguration(); 
+	public function ApplyChanges()
+	{
+		//Never delete this line!
+		parent::ApplyChanges();
+		$this->ValidateConfiguration();
 
-    }
+	}
 
-		/**
-        * Die folgenden Funktionen stehen automatisch zur Verfügung, wenn das Modul über die "Module Control" eingefügt wurden.
-        * Die Funktionen werden, mit dem selbst eingerichteten Prefix, in PHP und JSON-RPC wiefolgt zur Verfügung gestellt:
-        *
-        *
-        */
-		
+	/**
+	 * Die folgenden Funktionen stehen automatisch zur Verfügung, wenn das Modul über die "Module Control" eingefügt wurden.
+	 * Die Funktionen werden, mit dem selbst eingerichteten Prefix, in PHP und JSON-RPC wiefolgt zur Verfügung gestellt:
+	 *
+	 *
+	 */
+
 	private function ValidateConfiguration()
 	{
-        $associations =  Array(	);
-		if($this->ReadPropertyBoolean("juliandate") == true) // float
+		$associations = Array();
+		if ($this->ReadPropertyBoolean("juliandate") == true) // float
 		{
 			$this->SetupProfile(IPSVarType::vtFloat, "Astronomie.Julianisches_Datum", "Calendar", "", " Tage", 0, 0, 0, 1, $associations);
 			$this->SetupVariable("juliandate", "Julianisches Datum", "Astronomie.Julianisches_Datum", 1, IPSVarType::vtFloat, true);
-		}
-		else
-		{
+		} else {
 			$this->SetupVariable("juliandate", "Julianisches Datum", "Astronomie.Julianisches_Datum", 1, IPSVarType::vtFloat, false);
 		}
-		if($this->ReadPropertyBoolean("moonazimut") == true) // float
+		if ($this->ReadPropertyBoolean("moonazimut") == true) // float
 		{
 			$this->SetupProfile(IPSVarType::vtFloat, "Astronomie.Mond_Azimut", "Moon", "", "°", 0, 0, 0, 2, $associations);
 			$this->SetupVariable("moonazimut", "Mond Azimut", "Astronomie.Mond_Azimut", 2, IPSVarType::vtFloat, true);
-		}
-		else
-		{
+		} else {
 			$this->SetupVariable("moonazimut", "Mond Azimut", "Astronomie.Mond_Azimut", 2, IPSVarType::vtFloat, false);
 		}
-		if($this->ReadPropertyBoolean("moondistance") == true) // float
+		if ($this->ReadPropertyBoolean("moondistance") == true) // float
 		{
 			$this->SetupProfile(IPSVarType::vtFloat, "Astronomie.Mond_Entfernung", "Moon", "", " km", 0, 0, 0, 0, $associations);
 			$this->SetupVariable("moondistance", "Mond Entfernung", "Astronomie.Mond_Entfernung", 3, IPSVarType::vtFloat, true);
-		}
-		else
-		{
+		} else {
 			$this->SetupVariable("moondistance", "Mond Entfernung", "Astronomie.Mond_Entfernung", 3, IPSVarType::vtFloat, false);
 		}
-		if($this->ReadPropertyBoolean("moonaltitude") == true) // float
+		if ($this->ReadPropertyBoolean("moonaltitude") == true) // float
 		{
-			$associations =  Array(	);
+			$associations = Array();
 			$this->SetupProfile(IPSVarType::vtFloat, "Astronomie.Mond_Hoehe", "Moon", "", "°", 0, 0, 0, 2, $associations);
 			$this->SetupVariable("moonaltitude", "Mond Höhe", "Astronomie.Mond_Hoehe", 4, IPSVarType::vtFloat, true);
-		}
-		else
-		{
+		} else {
 			$this->SetupVariable("moonaltitude", "Mond Höhe", "Astronomie.Mond_Hoehe", 4, IPSVarType::vtFloat, false);
 		}
-		if($this->ReadPropertyBoolean("moonbrightlimbangle") == true) // float
+		if ($this->ReadPropertyBoolean("moonbrightlimbangle") == true) // float
 		{
-			$associations =  Array(	);
+			$associations = Array();
 			$this->SetupProfile(IPSVarType::vtFloat, "Astronomie.Mond_Positionswinkel", "Moon", "", "°", 0, 0, 0, 2, $associations);
 			$this->SetupVariable("moonbrightlimbangle", "Mond Positionswinkel der beleuchteten Fläche", "Astronomie.Mond_Positionswinkel", 5, IPSVarType::vtFloat, true);
-		}
-		else
-		{
+		} else {
 			$this->SetupVariable("moonbrightlimbangle", "Mond Positionswinkel der beleuchteten Fläche", "Astronomie.Mond_Positionswinkel", 5, IPSVarType::vtFloat, false);
 		}
-		if($this->ReadPropertyBoolean("moondirection") == true) // integer
+		if ($this->ReadPropertyBoolean("moondirection") == true) // integer
 		{
 			$language = $this->ReadPropertyInteger("language");
-			if($language == 1) //ger
+			if ($language == 1) //ger
 			{
-				$associations =  Array(
-									Array(0, "N",  "", -1),
-									Array(1, "NNO",  "", -1),
-									Array(2, "NO",  "", -1),
-									Array(3, "ONO",  "", -1),
-									Array(4, "O",  "", -1),
-									Array(5, "OSO",  "", -1),
-									Array(6, "SO",  "", -1),
-									Array(7, "SSO",  "", -1),
-									Array(8, "S",  "", -1),
-									Array(9, "SSW",  "", -1),
-									Array(10, "SW",  "", -1),
-									Array(11, "WSW",  "", -1),
-									Array(12, "W",  "", -1),
-									Array(13, "WNW",  "", -1),
-									Array(14, "NW",  "", -1),
-									Array(15, "NNW",  "", -1)
-									);
-			}
-			elseif($language == 2) // eng
+				$associations = Array(
+					Array(0, "N", "", -1),
+					Array(1, "NNO", "", -1),
+					Array(2, "NO", "", -1),
+					Array(3, "ONO", "", -1),
+					Array(4, "O", "", -1),
+					Array(5, "OSO", "", -1),
+					Array(6, "SO", "", -1),
+					Array(7, "SSO", "", -1),
+					Array(8, "S", "", -1),
+					Array(9, "SSW", "", -1),
+					Array(10, "SW", "", -1),
+					Array(11, "WSW", "", -1),
+					Array(12, "W", "", -1),
+					Array(13, "WNW", "", -1),
+					Array(14, "NW", "", -1),
+					Array(15, "NNW", "", -1)
+				);
+			} elseif ($language == 2) // eng
 			{
-				$associations =  Array(
-									Array(0, "N",  "", -1),
-									Array(1, "NNE",  "", -1),
-									Array(2, "NE",  "", -1),
-									Array(3, "ENE",  "", -1),
-									Array(4, "E",  "", -1),
-									Array(5, "ESE",  "", -1),
-									Array(6, "SE",  "", -1),
-									Array(7, "SSE",  "", -1),
-									Array(8, "S",  "", -1),
-									Array(9, "SSW",  "", -1),
-									Array(10, "SW",  "", -1),
-									Array(11, "WSW",  "", -1),
-									Array(12, "W",  "", -1),
-									Array(13, "WNW",  "", -1),
-									Array(14, "NW",  "", -1),
-									Array(15, "NNW",  "", -1)
-									);
+				$associations = Array(
+					Array(0, "N", "", -1),
+					Array(1, "NNE", "", -1),
+					Array(2, "NE", "", -1),
+					Array(3, "ENE", "", -1),
+					Array(4, "E", "", -1),
+					Array(5, "ESE", "", -1),
+					Array(6, "SE", "", -1),
+					Array(7, "SSE", "", -1),
+					Array(8, "S", "", -1),
+					Array(9, "SSW", "", -1),
+					Array(10, "SW", "", -1),
+					Array(11, "WSW", "", -1),
+					Array(12, "W", "", -1),
+					Array(13, "WNW", "", -1),
+					Array(14, "NW", "", -1),
+					Array(15, "NNW", "", -1)
+				);
 			}
 			$this->SetupProfile(IPSVarType::vtInteger, "Astronomie.Mond_Himmelsrichtung", "Moon", "", "", 0, 0, 0, 0, $associations);
 			$this->SetupVariable("moondirection", "Mond Richtung", "Astronomie.Mond_Himmelsrichtung", 6, IPSVarType::vtInteger, true);
-		}
-		else
-		{
+		} else {
 			$this->SetupVariable("moondirection", "Mond Richtung", "Astronomie.Mond_Himmelsrichtung", 6, IPSVarType::vtInteger, false);
 		}
-		if($this->ReadPropertyBoolean("moonvisibility") == true) // float
+		if ($this->ReadPropertyBoolean("moonvisibility") == true) // float
 		{
-			$associations =  Array(	);
+			$associations = Array();
 			$this->SetupProfile(IPSVarType::vtFloat, "Astronomie.Mond_Sichtbarkeit", "Moon", "", " %", 0, 0, 0, 1, $associations);
 			$this->SetupVariable("moonvisibility", "Mond Sichtbarkeit", "Astronomie.Mond_Sichtbarkeit", 7, IPSVarType::vtFloat, true);
-		}
-		else
-		{
+		} else {
 			$this->SetupVariable("moonvisibility", "Mond Sichtbarkeit", "Astronomie.Mond_Sichtbarkeit", 7, IPSVarType::vtFloat, false);
 		}
-		if($this->ReadPropertyBoolean("moonrise") == true) // int
+		if ($this->ReadPropertyBoolean("moonrise") == true) // int
 		{
-			$ipsversion = $this->GetIPSVersion ();
-			if($ipsversion == 0 || $ipsversion == 1)
-			{
+			$ipsversion = $this->GetIPSVersion();
+			if ($ipsversion == 0 || $ipsversion == 1) {
 				$objid = $this->SetupVariable("moonrise", "Mondaufgang", "~UnixTimestamp", 8, IPSVarType::vtInteger, true);
-			}
-			else
-			{
+			} else {
 				$objid = $this->SetupVariable("moonrise", "Mondaufgang", "~UnixTimestampTime", 8, IPSVarType::vtInteger, true);
 			}
-			
+
 			IPS_SetIcon($objid, "Moon");
-		}
-		else
-		{
+		} else {
 			$this->SetupVariable("moonrise", "Mondaufgang", "~UnixTimestampTime", 8, IPSVarType::vtInteger, false);
 		}
-		if($this->ReadPropertyBoolean("moonset") == true) // int
+		if ($this->ReadPropertyBoolean("moonset") == true) // int
 		{
-			$ipsversion = $this->GetIPSVersion ();
-			if($ipsversion == 0 || $ipsversion == 1)
-			{
+			$ipsversion = $this->GetIPSVersion();
+			if ($ipsversion == 0 || $ipsversion == 1) {
 				$objid = $this->SetupVariable("moonset", "Monduntergang", "~UnixTimestamp", 9, IPSVarType::vtInteger, true);
-			}
-			else
-			{
+			} else {
 				$objid = $this->SetupVariable("moonset", "Monduntergang", "~UnixTimestampTime", 9, IPSVarType::vtInteger, true);
 			}
-			
+
 			IPS_SetIcon($objid, "Moon");
-		}
-		else
-		{
+		} else {
 			$this->SetupVariable("moonset", "Monduntergang", "~UnixTimestampTime", 9, IPSVarType::vtInteger, false);
 		}
-		if($this->ReadPropertyBoolean("moonphase") == true) // string
+		if ($this->ReadPropertyBoolean("moonphase") == true) // string
 		{
-			$associations =  Array(	);
+			$associations = Array();
 			$this->SetupProfile(IPSVarType::vtString, "Astronomie.Mond_Phase", "Moon", "", "", 0, 0, 0, 0, $associations);
 			$this->SetupVariable("moonphase", "Mond Phase", "Astronomie.Mond_Phase", 10, IPSVarType::vtString, true);
-		}
-		else
-		{
+		} else {
 			$this->SetupVariable("moonphase", "Mond Phase", "Astronomie.Mond_Phase", 10, IPSVarType::vtString, false);
 		}
-		if($this->ReadPropertyBoolean("newmoon") == true) // string
+		if ($this->ReadPropertyBoolean("newmoon") == true) // string
 		{
-			$associations =  Array(	);
+			$associations = Array();
 			$this->SetupProfile(IPSVarType::vtString, "Astronomie.Mond_Neumond", "Moon", "", "", 0, 0, 0, 0, $associations);
 			$this->SetupVariable("newmoon", "Neumond", "Astronomie.Mond_Neumond", 11, IPSVarType::vtString, true);
-		}
-		else
-		{
+		} else {
 			$this->SetupVariable("newmoon", "Neumond", "Astronomie.Mond_Neumond", 11, IPSVarType::vtString, false);
 		}
-		if($this->ReadPropertyBoolean("firstquarter") == true) // string
+		if ($this->ReadPropertyBoolean("firstquarter") == true) // string
 		{
-			$associations =  Array(	);
+			$associations = Array();
 			$this->SetupProfile(IPSVarType::vtString, "Astronomie.Mond_ErstesViertel", "Moon", "", "", 0, 0, 0, 0, $associations);
 			$this->SetupVariable("firstquarter", "Erstes Viertel", "Astronomie.Mond_ErstesViertel", 12, IPSVarType::vtString, true);
-		}
-		else
-		{
+		} else {
 			$this->SetupVariable("firstquarter", "Erstes Viertel", "Astronomie.Mond_ErstesViertel", 12, IPSVarType::vtString, false);
 		}
-		if($this->ReadPropertyBoolean("fullmoon") == true) // string
+		if ($this->ReadPropertyBoolean("fullmoon") == true) // string
 		{
-			$associations =  Array(	);
+			$associations = Array();
 			$this->SetupProfile(IPSVarType::vtString, "Astronomie.Mond_Vollmond", "Moon", "", "", 0, 0, 0, 0, $associations);
 			$this->SetupVariable("fullmoon", "Vollmond", "Astronomie.Mond_Vollmond", 13, IPSVarType::vtString, true);
-		}
-		else
-		{
+		} else {
 			$this->SetupVariable("fullmoon", "Vollmond", "Astronomie.Mond_Vollmond", 13, IPSVarType::vtString, false);
 		}
-		if($this->ReadPropertyBoolean("lastquarter") == true) // string
+		if ($this->ReadPropertyBoolean("lastquarter") == true) // string
 		{
-			$associations =  Array(	);
+			$associations = Array();
 			$this->SetupProfile(IPSVarType::vtString, "Astronomie.Mond_LetztesViertel", "Moon", "", "", 0, 0, 0, 0, $associations);
 			$this->SetupVariable("lastquarter", "Letztes Viertel", "Astronomie.Mond_LetztesViertel", 14, IPSVarType::vtString, true);
-		}
-		else
-		{
+		} else {
 			$this->SetupVariable("lastquarter", "Letztes Viertel", "Astronomie.Mond_LetztesViertel", 14, IPSVarType::vtString, false);
 		}
-        if($this->ReadPropertyBoolean("currentnewmoon") == true) // string
-        {
-            $associations =  Array(	);
-            $this->SetupProfile(IPSVarType::vtString, "Astronomie.Mond_Neumond", "Moon", "", "", 0, 0, 0, 0, $associations);
-            $this->SetupVariable("currentnewmoon", "Neumond Aktueller Zyklus", "Astronomie.Mond_Neumond", 15, IPSVarType::vtString, true);
-        }
-        else
-        {
-            $this->SetupVariable("currentnewmoon", "Neumond Aktueller Zyklus", "Astronomie.Mond_Neumond", 15, IPSVarType::vtString, false);
-        }
-        if($this->ReadPropertyBoolean("currentfirstquarter") == true) // string
-        {
-            $associations =  Array(	);
-            $this->SetupProfile(IPSVarType::vtString, "Astronomie.Mond_ErstesViertel", "Moon", "", "", 0, 0, 0, 0, $associations);
-            $this->SetupVariable("currentfirstquarter", "Erstes Viertel Aktueller Zyklus", "Astronomie.Mond_ErstesViertel", 16, IPSVarType::vtString, true);
-        }
-        else
-        {
-            $this->SetupVariable("currentfirstquarter", "Erstes Viertel Aktueller Zyklus", "Astronomie.Mond_ErstesViertel", 16, IPSVarType::vtString, false);
-        }
-        if($this->ReadPropertyBoolean("currentfullmoon") == true) // string
-        {
-            $associations =  Array(	);
-            $this->SetupProfile(IPSVarType::vtString, "Astronomie.Mond_Vollmond", "Moon", "", "", 0, 0, 0, 0, $associations);
-            $this->SetupVariable("currentfullmoon", "Vollmond Aktueller Zyklus", "Astronomie.Mond_Vollmond", 17, IPSVarType::vtString, true);
-        }
-        else
-        {
-            $this->SetupVariable("currentfullmoon", "Vollmond Aktueller Zyklus", "Astronomie.Mond_Vollmond", 17, IPSVarType::vtString, false);
-        }
-        if($this->ReadPropertyBoolean("currentlastquarter") == true) // string
-        {
-            $associations =  Array(	);
-            $this->SetupProfile(IPSVarType::vtString, "Astronomie.Mond_LetztesViertel", "Moon", "", "", 0, 0, 0, 0, $associations);
-            $this->SetupVariable("currentlastquarter", "Letztes Viertel Aktueller Zyklus", "Astronomie.Mond_LetztesViertel", 18, IPSVarType::vtString, true);
-        }
-        else
-        {
-            $this->SetupVariable("currentlastquarter", "Letztes Viertel Aktueller Zyklus", "Astronomie.Mond_LetztesViertel", 18, IPSVarType::vtString, false);
-        }
-		if($this->ReadPropertyBoolean("sunazimut") == true) // float
+		if ($this->ReadPropertyBoolean("currentnewmoon") == true) // string
 		{
-			$associations =  Array(	);
+			$associations = Array();
+			$this->SetupProfile(IPSVarType::vtString, "Astronomie.Mond_Neumond", "Moon", "", "", 0, 0, 0, 0, $associations);
+			$this->SetupVariable("currentnewmoon", "Neumond Aktueller Zyklus", "Astronomie.Mond_Neumond", 15, IPSVarType::vtString, true);
+		} else {
+			$this->SetupVariable("currentnewmoon", "Neumond Aktueller Zyklus", "Astronomie.Mond_Neumond", 15, IPSVarType::vtString, false);
+		}
+		if ($this->ReadPropertyBoolean("currentfirstquarter") == true) // string
+		{
+			$associations = Array();
+			$this->SetupProfile(IPSVarType::vtString, "Astronomie.Mond_ErstesViertel", "Moon", "", "", 0, 0, 0, 0, $associations);
+			$this->SetupVariable("currentfirstquarter", "Erstes Viertel Aktueller Zyklus", "Astronomie.Mond_ErstesViertel", 16, IPSVarType::vtString, true);
+		} else {
+			$this->SetupVariable("currentfirstquarter", "Erstes Viertel Aktueller Zyklus", "Astronomie.Mond_ErstesViertel", 16, IPSVarType::vtString, false);
+		}
+		if ($this->ReadPropertyBoolean("currentfullmoon") == true) // string
+		{
+			$associations = Array();
+			$this->SetupProfile(IPSVarType::vtString, "Astronomie.Mond_Vollmond", "Moon", "", "", 0, 0, 0, 0, $associations);
+			$this->SetupVariable("currentfullmoon", "Vollmond Aktueller Zyklus", "Astronomie.Mond_Vollmond", 17, IPSVarType::vtString, true);
+		} else {
+			$this->SetupVariable("currentfullmoon", "Vollmond Aktueller Zyklus", "Astronomie.Mond_Vollmond", 17, IPSVarType::vtString, false);
+		}
+		if ($this->ReadPropertyBoolean("currentlastquarter") == true) // string
+		{
+			$associations = Array();
+			$this->SetupProfile(IPSVarType::vtString, "Astronomie.Mond_LetztesViertel", "Moon", "", "", 0, 0, 0, 0, $associations);
+			$this->SetupVariable("currentlastquarter", "Letztes Viertel Aktueller Zyklus", "Astronomie.Mond_LetztesViertel", 18, IPSVarType::vtString, true);
+		} else {
+			$this->SetupVariable("currentlastquarter", "Letztes Viertel Aktueller Zyklus", "Astronomie.Mond_LetztesViertel", 18, IPSVarType::vtString, false);
+		}
+		if ($this->ReadPropertyBoolean("sunazimut") == true) // float
+		{
+			$associations = Array();
 			$this->SetupProfile(IPSVarType::vtFloat, "Astronomie.Sonne_Azimut", "Sun", "", "°", 0, 0, 0, 2, $associations);
 			$this->SetupVariable("sunazimut", "Sonne Azimut", "Astronomie.Sonne_Azimut", 19, IPSVarType::vtFloat, true);
-		}
-		else
-		{
+		} else {
 			$this->SetupVariable("sunazimut", "Sonne Azimut", "Astronomie.Sonne_Azimut", 19, IPSVarType::vtFloat, false);
 		}
-		if($this->ReadPropertyBoolean("sundistance") == true) // float
+		if ($this->ReadPropertyBoolean("sundistance") == true) // float
 		{
-			$associations =  Array(	);
+			$associations = Array();
 			$this->SetupProfile(IPSVarType::vtFloat, "Astronomie.Sonne_Entfernung", "Sun", "", " km", 0, 0, 0, 0, $associations);
 			$this->SetupVariable("sundistance", "Sonne Entfernung", "Astronomie.Sonne_Entfernung", 20, IPSVarType::vtFloat, true);
-		}
-		else
-		{
+		} else {
 			$this->SetupVariable("sundistance", "Sonne Entfernung", "Astronomie.Sonne_Entfernung", 20, IPSVarType::vtFloat, false);
 		}
-		if($this->ReadPropertyBoolean("sunaltitude") == true) // float
+		if ($this->ReadPropertyBoolean("sunaltitude") == true) // float
 		{
-			$associations =  Array(	);
+			$associations = Array();
 			$this->SetupProfile(IPSVarType::vtFloat, "Astronomie.Sonne_Hoehe", "Sun", "", "°", 0, 0, 0, 2, $associations);
 			$this->SetupVariable("sunaltitude", "Sonne Höhe", "Astronomie.Sonne_Hoehe", 21, IPSVarType::vtFloat, true);
-		}
-		else
-		{
+		} else {
 			$this->SetupVariable("sunaltitude", "Sonne Höhe", "Astronomie.Sonne_Hoehe", 21, IPSVarType::vtFloat, false);
 		}
-		if($this->ReadPropertyBoolean("sundirection") == true) // integer
+		if ($this->ReadPropertyBoolean("sundirection") == true) // integer
 		{
 			$language = $this->ReadPropertyInteger("language");
-			if($language == 1) //ger
+			if ($language == 1) //ger
 			{
-				$associations =  Array(
-									Array(0, "N",  "", -1),
-									Array(1, "NNO",  "", -1),
-									Array(2, "NO",  "", -1),
-									Array(3, "ONO",  "", -1),
-									Array(4, "O",  "", -1),
-									Array(5, "OSO",  "", -1),
-									Array(6, "SO",  "", -1),
-									Array(7, "SSO",  "", -1),
-									Array(8, "S",  "", -1),
-									Array(9, "SSW",  "", -1),
-									Array(10, "SW",  "", -1),
-									Array(11, "WSW",  "", -1),
-									Array(12, "W",  "", -1),
-									Array(13, "WNW",  "", -1),
-									Array(14, "NW",  "", -1),
-									Array(15, "NNW",  "", -1)
-									);
-			}
-			elseif($language == 2) // eng
+				$associations = Array(
+					Array(0, "N", "", -1),
+					Array(1, "NNO", "", -1),
+					Array(2, "NO", "", -1),
+					Array(3, "ONO", "", -1),
+					Array(4, "O", "", -1),
+					Array(5, "OSO", "", -1),
+					Array(6, "SO", "", -1),
+					Array(7, "SSO", "", -1),
+					Array(8, "S", "", -1),
+					Array(9, "SSW", "", -1),
+					Array(10, "SW", "", -1),
+					Array(11, "WSW", "", -1),
+					Array(12, "W", "", -1),
+					Array(13, "WNW", "", -1),
+					Array(14, "NW", "", -1),
+					Array(15, "NNW", "", -1)
+				);
+			} elseif ($language == 2) // eng
 			{
-				$associations =  Array(
-									Array(0, "N",  "", -1),
-									Array(1, "NNE",  "", -1),
-									Array(2, "NE",  "", -1),
-									Array(3, "ENE",  "", -1),
-									Array(4, "E",  "", -1),
-									Array(5, "ESE",  "", -1),
-									Array(6, "SE",  "", -1),
-									Array(7, "SSE",  "", -1),
-									Array(8, "S",  "", -1),
-									Array(9, "SSW",  "", -1),
-									Array(10, "SW",  "", -1),
-									Array(11, "WSW",  "", -1),
-									Array(12, "W",  "", -1),
-									Array(13, "WNW",  "", -1),
-									Array(14, "NW",  "", -1),
-									Array(15, "NNW",  "", -1)
-									);
+				$associations = Array(
+					Array(0, "N", "", -1),
+					Array(1, "NNE", "", -1),
+					Array(2, "NE", "", -1),
+					Array(3, "ENE", "", -1),
+					Array(4, "E", "", -1),
+					Array(5, "ESE", "", -1),
+					Array(6, "SE", "", -1),
+					Array(7, "SSE", "", -1),
+					Array(8, "S", "", -1),
+					Array(9, "SSW", "", -1),
+					Array(10, "SW", "", -1),
+					Array(11, "WSW", "", -1),
+					Array(12, "W", "", -1),
+					Array(13, "WNW", "", -1),
+					Array(14, "NW", "", -1),
+					Array(15, "NNW", "", -1)
+				);
 			}
 			$this->SetupProfile(IPSVarType::vtInteger, "Astronomie.Sonne_Himmelsrichtung", "Sun", "", "", 0, 0, 0, 0, $associations);
 			$this->SetupVariable("sundirection", "Sonne Richtung", "Astronomie.Sonne_Himmelsrichtung", 22, IPSVarType::vtInteger, true);
-		}
-		else
-		{
+		} else {
 			$this->SetupVariable("sundirection", "Sonne Richtung", "Astronomie.Sonne_Himmelsrichtung", 22, IPSVarType::vtInteger, false);
 		}
-		if($this->ReadPropertyBoolean("season") == true) // integer
+		if ($this->ReadPropertyBoolean("season") == true) // integer
 		{
 			$language = $this->ReadPropertyInteger("language");
-			if($language == 1) //ger
+			if ($language == 1) //ger
 			{
-				$associations =  Array(
-									Array(1, "Frühling",  "", -1),
-									Array(2, "Sommer",  "", -1),
-									Array(3, "Herbst",  "", -1),
-									Array(4, "Winter",  "", -1)
-									);
-			}
-			elseif($language == 2) // eng
+				$associations = Array(
+					Array(1, "Frühling", "", -1),
+					Array(2, "Sommer", "", -1),
+					Array(3, "Herbst", "", -1),
+					Array(4, "Winter", "", -1)
+				);
+			} elseif ($language == 2) // eng
 			{
-				$associations =  Array(
-									Array(1, "Spring",  "", -1),
-									Array(2, "Sommer",  "", -1),
-									Array(3, "Autumn",  "", -1),
-									Array(4, "Winter",  "", -1)
-									);
+				$associations = Array(
+					Array(1, "Spring", "", -1),
+					Array(2, "Sommer", "", -1),
+					Array(3, "Autumn", "", -1),
+					Array(4, "Winter", "", -1)
+				);
 			}
 			$this->SetupProfile(IPSVarType::vtInteger, "Astronomie.Jahreszeit", "Sun", "", "", 0, 0, 0, 0, $associations);
 			$this->SetupVariable("season", "Jahreszeit", "Astronomie.Jahreszeit", 23, IPSVarType::vtInteger, true);
-		}
-		else
-		{
+		} else {
 			$this->SetupVariable("season", "Jahreszeit", "Astronomie.Jahreszeit", 23, IPSVarType::vtInteger, false);
 		}
-		if($this->ReadPropertyBoolean("pictureyeartwilight") == true) 
-		{
+		if ($this->ReadPropertyBoolean("pictureyeartwilight") == true) {
 			$limited = $this->ReadPropertyBoolean("picturetwilightlimited");
-			if($limited)
-			{
+			if ($limited) {
 				$type = "Limited";
-			}
-			else
-			{
+			} else {
 				$type = "Standard";
 			}
 			$this->TwilightYearPicture($type);
-		}
-		else
-		{
+		} else {
 			$MediaID = @IPS_GetObjectIDByIdent('TwilightYearPicture', $this->InstanceID);
-			if($MediaID > 0)
+			if ($MediaID > 0)
 				IPS_DeleteMedia($MediaID, true);
-                $this->SendDebug("Astronomy:","TwilightYearPicture gelöscht",0);
+			$this->SendDebug("Astronomy:", "TwilightYearPicture gelöscht", 0);
 		}
-		if($this->ReadPropertyBoolean("picturedaytwilight") == true) 
-		{
+		if ($this->ReadPropertyBoolean("picturedaytwilight") == true) {
 			$limited = $this->ReadPropertyBoolean("picturetwilightlimited");
-			if($limited)
-			{
+			if ($limited) {
 				$type = "Limited";
-			}
-			else
-			{
+			} else {
 				$type = "Standard";
 			}
 			$this->TwilightDayPicture($type);
-		}
-		else
-		{
+		} else {
 			$MediaID = @IPS_GetObjectIDByIdent('TwilightDayPicture', $this->InstanceID);
-			if($MediaID > 0)
+			if ($MediaID > 0)
 				IPS_DeleteMedia($MediaID, true);
 		}
-		if($this->ReadPropertyBoolean("picturemoonvisible") == true) 
-		{
+		if ($this->ReadPropertyBoolean("picturemoonvisible") == true) {
 			$mondphase = $this->MoonphasePercent();
 			$picture = $this->GetMoonPicture($mondphase);
 			$objid = $this->UpdateMedia($picture["picid"]);
-			if($objid > 0)
-			{
+			if ($objid > 0) {
 				IPS_SetIcon($objid, "Moon");
 			}
-			
-		}
-		else
-		{
+
+		} else {
 			//$MediaID = @IPS_GetObjectIDByIdent('picturemoon', $this->InstanceID);
 			$MediaID = @$this->GetIDForIdent('picturemoon');
-			if($MediaID > 0)
-            {
-                $this->SendDebug("Astronomy:","Delete MediaID ".$MediaID,0);
-                IPS_DeleteMedia($MediaID, true);
-            }
+			if ($MediaID > 0) {
+				$this->SendDebug("Astronomy:", "Delete MediaID " . $MediaID, 0);
+				IPS_DeleteMedia($MediaID, true);
+			}
 
 		}
-		if($this->ReadPropertyBoolean("sunmoonview") == true) // string
+		if ($this->ReadPropertyBoolean("sunmoonview") == true) // string
 		{
 			$objid = $this->SetupVariable("sunmoonview", "Position Sonne und Mond", "~HTMLBox", 24, IPSVarType::vtString, true);
 			IPS_SetIcon($objid, "Sun");
-		}
-		else
-		{
+		} else {
 			$this->SetupVariable("sunmoonview", "Position Sonne und Mond", "~HTMLBox", 24, IPSVarType::vtString, false);
 		}
-		if($this->ReadPropertyBoolean("sunsetselect") == true) // string
+		if ($this->ReadPropertyBoolean("sunsetselect") == true) // string
 		{
 			$objid = $this->SetupVariable("sunset", "Sonnenuntergang", "~UnixTimestamp", 25, IPSVarType::vtInteger, true);
 			IPS_SetIcon($objid, "Sun");
 
 			//Moon
-            $settype = $this->ReadPropertyInteger("settype");
-            if ($settype == 5)
-            {
-                $moonset = $this->ReadPropertyBoolean("moonset");
-                if($moonset)
-                {
-                    $this->SendDebug("Astronomy:","Moonset selected",0);
-                }
-                else
-                {
-                    $this->SendDebug("Astronomy:","Moonset is not selected, first select moonset to setup variable",0);
-                    $this->SetStatus(210);
-                }
-            }
-		}
-		else
-		{
+			$settype = $this->ReadPropertyInteger("settype");
+			if ($settype == 5) {
+				$moonset = $this->ReadPropertyBoolean("moonset");
+				if ($moonset) {
+					$this->SendDebug("Astronomy:", "Moonset selected", 0);
+				} else {
+					$this->SendDebug("Astronomy:", "Moonset is not selected, first select moonset to setup variable", 0);
+					$this->SetStatus(210);
+				}
+			}
+		} else {
 			$this->SetupVariable("sunset", "Sonnenuntergang", "~UnixTimestamp", 25, IPSVarType::vtInteger, false);
 		}
-		if($this->ReadPropertyBoolean("sunriseselect") == true) // string
+		if ($this->ReadPropertyBoolean("sunriseselect") == true) // string
 		{
 			$objid = $this->SetupVariable("sunrise", "Sonnenaufgang", "~UnixTimestamp", 26, IPSVarType::vtInteger, true);
 			IPS_SetIcon($objid, "Sun");
 
 			// Moon
-            $risetype = $this->ReadPropertyInteger("risetype");
-            if ($risetype == 5)
-            {
-                $moonrise = $this->ReadPropertyBoolean("moonrise");
-                if($moonrise)
-                {
-                    $this->SendDebug("Astronomy:","Moonrise selected",0);
-                }
-                else
-                {
-                    $this->SendDebug("Astronomy:","Moonrise is not selected, first select moonset to setup variable",0);
-                    $this->SetStatus(211);
-                }
-            }
-		}
-		else
-		{
+			$risetype = $this->ReadPropertyInteger("risetype");
+			if ($risetype == 5) {
+				$moonrise = $this->ReadPropertyBoolean("moonrise");
+				if ($moonrise) {
+					$this->SendDebug("Astronomy:", "Moonrise selected", 0);
+				} else {
+					$this->SendDebug("Astronomy:", "Moonrise is not selected, first select moonset to setup variable", 0);
+					$this->SetStatus(211);
+				}
+			}
+		} else {
 			$this->SetupVariable("sunrise", "Sonnenaufgang", "~UnixTimestamp", 26, IPSVarType::vtInteger, false);
 		}
-		if($this->ReadPropertyBoolean("extinfoselection") == true) // string
+		if ($this->ReadPropertyBoolean("extinfoselection") == true) // string
 		{
-			if($this->ReadPropertyBoolean("sunsetselect") == true) // string
+			if ($this->ReadPropertyBoolean("sunsetselect") == true) // string
 			{
-				$associations =  Array(	);
+				$associations = Array();
 				$this->SetupProfile(IPSVarType::vtString, "Astronomie.Sonnenuntergang_Zeit", "Sun", "", "", 0, 0, 0, 0, $associations);
 				$this->SetupVariable("sunsettime", "Sonnenuntergang Uhrzeit", "Astronomie.Sonnenuntergang_Zeit", 27, IPSVarType::vtString, true);
-			}
-			else
-			{
+			} else {
 				$this->SetupVariable("sunsettime", "Sonnenuntergang Uhrzeit", "Astronomie.Sonnenuntergang_Zeit", 27, IPSVarType::vtInteger, false);
 			}
-			if($this->ReadPropertyBoolean("sunriseselect") == true) // string
+			if ($this->ReadPropertyBoolean("sunriseselect") == true) // string
 			{
-				$associations =  Array(	);
+				$associations = Array();
 				$this->SetupProfile(IPSVarType::vtString, "Astronomie.Sonnenaufgang_Zeit", "Sun", "", "", 0, 0, 0, 0, $associations);
 				$this->SetupVariable("sunrisetime", "Sonnenaufgang Uhrzeit", "Astronomie.Sonnenaufgang_Zeit", 28, IPSVarType::vtString, true);
-			}
-			else
-			{
+			} else {
 				$this->SetupVariable("sunrisetime", "Sonnenaufgang Uhrzeit", "Astronomie.Sonnenaufgang_Zeit", 28, IPSVarType::vtInteger, false);
 			}
-			if($this->ReadPropertyBoolean("newmoon") == true) // string
+			if ($this->ReadPropertyBoolean("newmoon") == true) // string
 			{
-				$associations =  Array(	);
+				$associations = Array();
 				$this->SetupProfile(IPSVarType::vtString, "Astronomie.Mond_Neumond_Datum", "Moon", "", "", 0, 0, 0, 0, $associations);
 				$this->SetupVariable("newmoondate", "Neumond Datum", "Astronomie.Mond_Neumond_Datum", 29, IPSVarType::vtString, true);
 				$this->SetupProfile(IPSVarType::vtString, "Astronomie.Mond_Neumond_Zeit", "Moon", "", "", 0, 0, 0, 0, $associations);
 				$this->SetupVariable("newmoontime", "Neumond Uhrzeit", "Astronomie.Mond_Neumond_Zeit", 30, IPSVarType::vtString, true);
-			}
-			else
-			{
+			} else {
 				$this->SetupVariable("newmoondate", "Neumond Datum", "Astronomie.Mond_Neumond_Datum", 29, IPSVarType::vtString, false);
 				$this->SetupVariable("newmoontime", "Neumond Uhrzeit", "Astronomie.Mond_Neumond_Zeit", 30, IPSVarType::vtString, false);
 			}
-			if($this->ReadPropertyBoolean("firstquarter") == true) // string
+			if ($this->ReadPropertyBoolean("firstquarter") == true) // string
 			{
-				$associations =  Array(	);
+				$associations = Array();
 				$this->SetupProfile(IPSVarType::vtString, "Astronomie.Mond_ErstesViertel_Datum", "Moon", "", "", 0, 0, 0, 0, $associations);
 				$this->SetupVariable("firstquarterdate", "Erstes Viertel Datum", "Astronomie.Mond_ErstesViertel_Datum", 31, IPSVarType::vtString, true);
 				$this->SetupProfile(IPSVarType::vtString, "Astronomie.Mond_ErstesViertel_Zeit", "Moon", "", "", 0, 0, 0, 0, $associations);
 				$this->SetupVariable("firstquartertime", "Erstes Viertel Uhrzeit", "Astronomie.Mond_ErstesViertel_Zeit", 32, IPSVarType::vtString, true);
-			}
-			else
-			{
+			} else {
 				$this->SetupVariable("firstquarterdate", "Erstes Viertel Datum", "Astronomie.Mond_ErstesViertel_Datum", 31, IPSVarType::vtString, false);
 				$this->SetupVariable("firstquartertime", "Erstes Viertel Uhrzeit", "Astronomie.Mond_ErstesViertel_Zeit", 32, IPSVarType::vtString, false);
 			}
-			if($this->ReadPropertyBoolean("fullmoon") == true) // string
+			if ($this->ReadPropertyBoolean("fullmoon") == true) // string
 			{
-				$associations =  Array(	);
+				$associations = Array();
 				$this->SetupProfile(IPSVarType::vtString, "Astronomie.Mond_Vollmond_Datum", "Moon", "", "", 0, 0, 0, 0, $associations);
 				$this->SetupVariable("fullmoondate", "Vollmond Datum", "Astronomie.Mond_Vollmond_Datum", 33, IPSVarType::vtString, true);
 				$this->SetupProfile(IPSVarType::vtString, "Astronomie.Mond_Vollmond_Zeit", "Moon", "", "", 0, 0, 0, 0, $associations);
 				$this->SetupVariable("fullmoontime", "Vollmond Uhrzeit", "Astronomie.Mond_Vollmond_Zeit", 34, IPSVarType::vtString, true);
-			}
-			else
-			{
+			} else {
 				$this->SetupVariable("fullmoondate", "Vollmond", "Astronomie.Mond_Vollmond_Datum", 33, IPSVarType::vtString, false);
 				$this->SetupVariable("fullmoontime", "Vollmond", "Astronomie.Mond_Vollmond_Zeit", 34, IPSVarType::vtString, false);
 			}
-			if($this->ReadPropertyBoolean("lastquarter") == true) // string
+			if ($this->ReadPropertyBoolean("lastquarter") == true) // string
 			{
-				$associations =  Array(	);
+				$associations = Array();
 				$this->SetupProfile(IPSVarType::vtString, "Astronomie.Mond_LetztesViertel_Datum", "Moon", "", "", 0, 0, 0, 0, $associations);
 				$this->SetupVariable("lastquarterdate", "Letztes Viertel Datum", "Astronomie.Mond_LetztesViertel_Datum", 35, IPSVarType::vtString, true);
 				$this->SetupProfile(IPSVarType::vtString, "Astronomie.Mond_LetztesViertel_Zeit", "Moon", "", "", 0, 0, 0, 0, $associations);
 				$this->SetupVariable("lastquartertime", "Letztes Viertel Uhrzeit", "Astronomie.Mond_LetztesViertel_Zeit", 36, IPSVarType::vtString, true);
-			}
-			else
-			{
+			} else {
 				$this->SetupVariable("lastquarterdate", "Letztes Viertel Datum", "Astronomie.Mond_LetztesViertel_Datum", 35, IPSVarType::vtString, false);
 				$this->SetupVariable("lastquartertime", "Letztes Viertel Zeit", "Astronomie.Mond_LetztesViertel_Zeit", 36, IPSVarType::vtString, false);
 			}
-			if($this->ReadPropertyBoolean("moonrise") == true) // int
+			if ($this->ReadPropertyBoolean("moonrise") == true) // int
 			{
-				$associations =  Array(	);
+				$associations = Array();
 				$this->SetupProfile(IPSVarType::vtString, "Astronomie.Mond_Mondaufgang_Datum", "Moon", "", "", 0, 0, 0, 0, $associations);
 				$this->SetupVariable("moonrisedate", "Mondaufgang Datum", "Astronomie.Mond_Mondaufgang_Datum", 37, IPSVarType::vtString, true);
 				$this->SetupProfile(IPSVarType::vtString, "Astronomie.Mond_Mondaufgang_Zeit", "Moon", "", "", 0, 0, 0, 0, $associations);
 				$this->SetupVariable("moonrisetime", "Mondaufgang Uhrzeit", "Astronomie.Mond_Mondaufgang_Zeit", 38, IPSVarType::vtString, true);
-			}
-			else
-			{
+			} else {
 				$this->SetupVariable("moonrisedate", "Mondaufgang Datum", "Astronomie.Mond_Mondaufgang_Datum", 37, IPSVarType::vtInteger, false);
 				$this->SetupVariable("moonrisetime", "Mondaufgang Uhrzeit", "Astronomie.Mond_Mondaufgang_Zeit", 38, IPSVarType::vtInteger, false);
 			}
-			if($this->ReadPropertyBoolean("moonset") == true) // int
+			if ($this->ReadPropertyBoolean("moonset") == true) // int
 			{
-				$associations =  Array(	);
+				$associations = Array();
 				$this->SetupProfile(IPSVarType::vtString, "Astronomie.Mond_Monduntergang_Datum", "Moon", "", "", 0, 0, 0, 0, $associations);
 				$this->SetupVariable("moonsetdate", "Monduntergang Datum", "Astronomie.Mond_Monduntergang_Datum", 39, IPSVarType::vtString, true);
 				$this->SetupProfile(IPSVarType::vtString, "Astronomie.Mond_Monduntergang_Zeit", "Moon", "", "", 0, 0, 0, 0, $associations);
 				$this->SetupVariable("moonsettime", "Monduntergang Uhrzeit", "Astronomie.Mond_Monduntergang_Zeit", 40, IPSVarType::vtString, true);
-			}
-			else
-			{
+			} else {
 				$this->SetupVariable("moonsetdate", "Monduntergang Datum", "Astronomie.Mond_Monduntergang_Datum", 39, IPSVarType::vtInteger, false);
 				$this->SetupVariable("moonsettime", "Monduntergang Zeit", "Astronomie.Mond_Monduntergang_Zeit", 40, IPSVarType::vtInteger, false);
 			}
-		}
-		else
-		{
+		} else {
 			$this->SetupVariable("sunsettime", "Sonnenuntergang Uhrzeit", "Astronomie.Sonnenuntergang_Zeit", 27, IPSVarType::vtInteger, false);
 			$this->SetupVariable("sunrisetime", "Sonnenaufgang Uhrzeit", "Astronomie.Sonnenaufgang_Zeit", 28, IPSVarType::vtInteger, false);
 			$this->SetupVariable("newmoondate", "Neumond Datum", "Astronomie.Mond_Neumond_Datum", 29, IPSVarType::vtString, false);
@@ -684,271 +581,233 @@ class Astronomy extends IPSModule
 			$this->SetupVariable("moonrisetime", "Mondaufgang Uhrzeit", "Astronomie.Mond_Mondaufgang_Zeit", 38, IPSVarType::vtInteger, false);
 			$this->SetupVariable("moonsetdate", "Monduntergang Datum", "Astronomie.Mond_Monduntergang_Datum", 39, IPSVarType::vtInteger, false);
 			$this->SetupVariable("moonsettime", "Monduntergang Zeit", "Astronomie.Mond_Monduntergang_Zeit", 40, IPSVarType::vtInteger, false);
-		}	
+		}
 		// Status Aktiv
-		$this->SetStatus(102);	
-		
+		$this->SetStatus(102);
+
 	}
-	
+
 	protected function UpdateMedia($picid)
 	{
-			//testen ob im Medienpool existent
-			$repository = "github"; //bitbucket, github
-			$picturename = $this->ReadPropertyString("picturename");
-			$selectionresize = $this->ReadPropertyBoolean("selectionresize");
-			$mediaimgwidth = $this->ReadPropertyInteger("mediaimgwidth");
-			$mediaimgheight = $this->ReadPropertyInteger("mediaimgheight");
-			$picturemoonselection = $this->ReadPropertyBoolean("picturemoonselection");
-            $ImageFile = "";
-			if ($picturemoonselection)
-			{
-				$path = $this->ReadPropertyString("picturemoonpath");
-				$filetype = $this->ReadPropertyInteger("filetype");
-				if ($filetype == 1)
-				{
-					$filetype = "png";
-				}
-				elseif ($filetype == 2)
-				{
-					$filetype = "gif";
-				}
-				elseif ($filetype == 3)
-				{
-					$filetype = "jpg";
-				}
-				$ImageFile = IPS_GetKernelDir().$path.DIRECTORY_SEPARATOR.$picturename.$picid.".".$filetype;
+		//testen ob im Medienpool existent
+		$repository = "github"; //bitbucket, github
+		$picturename = $this->ReadPropertyString("picturename");
+		$selectionresize = $this->ReadPropertyBoolean("selectionresize");
+		$mediaimgwidth = $this->ReadPropertyInteger("mediaimgwidth");
+		$mediaimgheight = $this->ReadPropertyInteger("mediaimgheight");
+		$picturemoonselection = $this->ReadPropertyBoolean("picturemoonselection");
+		$ImageFile = "";
+		if ($picturemoonselection) {
+			$path = $this->ReadPropertyString("picturemoonpath");
+			$filetype = $this->ReadPropertyInteger("filetype");
+			if ($filetype == 1) {
+				$filetype = "png";
+			} elseif ($filetype == 2) {
+				$filetype = "gif";
+			} elseif ($filetype == 3) {
+				$filetype = "jpg";
 			}
-			else
-			{
-				$background = $this->ReadPropertyInteger("moonbackground");
-				if ($repository == "github")
-				{	
-					if ($background == 1)
-					{
-						$ImageFile = IPS_GetKernelDir()."modules".DIRECTORY_SEPARATOR."IPSymconAstronomy".DIRECTORY_SEPARATOR."Astronomy".DIRECTORY_SEPARATOR."images".DIRECTORY_SEPARATOR."mond".DIRECTORY_SEPARATOR."mond".$picid.".gif";  // Image-Datei
-					}
-					elseif ($background == 2)
-					{
-						$ImageFile = IPS_GetKernelDir()."modules".DIRECTORY_SEPARATOR."IPSymconAstronomy".DIRECTORY_SEPARATOR."Astronomy".DIRECTORY_SEPARATOR."images".DIRECTORY_SEPARATOR."mondtransparent".DIRECTORY_SEPARATOR."mond".$picid.".png";  // Image-Datei
-					}	
+			$ImageFile = IPS_GetKernelDir() . $path . DIRECTORY_SEPARATOR . $picturename . $picid . "." . $filetype;
+		} else {
+			$background = $this->ReadPropertyInteger("moonbackground");
+			if ($repository == "github") {
+				if ($background == 1) {
+					$ImageFile = IPS_GetKernelDir() . "modules" . DIRECTORY_SEPARATOR . "IPSymconAstronomy" . DIRECTORY_SEPARATOR . "Astronomy" . DIRECTORY_SEPARATOR . "images" . DIRECTORY_SEPARATOR . "mond" . DIRECTORY_SEPARATOR . "mond" . $picid . ".gif";  // Image-Datei
+				} elseif ($background == 2) {
+					$ImageFile = IPS_GetKernelDir() . "modules" . DIRECTORY_SEPARATOR . "IPSymconAstronomy" . DIRECTORY_SEPARATOR . "Astronomy" . DIRECTORY_SEPARATOR . "images" . DIRECTORY_SEPARATOR . "mondtransparent" . DIRECTORY_SEPARATOR . "mond" . $picid . ".png";  // Image-Datei
 				}
-				elseif($repository == "bitbucket")
-				{
-					if ($background == 1)
-					{
-						$ImageFile = IPS_GetKernelDir()."modules".DIRECTORY_SEPARATOR."ipsymconastronomy".DIRECTORY_SEPARATOR."Astronomy".DIRECTORY_SEPARATOR."images".DIRECTORY_SEPARATOR."mond".DIRECTORY_SEPARATOR."mond".$picid.".gif";  // Image-Datei		
-					}
-					elseif ($background == 2)
-					{
-						$ImageFile = IPS_GetKernelDir()."modules".DIRECTORY_SEPARATOR."ipsymconastronomy".DIRECTORY_SEPARATOR."Astronomy".DIRECTORY_SEPARATOR."images".DIRECTORY_SEPARATOR."mondtransparent".DIRECTORY_SEPARATOR."mond".$picid.".png";  // Image-Datei		
-					}
-					
+			} elseif ($repository == "bitbucket") {
+				if ($background == 1) {
+					$ImageFile = IPS_GetKernelDir() . "modules" . DIRECTORY_SEPARATOR . "ipsymconastronomy" . DIRECTORY_SEPARATOR . "Astronomy" . DIRECTORY_SEPARATOR . "images" . DIRECTORY_SEPARATOR . "mond" . DIRECTORY_SEPARATOR . "mond" . $picid . ".gif";  // Image-Datei
+				} elseif ($background == 2) {
+					$ImageFile = IPS_GetKernelDir() . "modules" . DIRECTORY_SEPARATOR . "ipsymconastronomy" . DIRECTORY_SEPARATOR . "Astronomy" . DIRECTORY_SEPARATOR . "images" . DIRECTORY_SEPARATOR . "mondtransparent" . DIRECTORY_SEPARATOR . "mond" . $picid . ".png";  // Image-Datei
 				}
+
 			}
-			if ($selectionresize)//resize image
-			{
-				$picturename = $picturename.$picid;
-				$imageinfo = $this->getimageinfo($ImageFile);
-				if($imageinfo)
-                {
-                    $image = $this->createimage($ImageFile, $imageinfo["imagetype"]);
-                    $thumb = $this->createthumbnail($mediaimgwidth, $mediaimgheight, $imageinfo["imagewidth"],$imageinfo["imageheight"]);
-                    $thumbimg = $thumb["img"];
-                    $thumbwidth = $thumb["width"];
-                    $thumbheight = $thumb["height"];
-                    $ImageFile = $this->copyimgtothumbnail($thumbimg, $image, $thumbwidth, $thumbheight, $imageinfo["imagewidth"],$imageinfo["imageheight"], $picturename);
-                }
-				else
-                {
-                    IPS_LogMessage("Astronomy", "Bild wurde nicht gefunden.");
-                }
-				
+		}
+		if ($selectionresize)//resize image
+		{
+			$picturename = $picturename . $picid;
+			$imageinfo = $this->getimageinfo($ImageFile);
+			if ($imageinfo) {
+				$image = $this->createimage($ImageFile, $imageinfo["imagetype"]);
+				$thumb = $this->createthumbnail($mediaimgwidth, $mediaimgheight, $imageinfo["imagewidth"], $imageinfo["imageheight"]);
+				$thumbimg = $thumb["img"];
+				$thumbwidth = $thumb["width"];
+				$thumbheight = $thumb["height"];
+				$ImageFile = $this->copyimgtothumbnail($thumbimg, $image, $thumbwidth, $thumbheight, $imageinfo["imagewidth"], $imageinfo["imageheight"], $picturename);
+			} else {
+				IPS_LogMessage("Astronomy", "Bild wurde nicht gefunden.");
 			}
-			$Content = file_get_contents($ImageFile);
-			$name = "Mond Ansicht";
-			$MediaID = $this->CreateMediaImage('picturemoon', $name, $picid, $Content, $ImageFile, 21, "picturemoonvisible");
-			return $MediaID;
+
+		}
+		$Content = file_get_contents($ImageFile);
+		$name = "Mond Ansicht";
+		$MediaID = $this->CreateMediaImage('picturemoon', $name, $picid, $Content, $ImageFile, 21, "picturemoonvisible");
+		return $MediaID;
 	}
-	
+
 	protected function CreateMediaImage($Ident, $name, $picid, $Content, $ImageFile, $position, $visible)
 	{
 		$MediaID = false;
-		if($this->ReadPropertyBoolean($visible) == true)
-		{
+		if ($this->ReadPropertyBoolean($visible) == true) {
 			$MediaID = @$this->GetIDForIdent($Ident);
-			if ($MediaID === false)
-				{
-					$MediaID = IPS_CreateMedia(1);                  // Image im MedienPool anlegen
-					IPS_SetParent($MediaID, $this->InstanceID); // Medienobjekt einsortieren unter dem Modul
-					IPS_SetIdent ($MediaID, $Ident);
-					IPS_SetPosition($MediaID, $position);
-					IPS_SetMediaCached($MediaID, true);
-					// Das Cachen für das Mediaobjekt wird aktiviert.
-					// Beim ersten Zugriff wird dieses von der Festplatte ausgelesen
-					// und zukünftig nur noch im Arbeitsspeicher verarbeitet.
-					IPS_SetName($MediaID, $name); // Medienobjekt benennen
-				}
-				
+			if ($MediaID === false) {
+				$MediaID = IPS_CreateMedia(1);                  // Image im MedienPool anlegen
+				IPS_SetParent($MediaID, $this->InstanceID); // Medienobjekt einsortieren unter dem Modul
+				IPS_SetIdent($MediaID, $Ident);
+				IPS_SetPosition($MediaID, $position);
+				IPS_SetMediaCached($MediaID, true);
+				// Das Cachen für das Mediaobjekt wird aktiviert.
+				// Beim ersten Zugriff wird dieses von der Festplatte ausgelesen
+				// und zukünftig nur noch im Arbeitsspeicher verarbeitet.
+				IPS_SetName($MediaID, $name); // Medienobjekt benennen
+			}
+
 			IPS_SetMediaFile($MediaID, $ImageFile, False);    // Image im MedienPool mit Image-Datei verbinden
-			IPS_SetInfo ($MediaID, $picid);
+			IPS_SetInfo($MediaID, $picid);
 			IPS_SetMediaContent($MediaID, base64_encode($Content));  //Bild Base64 codieren und ablegen
 			IPS_SendMediaEvent($MediaID); //aktualisieren
 		}
 		return $MediaID;
 	}
-	
+
 	protected function getimageinfo($imagefile)
-	{				
-		if(!$imagefile == "")
-        {
-            $imagesize = getimagesize($imagefile);
-            $imagewidth = $imagesize[0];
-            $imageheight = $imagesize[1];
-            $imagetype = $imagesize[2];
-            $imageinfo = array("imagewidth" => $imagewidth, "imageheight" => $imageheight, "imagetype" => $imagetype);
-        }
-	    else
-        {
-            $imageinfo = "";
-        }
+	{
+		if (!$imagefile == "") {
+			$imagesize = getimagesize($imagefile);
+			$imagewidth = $imagesize[0];
+			$imageheight = $imagesize[1];
+			$imagetype = $imagesize[2];
+			$imageinfo = array("imagewidth" => $imagewidth, "imageheight" => $imageheight, "imagetype" => $imagetype);
+		} else {
+			$imageinfo = "";
+		}
 		return $imageinfo;
 	}
-	
+
 	protected function createimage($imagefile, $imagetype)
 	{
-		switch ($imagetype)
-		{
-		    // Bedeutung von $imagetype:
-		    // 1 = GIF, 2 = JPG, 3 = PNG, 4 = SWF, 5 = PSD, 6 = BMP, 7 = TIFF(intel byte order), 8 = TIFF(motorola byte order), 9 = JPC, 10 = JP2, 11 = JPX, 12 = JB2, 13 = SWC, 14 = IFF, 15 = WBMP, 16 = XBM
-		    case 1: // GIF
-		        $image = imagecreatefromgif($imagefile);
-		        break;
-		    case 2: // JPEG
-		        $image = imagecreatefromjpeg($imagefile);
-		        break;
-		    case 3: // PNG
-		        $image = imagecreatefrompng($imagefile);
+		switch ($imagetype) {
+			// Bedeutung von $imagetype:
+			// 1 = GIF, 2 = JPG, 3 = PNG, 4 = SWF, 5 = PSD, 6 = BMP, 7 = TIFF(intel byte order), 8 = TIFF(motorola byte order), 9 = JPC, 10 = JP2, 11 = JPX, 12 = JB2, 13 = SWC, 14 = IFF, 15 = WBMP, 16 = XBM
+			case 1: // GIF
+				$image = imagecreatefromgif($imagefile);
+				break;
+			case 2: // JPEG
+				$image = imagecreatefromjpeg($imagefile);
+				break;
+			case 3: // PNG
+				$image = imagecreatefrompng($imagefile);
 				//imagealphablending($image, true); // setting alpha blending on
 				//imagesavealpha($image, true); // save alphablending setting (important)
-		        break;
-		    default:
-		        die('Unsupported imageformat');
+				break;
+			default:
+				die('Unsupported imageformat');
 		}
-		 return $image;
-  }
-  
-  protected function createthumbnail($mediaimgwidth, $mediaimgheight, $imagewidth, $imageheight)
-  {
-	// Maximalausmaße
-	$maxthumbwidth = $mediaimgwidth;
-	$maxthumbheight = $mediaimgheight;
-	// Ausmaße kopieren, wir gehen zuerst davon aus, dass das Bild schon Thumbnailgröße hat
-	$thumbwidth = $imagewidth;
-	$thumbheight = $imageheight;
-	// Breite skalieren falls nötig
-	if ($thumbwidth > $maxthumbwidth)
-	{                                    
-		$factor = $maxthumbwidth / $thumbwidth;
-		$thumbwidth *= $factor;
-		$thumbheight *= $factor;
-	}
-	// Höhe skalieren, falls nötig
-	if ($thumbheight > $maxthumbheight)
-	{
-			$factor = $maxthumbheight / $thumbheight;
-			$thumbwidth *= $factor;
-			$thumbheight *= $factor;
-	}
-	// Vergrößern Breite
-	if ($thumbwidth < $maxthumbwidth)
-	{
-		$factor = $maxthumbheight / $thumbheight;
-		$thumbwidth *= $factor;
-		$thumbheight *= $factor;
-	}
-	//vergrößern Höhe
-	if ($thumbheight < $maxthumbheight)
-	{
-			$factor = $maxthumbheight / $thumbheight;
-			$thumbwidth *= $factor;
-			$thumbheight *= $factor;
+		return $image;
 	}
 
-	// Thumbnail erstellen
-	$thumbimg = imagecreatetruecolor($thumbwidth, $thumbheight);
-	imagesavealpha($thumbimg, true);
-	$trans_colour = imagecolorallocatealpha($thumbimg, 0, 0, 0, 127);
-	imagefill($thumbimg, 0, 0, $trans_colour);
-	$thumb = array("img" => $thumbimg, "width" => $thumbwidth, "height" => $thumbheight);
-	return $thumb;
-  }
-  
-  protected function copyimgtothumbnail($thumb, $image, $thumbwidth, $thumbheight, $imagewidth, $imageheight, $picturename)
-  {
-	imagecopyresampled(
-		$thumb,
-		$image,
-		0, 0, 0, 0, // Startposition des Ausschnittes
-		$thumbwidth, $thumbheight,
-		$imagewidth, $imageheight
+	protected function createthumbnail($mediaimgwidth, $mediaimgheight, $imagewidth, $imageheight)
+	{
+		// Maximalausmaße
+		$maxthumbwidth = $mediaimgwidth;
+		$maxthumbheight = $mediaimgheight;
+		// Ausmaße kopieren, wir gehen zuerst davon aus, dass das Bild schon Thumbnailgröße hat
+		$thumbwidth = $imagewidth;
+		$thumbheight = $imageheight;
+		// Breite skalieren falls nötig
+		if ($thumbwidth > $maxthumbwidth) {
+			$factor = $maxthumbwidth / $thumbwidth;
+			$thumbwidth *= $factor;
+			$thumbheight *= $factor;
+		}
+		// Höhe skalieren, falls nötig
+		if ($thumbheight > $maxthumbheight) {
+			$factor = $maxthumbheight / $thumbheight;
+			$thumbwidth *= $factor;
+			$thumbheight *= $factor;
+		}
+		// Vergrößern Breite
+		if ($thumbwidth < $maxthumbwidth) {
+			$factor = $maxthumbheight / $thumbheight;
+			$thumbwidth *= $factor;
+			$thumbheight *= $factor;
+		}
+		//vergrößern Höhe
+		if ($thumbheight < $maxthumbheight) {
+			$factor = $maxthumbheight / $thumbheight;
+			$thumbwidth *= $factor;
+			$thumbheight *= $factor;
+		}
+
+		// Thumbnail erstellen
+		$thumbimg = imagecreatetruecolor($thumbwidth, $thumbheight);
+		imagesavealpha($thumbimg, true);
+		$trans_colour = imagecolorallocatealpha($thumbimg, 0, 0, 0, 127);
+		imagefill($thumbimg, 0, 0, $trans_colour);
+		$thumb = array("img" => $thumbimg, "width" => $thumbwidth, "height" => $thumbheight);
+		return $thumb;
+	}
+
+	protected function copyimgtothumbnail($thumb, $image, $thumbwidth, $thumbheight, $imagewidth, $imageheight, $picturename)
+	{
+		imagecopyresampled(
+			$thumb,
+			$image,
+			0, 0, 0, 0, // Startposition des Ausschnittes
+			$thumbwidth, $thumbheight,
+			$imagewidth, $imageheight
 		);
-	// In Datei speichern
-	$thumbfile = IPS_GetKernelDir()."media".DIRECTORY_SEPARATOR."resampled_".$picturename.".png";  // Image-Datei
-	imagepng($thumb, $thumbfile);
-	imagedestroy($thumb);
-	return $thumbfile;
-  }
-	
+		// In Datei speichern
+		$thumbfile = IPS_GetKernelDir() . "media" . DIRECTORY_SEPARATOR . "resampled_" . $picturename . ".png";  // Image-Datei
+		imagepng($thumb, $thumbfile);
+		imagedestroy($thumb);
+		return $thumbfile;
+	}
+
 	protected function TwilightDayPicture($type)
 	{
-        $ImagePath = false;
-        $MediaID = false;
-	    if($type == "Limited")
-		{
+		$ImagePath = false;
+		$MediaID = false;
+		if ($type == "Limited") {
 			$filename = "Astronomy_Twilight_DayLimited";
-			$ImagePath = $this->GenerateClockGraphic($filename,   true);	
-		}
-		elseif($type == "Standard")
-		{
+			$ImagePath = $this->GenerateClockGraphic($filename, true);
+		} elseif ($type == "Standard") {
 			$filename = "Astronomy_Twilight_DayUnlimited";
 			$ImagePath = $this->GenerateClockGraphic($filename, false);
 		}
-        $this->SendDebug("Astronomy:","Twilight image path ".$ImagePath,0);
-		if($ImagePath)
-        {
-            $ContentDay = file_get_contents($ImagePath);
-            $nameday = "Dämmerungszeiten Tag";
-            $picid = "TwilightDayPicture";
-            $MediaID = $this->CreateMediaImage('TwilightDayPicture', $nameday, $picid, $ContentDay, $ImagePath, 40, "picturedaytwilight");
-        }
-        return array ("mediaid_twilight_day" => $MediaID, "twilight_day_image_path" => $ImagePath);
+		$this->SendDebug("Astronomy:", "Twilight image path " . $ImagePath, 0);
+		if ($ImagePath) {
+			$ContentDay = file_get_contents($ImagePath);
+			$nameday = "Dämmerungszeiten Tag";
+			$picid = "TwilightDayPicture";
+			$MediaID = $this->CreateMediaImage('TwilightDayPicture', $nameday, $picid, $ContentDay, $ImagePath, 40, "picturedaytwilight");
+		}
+		return array("mediaid_twilight_day" => $MediaID, "twilight_day_image_path" => $ImagePath);
 	}
-	
+
 	protected function TwilightYearPicture($type)
 	{
-        $ImagePath = false;
-        $MediaID = false;
-	    if($type == "Limited")
-		{
+		$ImagePath = false;
+		$MediaID = false;
+		if ($type == "Limited") {
 			$filename = "Astronomy_Twilight_YearLimited";
-            $ImagePath = $this->GenerateTwilightGraphic($filename, true, 4.4, 1.8);
-		}
-		elseif($type == "Standard")
-		{
+			$ImagePath = $this->GenerateTwilightGraphic($filename, true, 4.4, 1.8);
+		} elseif ($type == "Standard") {
 			$filename = "Astronomy_Twilight_YearUnlimited";
-            $ImagePath = $this->GenerateTwilightGraphic($filename, false, 4.4, 1.8);
+			$ImagePath = $this->GenerateTwilightGraphic($filename, false, 4.4, 1.8);
 		}
-        if($ImagePath)
-        {
-            $ContentYear = file_get_contents($ImagePath);
-            $nameyear = "Dämmerungszeiten Jahr";
-            $picid = "TwilightYearPicture";
-            $MediaID = $this->CreateMediaImage('TwilightYearPicture', $nameyear, $picid, $ContentYear, $ImagePath, 41, "pictureyeartwilight");
-        }
-		return array ("mediaid_twilight_year" => $MediaID, "twilight_year_image_path" => $ImagePath);
+		if ($ImagePath) {
+			$ContentYear = file_get_contents($ImagePath);
+			$nameyear = "Dämmerungszeiten Jahr";
+			$picid = "TwilightYearPicture";
+			$MediaID = $this->CreateMediaImage('TwilightYearPicture', $nameyear, $picid, $ContentYear, $ImagePath, 41, "pictureyeartwilight");
+		}
+		return array("mediaid_twilight_year" => $MediaID, "twilight_year_image_path" => $ImagePath);
 	}
-	
-	protected function GenerateClockGraphic($filename, $useLimited=false, $Width=180)
+
+	protected function GenerateClockGraphic($filename, $useLimited = false, $Width = 180)
 	{
 		// $location = $this->getlocation();
 		// $Latitude = $location["Latitude"];
@@ -962,42 +821,42 @@ class Astronomy extends IPSModule
 		$nautictwilightend = $locationinfo["NauticTwilightEnd"];
 		$astronomictwilightstart = $locationinfo["AstronomicTwilightStart"];
 		$astronomictwilightend = $locationinfo["AstronomicTwilightEnd"];
-		$clockWidth   = $Width;
-		$clockHeight  = $clockWidth;
-		$marginLeft   = 20;
-		$marginRight  = 20;
-		$marginTop    = 15;
+		$clockWidth = $Width;
+		$clockHeight = $clockWidth;
+		$marginLeft = 20;
+		$marginRight = 20;
+		$marginTop = 15;
 		$marginMiddle = 45;
 		$marginBottom = 30;
-		$imageWidth   = $clockWidth + $marginLeft + $marginRight;
-		$imageHeight  = $clockHeight*2 + $marginBottom + $marginTop + $marginMiddle;
+		$imageWidth = $clockWidth + $marginLeft + $marginRight;
+		$imageHeight = $clockHeight * 2 + $marginBottom + $marginTop + $marginMiddle;
 
-		$image  = imagecreate($imageWidth,$imageHeight);
+		$image = imagecreate($imageWidth, $imageHeight);
 
-		$white         = imagecolorallocate($image,255,255,255);
-		$textColor     = imagecolorallocate($image,250,250,250);
-		$transparent   = imagecolortransparent($image,$white);
+		$white = imagecolorallocate($image, 255, 255, 255);
+		$textColor = imagecolorallocate($image, 250, 250, 250);
+		$transparent = imagecolortransparent($image, $white);
 		// $black         = imagecolorallocate($image,0,0,0);
 		// $red           = imagecolorallocate($image,255,0,0);
 		// $green         = imagecolorallocate($image,0,255,0);
 		// $blue          = imagecolorallocate($image,0,0,255);
 		// $grey_back     = imagecolorallocate($image, 100, 100, 100);
-		$grey_line     = imagecolorallocate($image, 120, 120, 120);
+		$grey_line = imagecolorallocate($image, 120, 120, 120);
 		$grey_sunrise1 = imagecolorallocate($image, 200, 200, 200);
 		$grey_sunrise2 = imagecolorallocate($image, 170, 170, 170);
 		$grey_sunrise3 = imagecolorallocate($image, 140, 140, 140);
-		$grey          = imagecolorallocate($image, 100, 100, 100);
-		$yellow        = imagecolorallocate($image, 255, 255, 0);
+		$grey = imagecolorallocate($image, 100, 100, 100);
+		$yellow = imagecolorallocate($image, 255, 255, 0);
 
-		imagefilledrectangle($image,1,1,$imageWidth,$imageHeight,$transparent);
+		imagefilledrectangle($image, 1, 1, $imageWidth, $imageHeight, $transparent);
 
-		$sunrise1   = $civiltwilightstart;
-		$sunset1    = $civiltwilightend;
-		$sunrise2   = $nautictwilightstart;
-		$sunset2    = $nautictwilightend;
-		$sunrise3   = $astronomictwilightstart;
-		$sunset3    = $astronomictwilightend;
-		
+		$sunrise1 = $civiltwilightstart;
+		$sunset1 = $civiltwilightend;
+		$sunrise2 = $nautictwilightstart;
+		$sunset2 = $nautictwilightend;
+		$sunrise3 = $astronomictwilightstart;
+		$sunset3 = $astronomictwilightend;
+
 		/*
 		if ($useLimited ) {
 			LimitValues('SunriseLimits', $sunrise, $sunset);
@@ -1007,97 +866,97 @@ class Astronomy extends IPSModule
 		}
 		*/
 
-		$sunriseMins  = (270+(date("H",$sunrise)*60  + date("i",$sunrise))*360/720)%360;
-		$sunsetMins   = (270+(date("H",$sunset)*60   + date("i",$sunset))*360/720)%360;
-		$sunrise1Mins = (270+(date("H",$sunrise1)*60 + date("i",$sunrise1))*360/720)%360;
-		$sunset1Mins  = (270+(date("H",$sunset1)*60  + date("i",$sunset1))*360/720)%360;
-		$sunrise2Mins = (270+(date("H",$sunrise2)*60 + date("i",$sunrise2))*360/720)%360;
-		$sunset2Mins  = (270+(date("H",$sunset2)*60  + date("i",$sunset2))*360/720)%360;
-		$sunrise3Mins = (270+(date("H",$sunrise3)*60 + date("i",$sunrise3))*360/720)%360;
-		$sunset3Mins  = (270+(date("H",$sunset3)*60  + date("i",$sunset3))*360/720)%360;
-		$middayMins  = (12*60);
+		$sunriseMins = (270 + (date("H", $sunrise) * 60 + date("i", $sunrise)) * 360 / 720) % 360;
+		$sunsetMins = (270 + (date("H", $sunset) * 60 + date("i", $sunset)) * 360 / 720) % 360;
+		$sunrise1Mins = (270 + (date("H", $sunrise1) * 60 + date("i", $sunrise1)) * 360 / 720) % 360;
+		$sunset1Mins = (270 + (date("H", $sunset1) * 60 + date("i", $sunset1)) * 360 / 720) % 360;
+		$sunrise2Mins = (270 + (date("H", $sunrise2) * 60 + date("i", $sunrise2)) * 360 / 720) % 360;
+		$sunset2Mins = (270 + (date("H", $sunset2) * 60 + date("i", $sunset2)) * 360 / 720) % 360;
+		$sunrise3Mins = (270 + (date("H", $sunrise3) * 60 + date("i", $sunrise3)) * 360 / 720) % 360;
+		$sunset3Mins = (270 + (date("H", $sunset3) * 60 + date("i", $sunset3)) * 360 / 720) % 360;
+		$middayMins = (12 * 60);
 
 		// 0h - 12h
-		imagefilledarc($image, $marginLeft+$clockWidth/2, $marginTop+$clockHeight/2, $clockWidth+2, $clockHeight+2, 0, 360, $grey_line, IMG_ARC_PIE);
-		imagefilledarc($image, $marginLeft+$clockWidth/2, $marginTop+$clockHeight/2, $clockWidth, $clockHeight, 0, 360, $grey, IMG_ARC_PIE);
+		imagefilledarc($image, $marginLeft + $clockWidth / 2, $marginTop + $clockHeight / 2, $clockWidth + 2, $clockHeight + 2, 0, 360, $grey_line, IMG_ARC_PIE);
+		imagefilledarc($image, $marginLeft + $clockWidth / 2, $marginTop + $clockHeight / 2, $clockWidth, $clockHeight, 0, 360, $grey, IMG_ARC_PIE);
 
-		if ((date("H",$sunset3)*60+date("i",$sunset3))<(date("H",$sunrise3)*60+date("i",$sunrise3)) or (date("H",$sunset3)*60+date("i",$sunset3))<$middayMins) {
-			imagefilledarc($image, $marginLeft+$clockWidth/2, $marginTop+$clockHeight/2, $clockWidth, $clockHeight, $sunrise3Mins, 270, $grey_sunrise3, IMG_ARC_PIE);
+		if ((date("H", $sunset3) * 60 + date("i", $sunset3)) < (date("H", $sunrise3) * 60 + date("i", $sunrise3)) or (date("H", $sunset3) * 60 + date("i", $sunset3)) < $middayMins) {
+			imagefilledarc($image, $marginLeft + $clockWidth / 2, $marginTop + $clockHeight / 2, $clockWidth, $clockHeight, $sunrise3Mins, 270, $grey_sunrise3, IMG_ARC_PIE);
 		} else {
-			imagefilledarc($image, $marginLeft+$clockWidth/2, $marginTop+$clockHeight/2, $clockWidth, $clockHeight, $sunrise3Mins, 270, $grey_sunrise3, IMG_ARC_PIE);
+			imagefilledarc($image, $marginLeft + $clockWidth / 2, $marginTop + $clockHeight / 2, $clockWidth, $clockHeight, $sunrise3Mins, 270, $grey_sunrise3, IMG_ARC_PIE);
 		}
-		if ((date("H",$sunset2)*60+date("i",$sunset2))<(date("H",$sunrise2)*60+date("i",$sunrise2)) or (date("H",$sunset2)*60+date("i",$sunset2))<$middayMins) {
-			imagefilledarc($image, $marginLeft+$clockWidth/2, $marginTop+$clockHeight/2, $clockWidth, $clockHeight, $sunrise2Mins, 270, $grey_sunrise2, IMG_ARC_PIE);
+		if ((date("H", $sunset2) * 60 + date("i", $sunset2)) < (date("H", $sunrise2) * 60 + date("i", $sunrise2)) or (date("H", $sunset2) * 60 + date("i", $sunset2)) < $middayMins) {
+			imagefilledarc($image, $marginLeft + $clockWidth / 2, $marginTop + $clockHeight / 2, $clockWidth, $clockHeight, $sunrise2Mins, 270, $grey_sunrise2, IMG_ARC_PIE);
 		} else {
-			imagefilledarc($image, $marginLeft+$clockWidth/2, $marginTop+$clockHeight/2, $clockWidth, $clockHeight, $sunrise2Mins, 270, $grey_sunrise2, IMG_ARC_PIE);
+			imagefilledarc($image, $marginLeft + $clockWidth / 2, $marginTop + $clockHeight / 2, $clockWidth, $clockHeight, $sunrise2Mins, 270, $grey_sunrise2, IMG_ARC_PIE);
 		}
-		if ((date("H",$sunset1)*60+date("i",$sunset1))<(date("H",$sunrise1)*60+date("i",$sunrise1)) or (date("H",$sunset1)*60+date("i",$sunset1))<$middayMins) {
-			imagefilledarc($image, $marginLeft+$clockWidth/2, $marginTop+$clockHeight/2, $clockWidth, $clockHeight, $sunrise1Mins, 270, $grey_sunrise1, IMG_ARC_PIE);
+		if ((date("H", $sunset1) * 60 + date("i", $sunset1)) < (date("H", $sunrise1) * 60 + date("i", $sunrise1)) or (date("H", $sunset1) * 60 + date("i", $sunset1)) < $middayMins) {
+			imagefilledarc($image, $marginLeft + $clockWidth / 2, $marginTop + $clockHeight / 2, $clockWidth, $clockHeight, $sunrise1Mins, 270, $grey_sunrise1, IMG_ARC_PIE);
 		} else {
-			imagefilledarc($image, $marginLeft+$clockWidth/2, $marginTop+$clockHeight/2, $clockWidth, $clockHeight, $sunrise1Mins, 270, $grey_sunrise1, IMG_ARC_PIE);
+			imagefilledarc($image, $marginLeft + $clockWidth / 2, $marginTop + $clockHeight / 2, $clockWidth, $clockHeight, $sunrise1Mins, 270, $grey_sunrise1, IMG_ARC_PIE);
 		}
-		imagefilledarc($image, $marginLeft+$clockWidth/2, $marginTop+$clockHeight/2, $clockWidth, $clockHeight, $sunriseMins,  270,  $yellow,        IMG_ARC_PIE);
+		imagefilledarc($image, $marginLeft + $clockWidth / 2, $marginTop + $clockHeight / 2, $clockWidth, $clockHeight, $sunriseMins, 270, $yellow, IMG_ARC_PIE);
 		//imagefilledarc($image, $marginLeft+$clockWidth/2, $marginTop+$clockHeight/2, $clockWidth, $clockHeight, $sunriseMins,  $sunriseMins+1,  $red,        IMG_ARC_PIE);
 
 		// 12h - 24h
-		imagefilledarc($image, $marginLeft+$clockWidth/2, $marginTop+$marginMiddle+$clockHeight+$clockHeight/2, $clockWidth+2, $clockHeight+2, 0, 360, $grey_line, IMG_ARC_PIE);
-		imagefilledarc($image, $marginLeft+$clockWidth/2, $marginTop+$marginMiddle+$clockHeight+$clockHeight/2, $clockWidth, $clockHeight, 0, 360, $grey, IMG_ARC_PIE);
-		if ((date("H",$sunset3)*60+date("i",$sunset3))<(date("H",$sunrise3)*60+date("i",$sunrise3))) {
-			imagefilledarc($image, $marginLeft+$clockWidth/2, $marginTop+$marginMiddle+$clockHeight+$clockHeight/2, $clockWidth, $clockHeight, $sunset3Mins,270, $grey_sunrise3, IMG_ARC_PIE);
+		imagefilledarc($image, $marginLeft + $clockWidth / 2, $marginTop + $marginMiddle + $clockHeight + $clockHeight / 2, $clockWidth + 2, $clockHeight + 2, 0, 360, $grey_line, IMG_ARC_PIE);
+		imagefilledarc($image, $marginLeft + $clockWidth / 2, $marginTop + $marginMiddle + $clockHeight + $clockHeight / 2, $clockWidth, $clockHeight, 0, 360, $grey, IMG_ARC_PIE);
+		if ((date("H", $sunset3) * 60 + date("i", $sunset3)) < (date("H", $sunrise3) * 60 + date("i", $sunrise3))) {
+			imagefilledarc($image, $marginLeft + $clockWidth / 2, $marginTop + $marginMiddle + $clockHeight + $clockHeight / 2, $clockWidth, $clockHeight, $sunset3Mins, 270, $grey_sunrise3, IMG_ARC_PIE);
 		} else {
-			imagefilledarc($image, $marginLeft+$clockWidth/2, $marginTop+$marginMiddle+$clockHeight+$clockHeight/2, $clockWidth, $clockHeight, 270, $sunset3Mins, $grey_sunrise3, IMG_ARC_PIE);
+			imagefilledarc($image, $marginLeft + $clockWidth / 2, $marginTop + $marginMiddle + $clockHeight + $clockHeight / 2, $clockWidth, $clockHeight, 270, $sunset3Mins, $grey_sunrise3, IMG_ARC_PIE);
 		}
-		if ((date("H",$sunset2)*60+date("i",$sunset2))<(date("H",$sunrise2)*60+date("i",$sunrise2))) {
-			imagefilledarc($image, $marginLeft+$clockWidth/2, $marginTop+$marginMiddle+$clockHeight+$clockHeight/2, $clockWidth, $clockHeight, $sunset2Mins,270, $grey_sunrise2, IMG_ARC_PIE);
+		if ((date("H", $sunset2) * 60 + date("i", $sunset2)) < (date("H", $sunrise2) * 60 + date("i", $sunrise2))) {
+			imagefilledarc($image, $marginLeft + $clockWidth / 2, $marginTop + $marginMiddle + $clockHeight + $clockHeight / 2, $clockWidth, $clockHeight, $sunset2Mins, 270, $grey_sunrise2, IMG_ARC_PIE);
 		} else {
-			imagefilledarc($image, $marginLeft+$clockWidth/2, $marginTop+$marginMiddle+$clockHeight+$clockHeight/2, $clockWidth, $clockHeight, 270, $sunset2Mins, $grey_sunrise2, IMG_ARC_PIE);
+			imagefilledarc($image, $marginLeft + $clockWidth / 2, $marginTop + $marginMiddle + $clockHeight + $clockHeight / 2, $clockWidth, $clockHeight, 270, $sunset2Mins, $grey_sunrise2, IMG_ARC_PIE);
 		}
-		if ((date("H",$sunset1)*60+date("i",$sunset1))<(date("H",$sunrise1)*60+date("i",$sunrise1))) {
-			imagefilledarc($image, $marginLeft+$clockWidth/2, $marginTop+$marginMiddle+$clockHeight+$clockHeight/2, $clockWidth, $clockHeight, $sunset1Mins,270, $grey_sunrise1, IMG_ARC_PIE);
+		if ((date("H", $sunset1) * 60 + date("i", $sunset1)) < (date("H", $sunrise1) * 60 + date("i", $sunrise1))) {
+			imagefilledarc($image, $marginLeft + $clockWidth / 2, $marginTop + $marginMiddle + $clockHeight + $clockHeight / 2, $clockWidth, $clockHeight, $sunset1Mins, 270, $grey_sunrise1, IMG_ARC_PIE);
 		} else {
-			imagefilledarc($image, $marginLeft+$clockWidth/2, $marginTop+$marginMiddle+$clockHeight+$clockHeight/2, $clockWidth, $clockHeight, 270, $sunset1Mins, $grey_sunrise1, IMG_ARC_PIE);
+			imagefilledarc($image, $marginLeft + $clockWidth / 2, $marginTop + $marginMiddle + $clockHeight + $clockHeight / 2, $clockWidth, $clockHeight, 270, $sunset1Mins, $grey_sunrise1, IMG_ARC_PIE);
 		}
-		imagefilledarc($image, $marginLeft+$clockWidth/2, $marginTop+$marginMiddle+$clockHeight+$clockHeight/2, $clockWidth, $clockHeight, 270,  $sunsetMins,  $yellow,        IMG_ARC_PIE);
+		imagefilledarc($image, $marginLeft + $clockWidth / 2, $marginTop + $marginMiddle + $clockHeight + $clockHeight / 2, $clockWidth, $clockHeight, 270, $sunsetMins, $yellow, IMG_ARC_PIE);
 		//imagefilledarc($image, $marginLeft+$clockWidth/2, $marginTop+$marginMiddle+$clockHeight+$clockHeight/2, $clockWidth, $clockHeight, $sunsetMins,  $sunsetMins+1,  $red,        IMG_ARC_PIE);
 
 
-		imagestring($image,2,$marginLeft+$clockWidth/2-3,$marginTop-14,"00",$textColor);
-		imagestring($image,2,$marginLeft+$clockWidth/2-3,$marginTop+$clockHeight+2,"06",$textColor);
-		imagestring($image,2,$marginLeft-14,             $marginTop+$clockHeight/2-6,"09",$textColor);
-		imagestring($image,2,$marginLeft+$clockWidth+4,  $marginTop+$clockHeight/2-6,"03",$textColor);
+		imagestring($image, 2, $marginLeft + $clockWidth / 2 - 3, $marginTop - 14, "00", $textColor);
+		imagestring($image, 2, $marginLeft + $clockWidth / 2 - 3, $marginTop + $clockHeight + 2, "06", $textColor);
+		imagestring($image, 2, $marginLeft - 14, $marginTop + $clockHeight / 2 - 6, "09", $textColor);
+		imagestring($image, 2, $marginLeft + $clockWidth + 4, $marginTop + $clockHeight / 2 - 6, "03", $textColor);
 
-		imagestring($image,2,$marginLeft+$clockWidth/2-3,$marginTop+$clockHeight+$marginMiddle-14,"24",$textColor);
-		imagestring($image,2,$marginLeft+$clockWidth/2-3,$marginTop+$clockHeight*2+2+$marginMiddle,"18",$textColor);
-		imagestring($image,2,$marginLeft-14,             $marginTop+$clockHeight+$marginMiddle+$clockHeight/2-6,"21",$textColor);
-		imagestring($image,2,$marginLeft+$clockWidth+4,  $marginTop+$clockHeight+$marginMiddle+$clockHeight/2-6,"15",$textColor);
+		imagestring($image, 2, $marginLeft + $clockWidth / 2 - 3, $marginTop + $clockHeight + $marginMiddle - 14, "24", $textColor);
+		imagestring($image, 2, $marginLeft + $clockWidth / 2 - 3, $marginTop + $clockHeight * 2 + 2 + $marginMiddle, "18", $textColor);
+		imagestring($image, 2, $marginLeft - 14, $marginTop + $clockHeight + $marginMiddle + $clockHeight / 2 - 6, "21", $textColor);
+		imagestring($image, 2, $marginLeft + $clockWidth + 4, $marginTop + $clockHeight + $marginMiddle + $clockHeight / 2 - 6, "15", $textColor);
 
 
 		imagesetthickness($image, 1);
-		for ($alpha=0; $alpha<360; $alpha=$alpha+30) {
-			imageline($image, $marginLeft+$clockWidth/2*(1+cos(deg2rad($alpha))),
-			                  $marginTop+$clockWidth/2*(1+sin(deg2rad($alpha))),
-									$marginLeft+10+($clockWidth-20)/2*(1+cos(deg2rad($alpha))),
-									$marginTop+10+($clockWidth-20)/2*(1+sin(deg2rad($alpha))), $grey_line );
+		for ($alpha = 0; $alpha < 360; $alpha = $alpha + 30) {
+			imageline($image, $marginLeft + $clockWidth / 2 * (1 + cos(deg2rad($alpha))),
+				$marginTop + $clockWidth / 2 * (1 + sin(deg2rad($alpha))),
+				$marginLeft + 10 + ($clockWidth - 20) / 2 * (1 + cos(deg2rad($alpha))),
+				$marginTop + 10 + ($clockWidth - 20) / 2 * (1 + sin(deg2rad($alpha))), $grey_line);
 
-			imageline($image, $marginLeft+$clockWidth/2*(1+cos(deg2rad($alpha))),
-			                  $marginTop+$clockHeight+$marginMiddle+$clockWidth/2*(1+sin(deg2rad($alpha))),
-									$marginLeft+10+($clockWidth-20)/2*(1+cos(deg2rad($alpha))),
-									$marginTop+$clockHeight+$marginMiddle+10+($clockWidth-20)/2*(1+sin(deg2rad($alpha))), $grey_line );
+			imageline($image, $marginLeft + $clockWidth / 2 * (1 + cos(deg2rad($alpha))),
+				$marginTop + $clockHeight + $marginMiddle + $clockWidth / 2 * (1 + sin(deg2rad($alpha))),
+				$marginLeft + 10 + ($clockWidth - 20) / 2 * (1 + cos(deg2rad($alpha))),
+				$marginTop + $clockHeight + $marginMiddle + 10 + ($clockWidth - 20) / 2 * (1 + sin(deg2rad($alpha))), $grey_line);
 
 		}
 
-		$ImagePath  = IPS_GetKernelDir().'media'.DIRECTORY_SEPARATOR.$filename.'.gif';
-		imagegif ($image, $ImagePath);
+		$ImagePath = IPS_GetKernelDir() . 'media' . DIRECTORY_SEPARATOR . $filename . '.gif';
+		imagegif($image, $ImagePath);
 		imagedestroy($image);
 		return $ImagePath;
 	}
-	
-	protected function GenerateTwilightGraphic($filename, $useLimited=false, $dayDivisor = 4.4, $dayWidth = 1.8)
+
+	protected function GenerateTwilightGraphic($filename, $useLimited = false, $dayDivisor = 4.4, $dayWidth = 1.8)
 	{
 		$location = $this->getlocation();
 		$Latitude = $location["Latitude"];
 		$Longitude = $location["Longitude"];
-        /*
+		/*
         $locationinfo = $this->getlocationinfo();
         $sunrise = $locationinfo["Sunrise"];
         $sunset = $locationinfo["Sunset"];
@@ -1108,133 +967,117 @@ class Astronomy extends IPSModule
         $astronomictwilightstart = $locationinfo["AstronomicTwilightStart"];
         $astronomictwilightend = $locationinfo["AstronomicTwilightEnd"];
         */
-		$dayHeight    = 1440/$dayDivisor;     //24h*60Min=1440Min, 1440/4=360
-		$marginLeft   = 20;
-		$marginTop    = 5;
+		$dayHeight = 1440 / $dayDivisor;     //24h*60Min=1440Min, 1440/4=360
+		$marginLeft = 20;
+		$marginTop = 5;
 		$marginBottom = 30;
-		$marginRight  = 5;
-		$imageWidth   = (365+30)*$dayWidth+$marginLeft+$marginRight; // 365days, 2*365=730
-		$imageHeight  = $dayHeight + $marginBottom + $marginTop;
+		$marginRight = 5;
+		$imageWidth = (365 + 30) * $dayWidth + $marginLeft + $marginRight; // 365days, 2*365=730
+		$imageHeight = $dayHeight + $marginBottom + $marginTop;
 
-		$image  = imagecreate($imageWidth,$imageHeight);
+		$image = imagecreate($imageWidth, $imageHeight);
 
-		$white         = imagecolorallocate($image,255,255,255);
-		$textColor     = imagecolorallocate($image,250,250,250);
-		$transparent   = imagecolortransparent($image,$white);
-		$black         = imagecolorallocate($image,0,0,0);
-		$red           = imagecolorallocate($image,255,0,0);
+		$white = imagecolorallocate($image, 255, 255, 255);
+		$textColor = imagecolorallocate($image, 250, 250, 250);
+		$transparent = imagecolortransparent($image, $white);
+		$black = imagecolorallocate($image, 0, 0, 0);
+		$red = imagecolorallocate($image, 255, 0, 0);
 		//$green         = imagecolorallocate($image,0,255,0);
-		$blue          = imagecolorallocate($image,0,0,255);
+		$blue = imagecolorallocate($image, 0, 0, 255);
 		//$grey_back     = imagecolorallocate($image, 100, 100, 100);
-		$grey_line     = imagecolorallocate($image, 120, 120, 120);
+		$grey_line = imagecolorallocate($image, 120, 120, 120);
 		$grey_sunrise1 = imagecolorallocate($image, 200, 200, 200);
 		$grey_sunrise2 = imagecolorallocate($image, 170, 170, 170);
 		$grey_sunrise3 = imagecolorallocate($image, 140, 140, 140);
-		$grey          = imagecolorallocate($image, 100, 100, 100);
-		$yellow        = imagecolorallocate($image, 255, 255, 0);
+		$grey = imagecolorallocate($image, 100, 100, 100);
+		$yellow = imagecolorallocate($image, 255, 255, 0);
 
-		imagefilledrectangle($image,1,1,$imageWidth,$imageHeight,$transparent);
-		imagefilledrectangle($image,$marginLeft-2,$marginTop-2,$marginLeft+(365+30)*$dayWidth+1,$marginTop+$dayHeight+2,$black);
+		imagefilledrectangle($image, 1, 1, $imageWidth, $imageHeight, $transparent);
+		imagefilledrectangle($image, $marginLeft - 2, $marginTop - 2, $marginLeft + (365 + 30) * $dayWidth + 1, $marginTop + $dayHeight + 2, $black);
 
-		$timestamp  = mktime(12, 0, 0, 1, 1, date("Y"))-15*3600*24;
-		for ($day=0; $day<365+30; $day++)
-		{
-			$sunrise     = date_sunrise($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 90+50/60, date("O")/100);
-			$sunset      = date_sunset ($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 90+50/60, date("O")/100);
-			$sunrise1    = date_sunrise($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 96, date("O")/100);
-			$sunset1     = date_sunset ($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 96, date("O")/100);
-			$sunrise2    = date_sunrise($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 102, date("O")/100);
-			$sunset2     = date_sunset ($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 102, date("O")/100);
-			$sunrise3    = date_sunrise($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 108, date("O")/100);
-			$sunset3     = date_sunset ($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 108, date("O")/100);
-
-			
-			$sunriseMins = (date("H",$sunrise)*60 + date("i",$sunrise)) / $dayDivisor;
-			$sunsetMins  = (date("H",$sunset)*60 +  date("i",$sunset))  / $dayDivisor;
-			$sunrise1Mins = (date("H",$sunrise1)*60 + date("i",$sunrise1)) / $dayDivisor;
-			$sunset1Mins  = (date("H",$sunset1)*60 +  date("i",$sunset1))  / $dayDivisor;
-			$sunrise2Mins = (date("H",$sunrise2)*60 + date("i",$sunrise2)) / $dayDivisor;
-			$sunset2Mins  = (date("H",$sunset2)*60 +  date("i",$sunset2))  / $dayDivisor;
-			$sunrise3Mins = (date("H",$sunrise3)*60 + date("i",$sunrise3)) / $dayDivisor;
-			$sunset3Mins  = (date("H",$sunset3)*60 +  date("i",$sunset3))  / $dayDivisor;
-			$middayMins  = (12*60) / $dayDivisor;
-
-			$dayBeg = $marginLeft+$day*$dayWidth-$dayWidth+1;
-			$dayEnd = $marginLeft+$day*$dayWidth;
+		$timestamp = mktime(12, 0, 0, 1, 1, date("Y")) - 15 * 3600 * 24;
+		for ($day = 0; $day < 365 + 30; $day++) {
+			$sunrise = date_sunrise($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 90 + 50 / 60, date("O") / 100);
+			$sunset = date_sunset($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 90 + 50 / 60, date("O") / 100);
+			$sunrise1 = date_sunrise($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 96, date("O") / 100);
+			$sunset1 = date_sunset($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 96, date("O") / 100);
+			$sunrise2 = date_sunrise($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 102, date("O") / 100);
+			$sunset2 = date_sunset($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 102, date("O") / 100);
+			$sunrise3 = date_sunrise($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 108, date("O") / 100);
+			$sunset3 = date_sunset($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 108, date("O") / 100);
 
 
-			imagefilledrectangle($image, $dayBeg, $marginTop, $marginLeft+$day*$dayWidth, $marginTop+$dayHeight, $grey );
-			if ($sunset3Mins<$sunrise3Mins or $sunset3Mins<$middayMins)
-			{
-				imagefilledrectangle($image, $dayBeg, $marginTop,                         $dayEnd, $marginTop+$dayHeight-$sunrise3Mins,  $grey_sunrise3);
-				imagefilledrectangle($image, $dayBeg, $marginTop+$dayHeight-$sunset3Mins, $dayEnd, $marginTop+$dayHeight,                $grey_sunrise3);
+			$sunriseMins = (date("H", $sunrise) * 60 + date("i", $sunrise)) / $dayDivisor;
+			$sunsetMins = (date("H", $sunset) * 60 + date("i", $sunset)) / $dayDivisor;
+			$sunrise1Mins = (date("H", $sunrise1) * 60 + date("i", $sunrise1)) / $dayDivisor;
+			$sunset1Mins = (date("H", $sunset1) * 60 + date("i", $sunset1)) / $dayDivisor;
+			$sunrise2Mins = (date("H", $sunrise2) * 60 + date("i", $sunrise2)) / $dayDivisor;
+			$sunset2Mins = (date("H", $sunset2) * 60 + date("i", $sunset2)) / $dayDivisor;
+			$sunrise3Mins = (date("H", $sunrise3) * 60 + date("i", $sunrise3)) / $dayDivisor;
+			$sunset3Mins = (date("H", $sunset3) * 60 + date("i", $sunset3)) / $dayDivisor;
+			$middayMins = (12 * 60) / $dayDivisor;
+
+			$dayBeg = $marginLeft + $day * $dayWidth - $dayWidth + 1;
+			$dayEnd = $marginLeft + $day * $dayWidth;
+
+
+			imagefilledrectangle($image, $dayBeg, $marginTop, $marginLeft + $day * $dayWidth, $marginTop + $dayHeight, $grey);
+			if ($sunset3Mins < $sunrise3Mins or $sunset3Mins < $middayMins) {
+				imagefilledrectangle($image, $dayBeg, $marginTop, $dayEnd, $marginTop + $dayHeight - $sunrise3Mins, $grey_sunrise3);
+				imagefilledrectangle($image, $dayBeg, $marginTop + $dayHeight - $sunset3Mins, $dayEnd, $marginTop + $dayHeight, $grey_sunrise3);
+			} else {
+				imagefilledrectangle($image, $dayBeg, $marginTop + $dayHeight - $sunrise3Mins, $dayEnd, $marginTop + $dayHeight - $sunset3Mins, $grey_sunrise3);
 			}
-			else
-			{
-				imagefilledrectangle($image, $dayBeg, $marginTop+$dayHeight-$sunrise3Mins, $dayEnd, $marginTop+$dayHeight-$sunset3Mins,  $grey_sunrise3);
+			if ($sunset2Mins < $sunrise2Mins or $sunset2Mins < $middayMins) {
+				imagefilledrectangle($image, $dayBeg, $marginTop, $dayEnd, $marginTop + $dayHeight - $sunrise2Mins, $grey_sunrise2);
+				imagefilledrectangle($image, $dayBeg, $marginTop + $dayHeight - $sunset2Mins, $dayEnd, $marginTop + $dayHeight, $grey_sunrise2);
+			} else {
+				imagefilledrectangle($image, $dayBeg, $marginTop + $dayHeight - $sunrise2Mins, $dayEnd, $marginTop + $dayHeight - $sunset2Mins, $grey_sunrise2);
 			}
-			if ($sunset2Mins<$sunrise2Mins or $sunset2Mins<$middayMins)
-			{
-				imagefilledrectangle($image, $dayBeg, $marginTop,                         $dayEnd, $marginTop+$dayHeight-$sunrise2Mins,  $grey_sunrise2);
-				imagefilledrectangle($image, $dayBeg, $marginTop+$dayHeight-$sunset2Mins, $dayEnd, $marginTop+$dayHeight,                $grey_sunrise2);
+			if ($sunset1Mins < $sunrise1Mins or $sunset1Mins < $middayMins) {
+				imagefilledrectangle($image, $dayBeg, $marginTop, $dayEnd, $marginTop + $dayHeight - $sunrise1Mins, $grey_sunrise1);
+				imagefilledrectangle($image, $dayBeg, $marginTop + $dayHeight - $sunset1Mins, $dayEnd, $marginTop + $dayHeight, $grey_sunrise1);
+			} else {
+				imagefilledrectangle($image, $dayBeg, $marginTop + $dayHeight - $sunrise1Mins, $dayEnd, $marginTop + $dayHeight - $sunset1Mins, $grey_sunrise1);
 			}
-			else
-			{
-				imagefilledrectangle($image, $dayBeg, $marginTop+$dayHeight-$sunrise2Mins, $dayEnd, $marginTop+$dayHeight-$sunset2Mins,  $grey_sunrise2);
-			}
-			if ($sunset1Mins<$sunrise1Mins or $sunset1Mins<$middayMins)
-			{
-				imagefilledrectangle($image, $dayBeg, $marginTop,                         $dayEnd, $marginTop+$dayHeight-$sunrise1Mins,  $grey_sunrise1);
-				imagefilledrectangle($image, $dayBeg, $marginTop+$dayHeight-$sunset1Mins, $dayEnd, $marginTop+$dayHeight,                $grey_sunrise1);
-			}
-			else
-			{
-				imagefilledrectangle($image, $dayBeg, $marginTop+$dayHeight-$sunrise1Mins, $dayEnd, $marginTop+$dayHeight-$sunset1Mins,  $grey_sunrise1);
-			}
-			imagefilledrectangle($image, $dayBeg, $marginTop+$dayHeight-$sunriseMins,  $dayEnd, $marginTop+$dayHeight-$sunsetMins,  $yellow );
-			imagefilledrectangle($image, $dayBeg, $marginTop+$dayHeight-$sunriseMins,  $dayEnd, $marginTop+$dayHeight-$sunriseMins, $red );
-			imagefilledrectangle($image, $dayBeg, $marginTop+$dayHeight-$sunsetMins,   $dayEnd, $marginTop+$dayHeight-$sunsetMins,  $red );
+			imagefilledrectangle($image, $dayBeg, $marginTop + $dayHeight - $sunriseMins, $dayEnd, $marginTop + $dayHeight - $sunsetMins, $yellow);
+			imagefilledrectangle($image, $dayBeg, $marginTop + $dayHeight - $sunriseMins, $dayEnd, $marginTop + $dayHeight - $sunriseMins, $red);
+			imagefilledrectangle($image, $dayBeg, $marginTop + $dayHeight - $sunsetMins, $dayEnd, $marginTop + $dayHeight - $sunsetMins, $red);
 
 			// Line for new Month
-			if (date("d",$timestamp)==1)
-			{
-				imagefilledrectangle($image, $dayEnd, $marginTop, $dayEnd, $marginTop+$dayHeight, $grey_line );
-				if ($day<365)
-				{
-					imagestring($image,2,$dayBeg+30*$dayWidth/2-8,$marginTop+$dayHeight+5,date('M',$timestamp),$textColor);
+			if (date("d", $timestamp) == 1) {
+				imagefilledrectangle($image, $dayEnd, $marginTop, $dayEnd, $marginTop + $dayHeight, $grey_line);
+				if ($day < 365) {
+					imagestring($image, 2, $dayBeg + 30 * $dayWidth / 2 - 8, $marginTop + $dayHeight + 5, date('M', $timestamp), $textColor);
 				}
 			}
 			// Line for current Day
-			if (date("d",$timestamp)==date("d",time()) and date("m",$timestamp)==date("m",time()))
-			{
-				imagefilledrectangle($image, $dayBeg,   $marginTop, $dayEnd,   $marginTop+$dayHeight, $blue );
-				imagefilledrectangle($image, $dayBeg-1, $marginTop, $dayEnd-1, $marginTop+$dayHeight, $blue );
+			if (date("d", $timestamp) == date("d", time()) and date("m", $timestamp) == date("m", time())) {
+				imagefilledrectangle($image, $dayBeg, $marginTop, $dayEnd, $marginTop + $dayHeight, $blue);
+				imagefilledrectangle($image, $dayBeg - 1, $marginTop, $dayEnd - 1, $marginTop + $dayHeight, $blue);
 			}
-			$timestamp = $timestamp+60*60*24;
+			$timestamp = $timestamp + 60 * 60 * 24;
 		}
 
 		// Hour Lines/Text
-		for ($hour=0; $hour<=24; $hour=$hour+2)
-		{
-			imageline($image, $marginLeft, $marginTop+$dayHeight/24*$hour, $marginLeft+(365+30)*$dayWidth-2, $marginTop+$dayHeight/24*$hour, $grey_line );
-			imagestring($image,2,2,$marginTop+$dayHeight-8-($dayHeight/24*$hour),str_pad($hour,2,'0', STR_PAD_LEFT),$textColor);
+		for ($hour = 0; $hour <= 24; $hour = $hour + 2) {
+			imageline($image, $marginLeft, $marginTop + $dayHeight / 24 * $hour, $marginLeft + (365 + 30) * $dayWidth - 2, $marginTop + $dayHeight / 24 * $hour, $grey_line);
+			imagestring($image, 2, 2, $marginTop + $dayHeight - 8 - ($dayHeight / 24 * $hour), str_pad($hour, 2, '0', STR_PAD_LEFT), $textColor);
 		}
 
-		$ImagePath  = IPS_GetKernelDir().'media'.DIRECTORY_SEPARATOR.$filename.'.gif';
-		imagegif ($image, $ImagePath);
+		$ImagePath = IPS_GetKernelDir() . 'media' . DIRECTORY_SEPARATOR . $filename . '.gif';
+		imagegif($image, $ImagePath);
 		imagedestroy($image);
 		return $ImagePath;
 	}
-	
+
 	// Profil anlegen
 	protected function SetupProfile($vartype, $name, $icon, $prefix, $suffix, $minvalue, $maxvalue, $stepsize, $digits, $associations)
 	{
-		if (!IPS_VariableProfileExists($name))
-		{
-			switch ($vartype)
-			{
+		if (!IPS_VariableProfileExists($name)) {
+			switch ($vartype) {
 				case IPSVarType::vtBoolean:
-					
+
 					break;
 				case IPSVarType::vtInteger:
 					$this->RegisterProfileIntegerAss($name, $icon, $prefix, $suffix, $minvalue, $maxvalue, $stepsize, $digits, $associations);
@@ -1245,45 +1088,40 @@ class Astronomy extends IPSModule
 				case IPSVarType::vtString:
 					$this->RegisterProfileString($name, $icon);
 					break;
-			}	
+			}
 		}
 		return $name;
 	}
-	
+
 	// Variable anlegen / löschen
 	protected function SetupVariable($ident, $name, $profile, $position, $vartype, $visible)
 	{
-        $objid = false;
-	    if($visible == true)
-		{
-			switch ($vartype)
-			{
+		$objid = false;
+		if ($visible == true) {
+			switch ($vartype) {
 				case IPSVarType::vtBoolean:
-					$objid = $this->RegisterVariableBoolean ( $ident, $name, $profile, $position );
+					$objid = $this->RegisterVariableBoolean($ident, $name, $profile, $position);
 					break;
 				case IPSVarType::vtInteger:
-					$objid = $this->RegisterVariableInteger ( $ident, $name, $profile, $position );
+					$objid = $this->RegisterVariableInteger($ident, $name, $profile, $position);
 					break;
 				case IPSVarType::vtFloat:
-					$objid = $this->RegisterVariableFloat ( $ident, $name, $profile, $position );
+					$objid = $this->RegisterVariableFloat($ident, $name, $profile, $position);
 					break;
 				case IPSVarType::vtString:
-					$objid = $this->RegisterVariableString ( $ident, $name, $profile, $position );
+					$objid = $this->RegisterVariableString($ident, $name, $profile, $position);
 					break;
-			}	
-		}
-		else
-		{
+			}
+		} else {
 			$objid = @$this->GetIDForIdent($ident);
-			if ($objid > 0)
-			{
+			if ($objid > 0) {
 				$this->UnregisterVariable($ident);
 			}
 		}
-		
+
 		return $objid;
 	}
-	
+
 	protected function SunMoonView($sunazimut, $sunaltitude, $moonazimut, $moonaltitude)
 	{
 		// Anzeige der Position von Sonne und Mond im WF
@@ -1292,11 +1130,11 @@ class Astronomy extends IPSModule
 		// 2016-04-25 Bernd Hoffmann
 
 		//Daten für Nullpunkt usw.------------------------------------------------------
-        $npx = $this->ReadPropertyInteger("zeropointx"); //Nullpunkt x-achse
-        $npy = $this->ReadPropertyInteger("zeropointy"); //Nullpunkt y-achse
-        $canvaswidth = $this->ReadPropertyInteger("canvaswidth"); //canvas width
-        $canvasheight = $this->ReadPropertyInteger("canvasheight"); //canvas height
-        $z = 40;           //Offset y-achse
+		$npx = $this->ReadPropertyInteger("zeropointx"); //Nullpunkt x-achse
+		$npy = $this->ReadPropertyInteger("zeropointy"); //Nullpunkt y-achse
+		$canvaswidth = $this->ReadPropertyInteger("canvaswidth"); //canvas width
+		$canvasheight = $this->ReadPropertyInteger("canvasheight"); //canvas height
+		$z = 40;           //Offset y-achse
 
 		$lWt = 2;         //Linienstärke Teilstriche
 		$lWh = 2;         //Linienstärke Horizontlinie
@@ -1305,37 +1143,37 @@ class Astronomy extends IPSModule
 		$l1 = 360;        //Länge der Horizontlinie
 
 		$x1 = $npx;            //Nullpunkt waagerecht
-		$y1 = $npy+$z;        //Nullpunkt senkrecht
-		$x2 = $x1+$l1;        //Nullpunkt + Länge = waagerechte Linie
-		$y2 = $npy+$z;
+		$y1 = $npy + $z;        //Nullpunkt senkrecht
+		$x2 = $x1 + $l1;        //Nullpunkt + Länge = waagerechte Linie
+		$y2 = $npy + $z;
 
 		//Teilstriche-------------------------------------------------------------------
 		$l2 = 10;         //Länge der Teilstriche
 		//N 0°
 		$x3 = $npx;           //Nullpunkt waagerecht
-		$y3 = $y1-$l2/2;    //Nullpunkt senkrecht
+		$y3 = $y1 - $l2 / 2;    //Nullpunkt senkrecht
 		$x4 = $x3;
-		$y4 = $y3+$l2;        //Nullpunkt + Länge = senkrechte Linie
+		$y4 = $y3 + $l2;        //Nullpunkt + Länge = senkrechte Linie
 		//O
-		$x5 = $npx+90;
-		$y5 = $y1-$l2/2;
+		$x5 = $npx + 90;
+		$y5 = $y1 - $l2 / 2;
 		$x6 = $x5;
-		$y6 = $y5+$l2;
+		$y6 = $y5 + $l2;
 		//S
-		$x7 = $npx+180;
-		$y7 = $y1-$l2/2;
+		$x7 = $npx + 180;
+		$y7 = $y1 - $l2 / 2;
 		$x8 = $x7;
-		$y8 = $y7+$l2;
+		$y8 = $y7 + $l2;
 		//W
-		$x9 = $npx+270;
-		$y9 = $y1-$l2/2;
+		$x9 = $npx + 270;
+		$y9 = $y1 - $l2 / 2;
 		$x10 = $x9;
-		$y10 = $y9+$l2;
+		$y10 = $y9 + $l2;
 		//N 360°
-		$x11 = $npx+360;
-		$y11 = $y1-$l2/2;
+		$x11 = $npx + 360;
+		$y11 = $y1 - $l2 / 2;
 		$x12 = $x11;
-		$y12 = $y11+$l2;
+		$y12 = $y11 + $l2;
 
 		//Daten von Sonne und Mond holen------------------------------------------------
 		$xsun = round($npx + $sunazimut);
@@ -1346,7 +1184,7 @@ class Astronomy extends IPSModule
 
 		//Erstellung der Html Datei-----------------------------------------------------
 		$html =
-		'<html>
+			'<html>
 
 		<head>
 		<script type="text/javascript">
@@ -1356,58 +1194,58 @@ class Astronomy extends IPSModule
 		if(canvas.getContext){
 			var ctx = canvas.getContext("2d");
 
-			ctx.lineWidth = '.$lWt.'; //Teilstriche
+			ctx.lineWidth = ' . $lWt . '; //Teilstriche
 			ctx.strokeStyle = "rgb(51,102,255)";
 			ctx.beginPath();
-			ctx.moveTo('.$x3.','.$y3.');
-			ctx.lineTo('.$x4.','.$y4.');
+			ctx.moveTo(' . $x3 . ',' . $y3 . ');
+			ctx.lineTo(' . $x4 . ',' . $y4 . ');
 			ctx.stroke();
 			ctx.beginPath();
-			ctx.moveTo('.$x5.','.$y5.');
-			ctx.lineTo('.$x6.','.$y6.');
+			ctx.moveTo(' . $x5 . ',' . $y5 . ');
+			ctx.lineTo(' . $x6 . ',' . $y6 . ');
 			ctx.stroke();
 			ctx.beginPath();
-			ctx.moveTo('.$x7.','.$y7.');
-			ctx.lineTo('.$x8.','.$y8.');
+			ctx.moveTo(' . $x7 . ',' . $y7 . ');
+			ctx.lineTo(' . $x8 . ',' . $y8 . ');
 			ctx.stroke();
 			ctx.beginPath();
-			ctx.moveTo('.$x9.','.$y9.');
-			ctx.lineTo('.$x10.','.$y10.');
+			ctx.moveTo(' . $x9 . ',' . $y9 . ');
+			ctx.lineTo(' . $x10 . ',' . $y10 . ');
 			ctx.stroke();
 			ctx.beginPath();
-			ctx.moveTo('.$x11.','.$y11.');
-			ctx.lineTo('.$x12.','.$y12.');
+			ctx.moveTo(' . $x11 . ',' . $y11 . ');
+			ctx.lineTo(' . $x12 . ',' . $y12 . ');
 			ctx.stroke();
 			
 			ctx.lineWidth = 2; //Text
 			ctx.fillStyle = "rgb(139,115,85)";
 			ctx.beginPath();
 			ctx.font = "18px calibri";
-		   ctx.fillText("N", '.$x4.'-6,'.$y4.'+15);
-		   ctx.fillText("O", '.$x6.'-6,'.$y6.'+15);
-		   ctx.fillText("S", '.$x8.'-5,'.$y8.'+15);
-		   ctx.fillText("W", '.$x10.'-8,'.$y10.'+15);
-		   ctx.fillText("N", '.$x12.'-6,'.$y12.'+15);
+		   ctx.fillText("N", ' . $x4 . '-6,' . $y4 . '+15);
+		   ctx.fillText("O", ' . $x6 . '-6,' . $y6 . '+15);
+		   ctx.fillText("S", ' . $x8 . '-5,' . $y8 . '+15);
+		   ctx.fillText("W", ' . $x10 . '-8,' . $y10 . '+15);
+		   ctx.fillText("N", ' . $x12 . '-6,' . $y12 . '+15);
 		   ctx.font = "16px calibri";
-		   ctx.fillText("Horizont", '.$x1.'+368,'.$y1.'+5);
+		   ctx.fillText("Horizont", ' . $x1 . '+368,' . $y1 . '+5);
 		   
-			ctx.lineWidth = '.$lWh.'; //Horizontlinie
+			ctx.lineWidth = ' . $lWh . '; //Horizontlinie
 			ctx.strokeStyle = "rgb(51,102,255)";
 			ctx.beginPath();
-			ctx.moveTo('.$x1.','.$y1.');
-			ctx.lineTo('.$x2.','.$y2.');
+			ctx.moveTo(' . $x1 . ',' . $y1 . ');
+			ctx.lineTo(' . $x2 . ',' . $y2 . ');
 			ctx.stroke();
 			
 			ctx.lineWidth = 1; //Mond
 			ctx.fillStyle = "rgb(255,255,255)";
 			ctx.beginPath();
-		   ctx.arc('.$xmoon.','.$ymoon.',10,0,Math.PI*2,true);
+		   ctx.arc(' . $xmoon . ',' . $ymoon . ',10,0,Math.PI*2,true);
 		   ctx.fill();
 		   
 		   ctx.lineWidth = 1; //Sonne
 			ctx.fillStyle = "rgb(255,255,102)";
 			ctx.beginPath();
-		   ctx.arc('.$xsun.','.$ysun.',18,0,Math.PI*2,true);
+		   ctx.arc(' . $xsun . ',' . $ysun . ',18,0,Math.PI*2,true);
 		   ctx.fill();
 			}
 		}
@@ -1416,7 +1254,7 @@ class Astronomy extends IPSModule
 		</head>
 
 		<body onload="draw()">
-		<canvas id="canvas1" width="'.$canvaswidth.'" height="'.$canvasheight.'" > //style="border:1px solid yellow;"
+		<canvas id="canvas1" width="' . $canvaswidth . '" height="' . $canvasheight . '" > //style="border:1px solid yellow;"
 		</canvas>
 		</body>
 
@@ -1430,70 +1268,58 @@ class Astronomy extends IPSModule
 		$framewidthtypevalue = $this->ReadPropertyInteger("framewidthtype");
 		$framewidthtype = $this->GetFrameType($framewidthtypevalue);
 		$filename = "sunmoonline.php";
-		$fullFilename = IPS_GetKernelDir()."webfront".DIRECTORY_SEPARATOR."user".DIRECTORY_SEPARATOR.$filename;
+		$fullFilename = IPS_GetKernelDir() . "webfront" . DIRECTORY_SEPARATOR . "user" . DIRECTORY_SEPARATOR . $filename;
 		$handle = fopen($fullFilename, "w");
 		fwrite($handle, $html);
 		fclose($handle);
-		$HTMLData = '<iframe src="user'.DIRECTORY_SEPARATOR.'sunmoonline.php" border="0" frameborder="0" scrolling="no" style= "width:'.$framewidth.$framewidthtype.'; height:'.$frameheight.$frameheighttype.';"/></iframe>';
-		if($this->ReadPropertyBoolean("sunmoonview") == true)
-		{
-			SetValue($this->GetIDForIdent("sunmoonview"), $HTMLData);
+		$HTMLData = '<iframe src="user' . DIRECTORY_SEPARATOR . 'sunmoonline.php" border="0" frameborder="0" scrolling="no" style= "width:' . $framewidth . $framewidthtype . '; height:' . $frameheight . $frameheighttype . ';"/></iframe>';
+		if ($this->ReadPropertyBoolean("sunmoonview") == true) {
+			$this->SetValue('sunmoonview', $HTMLData);
 		}
 	}
-	
+
 	protected function GetFrameType($value)
 	{
-        $type = "px";
-	    if($value == 1)
-		{
+		$type = "px";
+		if ($value == 1) {
 			$type = "px";
-		}
-		elseif($value == 2)
-		{
+		} elseif ($value == 2) {
 			$type = "%";
 		}
 		return $type;
 	}
-	
+
 	protected function GetTimeformat()
 	{
 		$formatselection = $this->ReadPropertyInteger("timeformat");
-        $timeformat = "H:i";
-		if($formatselection == 1)
-		{
+		$timeformat = "H:i";
+		if ($formatselection == 1) {
 			$timeformat = "H:i";
 		}
-		if($formatselection == 2)
-		{
+		if ($formatselection == 2) {
 			$timeformat = "H:i:s";
 		}
-		if($formatselection == 3)
-		{
+		if ($formatselection == 3) {
 			$timeformat = "h:i";
 		}
-		if($formatselection == 4)
-		{
+		if ($formatselection == 4) {
 			$timeformat = "h:i:s";
 		}
-		if($formatselection == 5)
-		{
+		if ($formatselection == 5) {
 			$timeformat = "g:i";
 		}
-		if($formatselection == 6)
-		{
+		if ($formatselection == 6) {
 			$timeformat = "g:i:s";
 		}
-		if($formatselection == 7)
-		{
+		if ($formatselection == 7) {
 			$timeformat = "G:i";
 		}
-		if($formatselection == 8)
-		{
+		if ($formatselection == 8) {
 			$timeformat = "G:i:s";
 		}
 		return $timeformat;
 	}
-	
+
 	public function SetAstronomyValues()
 	{
 		$location = $this->getlocation();
@@ -1513,77 +1339,73 @@ class Astronomy extends IPSModule
 		$sunriseoffset = $this->GetOffset("Sunrise");
 		$risetype = $this->ReadPropertyInteger("risetype");
 		$sunrisetimestamp = 0;
-		switch ($risetype)
-			{
-				case 1:
-					$sunrisetimestamp = $sunrise + $sunriseoffset;// "Sunrise"
-					break;
-				case 2:
-					$sunrisetimestamp = $civiltwilightstart + $sunriseoffset; // "CivilTwilightStart"
-					break;
-				case 3:
-					$sunrisetimestamp = $nautictwilightstart + $sunriseoffset; // "NauticTwilightStart"
-					break;
-				case 4:
-					$sunrisetimestamp = $astronomictwilightstart + $sunriseoffset; // "AstronomicTwilightStart"
-					break;
-				case 5:
-					$moonrisedata = $this->Mondaufgang();
-					$moonrisetimestring = $moonrisedata["moonrisetime"];
-					$moonrisetime = strtotime($moonrisetimestring);
-					$sunrisetimestamp = $moonrisetime + $sunriseoffset; // "Moonrise"
-					break;	
-			}	
-			
+		switch ($risetype) {
+			case 1:
+				$sunrisetimestamp = $sunrise + $sunriseoffset;// "Sunrise"
+				break;
+			case 2:
+				$sunrisetimestamp = $civiltwilightstart + $sunriseoffset; // "CivilTwilightStart"
+				break;
+			case 3:
+				$sunrisetimestamp = $nautictwilightstart + $sunriseoffset; // "NauticTwilightStart"
+				break;
+			case 4:
+				$sunrisetimestamp = $astronomictwilightstart + $sunriseoffset; // "AstronomicTwilightStart"
+				break;
+			case 5:
+				$moonrisedata = $this->Mondaufgang();
+				$moonrisetimestring = $moonrisedata["moonrisetime"];
+				$moonrisetime = strtotime($moonrisetimestring);
+				$sunrisetimestamp = $moonrisetime + $sunriseoffset; // "Moonrise"
+				break;
+		}
+
 		$settype = $this->ReadPropertyInteger("settype");
 		$sunsettimestamp = 0;
-		switch ($settype)
-			{
-				case 1:
-					$sunsettimestamp = $sunset + $sunsetoffset; // "Sunset"
-					break;
-				case 2:
-					$sunsettimestamp = $civiltwilightend + $sunsetoffset; // "CivilTwilightEnd"
-					break;
-				case 3:
-					$sunsettimestamp = $nautictwilightend + $sunsetoffset; // "NauticTwilightEnd"
-					break;
-				case 4:
-					$sunsettimestamp = $astronomictwilightend + $sunsetoffset; // "AstronomicTwilightEnd"
-					break;
-				case 5:
-					$moonsetdata = $this->Monduntergang();
-					$moonsettimestring = $moonsetdata["moonsettime"];
-					$moonsettime = strtotime($moonsettimestring);
-					$sunsettimestamp = $moonsettime + $sunsetoffset; // "Moonset"
-					break;	
-			}
+		switch ($settype) {
+			case 1:
+				$sunsettimestamp = $sunset + $sunsetoffset; // "Sunset"
+				break;
+			case 2:
+				$sunsettimestamp = $civiltwilightend + $sunsetoffset; // "CivilTwilightEnd"
+				break;
+			case 3:
+				$sunsettimestamp = $nautictwilightend + $sunsetoffset; // "NauticTwilightEnd"
+				break;
+			case 4:
+				$sunsettimestamp = $astronomictwilightend + $sunsetoffset; // "AstronomicTwilightEnd"
+				break;
+			case 5:
+				$moonsetdata = $this->Monduntergang();
+				$moonsettimestring = $moonsetdata["moonsettime"];
+				$moonsettime = strtotime($moonsettimestring);
+				$sunsettimestamp = $moonsettime + $sunsetoffset; // "Moonset"
+				break;
+		}
 		$sunsetobjid = @$this->GetIDForIdent("sunset");
 		$sunriseobjid = @$this->GetIDForIdent("sunrise");
-		if($sunsetobjid > 0)
-		{
-			SetValue($sunsetobjid, $sunsettimestamp);
-			if($this->ReadPropertyBoolean("extinfoselection") == true) // float
+		if ($sunsetobjid > 0) {
+			$this->SetValue('sunset', $sunsettimestamp);
+			if ($this->ReadPropertyBoolean("extinfoselection") == true) // float
 			{
 				$timeformat = $this->GetTimeformat();
 				$sunsettime = date($timeformat, $sunsettimestamp);
-				SetValue($this->GetIDForIdent("sunsettime"), $sunsettime);
+				$this->SetValue('sunsettime', $sunsettime);
 			}
-			
+
 		}
-		if($sunriseobjid > 0)
-		{
-			SetValue($sunriseobjid, $sunrisetimestamp);
-			if($this->ReadPropertyBoolean("extinfoselection") == true) // float
+		if ($sunriseobjid > 0) {
+			$this->SetValue('sunrise', $sunrisetimestamp);
+			if ($this->ReadPropertyBoolean("extinfoselection") == true) // float
 			{
 				$timeformat = $this->GetTimeformat();
 				$sunrisetime = date($timeformat, $sunrisetimestamp);
-				SetValue($this->GetIDForIdent("sunrisetime"), $sunrisetime);
+				$this->SetValue('sunrisetime', $sunrisetime);
 			}
 		}
 		$P = $Latitude;
 		$L = $Longitude;
-		
+
 		$day = intval(date("d"));
 		$month = intval(date("m"));
 		$year = intval(date("Y"));
@@ -1591,17 +1413,15 @@ class Astronomy extends IPSModule
 		$Minute = intval(date("i"));
 		$Second = intval(date("s"));
 		$summer = intval(date("I"));
-		if ($summer == 0)
-			{   //Summertime
-				$DS = 0;
-			}         //$DS = Daylight Saving
-			else
-			{
-				$DS = 1;
-			}
+		if ($summer == 0) {   //Summertime
+			$DS = 0;
+		}         //$DS = Daylight Saving
+		else {
+			$DS = 1;
+		}
 		$ZC = $this->ReadPropertyFloat("UTC"); // Zone Correction to Greenwich: 1 = UTC+1
-		
-	
+
+
 		// $timestamp = time();
 		// $mondphase = $this->moon_phase(date('Y', $timestamp), date('n', $timestamp), date('j', $timestamp));
 		$moonrise = $this->Mondaufgang();
@@ -1613,89 +1433,78 @@ class Astronomy extends IPSModule
 		$mondphase = $this->MoonphasePercent();
 		$picture = $this->GetMoonPicture($mondphase);
 
-        $currentnewmoonstring = $this->Moon_CurrentNewmoon();
-        $currentfirstquarterstring = $this->Moon_CurrentFirstQuarter();
-        $currentfullmoonstring = $this->Moon_CurrentFullmoon();
-        $currentlastquarterstring = $this->Moon_CurrentLastQuarter();
+		$currentnewmoonstring = $this->Moon_CurrentNewmoon();
+		$currentfirstquarterstring = $this->Moon_CurrentFirstQuarter();
+		$currentfullmoonstring = $this->Moon_CurrentFullmoon();
+		$currentlastquarterstring = $this->Moon_CurrentLastQuarter();
 
-        $newmoonstring = $this->Moon_Newmoon();
-        $firstquarterstring = $this->Moon_FirstQuarter();
-        $fullmoonstring = $this->Moon_Fullmoon();
-        $lastquarterstring = $this->Moon_LastQuarter();
+		$newmoonstring = $this->Moon_Newmoon();
+		$firstquarterstring = $this->Moon_FirstQuarter();
+		$fullmoonstring = $this->Moon_Fullmoon();
+		$lastquarterstring = $this->Moon_LastQuarter();
 
-        if($this->ReadPropertyBoolean("newmoon") == true)
-        {
-            SetValue($this->GetIDForIdent("newmoon"), $newmoonstring["newmoon"]);
-            if($this->ReadPropertyBoolean("extinfoselection") == true) // float
-            {
-                SetValue($this->GetIDForIdent("newmoondate"), $newmoonstring["newmoondate"]);
-                SetValue($this->GetIDForIdent("newmoontime"), $newmoonstring["newmoontime"]);
-            }
-        }
-        if($this->ReadPropertyBoolean("currentnewmoon") == true)
-        {
-            SetValue($this->GetIDForIdent("currentnewmoon"), $currentnewmoonstring["newmoon"]);
-        }
-        if($this->ReadPropertyBoolean("firstquarter") == true)
-        {
-            SetValue($this->GetIDForIdent("firstquarter"), $firstquarterstring["firstquarter"]);
-            if($this->ReadPropertyBoolean("extinfoselection") == true) // float
-            {
-                SetValue($this->GetIDForIdent("firstquarterdate"), $firstquarterstring["firstquarterdate"]);
-                SetValue($this->GetIDForIdent("firstquartertime"), $firstquarterstring["firstquartertime"]);
-            }
-        }
-        if($this->ReadPropertyBoolean("currentfirstquarter") == true)
-        {
-            SetValue($this->GetIDForIdent("currentfirstquarter"), $currentfirstquarterstring["firstquarter"]);
-        }
-        if($this->ReadPropertyBoolean("fullmoon") == true)
-        {
-            SetValue($this->GetIDForIdent("fullmoon"), $fullmoonstring["fullmoon"]);
-            if($this->ReadPropertyBoolean("extinfoselection") == true) // float
-            {
-                SetValue($this->GetIDForIdent("fullmoondate"), $fullmoonstring["fullmoondate"]);
-                SetValue($this->GetIDForIdent("fullmoontime"), $fullmoonstring["fullmoontime"]);
-            }
-        }
-        if($this->ReadPropertyBoolean("currentfullmoon") == true)
-        {
-            SetValue($this->GetIDForIdent("currentfullmoon"), $currentfullmoonstring["fullmoon"]);
-        }
-        if($this->ReadPropertyBoolean("lastquarter") == true)
-        {
-            SetValue($this->GetIDForIdent("lastquarter"), $lastquarterstring["lastquarter"]);
-            if($this->ReadPropertyBoolean("extinfoselection") == true) // float
-            {
-                SetValue($this->GetIDForIdent("lastquarterdate"), $lastquarterstring["lastquarterdate"]);
-                SetValue($this->GetIDForIdent("lastquartertime"), $lastquarterstring["lastquartertime"]);
-            }
-        }
-        if($this->ReadPropertyBoolean("currentlastquarter") == true)
-        {
-            SetValue($this->GetIDForIdent("currentlastquarter"), $currentlastquarterstring["lastquarter"]);
-        }
-				
+		if ($this->ReadPropertyBoolean("newmoon") == true) {
+			$this->SetValue('newmoon', $newmoonstring["newmoon"]);
+			if ($this->ReadPropertyBoolean("extinfoselection") == true) // float
+			{
+				$this->SetValue('newmoondate', $newmoonstring["newmoondate"]);
+				$this->SetValue('newmoontime', $newmoonstring["newmoontime"]);
+			}
+		}
+		if ($this->ReadPropertyBoolean("currentnewmoon") == true) {
+			$this->SetValue('currentnewmoon', $currentnewmoonstring["newmoon"]);
+		}
+		if ($this->ReadPropertyBoolean("firstquarter") == true) {
+			$this->SetValue('firstquarter', $firstquarterstring["firstquarter"]);
+			if ($this->ReadPropertyBoolean("extinfoselection") == true) // float
+			{
+				$this->SetValue('firstquarterdate', $firstquarterstring["firstquarterdate"]);
+				$this->SetValue('firstquartertime', $firstquarterstring["firstquartertime"]);
+			}
+		}
+		if ($this->ReadPropertyBoolean("currentfirstquarter") == true) {
+			$this->SetValue('currentfirstquarter', $currentfirstquarterstring["firstquarter"]);
+		}
+		if ($this->ReadPropertyBoolean("fullmoon") == true) {
+			$this->SetValue('fullmoon', $fullmoonstring["fullmoon"]);
+			if ($this->ReadPropertyBoolean("extinfoselection") == true) // float
+			{
+				$this->SetValue('fullmoondate', $fullmoonstring["fullmoondate"]);
+				$this->SetValue('fullmoontime', $fullmoonstring["fullmoontime"]);
+			}
+		}
+		if ($this->ReadPropertyBoolean("currentfullmoon") == true) {
+			$this->SetValue('currentfullmoon', $currentfullmoonstring["fullmoon"]);
+		}
+		if ($this->ReadPropertyBoolean("lastquarter") == true) {
+			$this->SetValue('lastquarter', $lastquarterstring["lastquarter"]);
+			if ($this->ReadPropertyBoolean("extinfoselection") == true) // float
+			{
+				$this->SetValue('lastquarterdate', $lastquarterstring["lastquarterdate"]);
+				$this->SetValue('lastquartertime', $lastquarterstring["lastquartertime"]);
+			}
+		}
+		if ($this->ReadPropertyBoolean("currentlastquarter") == true) {
+			$this->SetValue('currentlastquarter', $currentlastquarterstring["lastquarter"]);
+		}
+
 		$moonphasearr = $this->MoonphaseText();
 		$moonphasetext = $moonphasearr['moonphasetext'];
 		$moonphasepercent = $moonphasearr['moonphasepercent'];
 		$this->UpdateMedia($picture["picid"]);
-		
+
 		$limited = $this->ReadPropertyBoolean("picturetwilightlimited");
-		if($limited)
-		{
+		if ($limited) {
 			$type = "Limited";
-		}
-		else
-		{
+		} else {
 			$type = "Standard";
 		}
 		$twilightyearpic = $this->TwilightYearPicture($type);
 		$mediaid_twilight_year = $twilightyearpic["mediaid_twilight_year"];
-        $twilight_year_image_path = $twilightyearpic["twilight_year_image_path"];
-        $twilightdaypic = $this->TwilightDayPicture($type);
-        $mediaid_twilight_day = $twilightdaypic["mediaid_twilight_day"];
-        $twilight_day_image_path = $twilightdaypic["twilight_day_image_path"];
+		$twilight_year_image_path = $twilightyearpic["twilight_year_image_path"];
+		$twilightdaypic = $this->TwilightDayPicture($type);
+		$mediaid_twilight_day = $twilightdaypic["mediaid_twilight_day"];
+		$twilight_day_image_path = $twilightdaypic["twilight_day_image_path"];
 
 		$HMSDec = $this->HMSDH($Hour, $Minute, $Second); //Local Time HMS in Decimal Hours
 		// $UTDec = $this->LctUT($Hour, $Minute, $Second, $DS, $ZC, $day, $month, $year)["UTDec"];
@@ -1703,11 +1512,10 @@ class Astronomy extends IPSModule
 		$GM = $this->LctUT($Hour, $Minute, $Second, $DS, $ZC, $day, $month, $year)["GM"];
 		$GY = $this->LctUT($Hour, $Minute, $Second, $DS, $ZC, $day, $month, $year)["GY"];
 		$JD = $this->CDJD($GD, $GM, $GY);  //UT Julian Date
-		if($this->ReadPropertyBoolean("juliandate") == true)
-		{
-			SetValue($this->GetIDForIdent("juliandate"), $JD);
+		if ($this->ReadPropertyBoolean("juliandate") == true) {
+			$this->SetValue('juliandate', $JD);
 		}
-		
+
 		$LCH = $this->DHHour($HMSDec);  //LCT Hour --> Local Time
 		$LCM = $this->DHMin($HMSDec);   //LCT Minute
 		$LCS = $this->DHSec($HMSDec);   //LCT Second
@@ -1718,12 +1526,12 @@ class Astronomy extends IPSModule
 		// $UT_value = $UH.":".$UM.":".$US;
 		// $UDate_value = $GD.":".$GM.":".$GY;
 
-		
+
 		//Calculation Sun---------------------------------------------------------------
 
 		//Sun's ecliptic longitude in decimal degrees
 		$Sunlong = $this->SunLong($LCH, $LCM, $LCS, $DS, $ZC, $day, $month, $year);
-        $this->SendDebug("Astronomy:","Sun's ecliptic longitude".$Sunlong,0);
+		$this->SendDebug("Astronomy:", "Sun's ecliptic longitude" . $Sunlong, 0);
 		$SunlongDeg = $this->DDDeg($Sunlong);
 		$SunlongMin = $this->DDMin($Sunlong);
 		$SunlongSec = $this->DDSec($Sunlong);
@@ -1736,22 +1544,29 @@ class Astronomy extends IPSModule
 		// $SunRAhms = $SunRAhour.":".$SunRAm.":".$SunRAs;
 
 		$season = "";
-		if(($SunRAh>=0)and($SunRAh<6)){$season = 1;}        //Frühling
-		if(($SunRAh>=6)and($SunRAh<12)){$season = 2;}        //Sommer
-		if(($SunRAh>=12)and($SunRAh<18)){$season = 3;}        //Herbst
-		if(($SunRAh>=18)and($SunRAh<24)){$season = 4;}        //Winter
-		if($this->ReadPropertyBoolean("season") == true)
-		{
-			SetValue($this->GetIDForIdent("season"), $season); 
+		if (($SunRAh >= 0) and ($SunRAh < 6)) {
+			$season = 1;
+		}        //Frühling
+		if (($SunRAh >= 6) and ($SunRAh < 12)) {
+			$season = 2;
+		}        //Sommer
+		if (($SunRAh >= 12) and ($SunRAh < 18)) {
+			$season = 3;
+		}        //Herbst
+		if (($SunRAh >= 18) and ($SunRAh < 24)) {
+			$season = 4;
+		}        //Winter
+		if ($this->ReadPropertyBoolean("season") == true) {
+			$this->SetValue('season', $season);
 		}
-		
+
 		//Sun's Dec
 		$SunDec = $this->ECDec($SunlongDeg, $SunlongMin, $SunlongSec, 0, 0, 0, $GD, $GM, $GY);            //returns declination in decimal degrees
 		$SunDecd = $this->DDDeg($SunDec);
 		$SunDecm = $this->DDmin($SunDec);
 		$SunDecs = $this->DDSec($SunDec);
-		$SunDecdms = $SunDecd.":".$SunDecm.":".$SunDecs;
-        $this->SendDebug("Astronomy:","Sun decimal degrees".$SunDecdms,0);
+		$SunDecdms = $SunDecd . ":" . $SunDecm . ":" . $SunDecs;
+		$this->SendDebug("Astronomy:", "Sun decimal degrees" . $SunDecdms, 0);
 
 
 		//RH Right Ascension in HMS, LH Local Civil Time in HMS, DS Daylight saving, ZC Zonecorrection,
@@ -1771,47 +1586,48 @@ class Astronomy extends IPSModule
 		// $SunDist = $this->SunDist($Hour, $Minute, $Second, $DS, $ZC, $day, $month, $year);
 		$SunTA = $this->Radians($this->SunTrueAnomaly($Hour, $Minute, $Second, $DS, $ZC, $day, $month, $year));
 		$SunEcc = $this->SunEcc($GD, $GM, $GY);
-		$fSun = (1 + $SunEcc * cos($SunTA))/(1 - $SunEcc * $SunEcc);
-		$rSun = round(149598500/$fSun,-2);
+		$fSun = (1 + $SunEcc * cos($SunTA)) / (1 - $SunEcc * $SunEcc);
+		$rSun = round(149598500 / $fSun, -2);
 
-		if($this->ReadPropertyBoolean("sunazimut") == true) // float
+		if ($this->ReadPropertyBoolean("sunazimut") == true) // float
 		{
-			SetValue($this->GetIDForIdent("sunazimut"), $sunazimut); 
+			$this->SetValue('sunazimut', $sunazimut);
 		}
-		if($this->ReadPropertyBoolean("sundirection") == true) // float
+		if ($this->ReadPropertyBoolean("sundirection") == true) // float
 		{
-			SetValue($this->GetIDForIdent("sundirection"), $SunDazimut); 
+			$this->SetValue('sundirection', $SunDazimut);
 		}
-		if($this->ReadPropertyBoolean("sunaltitude") == true) // float
+		if ($this->ReadPropertyBoolean("sunaltitude") == true) // float
 		{
-			SetValue($this->GetIDForIdent("sunaltitude"), $sunaltitude);
+			$this->SetValue('sunaltitude', $sunaltitude);
 		}
-		if($this->ReadPropertyBoolean("sundistance") == true) // float
+		if ($this->ReadPropertyBoolean("sundistance") == true) // float
 		{
-			SetValue($this->GetIDForIdent("sundistance"), $rSun);
+			$this->SetValue('sundistance', $rSun);
 		}
-		
-		
-		
+
+
 		//Calculation Moon--------------------------------------------------------------
 
 		$MoonLong = $this->MoonLong($LCH, $LCM, $LCS, $DS, $ZC, $day, $month, $year); //Moon ecliptic longitude (degrees)
-        $this->SendDebug("Astronomy:","Moon ecliptic longitude ".$MoonLong,0);
+		$this->SendDebug("Astronomy:", "Moon ecliptic longitude " . $MoonLong, 0);
 		$MoonLat = $this->MoonLat($LCH, $LCM, $LCS, $DS, $ZC, $day, $month, $year); //Moon elciptic latitude (degrees)
-        $this->SendDebug("Astronomy:","Moon elciptic latitude ".$MoonLat,0);
+		$this->SendDebug("Astronomy:", "Moon elciptic latitude " . $MoonLat, 0);
 		$Nutation = $this->NutatLong($GD, $GM, $GY); //nutation in longitude (degrees)
-        $this->SendDebug("Astronomy:","nutation in longitude ".$Nutation,0);
+		$this->SendDebug("Astronomy:", "nutation in longitude " . $Nutation, 0);
 		$Moonlongcorr = $MoonLong + $Nutation; //corrected longitude (degrees)
-        $MoonHP = $this->MoonHP($LCH, $LCM, $LCS, $DS, $ZC, $day, $month, $year);    //Moon's horizontal parallax (degrees)
-        $this->SendDebug("Astronomy:","Moon's horizontal parallax ".$MoonHP,0);
+		$MoonHP = $this->MoonHP($LCH, $LCM, $LCS, $DS, $ZC, $day, $month, $year);    //Moon's horizontal parallax (degrees)
+		$this->SendDebug("Astronomy:", "Moon's horizontal parallax " . $MoonHP, 0);
 		$MoonDist = $this->MoonDist($LCH, $LCM, $LCS, $DS, $ZC, $day, $month, $year);   //Moon Distance to Earth
-        $this->SendDebug("Astronomy:","Moon Distance to Earth ".$MoonDist,0);
+		$this->SendDebug("Astronomy:", "Moon Distance to Earth " . $MoonDist, 0);
 		$Moonphase = $this->MoonPhase($LCH, $LCM, $LCS, $DS, $ZC, $day, $month, $year); //Moonphase in %
-        $this->SendDebug("Astronomy:","Moonphase ".$Moonphase."%",0);
+		$this->SendDebug("Astronomy:", "Moonphase " . $Moonphase . "%", 0);
 		$MoonBrightLimbAngle = $this->MoonPABL($LCH, $LCM, $LCS, $DS, $ZC, $day, $month, $year);   //Moon Bright Limb Angle (degrees)
-        $this->SendDebug("Astronomy:","Moon Bright Limb Angle ".$MoonBrightLimbAngle,0);
+		$this->SendDebug("Astronomy:", "Moon Bright Limb Angle " . $MoonBrightLimbAngle, 0);
 
-		if($MoonBrightLimbAngle<0){$MoonBrightLimbAngle = $MoonBrightLimbAngle+360;}
+		if ($MoonBrightLimbAngle < 0) {
+			$MoonBrightLimbAngle = $MoonBrightLimbAngle + 360;
+		}
 
 		$EcLonDeg = $this->DDDeg($Moonlongcorr); // Ecliptic Longitude Moon - geographische Länge (Längengrad)
 		$EcLonMin = $this->DDMin($Moonlongcorr);
@@ -1828,11 +1644,11 @@ class Astronomy extends IPSModule
 		$MoonRAh = $this->DHHour($MoonRA);    //Right Ascension Hours
 		$MoonRAm = $this->DHMin($MoonRA);
 		$MoonRAs = $this->DHSec($MoonRA);
-        $this->SendDebug("Astronomy:","Moon Right Ascension Hours ".$MoonRAh.":".$MoonRAm.":".$MoonRAs,0);
+		$this->SendDebug("Astronomy:", "Moon Right Ascension Hours " . $MoonRAh . ":" . $MoonRAm . ":" . $MoonRAs, 0);
 		$MoonDECd = $this->DDDeg($MoonDec);  //Declination Degrees
 		$MoonDECm = $this->DDMin($MoonDec);
 		$MoonDECs = $this->DDSec($MoonDec);
-        $this->SendDebug("Astronomy:","Moon Declination Degrees ".$MoonDECd.":".$MoonDECm.":".$MoonDECs,0);
+		$this->SendDebug("Astronomy:", "Moon Declination Degrees " . $MoonDECd . ":" . $MoonDECm . ":" . $MoonDECs, 0);
 
 		//RH Right Ascension in HMS, LH Local Civil Time in HMS, DS Daylight saving, ZC Zonecorrection,
 		//LD Local Calender Date in DMY, L geographical Longitude in Degrees
@@ -1847,62 +1663,58 @@ class Astronomy extends IPSModule
 		$dazimut = $this->direction($moonazimut);
 		$this->SunMoonView($sunazimut, $sunaltitude, $moonazimut, $moonaltitude);
 
-		if($this->ReadPropertyBoolean("moonazimut") == true) // float
+		if ($this->ReadPropertyBoolean("moonazimut") == true) // float
 		{
-			SetValue($this->GetIDForIdent("moonazimut"), $moonazimut);
+			$this->SetValue('moonazimut', $moonazimut);
 		}
-		if($this->ReadPropertyBoolean("moonaltitude") == true) // float
+		if ($this->ReadPropertyBoolean("moonaltitude") == true) // float
 		{
-			SetValue($this->GetIDForIdent("moonaltitude"), $moonaltitude);
+			$this->SetValue('moonaltitude', $moonaltitude);
 		}
-		if($this->ReadPropertyBoolean("moondirection") == true) // float
+		if ($this->ReadPropertyBoolean("moondirection") == true) // float
 		{
-			SetValue($this->GetIDForIdent("moondirection"), $dazimut);
+			$this->SetValue('moondirection', $dazimut);
 		}
-		if($this->ReadPropertyBoolean("moondistance") == true) // float
+		if ($this->ReadPropertyBoolean("moondistance") == true) // float
 		{
-			SetValue($this->GetIDForIdent("moondistance"), $MoonDist);
+			$this->SetValue('moondistance', $MoonDist);
 		}
-		if($this->ReadPropertyBoolean("moonvisibility") == true) // float
+		if ($this->ReadPropertyBoolean("moonvisibility") == true) // float
 		{
-			SetValue($this->GetIDForIdent("moonvisibility"), $Moonphase);
+			$this->SetValue('moonvisibility', $Moonphase);
 		}
-		if($this->ReadPropertyBoolean("moonbrightlimbangle") == true) // float
+		if ($this->ReadPropertyBoolean("moonbrightlimbangle") == true) // float
 		{
-			SetValue($this->GetIDForIdent("moonbrightlimbangle"), $MoonBrightLimbAngle);
+			$this->SetValue('moonbrightlimbangle', $MoonBrightLimbAngle);
 		}
-				$moonrisedate = $moonrise['moonrisedate'];
+		$moonrisedate = $moonrise['moonrisedate'];
 		$moonrisetime = $moonrise['moonrisetime'];
 
 
+		$astronomyinfo = array("IsDay" => $isday, "Sunrise" => $sunrise, "Sunset" => $sunset, "moonsetdate" => $moonsetdate, "moonsettime" => $moonsettime, "moonrisedate" => $moonrisedate, "moonrisetime" => $moonrisetime, "CivilTwilightStart" => $civiltwilightstart, "CivilTwilightEnd" => $civiltwilightend, "NauticTwilightStart" => $nautictwilightstart, "NauticTwilightEnd" => $nautictwilightend, "AstronomicTwilightStart" => $astronomictwilightstart, "AstronomicTwilightEnd" => $astronomictwilightend,
+			"latitude" => $Latitude, "longitude" => $Longitude, "juliandate" => $JD, "season" => $season, "sunazimut" => $sunazimut, "sundirection" => $SunDazimut, "sunaltitude" => $sunaltitude, "sundistance" => $rSun, "moonazimut" => $moonazimut, "moonaltitude" => $moonaltitude, "moondirection" => $dazimut, "moondistance" => $MoonDist, "moonvisibility" => $Moonphase, "moonbrightlimbangle" => $MoonBrightLimbAngle,
+			"newmoon" => $currentnewmoonstring, "firstquarter" => $currentfirstquarterstring, "fullmoon" => $currentfullmoonstring, "lastquarter" => $currentlastquarterstring, "moonphasetext" => $moonphasetext, "moonphasepercent" => $moonphasepercent, "picid" => $picture["picid"], "mediaid_twilight_year" => $mediaid_twilight_year, "twilight_year_image_path" => $twilight_year_image_path, "mediaid_twilight_day" => $mediaid_twilight_day, "twilight_day_image_path" => $twilight_day_image_path);
 
-		$astronomyinfo = array ("IsDay" => $isday, "Sunrise" => $sunrise, "Sunset" => $sunset, "moonsetdate" => $moonsetdate, "moonsettime" => $moonsettime, "moonrisedate" => $moonrisedate, "moonrisetime" => $moonrisetime,"CivilTwilightStart" => $civiltwilightstart, "CivilTwilightEnd" => $civiltwilightend, "NauticTwilightStart" => $nautictwilightstart, "NauticTwilightEnd" => $nautictwilightend, "AstronomicTwilightStart" => $astronomictwilightstart, "AstronomicTwilightEnd" => $astronomictwilightend,
-		"latitude" => $Latitude, "longitude" => $Longitude, "juliandate" => $JD, "season" => $season, "sunazimut" => $sunazimut, "sundirection" => $SunDazimut, "sunaltitude" => $sunaltitude, "sundistance" => $rSun, "moonazimut" => $moonazimut, "moonaltitude" => $moonaltitude, "moondirection" => $dazimut, "moondistance" => $MoonDist, "moonvisibility" => $Moonphase, "moonbrightlimbangle" => $MoonBrightLimbAngle,
-		"newmoon" => $currentnewmoonstring, "firstquarter" => $currentfirstquarterstring, "fullmoon" => $currentfullmoonstring, "lastquarter" => $currentlastquarterstring, "moonphasetext" => $moonphasetext, "moonphasepercent" => $moonphasepercent, "picid" => $picture["picid"], "mediaid_twilight_year" => $mediaid_twilight_year, "twilight_year_image_path" => $twilight_year_image_path, "mediaid_twilight_day" => $mediaid_twilight_day, "twilight_day_image_path" => $twilight_day_image_path);
-		
 		return $astronomyinfo;
 	}
-	
+
 	protected function getlocation()
 	{
 		//Location auslesen
 		$LocationID = IPS_GetInstanceListByModuleID("{45E97A63-F870-408A-B259-2933F7EABF74}")[0];
-        $ipsversion = $this->GetIPSVersion ();
-        if($ipsversion == 5)
-        {
-            $Location = json_decode(IPS_GetProperty($LocationID, "Location"));
-            $Latitude = $Location->latitude;
-            $Longitude = $Location->longitude;
-        }
-        else
-        {
-            $Latitude = IPS_GetProperty($LocationID, "Latitude");
-            $Longitude = IPS_GetProperty($LocationID, "Longitude");
-        }
-		$location = array ("Latitude" => $Latitude, "Longitude" => $Longitude);
+		$ipsversion = $this->GetIPSVersion();
+		if ($ipsversion == 5) {
+			$Location = json_decode(IPS_GetProperty($LocationID, "Location"));
+			$Latitude = $Location->latitude;
+			$Longitude = $Location->longitude;
+		} else {
+			$Latitude = IPS_GetProperty($LocationID, "Latitude");
+			$Longitude = IPS_GetProperty($LocationID, "Longitude");
+		}
+		$location = array("Latitude" => $Latitude, "Longitude" => $Longitude);
 		return $location;
 	}
-	
+
 	protected function getlocationinfo()
 	{
 		$LocationID = IPS_GetInstanceListByModuleID("{45E97A63-F870-408A-B259-2933F7EABF74}")[0];
@@ -1915,42 +1727,37 @@ class Astronomy extends IPSModule
 		$nautictwilightend = GetValue(IPS_GetObjectIDByIdent("NauticTwilightEnd", $LocationID));
 		$astronomictwilightstart = GetValue(IPS_GetObjectIDByIdent("AstronomicTwilightStart", $LocationID));
 		$astronomictwilightend = GetValue(IPS_GetObjectIDByIdent("AstronomicTwilightEnd", $LocationID));
-		$locationinfo = array ("IsDay" => $isday, "Sunrise" => $sunrise, "Sunset" => $sunset, "CivilTwilightStart" => $civiltwilightstart, "CivilTwilightEnd" => $civiltwilightend, "NauticTwilightStart" => $nautictwilightstart, "NauticTwilightEnd" => $nautictwilightend, "AstronomicTwilightStart" => $astronomictwilightstart, "AstronomicTwilightEnd" => $astronomictwilightend);
+		$locationinfo = array("IsDay" => $isday, "Sunrise" => $sunrise, "Sunset" => $sunset, "CivilTwilightStart" => $civiltwilightstart, "CivilTwilightEnd" => $civiltwilightend, "NauticTwilightStart" => $nautictwilightstart, "NauticTwilightEnd" => $nautictwilightend, "AstronomicTwilightStart" => $astronomictwilightstart, "AstronomicTwilightEnd" => $astronomictwilightend);
 		return $locationinfo;
 	}
-	
+
 	protected function GetOffset($type)
 	{
-        $offset = 0;
-	    if($type == "Sunrise")
-		{
+		$offset = 0;
+		if ($type == "Sunrise") {
 			$offset = $this->ReadPropertyInteger("sunriseoffset");
-		}
-		elseif($type == "Sunset")
-		{
+		} elseif ($type == "Sunset") {
 			$offset = $this->ReadPropertyInteger("sunsetoffset");
 		}
-		$offset = $offset * 60; 
+		$offset = $offset * 60;
 		return $offset;
 	}
 	//FormelScript zur Berechnung von Astronomischen Ereignissen
 	//nach dem Buch "Practical Astronomy with your Calculator or Spreadsheet"
 	//von Peter Duffet-Smith und Jonathan Zwart
-	
 
 
-
-	protected function roundvariantfix ($value)
+	protected function roundvariantfix($value)
 	{
-        $roundvalue = 0;
-	    if($value >= 0)
+		$roundvalue = 0;
+		if ($value >= 0)
 			$roundvalue = floor($value);
-		elseif($value < 0)
-			$roundvalue = ceil($value);	
+		elseif ($value < 0)
+			$roundvalue = ceil($value);
 		return $roundvalue;
 	}
 
-	protected function roundvariantint ($value)
+	protected function roundvariantint($value)
 	{
 		$roundvalue = floor($value);
 		return $roundvalue;
@@ -1958,69 +1765,77 @@ class Astronomy extends IPSModule
 
 	protected function dayName($time)
 	{
-		$day = date("D",($time));
-        $daygerman = "So";
-		if     ($day == "Mon"){$daygerman = "Mo";}
-		elseif ($day == "Tue"){$daygerman = "Di";}
-		elseif ($day == "Wed"){$daygerman = "Mi";}
-		elseif ($day == "Thu"){$daygerman = "Do";}
-		elseif ($day == "Fri"){$daygerman = "Fr";}
-		elseif ($day == "Sat"){$daygerman = "Sa";}
-		elseif ($day == "Sun"){$daygerman = "So";}
+		$day = date("D", ($time));
+		$daygerman = "So";
+		if ($day == "Mon") {
+			$daygerman = "Mo";
+		} elseif ($day == "Tue") {
+			$daygerman = "Di";
+		} elseif ($day == "Wed") {
+			$daygerman = "Mi";
+		} elseif ($day == "Thu") {
+			$daygerman = "Do";
+		} elseif ($day == "Fri") {
+			$daygerman = "Fr";
+		} elseif ($day == "Sat") {
+			$daygerman = "Sa";
+		} elseif ($day == "Sun") {
+			$daygerman = "So";
+		}
 		return ($daygerman);
 	}
 
 	protected function direction($degree)
 	{
-        $direction = 0;
-		if(($degree >= 0)and($degree < 22.5)){
+		$direction = 0;
+		if (($degree >= 0) and ($degree < 22.5)) {
 			$direction = 0;
-			}
-		if(($degree >= 22.5)and($degree < 45)){
-		   $direction = 1;
-			}
-		if(($degree >= 45)and($degree < 67.5)){
-		   $direction = 2;
-			}
-		if(($degree >= 67.5)and($degree < 90)){
+		}
+		if (($degree >= 22.5) and ($degree < 45)) {
+			$direction = 1;
+		}
+		if (($degree >= 45) and ($degree < 67.5)) {
+			$direction = 2;
+		}
+		if (($degree >= 67.5) and ($degree < 90)) {
 			$direction = 3;
-			}
-		if(($degree >= 90)and($degree < 112.5)){
-		   $direction = 4;
-			}
-		if(($degree >= 112.5)and($degree < 135)){
-		   $direction = 5;
-			}
-		if(($degree >= 135)and($degree < 157.5)){
-		   $direction = 6;
-			}
-		if(($degree >= 157.5)and($degree < 180)){
-		   $direction = 7;
-			}
-		if(($degree >= 180)and($degree < 202.5)){
-		   $direction = 8;
-			}
-		if(($degree >= 202.5)and($degree < 225)){
-		   $direction = 9;
-			}
-		if(($degree >= 225)and($degree < 247.5)){
-		   $direction = 10;
-			}
-		if(($degree >= 247.5)and($degree < 270)){
-		   $direction = 11;
-			}
-		if(($degree >= 270)and($degree < 292.5)){
-		   $direction = 12;
-			}
-		if(($degree >= 292.5)and($degree < 315)){
-		   $direction = 13;
-			}
-		if(($degree >= 315)and($degree < 337.5)){
+		}
+		if (($degree >= 90) and ($degree < 112.5)) {
+			$direction = 4;
+		}
+		if (($degree >= 112.5) and ($degree < 135)) {
+			$direction = 5;
+		}
+		if (($degree >= 135) and ($degree < 157.5)) {
+			$direction = 6;
+		}
+		if (($degree >= 157.5) and ($degree < 180)) {
+			$direction = 7;
+		}
+		if (($degree >= 180) and ($degree < 202.5)) {
+			$direction = 8;
+		}
+		if (($degree >= 202.5) and ($degree < 225)) {
+			$direction = 9;
+		}
+		if (($degree >= 225) and ($degree < 247.5)) {
+			$direction = 10;
+		}
+		if (($degree >= 247.5) and ($degree < 270)) {
+			$direction = 11;
+		}
+		if (($degree >= 270) and ($degree < 292.5)) {
+			$direction = 12;
+		}
+		if (($degree >= 292.5) and ($degree < 315)) {
+			$direction = 13;
+		}
+		if (($degree >= 315) and ($degree < 337.5)) {
 			$direction = 14;
-			}
-		if(($degree >= 337.5)and($degree <= 360)){
-		   $direction = 15;
-			}
+		}
+		if (($degree >= 337.5) and ($degree <= 360)) {
+			$direction = 15;
+		}
 		return ($direction);
 	}
 
@@ -2028,40 +1843,42 @@ class Astronomy extends IPSModule
 	// Greenwich calendar date to Julian date conversion
 	public function CDJD(int $day, int $month, int $year)
 	{
-		if ($month < 3){
+		if ($month < 3) {
 			$Y = $year - 1;
-			$M = $month + 12;}
-		else{
+			$M = $month + 12;
+		} else {
 			$Y = $year;
-			$M = $month;}
+			$M = $month;
+		}
 
-		if ($year > 1582){
+		if ($year > 1582) {
 			$A = $this->roundvariantfix($Y / 100);
-			$B = 2 - $A + $this->roundvariantfix($A / 4);}
-		else{
-		 if (($year == 1582) And ($month > 10)){
-			$A = $this->roundvariantfix($Y / 100);
-			$B = 2 - $A + $this->roundvariantfix($A / 4);}
-		 else{
-		  if (($year == 1582) And ($month == 10) And ($day >= 15)){
-			$A = $this->roundvariantfix($Y / 100);
-			$B = 2 - $A + $this->roundvariantfix($A / 4);}
-		  else{
-			$B = 0;}
+			$B = 2 - $A + $this->roundvariantfix($A / 4);
+		} else {
+			if (($year == 1582) And ($month > 10)) {
+				$A = $this->roundvariantfix($Y / 100);
+				$B = 2 - $A + $this->roundvariantfix($A / 4);
+			} else {
+				if (($year == 1582) And ($month == 10) And ($day >= 15)) {
+					$A = $this->roundvariantfix($Y / 100);
+					$B = 2 - $A + $this->roundvariantfix($A / 4);
+				} else {
+					$B = 0;
 				}
-				}
+			}
+		}
 
-		if ($Y < 0){
-			$C = $this->roundvariantfix((365.25 * $Y) - 0.75);}
-		else{
-			$C = $this->roundvariantfix(365.25 * $Y);}
+		if ($Y < 0) {
+			$C = $this->roundvariantfix((365.25 * $Y) - 0.75);
+		} else {
+			$C = $this->roundvariantfix(365.25 * $Y);
+		}
 
 		$D = $this->roundvariantfix(30.6001 * ($M + 1));
 		$JD = $B + $C + $D + $day + 1720994.5;
 		return ($JD);
 	}
-	
-	
+
 
 	// Julian date to Greenwich calendar date conversion
 	public function JDCD(float $JD)
@@ -2069,20 +1886,21 @@ class Astronomy extends IPSModule
 		$day = $this->JDCDay($JD);
 		$month = $this->JDCMonth($JD);
 		$year = $this->JDCYear($JD);
-		$dateCD = array ("day" => $day, "month" => $month, "year" => $year);
+		$dateCD = array("day" => $day, "month" => $month, "year" => $year);
 		return $dateCD;
 	}
-	
+
 	protected function JDCDay(float $JD)
 	{
 		$I = $this->roundvariantfix($JD + 0.5);
 		$F = $JD + 0.5 - $I;
 		$A = $this->roundvariantfix(($I - 1867216.25) / 36524.25);
 
-		if ($I > 2299160){
-			$B = $I + 1 + $A - $this->roundvariantfix($A / 4);}
-		else{
-			$B = $I;}
+		if ($I > 2299160) {
+			$B = $I + 1 + $A - $this->roundvariantfix($A / 4);
+		} else {
+			$B = $I;
+		}
 
 		$C = $B + 1524;
 		$D = $this->roundvariantfix(($C - 122.1) / 365.25);
@@ -2098,20 +1916,22 @@ class Astronomy extends IPSModule
 		// $F = $JD + 0.5 - $I;
 		$A = $this->roundvariantfix(($I - 1867216.25) / 36524.25);
 
-		if ($I > 2299160){
-			$B = $I + 1 + $A - $this->roundvariantfix($A / 4);}
-		else{
-			$B = $I;}
+		if ($I > 2299160) {
+			$B = $I + 1 + $A - $this->roundvariantfix($A / 4);
+		} else {
+			$B = $I;
+		}
 
 		$C = $B + 1524;
 		$D = $this->roundvariantfix(($C - 122.1) / 365.25);
 		$E = $this->roundvariantfix(365.25 * $D);
 		$G = $this->roundvariantfix(($C - $E) / 30.6001);
 
-		if ($G < 13.5){
-			$JDCMonth = $G - 1;}
-		else{
-			$JDCMonth = $G - 13;}
+		if ($G < 13.5) {
+			$JDCMonth = $G - 1;
+		} else {
+			$JDCMonth = $G - 13;
+		}
 		return ($JDCMonth);
 	}
 
@@ -2121,25 +1941,28 @@ class Astronomy extends IPSModule
 		// $F = $JD + 0.5 - $I;
 		$A = $this->roundvariantfix(($I - 1867216.25) / 36524.25);
 
-		if ($I > 2299160){
-			$B = $I + 1 + $A - $this->roundvariantfix($A / 4);}
-		else{
-			$B = $I;}
+		if ($I > 2299160) {
+			$B = $I + 1 + $A - $this->roundvariantfix($A / 4);
+		} else {
+			$B = $I;
+		}
 
 		$C = $B + 1524;
 		$D = $this->roundvariantfix(($C - 122.1) / 365.25);
 		$E = $this->roundvariantfix(365.25 * $D);
 		$G = $this->roundvariantfix(($C - $E) / 30.6001);
 
-		if ($G < 13.5){
-			$H = $G - 1;}
-		else{
-			$H = $G - 13;}
+		if ($G < 13.5) {
+			$H = $G - 1;
+		} else {
+			$H = $G - 13;
+		}
 
-		if ($H > 2.5){
-			$JDCYear = $D - 4716;}
-		else{
-			$JDCYear = $D - 4715;}
+		if ($H > 2.5) {
+			$JDCYear = $D - 4716;
+		} else {
+			$JDCYear = $D - 4715;
+		}
 		return ($JDCYear);
 	}
 
@@ -2150,23 +1973,24 @@ class Astronomy extends IPSModule
 		$B = (abs($Minute) + $A) / 60;
 		$C = abs($Hour) + $B;
 
-		if (($Hour < 0) or ($Minute < 0) or ($Second < 0)){
-			$HMSDH = $C * (-1);}
-		else{
-			$HMSDH = $C;}
+		if (($Hour < 0) or ($Minute < 0) or ($Second < 0)) {
+			$HMSDH = $C * (-1);
+		} else {
+			$HMSDH = $C;
+		}
 		return ($HMSDH);
 	}
-	
+
 	// Converting decimal hours to hours, minutes and seconds
 	public function DHHMS(float $DH)
 	{
 		$hours = $this->DHHour($DH);
 		$minutes = $this->DHMin($DH);
 		$seconds = $this->DHSec($DH);
-		$HMS = array ("hours" => $hours, "minutes" => $minutes, "seconds" => $seconds);
+		$HMS = array("hours" => $hours, "minutes" => $minutes, "seconds" => $seconds);
 		return $HMS;
 	}
-	
+
 	//Decimal Hours to Hours
 	protected function DHHour(float $DH)
 	{
@@ -2174,17 +1998,19 @@ class Astronomy extends IPSModule
 		$B = $A * 3600;
 		$C = round($B - 60 * $this->roundvariantfix($B / 60), 2);
 
-		if ($C == 60){
+		if ($C == 60) {
 			// $D = 0;
-			$E = $B + 60;}
-		else{
+			$E = $B + 60;
+		} else {
 			// $D = $C;
-			$E = $B;}
+			$E = $B;
+		}
 
-		if ($DH < 0){
-			$DHHour = $this->roundvariantfix($E / 3600) * (-1);}
-		else{
-			$DHHour = $this->roundvariantfix($E / 3600);}
+		if ($DH < 0) {
+			$DHHour = $this->roundvariantfix($E / 3600) * (-1);
+		} else {
+			$DHHour = $this->roundvariantfix($E / 3600);
+		}
 		return ($DHHour);
 	}
 
@@ -2194,15 +2020,16 @@ class Astronomy extends IPSModule
 		$B = $A * 3600;
 		$C = round($B - 60 * $this->roundvariantfix($B / 60), 2);
 
-		if ($C == 60){
+		if ($C == 60) {
 			// $D = 0;
-			$E = $B + 60;}
-		else{
+			$E = $B + 60;
+		} else {
 			// $D = $C;
-			$E = $B;}
-			
+			$E = $B;
+		}
+
 		$DHMin = fmod(floor($E / 60), 60);
-		return($DHMin);
+		return ($DHMin);
 	}
 
 	protected function DHSec($DH)
@@ -2210,10 +2037,11 @@ class Astronomy extends IPSModule
 		$A = abs($DH);
 		$B = $A * 3600;
 		$C = round($B - 60 * $this->roundvariantfix($B / 60), 2);
-		if ($C == 60){
-			$D = 0;}
-		else{
-			$D = $C;}
+		if ($C == 60) {
+			$D = 0;
+		} else {
+			$D = $C;
+		}
 
 		$DHSec = $D;
 		return ($DHSec);
@@ -2231,9 +2059,9 @@ class Astronomy extends IPSModule
 		$GY = $this->JDCYear($D);                      //G year
 		$GDfix = $this->roundvariantfix($GD);
 		$UTDec = 24 * ($GD - $GDfix);
-		return array( "UTDec" => $UTDec, "GD" => $GD, "GM" => $GM, "GY" => $GY);
+		return array("UTDec" => $UTDec, "GD" => $GD, "GM" => $GM, "GY" => $GY);
 	}
-	
+
 	// Conversion of UT (Universal Time) to Local Civil Time --- Achtung: hier wird ein Array ausgegeben !!!
 	public function UTLct(float $UH, float $UM, float $US, int $DS, float $ZC, int $GD, int $GM, int $GY)
 	{
@@ -2246,7 +2074,7 @@ class Astronomy extends IPSModule
 		$G = $this->JDCYear($D);
 		$E1 = $this->roundvariantfix($E);
 		$UTLct = 24 * ($E - $E1);
-		return array($UTLct,$E1,$F,$G);
+		return array($UTLct, $E1, $F, $G);
 	}
 
 	//Conversion of UT to GST (Greenwich Sideral Time)
@@ -2276,11 +2104,12 @@ class Astronomy extends IPSModule
 		$G = $F - $E;
 		$H = $G - (24 * $this->roundvariantint($G / 24));
 		$GSTUT = $H * 0.9972695663;
-		if ($GSTUT < (4 / 60)){
-			$eGSTUT = "Warning";}
-		else{
-			$eGSTUT = "OK";}
-		return array($GSTUT,$eGSTUT);
+		if ($GSTUT < (4 / 60)) {
+			$eGSTUT = "Warning";
+		} else {
+			$eGSTUT = "OK";
+		}
+		return array($GSTUT, $eGSTUT);
 	}
 
 	//Conversion of GST to LST (Local Sideral Time)
@@ -2305,15 +2134,15 @@ class Astronomy extends IPSModule
 
 	public function UTDayAdjust(int $UT, int $G1)
 	{
-			$UTDayAdjust = $UT;
+		$UTDayAdjust = $UT;
 
-			if (($UT - $G1) < -6){
-				$UTDayAdjust = $UT + 24;
-					}
+		if (($UT - $G1) < -6) {
+			$UTDayAdjust = $UT + 24;
+		}
 
-			if (($UT - $G1) > 6){
-				$UTDayAdjust = $UT - 24;
-					}
+		if (($UT - $G1) > 6) {
+			$UTDayAdjust = $UT - 24;
+		}
 		return ($UTDayAdjust);
 	}
 
@@ -2324,10 +2153,11 @@ class Astronomy extends IPSModule
 		$B = (abs($M) + $A) / 60;
 		$C = abs($D) + $B;
 
-		if (($D < 0) Or ($M < 0) Or ($S < 0)){
-			$DMSDD = $C * (-1);}
-		else{
-			$DMSDD = $C;}
+		if (($D < 0) Or ($M < 0) Or ($S < 0)) {
+			$DMSDD = $C * (-1);
+		} else {
+			$DMSDD = $C;
+		}
 		return ($DMSDD);
 	}
 
@@ -2338,17 +2168,19 @@ class Astronomy extends IPSModule
 		$B = $A * 3600;
 		$C = round($B - 60 * $this->roundvariantfix($B / 60), 2);
 
-		if ($C == 60){
+		if ($C == 60) {
 			//$D = 0;
-			$E = $B + 60;}
-		else{
+			$E = $B + 60;
+		} else {
 			//$D = $C;
-			$E = $B;}
+			$E = $B;
+		}
 
-		if ($DD < 0){
-			$DDDeg = $this->roundvariantfix($E / 3600) * (-1);}
-		else{
-			$DDDeg = $this->roundvariantfix($E / 3600);}
+		if ($DD < 0) {
+			$DDDeg = $this->roundvariantfix($E / 3600) * (-1);
+		} else {
+			$DDDeg = $this->roundvariantfix($E / 3600);
+		}
 		return ($DDDeg);
 	}
 
@@ -2359,12 +2191,13 @@ class Astronomy extends IPSModule
 		$B = $A * 3600;
 		$C = round($B - 60 * $this->roundvariantfix($B / 60), 2);
 
-		if ($C == 60){
+		if ($C == 60) {
 			//$D = 0;
-			$E = $B + 60;}
-		else{
+			$E = $B + 60;
+		} else {
 			//$D = $C;
-			$E = $B;}
+			$E = $B;
+		}
 
 		$DDMin = fmod(floor($E / 60), 60);
 		return ($DDMin);
@@ -2376,10 +2209,11 @@ class Astronomy extends IPSModule
 		$A = abs($DD);
 		$B = $A * 3600;
 		$C = round($B - 60 * $this->roundvariantfix($B / 60), 2);
-		if ($C == 60){
-			$D = 0;}
-		else{
-			$D = $C;}
+		if ($C == 60) {
+			$D = 0;
+		} else {
+			$D = $C;
+		}
 
 		$DDSec = $D;
 		return ($DDSec);
@@ -2443,10 +2277,11 @@ class Astronomy extends IPSModule
 		$F = $this->GSTLST($E, 0, 0, $L);
 		$G = $this->HMSDH($RH, $RM, $RS);
 		$H = $F - $G;
-		if ($H < 0){
-			$RAHA = 24 + $H;}
-		else{
-			$RAHA = $H;}
+		if ($H < 0) {
+			$RAHA = 24 + $H;
+		} else {
+			$RAHA = $H;
+		}
 		return ($RAHA);
 	}
 
@@ -2461,24 +2296,25 @@ class Astronomy extends IPSModule
 		$F = $this->GSTLST($E, 0, 0, $L);
 		$G = $this->HMSDH($HH, $HM, $HS);
 		$H = $F - $G;
-		if ($H < 0){
-			$HARA = 24 + $H;}
-		else{
-			$HARA = $H;}
+		if ($H < 0) {
+			$HARA = 24 + $H;
+		} else {
+			$HARA = $H;
+		}
 		return ($HARA);
 	}
 
 	protected function Radians($W)
-		{
+	{
 		$Radians = $W * 0.01745329252;
 		return ($Radians);
-		}
+	}
 
 	protected function Degrees($W)
-		{
+	{
 		$Degrees = $W * 57.29577951;
 		return ($Degrees);
-		}
+	}
 
 
 
@@ -2624,13 +2460,13 @@ class Astronomy extends IPSModule
 	}
 
 	protected function EqOfTime($GD, $GM, $GY)
-		{
+	{
 		$A = $this->SunLong(12, 0, 0, 0, 0, $GD, $GM, $GY);
 		$B = $this->DDDH($this->ECRA($A, 0, 0, 0, 0, 0, $GD, $GM, $GY));
 		$C = $this->GSTUT($B, 0, 0, $GD, $GM, $GY)[0];
 		$EqOfTime = $C - 12;
 		return ($EqOfTime);
-		}
+	}
 
 	protected function NutatLong($GD, $GM, $GY)
 	{
@@ -2673,226 +2509,227 @@ class Astronomy extends IPSModule
 
 	protected function NutatObl($GD, $GM, $GY)
 	{
-	   $DJ = $this->CDJD($GD, $GM, $GY) - 2415020;
+		$DJ = $this->CDJD($GD, $GM, $GY) - 2415020;
 		$T = $DJ / 36525;
 		$T2 = $T * $T;
-	   $A = 100.0021358 * $T;
+		$A = 100.0021358 * $T;
 		$B = 360 * ($A - $this->roundvariantint($A));
-	   $L1 = 279.6967 + 0.000303 * $T2 + $B;
+		$L1 = 279.6967 + 0.000303 * $T2 + $B;
 		$l2 = 2 * $this->Radians($L1);
-	   $A = 1336.855231 * $T;
+		$A = 1336.855231 * $T;
 		$B = 360 * ($A - $this->roundvariantint($A));
-	   $D1 = 270.4342 - 0.001133 * $T2 + $B;
+		$D1 = 270.4342 - 0.001133 * $T2 + $B;
 		$D2 = 2 * $this->Radians($D1);
-	   $A = 99.99736056 * $T;
+		$A = 99.99736056 * $T;
 		$B = 360 * ($A - $this->roundvariantint($A));
-	   $M1 = 358.4758 - 0.00015 * $T2 + $B;
+		$M1 = 358.4758 - 0.00015 * $T2 + $B;
 		$M1 = $this->Radians($M1);
-	   $A = 1325.552359 * $T;
+		$A = 1325.552359 * $T;
 		$B = 360 * ($A - $this->roundvariantint($A));
-	   $M2 = 296.1046 + 0.009192 * $T2 + $B;
+		$M2 = 296.1046 + 0.009192 * $T2 + $B;
 		$M2 = $this->Radians($M2);
-	   $A = 5.372616667 * $T;
+		$A = 5.372616667 * $T;
 		$B = 360 * ($A - $this->roundvariantint($A));
-	   $N1 = 259.1833 + 0.002078 * $T2 - $B;
+		$N1 = 259.1833 + 0.002078 * $T2 - $B;
 		$N1 = $this->Radians($N1);
-	   $N2 = 2 * $N1;
+		$N2 = 2 * $N1;
 
-	   $DDO = (9.21 + 0.00091 * $T) * cos($N1);
-	   $DDO = $DDO + (0.5522 - 0.00029 * $T) * cos($l2) - 0.0904 * cos($N2);
-	   $DDO = $DDO + 0.0884 * cos($D2) + 0.0216 * cos($l2 + $M1);
-	   $DDO = $DDO + 0.0183 * cos($D2 - $N1) + 0.0113 * cos($D2 + $M2);
-	   $DDO = $DDO - 0.0093 * cos($l2 - $M1) - 0.0066 * cos($l2 - $N1);
+		$DDO = (9.21 + 0.00091 * $T) * cos($N1);
+		$DDO = $DDO + (0.5522 - 0.00029 * $T) * cos($l2) - 0.0904 * cos($N2);
+		$DDO = $DDO + 0.0884 * cos($D2) + 0.0216 * cos($l2 + $M1);
+		$DDO = $DDO + 0.0183 * cos($D2 - $N1) + 0.0113 * cos($D2 + $M2);
+		$DDO = $DDO - 0.0093 * cos($l2 - $M1) - 0.0066 * cos($l2 - $N1);
 
-	   $NutatObl = $DDO / 3600;
-	   return ($NutatObl);
+		$NutatObl = $DDO / 3600;
+		return ($NutatObl);
 	}
 
 	protected function MoonDist($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR)
 	{
-			$HP = $this->Radians($this->MoonHP($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR));
-			$R = 6378.14 / sin($HP);
-			$MoonDist = $R;
+		$HP = $this->Radians($this->MoonHP($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR));
+		$R = 6378.14 / sin($HP);
+		$MoonDist = $R;
 		return ($MoonDist);
 	}
 
 	protected function MoonSize($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR)
-		{
-			$HP = $this->Radians($this->MoonHP($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR));
-			$R = 6378.14 / sin($HP);
-			$TH = 384401 * 0.5181 / $R;
-			$MoonSize = $TH;
+	{
+		$HP = $this->Radians($this->MoonHP($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR));
+		$R = 6378.14 / sin($HP);
+		$TH = 384401 * 0.5181 / $R;
+		$MoonSize = $TH;
 		return ($MoonSize);
-		}
+	}
 
-	protected function sign($number) {
+	protected function sign($number)
+	{
 		return ($number > 0) ? 1 : (($number < 0) ? -1 : 0);
 	}
 
 	protected function IINT($W)
-		{
-			$IINT = $this->sign($W) * $this->roundvariantint(abs($W));
+	{
+		$IINT = $this->sign($W) * $this->roundvariantint(abs($W));
 		return ($IINT);
-		}
+	}
 
 	protected function LINT($W)
-		{
-			$LINT = $this->IINT($W) + $this->IINT(((1 * sign($W)) - 1) / 2);
-	   return ($LINT);
-		}
+	{
+		$LINT = $this->IINT($W) + $this->IINT(((1 * sign($W)) - 1) / 2);
+		return ($LINT);
+	}
 
 	protected function FRACT($W)
-		{
-			$FRACT = $W - $this->LINT($W);
+	{
+		$FRACT = $W - $this->LINT($W);
 		return ($FRACT);
-		}
+	}
 
 	protected function FullMoon($DS, $ZC, $DY, $MN, $YR)
 	{
-			$D0 = $this->LctGDay(12, 0, 0, $DS, $ZC, $DY, $MN, $YR);
-			$M0 = $this->LctGMonth(12, 0, 0, $DS, $ZC, $DY, $MN, $YR);
-			$Y0 = $this->LctGYear(12, 0, 0, $DS, $ZC, $DY, $MN, $YR);
+		$D0 = $this->LctGDay(12, 0, 0, $DS, $ZC, $DY, $MN, $YR);
+		$M0 = $this->LctGMonth(12, 0, 0, $DS, $ZC, $DY, $MN, $YR);
+		$Y0 = $this->LctGYear(12, 0, 0, $DS, $ZC, $DY, $MN, $YR);
 
-			if ($Y0 < 0){
-				$Y0 = $Y0 + 1;}
+		if ($Y0 < 0) {
+			$Y0 = $Y0 + 1;
+		}
 
-			$J0 = $this->CDJD(0, 1, $Y0) - 2415020;
-			$DJ = $this->CDJD($D0, $M0, $Y0) - 2415020;
-			$K = $this->LINT((($Y0 - 1900 + (($DJ - $J0) / 365)) * 12.3685) + 0.5);
-			// $TN = $K / 1236.85;
-            $TF = ($K + 0.5) / 1236.85;
+		$J0 = $this->CDJD(0, 1, $Y0) - 2415020;
+		$DJ = $this->CDJD($D0, $M0, $Y0) - 2415020;
+		$K = $this->LINT((($Y0 - 1900 + (($DJ - $J0) / 365)) * 12.3685) + 0.5);
+		// $TN = $K / 1236.85;
+		$TF = ($K + 0.5) / 1236.85;
 
 
+		// $E1 = $this->roundvariantint($E);
+		// $B = $B + $DD + ($E - $E1);
+		// $B1 = $this->roundvariantint($B);
+		// $A = $E1 + $B1;
+		// $B = $B - $B1;
+		//$NI = $A;
+		//$NF = $B;
+		//$NB = $F;
+		$T = $TF;
+		$K = $K + 0.5;
+		$T2 = $T * $T;
+		$E = 29.53 * $K;
+		$C = 166.56 + (132.87 - 0.009173 * $T) * $T;
+		$C = $this->Radians($C);
+		$B = 0.00058868 * $K + (0.0001178 - 0.000000155 * $T) * $T2;
+		$B = $B + 0.00033 * sin($C) + 0.75933;
+		$A = $K / 12.36886;
+		$A1 = 359.2242 + 360 * $this->FRACT($A) - (0.0000333 + 0.00000347 * $T) * $T2;
+		$A2 = 306.0253 + 360 * $this->FRACT($K / 0.9330851);
+		$A2 = $A2 + (0.0107306 + 0.00001236 * $T) * $T2;
+		$A = $K / 0.9214926;
+		$F = 21.2964 + 360 * $this->FRACT($A) - (0.0016528 + 0.00000239 * $T) * $T2;
+		$A1 = $this->UnwindDeg($A1);
+		$A2 = $this->UnwindDeg($A2);
+		$F = $this->UnwindDeg($F);
+		$A1 = $this->Radians($A1);
+		$A2 = $this->Radians($A2);
+		$F = $this->Radians($F);
 
-			  // $E1 = $this->roundvariantint($E);
-			  // $B = $B + $DD + ($E - $E1);
-			  // $B1 = $this->roundvariantint($B);
-			  // $A = $E1 + $B1;
-			  // $B = $B - $B1;
-			  //$NI = $A;
-			  //$NF = $B;
-			  //$NB = $F;
-			$T = $TF;
-			  $K = $K + 0.5;
-			  $T2 = $T * $T;
-			  $E = 29.53 * $K;
-			  $C = 166.56 + (132.87 - 0.009173 * $T) * $T;
-			$C = $this->Radians($C);
-			  $B = 0.00058868 * $K + (0.0001178 - 0.000000155 * $T) * $T2;
-			$B = $B + 0.00033 * sin($C) + 0.75933;
-			  $A = $K / 12.36886;
-			$A1 = 359.2242 + 360 * $this->FRACT($A) - (0.0000333 + 0.00000347 * $T) * $T2;
-			$A2 = 306.0253 + 360 * $this->FRACT($K / 0.9330851);
-			$A2 = $A2 + (0.0107306 + 0.00001236 * $T) * $T2;
-			  $A = $K / 0.9214926;
-			$F = 21.2964 + 360 * $this->FRACT($A) - (0.0016528 + 0.00000239 * $T) * $T2;
-			$A1 = $this->UnwindDeg($A1);
-			  $A2 = $this->UnwindDeg($A2);
-			  $F = $this->UnwindDeg($F);
-			$A1 = $this->Radians($A1);
-			  $A2 = $this->Radians($A2);
-			  $F = $this->Radians($F);
-
-			$DD = (0.1734 - 0.000393 * $T) * sin($A1) + 0.0021 * sin(2 * $A1);
-			$DD = $DD - 0.4068 * sin($A2) + 0.0161 * sin(2 * $A2) - 0.0004 * sin(3 * $A2);
-			$DD = $DD + 0.0104 * sin(2 * $F) - 0.0051 * sin($A1 + $A2);
-			$DD = $DD - 0.0074 * sin($A1 - $A2) + 0.0004 * sin(2 * $F + $A1);
-			$DD = $DD - 0.0004 * sin(2 * $F - $A1) - 0.0006 * sin(2 * $F + $A2) + 0.001 * sin(2 * $F - $A2);
-			$DD = $DD + 0.0005 * sin($A1 + 2 * $A2);
-			  $E1 = $this->roundvariantint($E);
-			  $B = $B + $DD + ($E - $E1);
-			$B1 = $this->roundvariantint($B);
-			  $A = $E1 + $B1;
-			  $B = $B - $B1;
-			  $FI = $A;
-			  $FF = $B;
-			  // $FB = $F;
-			  $FullMoon = $FI + 2415020 + $FF;
+		$DD = (0.1734 - 0.000393 * $T) * sin($A1) + 0.0021 * sin(2 * $A1);
+		$DD = $DD - 0.4068 * sin($A2) + 0.0161 * sin(2 * $A2) - 0.0004 * sin(3 * $A2);
+		$DD = $DD + 0.0104 * sin(2 * $F) - 0.0051 * sin($A1 + $A2);
+		$DD = $DD - 0.0074 * sin($A1 - $A2) + 0.0004 * sin(2 * $F + $A1);
+		$DD = $DD - 0.0004 * sin(2 * $F - $A1) - 0.0006 * sin(2 * $F + $A2) + 0.001 * sin(2 * $F - $A2);
+		$DD = $DD + 0.0005 * sin($A1 + 2 * $A2);
+		$E1 = $this->roundvariantint($E);
+		$B = $B + $DD + ($E - $E1);
+		$B1 = $this->roundvariantint($B);
+		$A = $E1 + $B1;
+		$B = $B - $B1;
+		$FI = $A;
+		$FF = $B;
+		// $FB = $F;
+		$FullMoon = $FI + 2415020 + $FF;
 		return ($FullMoon);
 	}
 
 	protected function Fpart($W)
 	{
-			$Fpart = $W - $this->LINT($W);
+		$Fpart = $W - $this->LINT($W);
 		return ($Fpart);
 	}
 
 	protected function MoonHP($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR)
 	{
-			$UT = $this->LctUT($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR)["UTDec"];
-			$GD = $this->LctGDay($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
-			$GM = $this->LctGMonth($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
-			$GY = $this->LctGYear($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
-			$T = (($this->CDJD($GD, $GM, $GY) - 2415020) / 36525) + ($UT / 876600);
-			$T2 = $T * $T;
+		$UT = $this->LctUT($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR)["UTDec"];
+		$GD = $this->LctGDay($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
+		$GM = $this->LctGMonth($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
+		$GY = $this->LctGYear($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
+		$T = (($this->CDJD($GD, $GM, $GY) - 2415020) / 36525) + ($UT / 876600);
+		$T2 = $T * $T;
 
-			// $M1 = 27.32158213;
-			  $M2 = 365.2596407;
-			  $M3 = 27.55455094;
-			$M4 = 29.53058868;
-			  $M5 = 27.21222039;
-			  $M6 = 6798.363307;
-			$Q = $this->CDJD($GD, $GM, $GY) - 2415020 + ($UT / 24);
-			// $M1 = $Q / $M1;
-			  $M2 = $Q / $M2;
-			  $M3 = $Q / $M3;
-			$M4 = $Q / $M4;
-			  $M5 = $Q / $M5;
-			  $M6 = $Q / $M6;
-			// $M1 = 360 * ($M1 - $this->roundvariantint($M1));
-			  $M2 = 360 * ($M2 - $this->roundvariantint($M2));
-			$M3 = 360 * ($M3 - $this->roundvariantint($M3));
-			  $M4 = 360 * ($M4 - $this->roundvariantint($M4));
-			$M5 = 360 * ($M5 - $this->roundvariantint($M5));
-			  $M6 = 360 * ($M6 - $this->roundvariantint($M6));
+		// $M1 = 27.32158213;
+		$M2 = 365.2596407;
+		$M3 = 27.55455094;
+		$M4 = 29.53058868;
+		$M5 = 27.21222039;
+		$M6 = 6798.363307;
+		$Q = $this->CDJD($GD, $GM, $GY) - 2415020 + ($UT / 24);
+		// $M1 = $Q / $M1;
+		$M2 = $Q / $M2;
+		$M3 = $Q / $M3;
+		$M4 = $Q / $M4;
+		$M5 = $Q / $M5;
+		$M6 = $Q / $M6;
+		// $M1 = 360 * ($M1 - $this->roundvariantint($M1));
+		$M2 = 360 * ($M2 - $this->roundvariantint($M2));
+		$M3 = 360 * ($M3 - $this->roundvariantint($M3));
+		$M4 = 360 * ($M4 - $this->roundvariantint($M4));
+		$M5 = 360 * ($M5 - $this->roundvariantint($M5));
+		$M6 = 360 * ($M6 - $this->roundvariantint($M6));
 
-			// $ML = 270.434164 + $M1 - (0.001133 - 0.0000019 * $T) * $T2;
-			$MS = 358.475833 + $M2 - (0.00015 + 0.0000033 * $T) * $T2;
-			$MD = 296.104608 + $M3 + (0.009192 + 0.0000144 * $T) * $T2;
-			$ME1 = 350.737486 + $M4 - (0.001436 - 0.0000019 * $T) * $T2;
-			$MF = 11.250889 + $M5 - (0.003211 + 0.0000003 * $T) * $T2;
-			$NA = 259.183275 - $M6 + (0.002078 + 0.0000022 * $T) * $T2;
-			$A = $this->Radians(51.2 + 20.2 * $T);
-			  $S1 = sin($A);
-			  $S2 = sin($this->Radians($NA));
-			$B = 346.56 + (132.87 - 0.0091731 * $T) * $T;
-			$S3 = 0.003964 * sin($this->Radians($B));
-			$C = $this->Radians($NA + 275.05 - 2.3 * $T);
-			  $S4 = sin($C);
-			// $ML = $ML + 0.000233 * $S1 + $S3 + 0.001964 * $S2;
-			$MS = $MS - 0.001778 * $S1;
-			$MD = $MD + 0.000817 * $S1 + $S3 + 0.002541 * $S2;
-			$MF = $MF + $S3 - 0.024691 * $S2 - 0.004328 * $S4;
-			$ME1 = $ME1 + 0.002011 * $S1 + $S3 + 0.001964 * $S2;
-			$E = 1 - (0.002495 + 0.00000752 * $T) * $T;
-			  $E2 = $E * $E;
-			// $ML = $this->Radians($ML);
-			  $MS = $this->Radians($MS);
-			  // $NA = $this->Radians($NA);
-			$ME1 = $this->Radians($ME1);
-			  $MF = $this->Radians($MF);
-			  $MD = $this->Radians($MD);
+		// $ML = 270.434164 + $M1 - (0.001133 - 0.0000019 * $T) * $T2;
+		$MS = 358.475833 + $M2 - (0.00015 + 0.0000033 * $T) * $T2;
+		$MD = 296.104608 + $M3 + (0.009192 + 0.0000144 * $T) * $T2;
+		$ME1 = 350.737486 + $M4 - (0.001436 - 0.0000019 * $T) * $T2;
+		$MF = 11.250889 + $M5 - (0.003211 + 0.0000003 * $T) * $T2;
+		$NA = 259.183275 - $M6 + (0.002078 + 0.0000022 * $T) * $T2;
+		$A = $this->Radians(51.2 + 20.2 * $T);
+		$S1 = sin($A);
+		$S2 = sin($this->Radians($NA));
+		$B = 346.56 + (132.87 - 0.0091731 * $T) * $T;
+		$S3 = 0.003964 * sin($this->Radians($B));
+		$C = $this->Radians($NA + 275.05 - 2.3 * $T);
+		$S4 = sin($C);
+		// $ML = $ML + 0.000233 * $S1 + $S3 + 0.001964 * $S2;
+		$MS = $MS - 0.001778 * $S1;
+		$MD = $MD + 0.000817 * $S1 + $S3 + 0.002541 * $S2;
+		$MF = $MF + $S3 - 0.024691 * $S2 - 0.004328 * $S4;
+		$ME1 = $ME1 + 0.002011 * $S1 + $S3 + 0.001964 * $S2;
+		$E = 1 - (0.002495 + 0.00000752 * $T) * $T;
+		$E2 = $E * $E;
+		// $ML = $this->Radians($ML);
+		$MS = $this->Radians($MS);
+		// $NA = $this->Radians($NA);
+		$ME1 = $this->Radians($ME1);
+		$MF = $this->Radians($MF);
+		$MD = $this->Radians($MD);
 
-			$PM = 0.950724 + 0.051818 * cos($MD) + 0.009531 * cos(2 * $ME1 - $MD);
-			$PM = $PM + 0.007843 * cos(2 * $ME1) + 0.002824 * cos(2 * $MD);
-			$PM = $PM + 0.000857 * cos(2 * $ME1 + $MD) + $E * 0.000533 * cos(2 * $ME1 - $MS);
-			$PM = $PM + $E * 0.000401 * cos(2 * $ME1 - $MD - $MS);
-			$PM = $PM + $E * 0.00032 * cos($MD - $MS) - 0.000271 * cos($ME1);
-			$PM = $PM - $E * 0.000264 * cos($MS + $MD) - 0.000198 * cos(2 * $MF - $MD);
-			$PM = $PM + 0.000173 * cos(3 * $MD) + 0.000167 * cos(4 * $ME1 - $MD);
-			$PM = $PM - $E * 0.000111 * cos($MS) + 0.000103 * cos(4 * $ME1 - 2 * $MD);
-			$PM = $PM - 0.000084 * cos(2 * $MD - 2 * $ME1) - $E * 0.000083 * cos(2 * $ME1 + $MS);
-			$PM = $PM + 0.000079 * cos(2 * $ME1 + 2 * $MD) + 0.000072 * cos(4 * $ME1);
-			$PM = $PM + $E * 0.000064 * cos(2 * $ME1 - $MS + $MD) - $E * 0.000063 * cos(2 * $ME1 + $MS - $MD);
-			$PM = $PM + $E * 0.000041 * cos($MS + $ME1) + $E * 0.000035 * cos(2 * $MD - $MS);
-			$PM = $PM - 0.000033 * cos(3 * $MD - 2 * $ME1) - 0.00003 * cos($MD + $ME1);
-			$PM = $PM - 0.000029 * cos(2 * ($MF - $ME1)) - $E * 0.000029 * cos(2 * $MD + $MS);
-			$PM = $PM + $E2 * 0.000026 * cos(2 * ($ME1 - $MS)) - 0.000023 * cos(2 * ($MF - $ME1) + $MD);
-			$PM = $PM + $E * 0.000019 * cos(4 * $ME1 - $MS - $MD);
+		$PM = 0.950724 + 0.051818 * cos($MD) + 0.009531 * cos(2 * $ME1 - $MD);
+		$PM = $PM + 0.007843 * cos(2 * $ME1) + 0.002824 * cos(2 * $MD);
+		$PM = $PM + 0.000857 * cos(2 * $ME1 + $MD) + $E * 0.000533 * cos(2 * $ME1 - $MS);
+		$PM = $PM + $E * 0.000401 * cos(2 * $ME1 - $MD - $MS);
+		$PM = $PM + $E * 0.00032 * cos($MD - $MS) - 0.000271 * cos($ME1);
+		$PM = $PM - $E * 0.000264 * cos($MS + $MD) - 0.000198 * cos(2 * $MF - $MD);
+		$PM = $PM + 0.000173 * cos(3 * $MD) + 0.000167 * cos(4 * $ME1 - $MD);
+		$PM = $PM - $E * 0.000111 * cos($MS) + 0.000103 * cos(4 * $ME1 - 2 * $MD);
+		$PM = $PM - 0.000084 * cos(2 * $MD - 2 * $ME1) - $E * 0.000083 * cos(2 * $ME1 + $MS);
+		$PM = $PM + 0.000079 * cos(2 * $ME1 + 2 * $MD) + 0.000072 * cos(4 * $ME1);
+		$PM = $PM + $E * 0.000064 * cos(2 * $ME1 - $MS + $MD) - $E * 0.000063 * cos(2 * $ME1 + $MS - $MD);
+		$PM = $PM + $E * 0.000041 * cos($MS + $ME1) + $E * 0.000035 * cos(2 * $MD - $MS);
+		$PM = $PM - 0.000033 * cos(3 * $MD - 2 * $ME1) - 0.00003 * cos($MD + $ME1);
+		$PM = $PM - 0.000029 * cos(2 * ($MF - $ME1)) - $E * 0.000029 * cos(2 * $MD + $MS);
+		$PM = $PM + $E2 * 0.000026 * cos(2 * ($ME1 - $MS)) - 0.000023 * cos(2 * ($MF - $ME1) + $MD);
+		$PM = $PM + $E * 0.000019 * cos(4 * $ME1 - $MS - $MD);
 
-			$MoonHP = $PM;
+		$MoonHP = $PM;
 		return ($MoonHP);
-    }
+	}
 
 	protected function CRN($GD, $GM, $GY)
 	{
@@ -2903,611 +2740,610 @@ class Astronomy extends IPSModule
 
 	protected function UnwindDeg($W)
 	{
-			$UnwindDeg = $W - 360 * $this->roundvariantint($W / 360);
+		$UnwindDeg = $W - 360 * $this->roundvariantint($W / 360);
 		return ($UnwindDeg);
 	}
 
 	protected function UnwindRad($W)
-		{
+	{
 		$UnwindRad = $W - 6.283185308 * $this->roundvariantint($W / 6.283185308);
 		return ($UnwindRad);
-		}
+	}
 
 	protected function Unwind($W)
-		{
+	{
 		$Unwind = $W - 6.283185308 * $this->roundvariantint($W / 6.283185308);
 		return ($Unwind);
-		}
+	}
 
 	protected function MoonMeanAnomaly($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR)
 	{
-			$UT = $this->LctUT($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR)["UTDec"];
-			$GD = $this->LctGDay($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
-			$GM = $this->LctGMonth($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
-			$GY = $this->LctGYear($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
-			$T = (($this->CDJD($GD, $GM, $GY) - 2415020) / 36525) + ($UT / 876600);
-			$T2 = $T * $T;
+		$UT = $this->LctUT($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR)["UTDec"];
+		$GD = $this->LctGDay($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
+		$GM = $this->LctGMonth($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
+		$GY = $this->LctGYear($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
+		$T = (($this->CDJD($GD, $GM, $GY) - 2415020) / 36525) + ($UT / 876600);
+		$T2 = $T * $T;
 
-			// $M1 = 27.32158213;
-			// $M2 = 365.2596407;
-			  $M3 = 27.55455094;
-			// $M4 = 29.53058868;
-			// $M5 = 27.21222039;
-			  $M6 = 6798.363307;
-			$Q = $this->CDJD($GD, $GM, $GY) - 2415020 + ($UT / 24);
-			// $M1 = $Q / $M1;
-			// $M2 = $Q / $M2;
-			  $M3 = $Q / $M3;
-			// $M4 = $Q / $M4;
-			// $M5 = $Q / $M5;
-			  $M6 = $Q / $M6;
-			// $M1 = 360 * ($M1 - $this->roundvariantint($M1));
-			// $M2 = 360 * ($M2 - $this->roundvariantint($M2));
-			$M3 = 360 * ($M3 - $this->roundvariantint($M3));
-			// $M4 = 360 * ($M4 - $this->roundvariantint($M4));
-			// $M5 = 360 * ($M5 - $this->roundvariantint($M5));
-			  $M6 = 360 * ($M6 - $this->roundvariantint($M6));
+		// $M1 = 27.32158213;
+		// $M2 = 365.2596407;
+		$M3 = 27.55455094;
+		// $M4 = 29.53058868;
+		// $M5 = 27.21222039;
+		$M6 = 6798.363307;
+		$Q = $this->CDJD($GD, $GM, $GY) - 2415020 + ($UT / 24);
+		// $M1 = $Q / $M1;
+		// $M2 = $Q / $M2;
+		$M3 = $Q / $M3;
+		// $M4 = $Q / $M4;
+		// $M5 = $Q / $M5;
+		$M6 = $Q / $M6;
+		// $M1 = 360 * ($M1 - $this->roundvariantint($M1));
+		// $M2 = 360 * ($M2 - $this->roundvariantint($M2));
+		$M3 = 360 * ($M3 - $this->roundvariantint($M3));
+		// $M4 = 360 * ($M4 - $this->roundvariantint($M4));
+		// $M5 = 360 * ($M5 - $this->roundvariantint($M5));
+		$M6 = 360 * ($M6 - $this->roundvariantint($M6));
 
-			// $ML = 270.434164 + $M1 - (0.001133 - 0.0000019 * $T) * $T2;
-			// $MS = 358.475833 + $M2 - (0.00015 + 0.0000033 * $T) * $T2;
-			$MD = 296.104608 + $M3 + (0.009192 + 0.0000144 * $T) * $T2;
-			// $ME1 = 350.737486 + $M4 - (0.001436 - 0.0000019 * $T) * $T2;
-			// $MF = 11.250889 + $M5 - (0.003211 + 0.0000003 * $T) * $T2;
-			$NA = 259.183275 - $M6 + (0.002078 + 0.0000022 * $T) * $T2;
-			$A = $this->Radians(51.2 + 20.2 * $T);
-			  $S1 = sin($A);
-			  $S2 = sin($this->Radians($NA));
-			$B = 346.56 + (132.87 - 0.0091731 * $T) * $T;
-			$S3 = 0.003964 * sin($this->Radians($B));
-			// $C = $this->Radians($NA + 275.05 - 2.3 * $T);
-			// $S4 = sin($C);
-			// $ML = $ML + 0.000233 * $S1 + $S3 + 0.001964 * $S2;
-			// $MS = $MS - 0.001778 * $S1;
-			$MD = $MD + 0.000817 * $S1 + $S3 + 0.002541 * $S2;
+		// $ML = 270.434164 + $M1 - (0.001133 - 0.0000019 * $T) * $T2;
+		// $MS = 358.475833 + $M2 - (0.00015 + 0.0000033 * $T) * $T2;
+		$MD = 296.104608 + $M3 + (0.009192 + 0.0000144 * $T) * $T2;
+		// $ME1 = 350.737486 + $M4 - (0.001436 - 0.0000019 * $T) * $T2;
+		// $MF = 11.250889 + $M5 - (0.003211 + 0.0000003 * $T) * $T2;
+		$NA = 259.183275 - $M6 + (0.002078 + 0.0000022 * $T) * $T2;
+		$A = $this->Radians(51.2 + 20.2 * $T);
+		$S1 = sin($A);
+		$S2 = sin($this->Radians($NA));
+		$B = 346.56 + (132.87 - 0.0091731 * $T) * $T;
+		$S3 = 0.003964 * sin($this->Radians($B));
+		// $C = $this->Radians($NA + 275.05 - 2.3 * $T);
+		// $S4 = sin($C);
+		// $ML = $ML + 0.000233 * $S1 + $S3 + 0.001964 * $S2;
+		// $MS = $MS - 0.001778 * $S1;
+		$MD = $MD + 0.000817 * $S1 + $S3 + 0.002541 * $S2;
 
-			$MoonMeanAnomaly = $this->Radians($MD);
+		$MoonMeanAnomaly = $this->Radians($MD);
 		return ($MoonMeanAnomaly);
 	}
 
 	protected function MoonPhase($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR)
 	{
-			$CD = cos($this->Radians($this->MoonLong($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR) - $this->SunLong($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR))) * cos($this->Radians($this->MoonLat($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR)));
-			$D = acos($CD);
-			$SD = sin($D);
-			$I = 0.1468 * $SD * (1 - 0.0549 * sin($this->MoonMeanAnomaly($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR)));
-			$I = $I / (1 - 0.0167 * sin($this->SunMeanAnomaly($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR)));
-			$I = 3.141592654 - $D - $this->Radians($I);
-			$K = (1 + cos($I)) / 2;
-			$MoonPhase = number_format($K*100,1,',',''); //*100 is %
+		$CD = cos($this->Radians($this->MoonLong($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR) - $this->SunLong($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR))) * cos($this->Radians($this->MoonLat($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR)));
+		$D = acos($CD);
+		$SD = sin($D);
+		$I = 0.1468 * $SD * (1 - 0.0549 * sin($this->MoonMeanAnomaly($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR)));
+		$I = $I / (1 - 0.0167 * sin($this->SunMeanAnomaly($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR)));
+		$I = 3.141592654 - $D - $this->Radians($I);
+		$K = (1 + cos($I)) / 2;
+		$MoonPhase = number_format($K * 100, 1, ',', ''); //*100 is %
 		return ($MoonPhase);
 	}
 
 	protected function MoonPABL($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR)
 	{
-			$GD = $this->LctGDay($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
-			$GM = $this->LctGMonth($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
-			$GY = $this->LctGYear($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
-			$LLS = $this->SunLong($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
-			$LLM = $this->MoonLong($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
-			$BM = $this->MoonLat($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
-			$RAS = $this->Radians($this->ECRA($LLS, 0, 0, 0, 0, 0, $GD, $GM, $GY));
-			$RAM = $this->Radians($this->ECRA($LLM, 0, 0, $BM, 0, 0, $GD, $GM, $GY));
-			$DDS = $this->Radians($this->ECDec($LLS, 0, 0, 0, 0, 0, $GD, $GM, $GY));
-			$DM = $this->Radians($this->ECDec($LLM, 0, 0, $BM, 0, 0, $GD, $GM, $GY));
-			$Y = cos($DDS) * sin($RAS - $RAM);
-			$X = cos($DM) * sin($DDS) - sin($DM) * cos($DDS) * cos($RAS - $RAM);
-			$CHI = atan2($Y, $X);
+		$GD = $this->LctGDay($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
+		$GM = $this->LctGMonth($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
+		$GY = $this->LctGYear($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
+		$LLS = $this->SunLong($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
+		$LLM = $this->MoonLong($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
+		$BM = $this->MoonLat($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
+		$RAS = $this->Radians($this->ECRA($LLS, 0, 0, 0, 0, 0, $GD, $GM, $GY));
+		$RAM = $this->Radians($this->ECRA($LLM, 0, 0, $BM, 0, 0, $GD, $GM, $GY));
+		$DDS = $this->Radians($this->ECDec($LLS, 0, 0, 0, 0, 0, $GD, $GM, $GY));
+		$DM = $this->Radians($this->ECDec($LLM, 0, 0, $BM, 0, 0, $GD, $GM, $GY));
+		$Y = cos($DDS) * sin($RAS - $RAM);
+		$X = cos($DM) * sin($DDS) - sin($DM) * cos($DDS) * cos($RAS - $RAM);
+		$CHI = atan2($Y, $X);
 
-			$MoonPABL = $this->Degrees($CHI);
+		$MoonPABL = $this->Degrees($CHI);
 		return ($MoonPABL);
 	}
 
 	protected function MoonLong($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR)
-		{
-			$UT = $this->LctUT($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR)["UTDec"];
-			$GD = $this->LctGDay($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
-			$GM = $this->LctGMonth($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
-			$GY = $this->LctGYear($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
-			$T = (($this->CDJD($GD, $GM, $GY) - 2415020) / 36525) + ($UT / 876600);
-			$T2 = $T * $T;
+	{
+		$UT = $this->LctUT($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR)["UTDec"];
+		$GD = $this->LctGDay($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
+		$GM = $this->LctGMonth($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
+		$GY = $this->LctGYear($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
+		$T = (($this->CDJD($GD, $GM, $GY) - 2415020) / 36525) + ($UT / 876600);
+		$T2 = $T * $T;
 
-			$M1 = 27.32158213;
-			  $M2 = 365.2596407;
-			  $M3 = 27.55455094;
-			$M4 = 29.53058868;
-			  $M5 = 27.21222039;
-			  $M6 = 6798.363307;
-			$Q = $this->CDJD($GD, $GM, $GY) - 2415020 + ($UT / 24);
-			$M1 = $Q / $M1;
-			  $M2 = $Q / $M2;
-			  $M3 = $Q / $M3;
-			$M4 = $Q / $M4;
-			  $M5 = $Q / $M5;
-			  $M6 = $Q / $M6;
-			$M1 = 360 * ($M1 - $this->roundvariantint($M1));
-			  $M2 = 360 * ($M2 - $this->roundvariantint($M2));
-			$M3 = 360 * ($M3 - $this->roundvariantint($M3));
-			  $M4 = 360 * ($M4 - $this->roundvariantint($M4));
-			$M5 = 360 * ($M5 - $this->roundvariantint($M5));
-			  $M6 = 360 * ($M6 - $this->roundvariantint($M6));
+		$M1 = 27.32158213;
+		$M2 = 365.2596407;
+		$M3 = 27.55455094;
+		$M4 = 29.53058868;
+		$M5 = 27.21222039;
+		$M6 = 6798.363307;
+		$Q = $this->CDJD($GD, $GM, $GY) - 2415020 + ($UT / 24);
+		$M1 = $Q / $M1;
+		$M2 = $Q / $M2;
+		$M3 = $Q / $M3;
+		$M4 = $Q / $M4;
+		$M5 = $Q / $M5;
+		$M6 = $Q / $M6;
+		$M1 = 360 * ($M1 - $this->roundvariantint($M1));
+		$M2 = 360 * ($M2 - $this->roundvariantint($M2));
+		$M3 = 360 * ($M3 - $this->roundvariantint($M3));
+		$M4 = 360 * ($M4 - $this->roundvariantint($M4));
+		$M5 = 360 * ($M5 - $this->roundvariantint($M5));
+		$M6 = 360 * ($M6 - $this->roundvariantint($M6));
 
-			$ML = 270.434164 + $M1 - (0.001133 - 0.0000019 * $T) * $T2;
-			$MS = 358.475833 + $M2 - (0.00015 + 0.0000033 * $T) * $T2;
-			$MD = 296.104608 + $M3 + (0.009192 + 0.0000144 * $T) * $T2;
-			$ME1 = 350.737486 + $M4 - (0.001436 - 0.0000019 * $T) * $T2;
-			$MF = 11.250889 + $M5 - (0.003211 + 0.0000003 * $T) * $T2;
-			$NA = 259.183275 - $M6 + (0.002078 + 0.0000022 * $T) * $T2;
-			$A = $this->Radians(51.2 + 20.2 * $T);
-			  $S1 = sin($A);
-			  $S2 = sin($this->Radians($NA));
-			$B = 346.56 + (132.87 - 0.0091731 * $T) * $T;
-			$S3 = 0.003964 * Sin($this->Radians($B));
-			$C = $this->Radians($NA + 275.05 - 2.3 * $T);
-			  $S4 = sin($C);
-			$ML = $ML + 0.000233 * $S1 + $S3 + 0.001964 * $S2;
-			$MS = $MS - 0.001778 * $S1;
-			$MD = $MD + 0.000817 * $S1 + $S3 + 0.002541 * $S2;
-			$MF = $MF + $S3 - 0.024691 * $S2 - 0.004328 * $S4;
-			$ME1 = $ME1 + 0.002011 * $S1 + $S3 + 0.001964 * $S2;
-			$E = 1 - (0.002495 + 0.00000752 * $T) * $T;
-			  $E2 = $E * $E;
-			$ML = $this->Radians($ML);
-			  $MS = $this->Radians($MS);
-			// $NA = $this->Radians($NA);
-			$ME1 = $this->Radians($ME1);
-			  $MF = $this->Radians($MF);
-			  $MD = $this->Radians($MD);
+		$ML = 270.434164 + $M1 - (0.001133 - 0.0000019 * $T) * $T2;
+		$MS = 358.475833 + $M2 - (0.00015 + 0.0000033 * $T) * $T2;
+		$MD = 296.104608 + $M3 + (0.009192 + 0.0000144 * $T) * $T2;
+		$ME1 = 350.737486 + $M4 - (0.001436 - 0.0000019 * $T) * $T2;
+		$MF = 11.250889 + $M5 - (0.003211 + 0.0000003 * $T) * $T2;
+		$NA = 259.183275 - $M6 + (0.002078 + 0.0000022 * $T) * $T2;
+		$A = $this->Radians(51.2 + 20.2 * $T);
+		$S1 = sin($A);
+		$S2 = sin($this->Radians($NA));
+		$B = 346.56 + (132.87 - 0.0091731 * $T) * $T;
+		$S3 = 0.003964 * Sin($this->Radians($B));
+		$C = $this->Radians($NA + 275.05 - 2.3 * $T);
+		$S4 = sin($C);
+		$ML = $ML + 0.000233 * $S1 + $S3 + 0.001964 * $S2;
+		$MS = $MS - 0.001778 * $S1;
+		$MD = $MD + 0.000817 * $S1 + $S3 + 0.002541 * $S2;
+		$MF = $MF + $S3 - 0.024691 * $S2 - 0.004328 * $S4;
+		$ME1 = $ME1 + 0.002011 * $S1 + $S3 + 0.001964 * $S2;
+		$E = 1 - (0.002495 + 0.00000752 * $T) * $T;
+		$E2 = $E * $E;
+		$ML = $this->Radians($ML);
+		$MS = $this->Radians($MS);
+		// $NA = $this->Radians($NA);
+		$ME1 = $this->Radians($ME1);
+		$MF = $this->Radians($MF);
+		$MD = $this->Radians($MD);
 
-			$L = 6.28875 * sin($MD) + 1.274018 * sin(2 * $ME1 - $MD);
-			$L = $L + 0.658309 * sin(2 * $ME1) + 0.213616 * sin(2 * $MD);
-			$L = $L - $E * 0.185596 * sin($MS) - 0.114336 * sin(2 * $MF);
-			$L = $L + 0.058793 * sin(2 * ($ME1 - $MD));
-			$L = $L + 0.057212 * $E * sin(2 * $ME1 - $MS - $MD) + 0.05332 * sin(2 * $ME1 + $MD);
-			$L = $L + 0.045874 * $E * sin(2 * $ME1 - $MS) + 0.041024 * $E * sin($MD - $MS);
-			$L = $L - 0.034718 * sin($ME1) - $E * 0.030465 * sin($MS + $MD);
-			$L = $L + 0.015326 * sin(2 * ($ME1 - $MF)) - 0.012528 * sin(2 * $MF + $MD);
-			$L = $L - 0.01098 * sin(2 * $MF - $MD) + 0.010674 * sin(4 * $ME1 - $MD);
-			$L = $L + 0.010034 * sin(3 * $MD) + 0.008548 * sin(4 * $ME1 - 2 * $MD);
-			$L = $L - $E * 0.00791 * sin($MS - $MD + 2 * $ME1) - $E * 0.006783 * sin(2 * $ME1 + $MS);
-			$L = $L + 0.005162 * sin($MD - $ME1) + $E * 0.005 * sin($MS + $ME1);
-			$L = $L + 0.003862 * sin(4 * $ME1) + $E * 0.004049 * sin($MD - $MS + 2 * $ME1);
-			$L = $L + 0.003996 * sin(2 * ($MD + $ME1)) + 0.003665 * sin(2 * $ME1 - 3 * $MD);
-			$L = $L + $E * 0.002695 * sin(2 * $MD - $MS) + 0.002602 * sin($MD - 2 * ($MF + $ME1));
-			$L = $L + $E * 0.002396 * sin(2 * ($ME1 - $MD) - $MS) - 0.002349 * sin($MD + $ME1);
-			$L = $L + $E2 * 0.002249 * sin(2 * ($ME1 - $MS)) - $E * 0.002125 * sin(2 * $MD + $MS);
-			$L = $L - $E2 * 0.002079 * sin(2 * $MS) + $E2 * 0.002059 * sin(2 * ($ME1 - $MS) - $MD);
-			$L = $L - 0.001773 * sin($MD + 2 * ($ME1 - $MF)) - 0.001595 * sin(2 * ($MF + $ME1));
-			$L = $L + $E * 0.00122 * sin(4 * $ME1 - $MS - $MD) - 0.00111 * sin(2 * ($MD + $MF));
-			$L = $L + 0.000892 * sin($MD - 3 * $ME1) - $E * 0.000811 * sin($MS + $MD + 2 * $ME1);
-			$L = $L + $E * 0.000761 * sin(4 * $ME1 - $MS - 2 * $MD);
-			$L = $L + $E2 * 0.000704 * sin($MD - 2 * ($MS + $ME1));
-			$L = $L + $E * 0.000693 * sin($MS - 2 * ($MD - $ME1));
-			$L = $L + $E * 0.000598 * sin(2 * ($ME1 - $MF) - $MS);
-			$L = $L + 0.00055 * sin($MD + 4 * $ME1) + 0.000538 * sin(4 * $MD);
-			$L = $L + $E * 0.000521 * sin(4 * $ME1 - $MS) + 0.000486 * sin(2 * $MD - $ME1);
-			$L = $L + $E2 * 0.000717 * sin($MD - 2 * $MS);
-			$MM = $this->Unwind($ML + $this->Radians($L));
+		$L = 6.28875 * sin($MD) + 1.274018 * sin(2 * $ME1 - $MD);
+		$L = $L + 0.658309 * sin(2 * $ME1) + 0.213616 * sin(2 * $MD);
+		$L = $L - $E * 0.185596 * sin($MS) - 0.114336 * sin(2 * $MF);
+		$L = $L + 0.058793 * sin(2 * ($ME1 - $MD));
+		$L = $L + 0.057212 * $E * sin(2 * $ME1 - $MS - $MD) + 0.05332 * sin(2 * $ME1 + $MD);
+		$L = $L + 0.045874 * $E * sin(2 * $ME1 - $MS) + 0.041024 * $E * sin($MD - $MS);
+		$L = $L - 0.034718 * sin($ME1) - $E * 0.030465 * sin($MS + $MD);
+		$L = $L + 0.015326 * sin(2 * ($ME1 - $MF)) - 0.012528 * sin(2 * $MF + $MD);
+		$L = $L - 0.01098 * sin(2 * $MF - $MD) + 0.010674 * sin(4 * $ME1 - $MD);
+		$L = $L + 0.010034 * sin(3 * $MD) + 0.008548 * sin(4 * $ME1 - 2 * $MD);
+		$L = $L - $E * 0.00791 * sin($MS - $MD + 2 * $ME1) - $E * 0.006783 * sin(2 * $ME1 + $MS);
+		$L = $L + 0.005162 * sin($MD - $ME1) + $E * 0.005 * sin($MS + $ME1);
+		$L = $L + 0.003862 * sin(4 * $ME1) + $E * 0.004049 * sin($MD - $MS + 2 * $ME1);
+		$L = $L + 0.003996 * sin(2 * ($MD + $ME1)) + 0.003665 * sin(2 * $ME1 - 3 * $MD);
+		$L = $L + $E * 0.002695 * sin(2 * $MD - $MS) + 0.002602 * sin($MD - 2 * ($MF + $ME1));
+		$L = $L + $E * 0.002396 * sin(2 * ($ME1 - $MD) - $MS) - 0.002349 * sin($MD + $ME1);
+		$L = $L + $E2 * 0.002249 * sin(2 * ($ME1 - $MS)) - $E * 0.002125 * sin(2 * $MD + $MS);
+		$L = $L - $E2 * 0.002079 * sin(2 * $MS) + $E2 * 0.002059 * sin(2 * ($ME1 - $MS) - $MD);
+		$L = $L - 0.001773 * sin($MD + 2 * ($ME1 - $MF)) - 0.001595 * sin(2 * ($MF + $ME1));
+		$L = $L + $E * 0.00122 * sin(4 * $ME1 - $MS - $MD) - 0.00111 * sin(2 * ($MD + $MF));
+		$L = $L + 0.000892 * sin($MD - 3 * $ME1) - $E * 0.000811 * sin($MS + $MD + 2 * $ME1);
+		$L = $L + $E * 0.000761 * sin(4 * $ME1 - $MS - 2 * $MD);
+		$L = $L + $E2 * 0.000704 * sin($MD - 2 * ($MS + $ME1));
+		$L = $L + $E * 0.000693 * sin($MS - 2 * ($MD - $ME1));
+		$L = $L + $E * 0.000598 * sin(2 * ($ME1 - $MF) - $MS);
+		$L = $L + 0.00055 * sin($MD + 4 * $ME1) + 0.000538 * sin(4 * $MD);
+		$L = $L + $E * 0.000521 * sin(4 * $ME1 - $MS) + 0.000486 * sin(2 * $MD - $ME1);
+		$L = $L + $E2 * 0.000717 * sin($MD - 2 * $MS);
+		$MM = $this->Unwind($ML + $this->Radians($L));
 
-			$MoonLong = $this->Degrees($MM);
+		$MoonLong = $this->Degrees($MM);
 		return ($MoonLong);
-		}
+	}
 
 	protected function MoonLat($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR)
-		{
-			$UT = $this->LctUT($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR)["UTDec"];
-			$GD = $this->LctGDay($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
-			$GM = $this->LctGMonth($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
-			$GY = $this->LctGYear($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
-			$T = (($this->CDJD($GD, $GM, $GY) - 2415020) / 36525) + ($UT / 876600);
-			$T2 = $T * $T;
+	{
+		$UT = $this->LctUT($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR)["UTDec"];
+		$GD = $this->LctGDay($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
+		$GM = $this->LctGMonth($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
+		$GY = $this->LctGYear($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
+		$T = (($this->CDJD($GD, $GM, $GY) - 2415020) / 36525) + ($UT / 876600);
+		$T2 = $T * $T;
 
-			// $M1 = 27.32158213;
-			  $M2 = 365.2596407;
-			  $M3 = 27.55455094;
-			$M4 = 29.53058868;
-			  $M5 = 27.21222039;
-			  $M6 = 6798.363307;
-			$Q = $this->CDJD($GD, $GM, $GY) - 2415020 + ($UT / 24);
-			// $M1 = $Q / $M1;
-			  $M2 = $Q / $M2;
-			  $M3 = $Q / $M3;
-			$M4 = $Q / $M4;
-			  $M5 = $Q / $M5;
-			  $M6 = $Q / $M6;
-			//$M1 = 360 * ($M1 - $this->roundvariantint($M1));
-			  $M2 = 360 * ($M2 - $this->roundvariantint($M2));
-			$M3 = 360 * ($M3 - $this->roundvariantint($M3));
-			  $M4 = 360 * ($M4 - $this->roundvariantint($M4));
-			$M5 = 360 * ($M5 - $this->roundvariantint($M5));
-			  $M6 = 360 * ($M6 - $this->roundvariantint($M6));
+		// $M1 = 27.32158213;
+		$M2 = 365.2596407;
+		$M3 = 27.55455094;
+		$M4 = 29.53058868;
+		$M5 = 27.21222039;
+		$M6 = 6798.363307;
+		$Q = $this->CDJD($GD, $GM, $GY) - 2415020 + ($UT / 24);
+		// $M1 = $Q / $M1;
+		$M2 = $Q / $M2;
+		$M3 = $Q / $M3;
+		$M4 = $Q / $M4;
+		$M5 = $Q / $M5;
+		$M6 = $Q / $M6;
+		//$M1 = 360 * ($M1 - $this->roundvariantint($M1));
+		$M2 = 360 * ($M2 - $this->roundvariantint($M2));
+		$M3 = 360 * ($M3 - $this->roundvariantint($M3));
+		$M4 = 360 * ($M4 - $this->roundvariantint($M4));
+		$M5 = 360 * ($M5 - $this->roundvariantint($M5));
+		$M6 = 360 * ($M6 - $this->roundvariantint($M6));
 
-			// $ML = 270.434164 + $M1 - (0.001133 - 0.0000019 * $T) * $T2;
-			$MS = 358.475833 + $M2 - (0.00015 + 0.0000033 * $T) * $T2;
-			$MD = 296.104608 + $M3 + (0.009192 + 0.0000144 * $T) * $T2;
-			$ME1 = 350.737486 + $M4 - (0.001436 - 0.0000019 * $T) * $T2;
-			$MF = 11.250889 + $M5 - (0.003211 + 0.0000003 * $T) * $T2;
-			$NA = 259.183275 - $M6 + (0.002078 + 0.0000022 * $T) * $T2;
-			$A = $this->Radians(51.2 + 20.2 * $T);
-			  $S1 = sin($A);
-			  $S2 = sin($this->Radians($NA));
-			$B = 346.56 + (132.87 - 0.0091731 * $T) * $T;
-			$S3 = 0.003964 * sin($this->Radians($B));
-			$C = $this->Radians($NA + 275.05 - 2.3 * $T);
-			  $S4 = sin($C);
-			// $ML = $ML + 0.000233 * $S1 + $S3 + 0.001964 * $S2;
-			$MS = $MS - 0.001778 * $S1;
-			$MD = $MD + 0.000817 * $S1 + $S3 + 0.002541 * $S2;
-			$MF = $MF + $S3 - 0.024691 * $S2 - 0.004328 * $S4;
-			$ME1 = $ME1 + 0.002011 * $S1 + $S3 + 0.001964 * $S2;
-			$E = 1 - (0.002495 + 0.00000752 * $T) * $T;
-			  $E2 = $E * $E;
-			// $ML = $this->Radians($ML);
-			  $MS = $this->Radians($MS);
-			  $NA = $this->Radians($NA);
-			$ME1 = $this->Radians($ME1);
-			  $MF = $this->Radians($MF);
-			  $MD = $this->Radians($MD);
+		// $ML = 270.434164 + $M1 - (0.001133 - 0.0000019 * $T) * $T2;
+		$MS = 358.475833 + $M2 - (0.00015 + 0.0000033 * $T) * $T2;
+		$MD = 296.104608 + $M3 + (0.009192 + 0.0000144 * $T) * $T2;
+		$ME1 = 350.737486 + $M4 - (0.001436 - 0.0000019 * $T) * $T2;
+		$MF = 11.250889 + $M5 - (0.003211 + 0.0000003 * $T) * $T2;
+		$NA = 259.183275 - $M6 + (0.002078 + 0.0000022 * $T) * $T2;
+		$A = $this->Radians(51.2 + 20.2 * $T);
+		$S1 = sin($A);
+		$S2 = sin($this->Radians($NA));
+		$B = 346.56 + (132.87 - 0.0091731 * $T) * $T;
+		$S3 = 0.003964 * sin($this->Radians($B));
+		$C = $this->Radians($NA + 275.05 - 2.3 * $T);
+		$S4 = sin($C);
+		// $ML = $ML + 0.000233 * $S1 + $S3 + 0.001964 * $S2;
+		$MS = $MS - 0.001778 * $S1;
+		$MD = $MD + 0.000817 * $S1 + $S3 + 0.002541 * $S2;
+		$MF = $MF + $S3 - 0.024691 * $S2 - 0.004328 * $S4;
+		$ME1 = $ME1 + 0.002011 * $S1 + $S3 + 0.001964 * $S2;
+		$E = 1 - (0.002495 + 0.00000752 * $T) * $T;
+		$E2 = $E * $E;
+		// $ML = $this->Radians($ML);
+		$MS = $this->Radians($MS);
+		$NA = $this->Radians($NA);
+		$ME1 = $this->Radians($ME1);
+		$MF = $this->Radians($MF);
+		$MD = $this->Radians($MD);
 
-			$G = 5.128189 * sin($MF) + 0.280606 * sin($MD + $MF);
-			$G = $G + 0.277693 * sin($MD - $MF) + 0.173238 * sin(2 * $ME1 - $MF);
-			$G = $G + 0.055413 * sin(2 * $ME1 + $MF - $MD) + 0.046272 * sin(2 * $ME1 - $MF - $MD);
-			$G = $G + 0.032573 * sin(2 * $ME1 + $MF) + 0.017198 * sin(2 * $MD + $MF);
-			$G = $G + 0.009267 * sin(2 * $ME1 + $MD - $MF) + 0.008823 * sin(2 * $MD - $MF);
-			$G = $G + $E * 0.008247 * sin(2 * $ME1 - $MS - $MF) + 0.004323 * sin(2 * ($ME1 - $MD) - $MF);
-			$G = $G + 0.0042 * sin(2 * $ME1 + $MF + $MD) + $E * 0.003372 * sin($MF - $MS - 2 * $ME1);
-			$G = $G + $E * 0.002472 * sin(2 * $ME1 + $MF - $MS - $MD);
-			$G = $G + $E * 0.002222 * sin(2 * $ME1 + $MF - $MS);
-			$G = $G + $E * 0.002072 * sin(2 * $ME1 - $MF - $MS - $MD);
-			$G = $G + $E * 0.001877 * sin($MF - $MS + $MD) + 0.001828 * sin(4 * $ME1 - $MF - $MD);
-			$G = $G - $E * 0.001803 * sin($MF + $MS) - 0.00175 * sin(3 * $MF);
-			$G = $G + $E * 0.00157 * sin($MD - $MS - $MF) - 0.001487 * sin($MF + $ME1);
-			$G = $G - $E * 0.001481 * sin($MF + $MS + $MD) + $E * 0.001417 * sin($MF - $MS - $MD);
-			$G = $G + $E * 0.00135 * sin($MF - $MS) + 0.00133 * sin($MF - $ME1);
-			$G = $G + 0.001106 * sin($MF + 3 * $MD) + 0.00102 * sin(4 * $ME1 - $MF);
-			$G = $G + 0.000833 * sin($MF + 4 * $ME1 - $MD) + 0.000781 * sin($MD - 3 * $MF);
-			$G = $G + 0.00067 * sin($MF + 4 * $ME1 - 2 * $MD) + 0.000606 * sin(2 * $ME1 - 3 * $MF);
-			$G = $G + 0.000597 * sin(2 * ($ME1 + $MD) - $MF);
-			$G = $G + $E * 0.000492 * sin(2 * $ME1 + $MD - $MS - $MF) + 0.00045 * sin(2 * ($MD - $ME1) - $MF);
-			$G = $G + 0.000439 * sin(3 * $MD - $MF) + 0.000423 * sin($MF + 2 * ($ME1 + $MD));
-			$G = $G + 0.000422 * sin(2 * $ME1 - $MF - 3 * $MD) - $E * 0.000367 * sin($MS + $MF + 2 * $ME1 - $MD);
-			$G = $G - $E * 0.000353 * sin($MS + $MF + 2 * $ME1) + 0.000331 * sin($MF + 4 * $ME1);
-			$G = $G + $E * 0.000317 * sin(2 * $ME1 + $MF - $MS + $MD);
-			$G = $G + $E2 * 0.000306 * sin(2 * ($ME1 - $MS) - $MF) - 0.000283 * sin($MD + 3 * $MF);
-			$W1 = 0.0004664 * cos($NA);
-			  $W2 = 0.0000754 * cos($C);
-			$BM = $this->Radians($G) * (1 - $W1 - $W2);
+		$G = 5.128189 * sin($MF) + 0.280606 * sin($MD + $MF);
+		$G = $G + 0.277693 * sin($MD - $MF) + 0.173238 * sin(2 * $ME1 - $MF);
+		$G = $G + 0.055413 * sin(2 * $ME1 + $MF - $MD) + 0.046272 * sin(2 * $ME1 - $MF - $MD);
+		$G = $G + 0.032573 * sin(2 * $ME1 + $MF) + 0.017198 * sin(2 * $MD + $MF);
+		$G = $G + 0.009267 * sin(2 * $ME1 + $MD - $MF) + 0.008823 * sin(2 * $MD - $MF);
+		$G = $G + $E * 0.008247 * sin(2 * $ME1 - $MS - $MF) + 0.004323 * sin(2 * ($ME1 - $MD) - $MF);
+		$G = $G + 0.0042 * sin(2 * $ME1 + $MF + $MD) + $E * 0.003372 * sin($MF - $MS - 2 * $ME1);
+		$G = $G + $E * 0.002472 * sin(2 * $ME1 + $MF - $MS - $MD);
+		$G = $G + $E * 0.002222 * sin(2 * $ME1 + $MF - $MS);
+		$G = $G + $E * 0.002072 * sin(2 * $ME1 - $MF - $MS - $MD);
+		$G = $G + $E * 0.001877 * sin($MF - $MS + $MD) + 0.001828 * sin(4 * $ME1 - $MF - $MD);
+		$G = $G - $E * 0.001803 * sin($MF + $MS) - 0.00175 * sin(3 * $MF);
+		$G = $G + $E * 0.00157 * sin($MD - $MS - $MF) - 0.001487 * sin($MF + $ME1);
+		$G = $G - $E * 0.001481 * sin($MF + $MS + $MD) + $E * 0.001417 * sin($MF - $MS - $MD);
+		$G = $G + $E * 0.00135 * sin($MF - $MS) + 0.00133 * sin($MF - $ME1);
+		$G = $G + 0.001106 * sin($MF + 3 * $MD) + 0.00102 * sin(4 * $ME1 - $MF);
+		$G = $G + 0.000833 * sin($MF + 4 * $ME1 - $MD) + 0.000781 * sin($MD - 3 * $MF);
+		$G = $G + 0.00067 * sin($MF + 4 * $ME1 - 2 * $MD) + 0.000606 * sin(2 * $ME1 - 3 * $MF);
+		$G = $G + 0.000597 * sin(2 * ($ME1 + $MD) - $MF);
+		$G = $G + $E * 0.000492 * sin(2 * $ME1 + $MD - $MS - $MF) + 0.00045 * sin(2 * ($MD - $ME1) - $MF);
+		$G = $G + 0.000439 * sin(3 * $MD - $MF) + 0.000423 * sin($MF + 2 * ($ME1 + $MD));
+		$G = $G + 0.000422 * sin(2 * $ME1 - $MF - 3 * $MD) - $E * 0.000367 * sin($MS + $MF + 2 * $ME1 - $MD);
+		$G = $G - $E * 0.000353 * sin($MS + $MF + 2 * $ME1) + 0.000331 * sin($MF + 4 * $ME1);
+		$G = $G + $E * 0.000317 * sin(2 * $ME1 + $MF - $MS + $MD);
+		$G = $G + $E2 * 0.000306 * sin(2 * ($ME1 - $MS) - $MF) - 0.000283 * sin($MD + 3 * $MF);
+		$W1 = 0.0004664 * cos($NA);
+		$W2 = 0.0000754 * cos($C);
+		$BM = $this->Radians($G) * (1 - $W1 - $W2);
 
-			$MoonLat = $this->Degrees($BM);
-		return($MoonLat);
-		}
+		$MoonLat = $this->Degrees($BM);
+		return ($MoonLat);
+	}
 
 	protected function MoonNodeLong($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR)
 	{
-			$UT = $this->LctUT($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR)["UTDec"];
-			$GD = $this->LctGDay($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
-			$GM = $this->LctGMonth($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
-			$GY = $this->LctGYear($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
-			$T = (($this->CDJD($GD, $GM, $GY) - 2415020) / 36525) + ($UT / 876600);
-			$T2 = $T * $T;
+		$UT = $this->LctUT($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR)["UTDec"];
+		$GD = $this->LctGDay($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
+		$GM = $this->LctGMonth($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
+		$GY = $this->LctGYear($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
+		$T = (($this->CDJD($GD, $GM, $GY) - 2415020) / 36525) + ($UT / 876600);
+		$T2 = $T * $T;
 
-			// $M1 = 27.32158213;
-			// $M2 = 365.2596407;
-			// $M3 = 27.55455094;
-			// $M4 = 29.53058868;
-			// $M5 = 27.21222039;
-			  $M6 = 6798.363307;
-			$Q = $this->CDJD($GD, $GM, $GY) - 2415020 + ($UT / 24);
-			// $M1 = $Q / $M1;
-			// $M2 = $Q / $M2;
-			// $M3 = $Q / $M3;
-			// $M4 = $Q / $M4;
-			// $M5 = $Q / $M5;
-			  $M6 = $Q / $M6;
-			// $M1 = 360 * ($M1 - $this->roundvariantint($M1));
-			// $M2 = 360 * ($M2 - $this->roundvariantint($M2));
-			// $M3 = 360 * ($M3 - $this->roundvariantint($M3));
-			// $M4 = 360 * ($M4 - $this->roundvariantint($M4));
-            // $M5 = 360 * ($M5 - $this->roundvariantint($M5));
-			  $M6 = 360 * ($M6 - $this->roundvariantint($M6));
+		// $M1 = 27.32158213;
+		// $M2 = 365.2596407;
+		// $M3 = 27.55455094;
+		// $M4 = 29.53058868;
+		// $M5 = 27.21222039;
+		$M6 = 6798.363307;
+		$Q = $this->CDJD($GD, $GM, $GY) - 2415020 + ($UT / 24);
+		// $M1 = $Q / $M1;
+		// $M2 = $Q / $M2;
+		// $M3 = $Q / $M3;
+		// $M4 = $Q / $M4;
+		// $M5 = $Q / $M5;
+		$M6 = $Q / $M6;
+		// $M1 = 360 * ($M1 - $this->roundvariantint($M1));
+		// $M2 = 360 * ($M2 - $this->roundvariantint($M2));
+		// $M3 = 360 * ($M3 - $this->roundvariantint($M3));
+		// $M4 = 360 * ($M4 - $this->roundvariantint($M4));
+		// $M5 = 360 * ($M5 - $this->roundvariantint($M5));
+		$M6 = 360 * ($M6 - $this->roundvariantint($M6));
 
-			// $ML = 270.434164 + $M1 - (0.001133 - 0.0000019 * $T) * $T2;
-			// $MS = 358.475833 + $M2 - (0.00015 + 0.0000033 * $T) * $T2;
-			// $MD = 296.104608 + $M3 + (0.009192 + 0.0000144 * $T) * $T2;
-			// $ME1 = 350.737486 + $M4 - (0.001436 - 0.0000019 * $T) * $T2;
-			// $MF = 11.250889 + $M5 - (0.003211 + 0.0000003 * $T) * $T2;
-			$NA = 259.183275 - $M6 + (0.002078 + 0.0000022 * $T) * $T2;
+		// $ML = 270.434164 + $M1 - (0.001133 - 0.0000019 * $T) * $T2;
+		// $MS = 358.475833 + $M2 - (0.00015 + 0.0000033 * $T) * $T2;
+		// $MD = 296.104608 + $M3 + (0.009192 + 0.0000144 * $T) * $T2;
+		// $ME1 = 350.737486 + $M4 - (0.001436 - 0.0000019 * $T) * $T2;
+		// $MF = 11.250889 + $M5 - (0.003211 + 0.0000003 * $T) * $T2;
+		$NA = 259.183275 - $M6 + (0.002078 + 0.0000022 * $T) * $T2;
 
-			$MoonNodeLong = $NA;
+		$MoonNodeLong = $NA;
 		return ($MoonNodeLong);
-		}
+	}
 
 	protected function NewMoon($DS, $ZC, $DY, $MN, $YR)
-		{
-			$D0 = $this->LctGDay(12, 0, 0, $DS, $ZC, $DY, $MN, $YR);
-			$M0 = $this->LctGMonth(12, 0, 0, $DS, $ZC, $DY, $MN, $YR);
-			$Y0 = $this->LctGYear(12, 0, 0, $DS, $ZC, $DY, $MN, $YR);
+	{
+		$D0 = $this->LctGDay(12, 0, 0, $DS, $ZC, $DY, $MN, $YR);
+		$M0 = $this->LctGMonth(12, 0, 0, $DS, $ZC, $DY, $MN, $YR);
+		$Y0 = $this->LctGYear(12, 0, 0, $DS, $ZC, $DY, $MN, $YR);
 
-			if ($Y0 < 0){
-				$Y0 = $Y0 + 1;}
-
-			$J0 = $this->CDJD(0, 1, $Y0) - 2415020;
-			$DJ = $this->CDJD($D0, $M0, $Y0) - 2415020;
-			$K = $this->LINT((($Y0 - 1900 + (($DJ - $J0) / 365)) * 12.3685) + 0.5);
-			$TN = $K / 1236.85;
-			//  $TF = ($K + 0.5) / 1236.85;
-			$T = $TN;
-			  $T2 = $T * $T;
-			  $E = 29.53 * $K;
-			  $C = 166.56 + (132.87 - 0.009173 * $T) * $T;
-			$C = $this->Radians($C);
-			  $B = 0.00058868 * $K + (0.0001178 - 0.000000155 * $T) * $T2;
-			$B = $B + 0.00033 * sin($C) + 0.75933;
-			  $A = $K / 12.36886;
-			$A1 = 359.2242 + 360 * $this->FRACT($A) - (0.0000333 + 0.00000347 * $T) * $T2;
-			$A2 = 306.0253 + 360 * $this->FRACT($K / 0.9330851);
-			$A2 = $A2 + (0.0107306 + 0.00001236 * $T) * $T2;
-			  $A = $K / 0.9214926;
-			$F = 21.2964 + 360 * $this->FRACT($A) - (0.0016528 + 0.00000239 * $T) * $T2;
-			$A1 = $this->UnwindDeg($A1);
-			  $A2 = $this->UnwindDeg($A2);
-			  $F = $this->UnwindDeg($F);
-			$A1 = $this->Radians($A1);
-			  $A2 = $this->Radians($A2);
-			  $F = $this->Radians($F);
-
-			$DD = (0.1734 - 0.000393 * $T) * sin($A1) + 0.0021 * sin(2 * $A1);
-			$DD = $DD - 0.4068 * sin($A2) + 0.0161 * sin(2 * $A2) - 0.0004 * sin(3 * $A2);
-			$DD = $DD + 0.0104 * sin(2 * $F) - 0.0051 * sin($A1 + $A2);
-			$DD = $DD - 0.0074 * sin($A1 - $A2) + 0.0004 * sin(2 * $F + $A1);
-			$DD = $DD - 0.0004 * sin(2 * $F - $A1) - 0.0006 * sin(2 * $F + $A2) + 0.001 * sin(2 * $F - $A2);
-			$DD = $DD + 0.0005 * sin($A1 + 2 * $A2);
-			  $E1 = $this->roundvariantint($E);
-			  $B = $B + $DD + ($E - $E1);
-			$B1 = $this->roundvariantint($B);
-			  $A = $E1 + $B1;
-			  $B = $B - $B1;
-			  $NI = $A;
-			  $NF = $B;
-			// $NB = $F;
-			// $T = $TF;
-			// $K = $K + 0.5;
-			// $T2 = $T * $T;
-			// $E = 29.53 * $K;
-			// $C = 166.56 + (132.87 - 0.009173 * $T) * $T;
-			// $C = $this->Radians($C);
-			// $B = 0.00058868 * $K + (0.0001178 - 0.000000155 * $T) * $T2;
-			// $B = $B + 0.00033 * sin($C) + 0.75933;
-			// $A = $K / 12.36886;
-			// $A1 = 359.2242 + 360 * $this->FRACT($A) - (0.0000333 + 0.00000347 * $T) * $T2;
-			// $A2 = 306.0253 + 360 * $this->FRACT($K / 0.9330851);
-			// $A2 = $A2 + (0.0107306 + 0.00001236 * $T) * $T2;
-			// $A = $K / 0.9214926;
-			// $F = 21.2964 + 360 * $this->FRACT($A) - (0.0016528 + 0.00000239 * $T) * $T2;
-			// $A1 = $this->UnwindDeg($A1);
-			//  $A2 = $this->UnwindDeg($A2);
-			//  $F = $this->UnwindDeg($F);
-            // $A1 = $this->Radians($A1);
-			// $A2 = $this->Radians($A2);
-			// $F = $this->Radians($F);
-
-			// $DD = (0.1734 - 0.000393 * $T) * sin($A1) + 0.0021 * sin(2 * $A1);
-			// $DD = $DD - 0.4068 * sin($A2) + 0.0161 * sin(2 * $A2) - 0.0004 * sin(3 * $A2);
-			// $DD = $DD + 0.0104 * sin(2 * $F) - 0.0051 * sin($A1 + $A2);
-			// $DD = $DD - 0.0074 * sin($A1 - $A2) + 0.0004 * sin(2 * $F + $A1);
-			// $DD = $DD - 0.0004 * sin(2 * $F - $A1) - 0.0006 * sin(2 * $F + $A2) + 0.001 * sin(2 * $F - $A2);
-			// $DD = $DD + 0.0005 * sin($A1 + 2 * $A2);
-			  // $E1 = $this->roundvariantint($E);
-			  // $B = $B + $DD + ($E - $E1);
-              // $B1 = $this->roundvariantint($B);
-			  // $A = $E1 + $B1;
-			  // $B = $B - $B1;
-			  // $FI = $A;
-			  // $FF = $B;
-			  // $FB = $F;
-			  $NewMoon = $NI + 2415020 + $NF;
-		return ($NewMoon);
+		if ($Y0 < 0) {
+			$Y0 = $Y0 + 1;
 		}
+
+		$J0 = $this->CDJD(0, 1, $Y0) - 2415020;
+		$DJ = $this->CDJD($D0, $M0, $Y0) - 2415020;
+		$K = $this->LINT((($Y0 - 1900 + (($DJ - $J0) / 365)) * 12.3685) + 0.5);
+		$TN = $K / 1236.85;
+		//  $TF = ($K + 0.5) / 1236.85;
+		$T = $TN;
+		$T2 = $T * $T;
+		$E = 29.53 * $K;
+		$C = 166.56 + (132.87 - 0.009173 * $T) * $T;
+		$C = $this->Radians($C);
+		$B = 0.00058868 * $K + (0.0001178 - 0.000000155 * $T) * $T2;
+		$B = $B + 0.00033 * sin($C) + 0.75933;
+		$A = $K / 12.36886;
+		$A1 = 359.2242 + 360 * $this->FRACT($A) - (0.0000333 + 0.00000347 * $T) * $T2;
+		$A2 = 306.0253 + 360 * $this->FRACT($K / 0.9330851);
+		$A2 = $A2 + (0.0107306 + 0.00001236 * $T) * $T2;
+		$A = $K / 0.9214926;
+		$F = 21.2964 + 360 * $this->FRACT($A) - (0.0016528 + 0.00000239 * $T) * $T2;
+		$A1 = $this->UnwindDeg($A1);
+		$A2 = $this->UnwindDeg($A2);
+		$F = $this->UnwindDeg($F);
+		$A1 = $this->Radians($A1);
+		$A2 = $this->Radians($A2);
+		$F = $this->Radians($F);
+
+		$DD = (0.1734 - 0.000393 * $T) * sin($A1) + 0.0021 * sin(2 * $A1);
+		$DD = $DD - 0.4068 * sin($A2) + 0.0161 * sin(2 * $A2) - 0.0004 * sin(3 * $A2);
+		$DD = $DD + 0.0104 * sin(2 * $F) - 0.0051 * sin($A1 + $A2);
+		$DD = $DD - 0.0074 * sin($A1 - $A2) + 0.0004 * sin(2 * $F + $A1);
+		$DD = $DD - 0.0004 * sin(2 * $F - $A1) - 0.0006 * sin(2 * $F + $A2) + 0.001 * sin(2 * $F - $A2);
+		$DD = $DD + 0.0005 * sin($A1 + 2 * $A2);
+		$E1 = $this->roundvariantint($E);
+		$B = $B + $DD + ($E - $E1);
+		$B1 = $this->roundvariantint($B);
+		$A = $E1 + $B1;
+		$B = $B - $B1;
+		$NI = $A;
+		$NF = $B;
+		// $NB = $F;
+		// $T = $TF;
+		// $K = $K + 0.5;
+		// $T2 = $T * $T;
+		// $E = 29.53 * $K;
+		// $C = 166.56 + (132.87 - 0.009173 * $T) * $T;
+		// $C = $this->Radians($C);
+		// $B = 0.00058868 * $K + (0.0001178 - 0.000000155 * $T) * $T2;
+		// $B = $B + 0.00033 * sin($C) + 0.75933;
+		// $A = $K / 12.36886;
+		// $A1 = 359.2242 + 360 * $this->FRACT($A) - (0.0000333 + 0.00000347 * $T) * $T2;
+		// $A2 = 306.0253 + 360 * $this->FRACT($K / 0.9330851);
+		// $A2 = $A2 + (0.0107306 + 0.00001236 * $T) * $T2;
+		// $A = $K / 0.9214926;
+		// $F = 21.2964 + 360 * $this->FRACT($A) - (0.0016528 + 0.00000239 * $T) * $T2;
+		// $A1 = $this->UnwindDeg($A1);
+		//  $A2 = $this->UnwindDeg($A2);
+		//  $F = $this->UnwindDeg($F);
+		// $A1 = $this->Radians($A1);
+		// $A2 = $this->Radians($A2);
+		// $F = $this->Radians($F);
+
+		// $DD = (0.1734 - 0.000393 * $T) * sin($A1) + 0.0021 * sin(2 * $A1);
+		// $DD = $DD - 0.4068 * sin($A2) + 0.0161 * sin(2 * $A2) - 0.0004 * sin(3 * $A2);
+		// $DD = $DD + 0.0104 * sin(2 * $F) - 0.0051 * sin($A1 + $A2);
+		// $DD = $DD - 0.0074 * sin($A1 - $A2) + 0.0004 * sin(2 * $F + $A1);
+		// $DD = $DD - 0.0004 * sin(2 * $F - $A1) - 0.0006 * sin(2 * $F + $A2) + 0.001 * sin(2 * $F - $A2);
+		// $DD = $DD + 0.0005 * sin($A1 + 2 * $A2);
+		// $E1 = $this->roundvariantint($E);
+		// $B = $B + $DD + ($E - $E1);
+		// $B1 = $this->roundvariantint($B);
+		// $A = $E1 + $B1;
+		// $B = $B - $B1;
+		// $FI = $A;
+		// $FF = $B;
+		// $FB = $F;
+		$NewMoon = $NI + 2415020 + $NF;
+		return ($NewMoon);
+	}
 
 	//$Y2 = altitude of the star in degrees, $W = 'true' or all strings without 'true', $PR = Atmospheric Pressure, $TR = Temperature
 	protected function Refract($Y2, $SW, $PR, $TR)
-		{
-			$Y = $this->Radians($Y2);
-			if (preg_match("/true/i",$SW) == 1){
-				$D = -1;}
-			else{
-				$D = 1;}
-
-			if ($D == -1){
-				$Y3 = $Y;
-					$Y1 = $Y;
-					$R1 = 0;
-			  step1: //3020
-					$Y = $Y1 + $R1;
-				   // $Q = $Y;
-					if ($Y < 0.2617994){
-					if ($Y < -0.087){
-						$Q = 0;
-						$RF = 0;
-						goto ends; //3075
-						}
-
-					$YD = $this->Degrees($Y);
-					$A = ((0.00002 * $YD + 0.0196) * $YD + 0.1594) * $PR;
-					$B = (273 + $TR) * ((0.0845 * $YD + 0.505) * $YD + 1);
-					$RF = $this->Radians(-($A / $B) * $D);
-				}
-					else{
-					$RF = -$D * 0.00007888888 * $PR / ((273 + $TR) * tan($Y));
-						}
-					$R2 = $RF;
-				if (($R2 == 0) or (abs($R2 - $R1) < 0.000001)){
-					$Q = $Y3;
-					goto ends; //3075
-					}
-				$R1 = $R2;
-					goto step1; //3020
-					}
-			else{
-				if ($Y < 0.2617994){
-					if ($Y < -0.087){
-						$Q = 0;
-						$RF = 0;
-						goto ends; //3075
-						}
-
-						$YD = $this->Degrees($Y);
-						$A = ((0.00002 * $YD + 0.0196) * $YD + 0.1594) * $PR;
-						$B = (273 + $TR) * ((0.0845 * $YD + 0.505) * $YD + 1);
-						$RF = $this->Radians(-($A / $B) * $D);
-					}
-					else{
-					$RF = -$D * 0.00007888888 * $PR / ((273 + $TR) * tan($Y));
-						}
-				$Q = $Y;
-				goto ends; //3075
-				}
-
-			  ends: //3075
-			  $Refract = $this->Degrees($Q + $RF);
-		return ($Refract);
+	{
+		$Y = $this->Radians($Y2);
+		if (preg_match("/true/i", $SW) == 1) {
+			$D = -1;
+		} else {
+			$D = 1;
 		}
+
+		if ($D == -1) {
+			$Y3 = $Y;
+			$Y1 = $Y;
+			$R1 = 0;
+			step1: //3020
+			$Y = $Y1 + $R1;
+			// $Q = $Y;
+			if ($Y < 0.2617994) {
+				if ($Y < -0.087) {
+					$Q = 0;
+					$RF = 0;
+					goto ends; //3075
+				}
+
+				$YD = $this->Degrees($Y);
+				$A = ((0.00002 * $YD + 0.0196) * $YD + 0.1594) * $PR;
+				$B = (273 + $TR) * ((0.0845 * $YD + 0.505) * $YD + 1);
+				$RF = $this->Radians(-($A / $B) * $D);
+			} else {
+				$RF = -$D * 0.00007888888 * $PR / ((273 + $TR) * tan($Y));
+			}
+			$R2 = $RF;
+			if (($R2 == 0) or (abs($R2 - $R1) < 0.000001)) {
+				$Q = $Y3;
+				goto ends; //3075
+			}
+			$R1 = $R2;
+			goto step1; //3020
+		} else {
+			if ($Y < 0.2617994) {
+				if ($Y < -0.087) {
+					$Q = 0;
+					$RF = 0;
+					goto ends; //3075
+				}
+
+				$YD = $this->Degrees($Y);
+				$A = ((0.00002 * $YD + 0.0196) * $YD + 0.1594) * $PR;
+				$B = (273 + $TR) * ((0.0845 * $YD + 0.505) * $YD + 1);
+				$RF = $this->Radians(-($A / $B) * $D);
+			} else {
+				$RF = -$D * 0.00007888888 * $PR / ((273 + $TR) * tan($Y));
+			}
+			$Q = $Y;
+			goto ends; //3075
+		}
+
+		ends: //3075
+		$Refract = $this->Degrees($Q + $RF);
+		return ($Refract);
+	}
 
 	protected function SunMeanAnomaly($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY)
 	{
-			$AA = $this->LctGDay($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
-			$BB = $this->LctGMonth($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
-			$CC = $this->LctGYear($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
-			$UT = $this->LctUT($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY)["UTDec"];
-			$DJ = $this->CDJD($AA, $BB, $CC) - 2415020;
-			$T = ($DJ / 36525) + ($UT / 876600);
-			  $T2 = $T * $T;
-			$A = 100.0021359 * $T;
-			  $B = 360 * ($A - $this->roundvariantint($A));
-			$M1 = 358.47583 - (0.00015 + 0.0000033 * $T) * $T2 + $B;
-			$AM = $this->Unwind($this->Radians($M1));
-			$SunMeanAnomaly = $AM;
+		$AA = $this->LctGDay($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
+		$BB = $this->LctGMonth($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
+		$CC = $this->LctGYear($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
+		$UT = $this->LctUT($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY)["UTDec"];
+		$DJ = $this->CDJD($AA, $BB, $CC) - 2415020;
+		$T = ($DJ / 36525) + ($UT / 876600);
+		$T2 = $T * $T;
+		$A = 100.0021359 * $T;
+		$B = 360 * ($A - $this->roundvariantint($A));
+		$M1 = 358.47583 - (0.00015 + 0.0000033 * $T) * $T2 + $B;
+		$AM = $this->Unwind($this->Radians($M1));
+		$SunMeanAnomaly = $AM;
 		return ($SunMeanAnomaly);
 	}
 
 	protected function SunLong($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY)
 	{
-			$AA = $this->LctGDay($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
-			$BB = $this->LctGMonth($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
-			$CC = $this->LctGYear($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
-			$UT = $this->LctUT($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY)["UTDec"];
-			$DJ = $this->CDJD($AA, $BB, $CC) - 2415020;
-			$T = ($DJ / 36525) + ($UT / 876600);
-			  $T2 = $T * $T;
-			$A = 100.0021359 * $T;
-			  $B = 360 * ($A - $this->roundvariantint($A));
-			$L = 279.69668 + 0.0003025 * $T2 + $B;
-			$A = 99.99736042 * $T;
-			  $B = 360 * ($A - $this->roundvariantint($A));
-			$M1 = 358.47583 - (0.00015 + 0.0000033 * $T) * $T2 + $B;
-			$EC = 0.01675104 - 0.0000418 * $T - 0.000000126 * $T2;
+		$AA = $this->LctGDay($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
+		$BB = $this->LctGMonth($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
+		$CC = $this->LctGYear($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
+		$UT = $this->LctUT($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY)["UTDec"];
+		$DJ = $this->CDJD($AA, $BB, $CC) - 2415020;
+		$T = ($DJ / 36525) + ($UT / 876600);
+		$T2 = $T * $T;
+		$A = 100.0021359 * $T;
+		$B = 360 * ($A - $this->roundvariantint($A));
+		$L = 279.69668 + 0.0003025 * $T2 + $B;
+		$A = 99.99736042 * $T;
+		$B = 360 * ($A - $this->roundvariantint($A));
+		$M1 = 358.47583 - (0.00015 + 0.0000033 * $T) * $T2 + $B;
+		$EC = 0.01675104 - 0.0000418 * $T - 0.000000126 * $T2;
 
-			$AM = $this->Radians($M1);
-			$AT = $this->TrueAnomaly($AM, $EC);
-			//  $AE = $this->EccentricAnomaly($AM, $EC);
+		$AM = $this->Radians($M1);
+		$AT = $this->TrueAnomaly($AM, $EC);
+		//  $AE = $this->EccentricAnomaly($AM, $EC);
 
-			$A = 62.55209472 * $T;
-			  $B = 360 * ($A - $this->roundvariantint($A));
-			$A1 = $this->Radians(153.23 + $B);
-			$A = 125.1041894 * $T;
-			  $B = 360 * ($A - $this->roundvariantint($A));
-			$B1 = $this->Radians(216.57 + $B);
-			$A = 91.56766028 * $T;
-			  $B = 360 * ($A - $this->roundvariantint($A));
-			$C1 = $this->Radians(312.69 + $B);
-			$A = 1236.853095 * $T;
-			  $B = 360 * ($A - $this->roundvariantint($A));
-			$D1 = $this->Radians(350.74 - 0.00144 * $T2 + $B);
-			$E1 = $this->Radians(231.19 + 20.2 * $T);
-			// $A = 183.1353208 * $T;
-			// $B = 360 * ($A - $this->roundvariantint($A));
-			// $H1 = $this->Radians(353.4 + $B);
+		$A = 62.55209472 * $T;
+		$B = 360 * ($A - $this->roundvariantint($A));
+		$A1 = $this->Radians(153.23 + $B);
+		$A = 125.1041894 * $T;
+		$B = 360 * ($A - $this->roundvariantint($A));
+		$B1 = $this->Radians(216.57 + $B);
+		$A = 91.56766028 * $T;
+		$B = 360 * ($A - $this->roundvariantint($A));
+		$C1 = $this->Radians(312.69 + $B);
+		$A = 1236.853095 * $T;
+		$B = 360 * ($A - $this->roundvariantint($A));
+		$D1 = $this->Radians(350.74 - 0.00144 * $T2 + $B);
+		$E1 = $this->Radians(231.19 + 20.2 * $T);
+		// $A = 183.1353208 * $T;
+		// $B = 360 * ($A - $this->roundvariantint($A));
+		// $H1 = $this->Radians(353.4 + $B);
 
-			$D2 = 0.00134 * cos($A1) + 0.00154 * cos($B1) + 0.002 * cos($C1);
-			$D2 = $D2 + 0.00179 * sin($D1) + 0.00178 * sin($E1);
-			// $D3 = 0.00000543 * sin($A1) + 0.00001575 * sin($B1);
-			// $D3 = $D3 + 0.00001627 * sin($C1) + 0.00003076 * cos($D1);
-			// $D3 = $D3 + 0.00000927 * sin($H1);
+		$D2 = 0.00134 * cos($A1) + 0.00154 * cos($B1) + 0.002 * cos($C1);
+		$D2 = $D2 + 0.00179 * sin($D1) + 0.00178 * sin($E1);
+		// $D3 = 0.00000543 * sin($A1) + 0.00001575 * sin($B1);
+		// $D3 = $D3 + 0.00001627 * sin($C1) + 0.00003076 * cos($D1);
+		// $D3 = $D3 + 0.00000927 * sin($H1);
 
-			$SR = $AT + $this->Radians($L - $M1 + $D2);
-			  $TP = 6.283185308;
-			$SR = $SR - $TP * $this->roundvariantint($SR / $TP);
-			$SunLong = $this->Degrees($SR);
+		$SR = $AT + $this->Radians($L - $M1 + $D2);
+		$TP = 6.283185308;
+		$SR = $SR - $TP * $this->roundvariantint($SR / $TP);
+		$SunLong = $this->Degrees($SR);
 		return ($SunLong);
 	}
 
 	protected function SunDist($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY)
 	{
-			$AA = $this->LctGDay($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
-			$BB = $this->LctGMonth($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
-			$CC = $this->LctGYear($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
-			$UT = $this->LctUT($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY)["UTDec"];
-			$DJ = $this->CDJD($AA, $BB, $CC) - 2415020;
-			$T = ($DJ / 36525) + ($UT / 876600);
-			  $T2 = $T * $T;
-			// $A = 100.0021359 * $T;
-			// $B = 360 * ($A - $this->roundvariantint($A));
-			// $L = 279.69668 + 0.0003025 * $T2 + $B;
-			$A = 99.99736042 * $T;
-            $B = 360 * ($A - $this->roundvariantint($A));
-			$M1 = 358.47583 - (0.00015 + 0.0000033 * $T) * $T2 + $B;
-			$EC = 0.01675104 - 0.0000418 * $T - 0.000000126 * $T2;
+		$AA = $this->LctGDay($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
+		$BB = $this->LctGMonth($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
+		$CC = $this->LctGYear($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
+		$UT = $this->LctUT($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY)["UTDec"];
+		$DJ = $this->CDJD($AA, $BB, $CC) - 2415020;
+		$T = ($DJ / 36525) + ($UT / 876600);
+		$T2 = $T * $T;
+		// $A = 100.0021359 * $T;
+		// $B = 360 * ($A - $this->roundvariantint($A));
+		// $L = 279.69668 + 0.0003025 * $T2 + $B;
+		$A = 99.99736042 * $T;
+		$B = 360 * ($A - $this->roundvariantint($A));
+		$M1 = 358.47583 - (0.00015 + 0.0000033 * $T) * $T2 + $B;
+		$EC = 0.01675104 - 0.0000418 * $T - 0.000000126 * $T2;
 
-			$AM = $this->Radians($M1);
-			// $AT = $this->TrueAnomaly($AM, $EC);
-			  $AE = $this->EccentricAnomaly($AM, $EC);
+		$AM = $this->Radians($M1);
+		// $AT = $this->TrueAnomaly($AM, $EC);
+		$AE = $this->EccentricAnomaly($AM, $EC);
 
-			$A = 62.55209472 * $T;
-			  $B = 360 * ($A - $this->roundvariantint($A));
-			$A1 = $this->Radians(153.23 + $B);
-			$A = 125.1041894 * $T;
-			  $B = 360 * ($A - $this->roundvariantint($A));
-			$B1 = $this->Radians(216.57 + $B);
-			$A = 91.56766028 * $T;
-			  $B = 360 * ($A - $this->roundvariantint($A));
-			$C1 = $this->Radians(312.69 + $B);
-			$A = 1236.853095 * $T;
-			  $B = 360 * ($A - $this->roundvariantint($A));
-			$D1 = $this->Radians(350.74 - 0.00144 * $T2 + $B);
-			// $E1 = $this->Radians(231.19 + 20.2 * $T);
-			$A = 183.1353208 * $T;
-			  $B = 360 * ($A - $this->roundvariantint($A));
-			$H1 = $this->Radians(353.4 + $B);
+		$A = 62.55209472 * $T;
+		$B = 360 * ($A - $this->roundvariantint($A));
+		$A1 = $this->Radians(153.23 + $B);
+		$A = 125.1041894 * $T;
+		$B = 360 * ($A - $this->roundvariantint($A));
+		$B1 = $this->Radians(216.57 + $B);
+		$A = 91.56766028 * $T;
+		$B = 360 * ($A - $this->roundvariantint($A));
+		$C1 = $this->Radians(312.69 + $B);
+		$A = 1236.853095 * $T;
+		$B = 360 * ($A - $this->roundvariantint($A));
+		$D1 = $this->Radians(350.74 - 0.00144 * $T2 + $B);
+		// $E1 = $this->Radians(231.19 + 20.2 * $T);
+		$A = 183.1353208 * $T;
+		$B = 360 * ($A - $this->roundvariantint($A));
+		$H1 = $this->Radians(353.4 + $B);
 
-			// $D2 = 0.00134 * cos($A1) + 0.00154 * cos($B1) + 0.002 * cos($C1);
-			// $D2 = $D2 + 0.00179 * sin($D1) + 0.00178 * sin($E1);
-			$D3 = 0.00000543 * sin($A1) + 0.00001575 * sin($B1);
-			$D3 = $D3 + 0.00001627 * sin($C1) + 0.00003076 * cos($D1);
-			$D3 = $D3 + 0.00000927 * sin($H1);
+		// $D2 = 0.00134 * cos($A1) + 0.00154 * cos($B1) + 0.002 * cos($C1);
+		// $D2 = $D2 + 0.00179 * sin($D1) + 0.00178 * sin($E1);
+		$D3 = 0.00000543 * sin($A1) + 0.00001575 * sin($B1);
+		$D3 = $D3 + 0.00001627 * sin($C1) + 0.00003076 * cos($D1);
+		$D3 = $D3 + 0.00000927 * sin($H1);
 
-			$RR = 1.0000002 * (1 - $EC * cos($AE)) + $D3;
-			$SunDist = $RR;
+		$RR = 1.0000002 * (1 - $EC * cos($AE)) + $D3;
+		$SunDist = $RR;
 		return ($SunDist);
 	}
 
 	protected function SunTrueAnomaly($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY)
 	{
-			$AA = $this->LctGDay($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
-			$BB = $this->LctGMonth($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
-			$CC = $this->LctGYear($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
-			$UT = $this->LctUT($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY)["UTDec"];
-			$DJ = $this->CDJD($AA, $BB, $CC) - 2415020;
-			$T = ($DJ / 36525) + ($UT / 876600);
-            $T2 = $T * $T;
-			// $A = 100.0021359 * $T;
-			// $B = 360 * ($A - $this->roundvariantint($A));
-			// $L = 279.69668 + 0.0003025 * $T2 + $B;
-			$A = 99.99736042 * $T;
-            $B = 360 * ($A - $this->roundvariantint($A));
-			$M1 = 358.47583 - (0.00015 + 0.0000033 * $T) * $T2 + $B;
-			$EC = 0.01675104 - 0.0000418 * $T - 0.000000126 * $T2;
+		$AA = $this->LctGDay($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
+		$BB = $this->LctGMonth($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
+		$CC = $this->LctGYear($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
+		$UT = $this->LctUT($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY)["UTDec"];
+		$DJ = $this->CDJD($AA, $BB, $CC) - 2415020;
+		$T = ($DJ / 36525) + ($UT / 876600);
+		$T2 = $T * $T;
+		// $A = 100.0021359 * $T;
+		// $B = 360 * ($A - $this->roundvariantint($A));
+		// $L = 279.69668 + 0.0003025 * $T2 + $B;
+		$A = 99.99736042 * $T;
+		$B = 360 * ($A - $this->roundvariantint($A));
+		$M1 = 358.47583 - (0.00015 + 0.0000033 * $T) * $T2 + $B;
+		$EC = 0.01675104 - 0.0000418 * $T - 0.000000126 * $T2;
 
-			$AM = $this->Radians($M1);
-			$SunTrueAnomaly = $this->Degrees($this->TrueAnomaly($AM, $EC));
+		$AM = $this->Radians($M1);
+		$SunTrueAnomaly = $this->Degrees($this->TrueAnomaly($AM, $EC));
 		return ($SunTrueAnomaly);
 	}
 
@@ -3521,66 +3357,65 @@ class Astronomy extends IPSModule
 
 	protected function TrueAnomaly($AM, $EC)
 	{
-			$TP = 6.283185308;
-			  $M = $AM - $TP * $this->roundvariantint($AM / $TP);
-			  $AE = $M;
-			  step1: //3305
-			  $D = $AE - ($EC * sin($AE)) - $M;
+		$TP = 6.283185308;
+		$M = $AM - $TP * $this->roundvariantint($AM / $TP);
+		$AE = $M;
+		step1: //3305
+		$D = $AE - ($EC * sin($AE)) - $M;
 
-			if (abs($D) < 0.000001){
-				goto step2; //3320
-					}
+		if (abs($D) < 0.000001) {
+			goto step2; //3320
+		}
 
-			$D = $D / (1 - ($EC * cos($AE)));
-			  $AE = $AE - $D;
-			  goto step1; //3305
+		$D = $D / (1 - ($EC * cos($AE)));
+		$AE = $AE - $D;
+		goto step1; //3305
 
-			  step2: //3320
-			  $A = sqrt((1 + $EC) / (1 - $EC)) * tan($AE / 2);
-			$AT = 2 * atan($A);
-			$TrueAnomaly = $AT;
+		step2: //3320
+		$A = sqrt((1 + $EC) / (1 - $EC)) * tan($AE / 2);
+		$AT = 2 * atan($A);
+		$TrueAnomaly = $AT;
 		return ($TrueAnomaly);
 	}
 
 	protected function EccentricAnomaly($AM, $EC)
 	{
-			$TP = 6.283185308;
-			  $M = $AM - $TP * $this->roundvariantint($AM / $TP);
-			  $AE = $M;
-			  step1: //3305
-			  $D = $AE - ($EC * sin($AE)) - $M;
+		$TP = 6.283185308;
+		$M = $AM - $TP * $this->roundvariantint($AM / $TP);
+		$AE = $M;
+		step1: //3305
+		$D = $AE - ($EC * sin($AE)) - $M;
 
-			if (abs($D) < 0.000001){
-				goto step2; //3320
-			}
+		if (abs($D) < 0.000001) {
+			goto step2; //3320
+		}
 
-			$D = $D / (1 - ($EC * cos($AE)));
-			  $AE = $AE - $D;
-			  goto step1; //3305
+		$D = $D / (1 - ($EC * cos($AE)));
+		$AE = $AE - $D;
+		goto step1; //3305
 
-			  step2: //3320
-			  $EccentricAnomaly = $AE;
+		step2: //3320
+		$EccentricAnomaly = $AE;
 		return ($EccentricAnomaly);
 	}
 
 	//Funktion um zu Prüfen ob der UNIX Time Stamp heute ist
 	protected function isToday($time)
 	{
-			$begin = mktime(0, 0, 0);
-			$end = mktime(23, 59, 59);
-			// check if given time is between begin and end
-			if($time >= $begin && $time <= $end)
-				return true;
-			else
-				return false;
+		$begin = mktime(0, 0, 0);
+		$end = mktime(23, 59, 59);
+		// check if given time is between begin and end
+		if ($time >= $begin && $time <= $end)
+			return true;
+		else
+			return false;
 	}
-    
+
 	protected function moon_phase($year, $month, $day)
 	{
 		/*    modified from http://www.voidware.com/moon_phase.htm    */
 		// $c = $e = $jd = $b = 0;
-		if ($month < 3)
-		{
+		if ($month < 3) {
 			$year--;
 			$month += 12;
 		}
@@ -3589,15 +3424,13 @@ class Astronomy extends IPSModule
 		$e = 30.6 * $month;
 		$jd = $c + $e + $day - 694039.09;    //jd is total days elapsed
 		$jd /= 29.5305882;                    //divide by the moon cycle
-		$b = (int) $jd;                        //int(jd) -> b, take integer part of jd
+		$b = (int)$jd;                        //int(jd) -> b, take integer part of jd
 		$jd -= $b;                            //subtract integer part to leave fractional part of original jd
 		$b = round($jd * 8);                //scale fraction from 0-8 and round
-		if ($b >= 8 )
-		{
+		if ($b >= 8) {
 			$b = 0;//0 and 8 are the same so turn 8 into 0
 		}
-		switch ($b)
-		{
+		switch ($b) {
 			case 0:
 				return 'Neumond';
 				break;
@@ -3634,7 +3467,7 @@ class Astronomy extends IPSModule
 				return 'Error';
 		}
 	}
-	
+
 	protected function CalculateMoonphase($year)
 	{
 		// ============================================================
@@ -3651,542 +3484,494 @@ class Astronomy extends IPSModule
 		// ============================================================
 
 
-		$rads = 3.14159265359/180;
+		$rads = 3.14159265359 / 180;
 
 		$moondate = array();
 		$i = 0;
 
-		for ($phase = 0; $phase < 1; $phase += 0.25)
-		{
-		   // Anzahl der Mondphasen seit 2000
-		   $k = floor(($year-2000)*12.36853087)+$phase;
-		   // Mittlerer JDE Wert des Ereignisses
-		   $JDE = 2451550.09766+29.530588861*$k;
-		   // Relevante Winkelwerte in [Radiant]
-		   $M = (2.5534+29.10535670*$k)*$rads;
-		   $Ms = (201.5643+385.81693528*$k)*$rads;
-		   $F = (160.7108+390.67050284*$k)*$rads;
+		for ($phase = 0; $phase < 1; $phase += 0.25) {
+			// Anzahl der Mondphasen seit 2000
+			$k = floor(($year - 2000) * 12.36853087) + $phase;
+			// Mittlerer JDE Wert des Ereignisses
+			$JDE = 2451550.09766 + 29.530588861 * $k;
+			// Relevante Winkelwerte in [Radiant]
+			$M = (2.5534 + 29.10535670 * $k) * $rads;
+			$Ms = (201.5643 + 385.81693528 * $k) * $rads;
+			$F = (160.7108 + 390.67050284 * $k) * $rads;
 
-		   if ($phase == 0){
-		   // Korrekturterme JDE für Neumond
-			  $JDE += -0.40720*Sin($Ms);
-			  $JDE += 0.17241*Sin($M);
-			  $JDE += 0.01608*Sin(2*$Ms);
-			  $JDE += 0.01039*Sin(2*$F);
-			  $JDE += 0.00739*Sin($Ms-$M);
-			  $JDE += -0.00514*Sin($Ms+$M);
-			  $JDE += 0.00208*Sin(2*$M);
-			  $JDE += -0.00111*Sin($Ms-2*$F);
-			  }
-		   elseif ($phase == 0.5) {
-		   // Korrekturterme JDE für Vollmond
-			  $JDE += -0.40614*Sin($Ms);
-			  $JDE += 0.17302*Sin($M);
-			  $JDE += 0.01614*Sin(2*$Ms);
-			  $JDE += 0.01043*Sin(2*$F);
-			  $JDE += 0.00734*Sin($Ms-$M);
-			  $JDE += -0.00515*Sin($Ms+$M);
-			  $JDE += 0.00209*Sin(2*$M);
-			  $JDE += -0.00111*Sin($Ms-2*$F);
-			  }
+			if ($phase == 0) {
+				// Korrekturterme JDE für Neumond
+				$JDE += -0.40720 * Sin($Ms);
+				$JDE += 0.17241 * Sin($M);
+				$JDE += 0.01608 * Sin(2 * $Ms);
+				$JDE += 0.01039 * Sin(2 * $F);
+				$JDE += 0.00739 * Sin($Ms - $M);
+				$JDE += -0.00514 * Sin($Ms + $M);
+				$JDE += 0.00208 * Sin(2 * $M);
+				$JDE += -0.00111 * Sin($Ms - 2 * $F);
+			} elseif ($phase == 0.5) {
+				// Korrekturterme JDE für Vollmond
+				$JDE += -0.40614 * Sin($Ms);
+				$JDE += 0.17302 * Sin($M);
+				$JDE += 0.01614 * Sin(2 * $Ms);
+				$JDE += 0.01043 * Sin(2 * $F);
+				$JDE += 0.00734 * Sin($Ms - $M);
+				$JDE += -0.00515 * Sin($Ms + $M);
+				$JDE += 0.00209 * Sin(2 * $M);
+				$JDE += -0.00111 * Sin($Ms - 2 * $F);
+			}
 
-		   if ($phase == 0.25 || $phase == 0.75){
-		   // Korrekturterme für JDE für das  1. bzw. letzte Viertel
-			  $JDE += -0.62801*Sin($Ms);
-			  $JDE += 0.17172*Sin($M);
-			  $JDE += -0.01183*Sin($Ms+$M);
-			  $JDE += 0.00862*Sin(2*$Ms);
-			  $JDE += 0.00804*Sin(2*$F);
-			  $JDE += 0.00454*Sin($Ms-$M);
-			  $JDE += 0.00204*Sin(2*$M);
-			  $JDE += -0.00180*Sin($Ms-2*$F);
+			if ($phase == 0.25 || $phase == 0.75) {
+				// Korrekturterme für JDE für das  1. bzw. letzte Viertel
+				$JDE += -0.62801 * Sin($Ms);
+				$JDE += 0.17172 * Sin($M);
+				$JDE += -0.01183 * Sin($Ms + $M);
+				$JDE += 0.00862 * Sin(2 * $Ms);
+				$JDE += 0.00804 * Sin(2 * $F);
+				$JDE += 0.00454 * Sin($Ms - $M);
+				$JDE += 0.00204 * Sin(2 * $M);
+				$JDE += -0.00180 * Sin($Ms - 2 * $F);
 
-		   // Weiterer Korrekturterm für Viertelphasen
-		   if ($phase == 0.25){
-			  $JDE += 0.00306;
-			  } else {
-				$JDE += -0.00306;
+				// Weiterer Korrekturterm für Viertelphasen
+				if ($phase == 0.25) {
+					$JDE += 0.00306;
+				} else {
+					$JDE += -0.00306;
 				}
-		   }
+			}
 
-		   // Konvertierung von Julianischem Datum auf Gregorianisches Datum
-		   $z = floor($JDE + 0.5);
-		   $f = ($JDE + 0.5) - floor($JDE + 0.5);
-		   if ($z < 2299161){
-			  $a = $z;
-			  }
-			  else {
-				 $g = floor(($z - 1867216.25) / 36524.25);
-				 $a = $z + 1 + $g - floor($g / 4);
-				 }
-		   $b = $a + 1524;
-		   $c = floor(($b - 122.1) / 365.25);
-		   $d = floor(365.25 * $c);
-		   $e = floor(($b - $d) / 30.6001);
+			// Konvertierung von Julianischem Datum auf Gregorianisches Datum
+			$z = floor($JDE + 0.5);
+			$f = ($JDE + 0.5) - floor($JDE + 0.5);
+			if ($z < 2299161) {
+				$a = $z;
+			} else {
+				$g = floor(($z - 1867216.25) / 36524.25);
+				$a = $z + 1 + $g - floor($g / 4);
+			}
+			$b = $a + 1524;
+			$c = floor(($b - 122.1) / 365.25);
+			$d = floor(365.25 * $c);
+			$e = floor(($b - $d) / 30.6001);
 
-		   $tag_temp = $b - $d - floor(30.6001 * $e) + $f; //Tag incl. Tagesbruchteilen
-		   $stunde_temp = ($tag_temp - floor($tag_temp)) * 24;
-		   $minute_temp = ($stunde_temp - floor($stunde_temp)) * 60;
+			$tag_temp = $b - $d - floor(30.6001 * $e) + $f; //Tag incl. Tagesbruchteilen
+			$stunde_temp = ($tag_temp - floor($tag_temp)) * 24;
+			$minute_temp = ($stunde_temp - floor($stunde_temp)) * 60;
 
-		   $stunde = floor($stunde_temp);
-		   $minute = floor($minute_temp);
-		   $sekunde = round(($minute_temp - floor($minute_temp)) * 60);
+			$stunde = floor($stunde_temp);
+			$minute = floor($minute_temp);
+			$sekunde = round(($minute_temp - floor($minute_temp)) * 60);
 
-		   $tag = floor($tag_temp);
+			$tag = floor($tag_temp);
 
-		   if ($e < 14) {
-			  $monat = $e -1;
-			  }
-			  else {
-			  $monat = $e - 13;
-			  }
-		   if ($monat > 2) {
-			  $jahr = $c - 4716;
-			  }
-			  else {
-			  $jahr = $c - 4715;
-			  }
+			if ($e < 14) {
+				$monat = $e - 1;
+			} else {
+				$monat = $e - 13;
+			}
+			if ($monat > 2) {
+				$jahr = $c - 4716;
+			} else {
+				$jahr = $c - 4715;
+			}
 
 			$sommerzeit = date("I");
-		   if($sommerzeit == 0){
-			  $datum = mktime($stunde,$minute,$sekunde+3600,$monat,$tag,$jahr);
-			  }
-				else{
-				 $datum = mktime($stunde,$minute,$sekunde+7200,$monat,$tag,$jahr);
-			  }
+			if ($sommerzeit == 0) {
+				$datum = mktime($stunde, $minute, $sekunde + 3600, $monat, $tag, $jahr);
+			} else {
+				$datum = mktime($stunde, $minute, $sekunde + 7200, $monat, $tag, $jahr);
+			}
 
-		   switch ($phase){
-			  case 0:
-			  $phasename = 'Neumond';
-			  break;
-			  case 0.25:
-			  $phasename = 'erstes Viertel';
-			  break;
-			  case 0.5:
-			  $phasename = 'Vollmond';
-			  break;
-			  case 0.75:
-			  $phasename = 'letztes Viertel';
-			  break;
-			  default:
-                  $phasename = 'Neumond';
-			  break;
-			  }
-			  
-			$date = date("D",($datum));
-            $wt = "Mo";
-			if($date == "Mon"){
-				  $wt = "Mo";}
-				 elseif ($date == "Tue"){
-				  $wt = "Di";}
-				  elseif ($date == "Wed"){
-				  $wt = "Mi";}
-				  elseif ($date == "Thu"){
-				  $wt = "Do";}
-				  elseif ($date == "Fri"){
-				  $wt = "Fr";}
-				  elseif ($date == "Sat"){
-				  $wt = "Sa";}
-				  elseif ($date == "Sun"){
-				  $wt = "So";}
-		  
+			switch ($phase) {
+				case 0:
+					$phasename = 'Neumond';
+					break;
+				case 0.25:
+					$phasename = 'erstes Viertel';
+					break;
+				case 0.5:
+					$phasename = 'Vollmond';
+					break;
+				case 0.75:
+					$phasename = 'letztes Viertel';
+					break;
+				default:
+					$phasename = 'Neumond';
+					break;
+			}
+
+			$date = date("D", ($datum));
+			$wt = "Mo";
+			if ($date == "Mon") {
+				$wt = "Mo";
+			} elseif ($date == "Tue") {
+				$wt = "Di";
+			} elseif ($date == "Wed") {
+				$wt = "Mi";
+			} elseif ($date == "Thu") {
+				$wt = "Do";
+			} elseif ($date == "Fri") {
+				$wt = "Fr";
+			} elseif ($date == "Sat") {
+				$wt = "Sa";
+			} elseif ($date == "Sun") {
+				$wt = "So";
+			}
+
 			$timeformat = $this->GetTimeformat();
-			$moontime =  date($timeformat, $datum);
-		    $date = date("d.m.Y", $datum);		  
-		    $moondate[$i] = array("name" => $phasename, "date" => $date, "weekday" => $wt, "time" => $moontime);
-		    $i++;
+			$moontime = date($timeformat, $datum);
+			$date = date("d.m.Y", $datum);
+			$moondate[$i] = array("name" => $phasename, "date" => $date, "weekday" => $wt, "time" => $moontime);
+			$i++;
 		}
-		
-		$newmoonstring = $moondate[0]["weekday"].", ".$moondate[0]["date"]." ".$moondate[0]["time"];
-		$firstquarterstring = $moondate[1]["weekday"].", ".$moondate[1]["date"]." ".$moondate[1]["time"];
-		$fullmoonstring = $moondate[2]["weekday"].", ".$moondate[2]["date"]." ".$moondate[2]["time"];
-		$lastquarterstring = $moondate[3]["weekday"].", ".$moondate[3]["date"]." ".$moondate[3]["time"];
 
-		$moonphase = array ("newmoon" => $newmoonstring, "firstquarter" => $firstquarterstring, "fullmoon" => $fullmoonstring, "lastquarter" => $lastquarterstring, "moondate" => $moondate);
+		$newmoonstring = $moondate[0]["weekday"] . ", " . $moondate[0]["date"] . " " . $moondate[0]["time"];
+		$firstquarterstring = $moondate[1]["weekday"] . ", " . $moondate[1]["date"] . " " . $moondate[1]["time"];
+		$fullmoonstring = $moondate[2]["weekday"] . ", " . $moondate[2]["date"] . " " . $moondate[2]["time"];
+		$lastquarterstring = $moondate[3]["weekday"] . ", " . $moondate[3]["date"] . " " . $moondate[3]["time"];
+
+		$moonphase = array("newmoon" => $newmoonstring, "firstquarter" => $firstquarterstring, "fullmoon" => $fullmoonstring, "lastquarter" => $lastquarterstring, "moondate" => $moondate);
 		return $moonphase;
 	}
-	
+
 	public function MoonphasePercent()
 	{
 		// Formel nach http://www.die-seite.eu/wm-mondphasen.php
 
-		$ursprung = mktime(19,19,54,02,22,2016);
+		$ursprung = mktime(19, 19, 54, 02, 22, 2016);
 		$akt_date = time(); //mktime(18,19,54,04,24,2016);//
 		$mondphase = round(((($akt_date - $ursprung) / (floor(29.530588861 * 86400))) - floor(($akt_date - $ursprung) / (floor(29.530588861 * 86400)))) * 100, 0);
-		
+
 		return $mondphase;
 	}
-	
+
 	public function MoonphaseText()
 	{
 		$mondphase = $this->MoonphasePercent();
 		$picture = $this->GetMoonPicture($mondphase);
 		$phase = $picture["phase"];
-		if($this->ReadPropertyBoolean("moonphase") == true)
-		{
-			SetValue($this->GetIDForIdent("moonphase"), $phase." - ".$mondphase."%");
+		if ($this->ReadPropertyBoolean("moonphase") == true) {
+			$this->SetValue('moonphase', $phase . " - " . $mondphase . "%");
 		}
-		$phasetext = array( "moonphasetext" => $phase, "moonphasepercent" => $mondphase);
+		$phasetext = array("moonphasetext" => $phase, "moonphasepercent" => $mondphase);
 		return $phasetext;
 	}
-	
+
 	public function Moon_FirstQuarter()
 	{
-        // Datum in Jahre umrechnen
-        $year = ((((((date("s") / 60)+ date("i")) / 60)+date("G")) / 24) + date("z") - 1) / (365 + (date("L"))) + date("Y");
-	    $moonphase = $this->CalculateMoonphase($year);
+		// Datum in Jahre umrechnen
+		$year = ((((((date("s") / 60) + date("i")) / 60) + date("G")) / 24) + date("z") - 1) / (365 + (date("L"))) + date("Y");
+		$moonphase = $this->CalculateMoonphase($year);
 		$firstquarter = $moonphase["firstquarter"];
-        $firstquarterdate = $moonphase["moondate"][1]["date"];
-        $firstquartertime = $moonphase["moondate"][1]["time"];
+		$firstquarterdate = $moonphase["moondate"][1]["date"];
+		$firstquartertime = $moonphase["moondate"][1]["time"];
 
-        $ispast = $this->CompareDateWithToday($firstquarterdate);
-        if($ispast)
-        {
-            $year = $this->GetNextPhase();
-            $nextmoonphase = $this->CalculateMoonphase($year);
-            $nextfirstquarter = $nextmoonphase["firstquarter"];
-            $nextfirstquarterdate = $nextmoonphase["moondate"][1]["date"];
-            $nextfirstquartertime = $nextmoonphase["moondate"][1]["time"];
-            return array("firstquarter" => $nextfirstquarter, "firstquarterdate" => $nextfirstquarterdate, "firstquartertime" => $nextfirstquartertime);
-        }
-        else
-        {
-            return array("firstquarter" => $firstquarter, "firstquarterdate" => $firstquarterdate, "firstquartertime" => $firstquartertime);
-        }
+		$ispast = $this->CompareDateWithToday($firstquarterdate);
+		if ($ispast) {
+			$year = $this->GetNextPhase();
+			$nextmoonphase = $this->CalculateMoonphase($year);
+			$nextfirstquarter = $nextmoonphase["firstquarter"];
+			$nextfirstquarterdate = $nextmoonphase["moondate"][1]["date"];
+			$nextfirstquartertime = $nextmoonphase["moondate"][1]["time"];
+			return array("firstquarter" => $nextfirstquarter, "firstquarterdate" => $nextfirstquarterdate, "firstquartertime" => $nextfirstquartertime);
+		} else {
+			return array("firstquarter" => $firstquarter, "firstquarterdate" => $firstquarterdate, "firstquartertime" => $firstquartertime);
+		}
 	}
-	
+
 	public function Moon_Newmoon()
 	{
-        // Datum in Jahre umrechnen
-        $year = ((((((date("s") / 60)+ date("i")) / 60)+date("G")) / 24) + date("z") - 1) / (365 + (date("L"))) + date("Y");
-	    $moonphase = $this->CalculateMoonphase($year);
+		// Datum in Jahre umrechnen
+		$year = ((((((date("s") / 60) + date("i")) / 60) + date("G")) / 24) + date("z") - 1) / (365 + (date("L"))) + date("Y");
+		$moonphase = $this->CalculateMoonphase($year);
 		$newmoon = $moonphase["newmoon"];
-        $newmoondate = $moonphase["moondate"][0]["date"];
-        $newmoontime = $moonphase["moondate"][0]["time"];
+		$newmoondate = $moonphase["moondate"][0]["date"];
+		$newmoontime = $moonphase["moondate"][0]["time"];
 
-        $ispast = $this->CompareDateWithToday($newmoondate);
-        if($ispast)
-        {
-            $year = $this->GetNextPhase();
-            $nextmoonphase = $this->CalculateMoonphase($year);
-            $nextnewmoon = $nextmoonphase["newmoon"];
-            $nextnewmoondate = $nextmoonphase["moondate"][0]["date"];
-            $nextnewmoontime = $nextmoonphase["moondate"][0]["time"];
-            return array("newmoon" => $nextnewmoon, "newmoondate" => $nextnewmoondate, "newmoontime" => $nextnewmoontime);
-        }
-        else
-        {
-            return array("newmoon" => $newmoon, "newmoondate" => $newmoondate, "newmoontime" => $newmoontime);
-        }
+		$ispast = $this->CompareDateWithToday($newmoondate);
+		if ($ispast) {
+			$year = $this->GetNextPhase();
+			$nextmoonphase = $this->CalculateMoonphase($year);
+			$nextnewmoon = $nextmoonphase["newmoon"];
+			$nextnewmoondate = $nextmoonphase["moondate"][0]["date"];
+			$nextnewmoontime = $nextmoonphase["moondate"][0]["time"];
+			return array("newmoon" => $nextnewmoon, "newmoondate" => $nextnewmoondate, "newmoontime" => $nextnewmoontime);
+		} else {
+			return array("newmoon" => $newmoon, "newmoondate" => $newmoondate, "newmoontime" => $newmoontime);
+		}
 	}
-	
+
 	public function Moon_Fullmoon()
 	{
-        // Datum in Jahre umrechnen
-        $year = ((((((date("s") / 60)+ date("i")) / 60)+date("G")) / 24) + date("z") - 1) / (365 + (date("L"))) + date("Y");
-	    $moonphase = $this->CalculateMoonphase($year);
+		// Datum in Jahre umrechnen
+		$year = ((((((date("s") / 60) + date("i")) / 60) + date("G")) / 24) + date("z") - 1) / (365 + (date("L"))) + date("Y");
+		$moonphase = $this->CalculateMoonphase($year);
 		$fullmoon = $moonphase["fullmoon"];
-        $fullmoondate = $moonphase["moondate"][2]["date"];
-        $fullmoontime = $moonphase["moondate"][2]["time"];
+		$fullmoondate = $moonphase["moondate"][2]["date"];
+		$fullmoontime = $moonphase["moondate"][2]["time"];
 
-        $ispast = $this->CompareDateWithToday($fullmoondate);
-        if($ispast)
-        {
-            $year = $this->GetNextPhase();
-            $nextmoonphase = $this->CalculateMoonphase($year);
-            $nextfullmoon = $nextmoonphase["fullmoon"];
-            $nextfullmoondate = $nextmoonphase["moondate"][2]["date"];
-            $nextfullmoontime = $nextmoonphase["moondate"][2]["time"];
-            return array("fullmoon" => $nextfullmoon, "fullmoondate" => $nextfullmoondate, "fullmoontime" => $nextfullmoontime);
-        }
-        else
-        {
-            return array("fullmoon" => $fullmoon, "fullmoondate" => $fullmoondate, "fullmoontime" => $fullmoontime);
-        }
+		$ispast = $this->CompareDateWithToday($fullmoondate);
+		if ($ispast) {
+			$year = $this->GetNextPhase();
+			$nextmoonphase = $this->CalculateMoonphase($year);
+			$nextfullmoon = $nextmoonphase["fullmoon"];
+			$nextfullmoondate = $nextmoonphase["moondate"][2]["date"];
+			$nextfullmoontime = $nextmoonphase["moondate"][2]["time"];
+			return array("fullmoon" => $nextfullmoon, "fullmoondate" => $nextfullmoondate, "fullmoontime" => $nextfullmoontime);
+		} else {
+			return array("fullmoon" => $fullmoon, "fullmoondate" => $fullmoondate, "fullmoontime" => $fullmoontime);
+		}
 	}
-	
+
 	public function Moon_LastQuarter()
 	{
-        // Datum in Jahre umrechnen
-        $year = ((((((date("s") / 60)+ date("i")) / 60)+date("G")) / 24) + date("z") - 1) / (365 + (date("L"))) + date("Y");
-	    $moonphase = $this->CalculateMoonphase($year);
+		// Datum in Jahre umrechnen
+		$year = ((((((date("s") / 60) + date("i")) / 60) + date("G")) / 24) + date("z") - 1) / (365 + (date("L"))) + date("Y");
+		$moonphase = $this->CalculateMoonphase($year);
 		$lastquarter = $moonphase["lastquarter"];
-        $lastquarterdate = $moonphase["moondate"][3]["date"];
-        $lastquartertime = $moonphase["moondate"][3]["time"];
+		$lastquarterdate = $moonphase["moondate"][3]["date"];
+		$lastquartertime = $moonphase["moondate"][3]["time"];
 
-        $ispast = $this->CompareDateWithToday($lastquarterdate);
-        if($ispast)
-        {
-            $year = $this->GetNextPhase();
-            $nextmoonphase = $this->CalculateMoonphase($year);
-            $nextlastquarter = $nextmoonphase["lastquarter"];
-            $nextlastquarterdate = $nextmoonphase["moondate"][3]["date"];
-            $nextlastquartertime = $nextmoonphase["moondate"][3]["time"];
-            return array("lastquarter" => $nextlastquarter, "lastquarterdate" => $nextlastquarterdate, "lastquartertime" => $nextlastquartertime);
-        }
-        else
-        {
-            return array("lastquarter" => $lastquarter, "lastquarterdate" => $lastquarterdate, "lastquartertime" => $lastquartertime);
-        }
+		$ispast = $this->CompareDateWithToday($lastquarterdate);
+		if ($ispast) {
+			$year = $this->GetNextPhase();
+			$nextmoonphase = $this->CalculateMoonphase($year);
+			$nextlastquarter = $nextmoonphase["lastquarter"];
+			$nextlastquarterdate = $nextmoonphase["moondate"][3]["date"];
+			$nextlastquartertime = $nextmoonphase["moondate"][3]["time"];
+			return array("lastquarter" => $nextlastquarter, "lastquarterdate" => $nextlastquarterdate, "lastquartertime" => $nextlastquartertime);
+		} else {
+			return array("lastquarter" => $lastquarter, "lastquarterdate" => $lastquarterdate, "lastquartertime" => $lastquartertime);
+		}
 	}
 
-    public function Moon_CurrentFirstQuarter()
-    {
-        // aktuelles Datum in Jahre umrechnen
-        $year = ((((((date("s") / 60)+ date("i")) / 60)+date("G")) / 24) + date("z") - 1) / (365 + (date("L"))) + date("Y");
-        $moonphase = $this->CalculateMoonphase($year);
-        $firstquarter = $moonphase["firstquarter"];
-        $firstquarterdate = $moonphase["moondate"][1]["date"];
-        $firstquartertime = $moonphase["moondate"][1]["time"];
-        return array("firstquarter" => $firstquarter, "firstquarterdate" => $firstquarterdate, "firstquartertime" => $firstquartertime);
-    }
+	public function Moon_CurrentFirstQuarter()
+	{
+		// aktuelles Datum in Jahre umrechnen
+		$year = ((((((date("s") / 60) + date("i")) / 60) + date("G")) / 24) + date("z") - 1) / (365 + (date("L"))) + date("Y");
+		$moonphase = $this->CalculateMoonphase($year);
+		$firstquarter = $moonphase["firstquarter"];
+		$firstquarterdate = $moonphase["moondate"][1]["date"];
+		$firstquartertime = $moonphase["moondate"][1]["time"];
+		return array("firstquarter" => $firstquarter, "firstquarterdate" => $firstquarterdate, "firstquartertime" => $firstquartertime);
+	}
 
-    public function Moon_CurrentNewmoon()
-    {
-        // aktuelles Datum in Jahre umrechnen
-        $year = ((((((date("s") / 60)+ date("i")) / 60)+date("G")) / 24) + date("z") - 1) / (365 + (date("L"))) + date("Y");
-        $moonphase = $this->CalculateMoonphase($year);
-        $newmoon = $moonphase["newmoon"];
-        $newmoondate = $moonphase["moondate"][0]["date"];
-        $newmoontime = $moonphase["moondate"][0]["time"];
-        return array("newmoon" => $newmoon, "newmoondate" => $newmoondate, "newmoontime" => $newmoontime);
-    }
+	public function Moon_CurrentNewmoon()
+	{
+		// aktuelles Datum in Jahre umrechnen
+		$year = ((((((date("s") / 60) + date("i")) / 60) + date("G")) / 24) + date("z") - 1) / (365 + (date("L"))) + date("Y");
+		$moonphase = $this->CalculateMoonphase($year);
+		$newmoon = $moonphase["newmoon"];
+		$newmoondate = $moonphase["moondate"][0]["date"];
+		$newmoontime = $moonphase["moondate"][0]["time"];
+		return array("newmoon" => $newmoon, "newmoondate" => $newmoondate, "newmoontime" => $newmoontime);
+	}
 
-    public function Moon_CurrentFullmoon()
-    {
-        // aktuelles Datum in Jahre umrechnen
-        $year = ((((((date("s") / 60)+ date("i")) / 60)+date("G")) / 24) + date("z") - 1) / (365 + (date("L"))) + date("Y");
-        $moonphase = $this->CalculateMoonphase($year);
-        $fullmoon = $moonphase["fullmoon"];
-        $fullmoondate = $moonphase["moondate"][2]["date"];
-        $fullmoontime = $moonphase["moondate"][2]["time"];
-        return array("fullmoon" => $fullmoon, "fullmoondate" => $fullmoondate, "fullmoontime" => $fullmoontime);
-    }
+	public function Moon_CurrentFullmoon()
+	{
+		// aktuelles Datum in Jahre umrechnen
+		$year = ((((((date("s") / 60) + date("i")) / 60) + date("G")) / 24) + date("z") - 1) / (365 + (date("L"))) + date("Y");
+		$moonphase = $this->CalculateMoonphase($year);
+		$fullmoon = $moonphase["fullmoon"];
+		$fullmoondate = $moonphase["moondate"][2]["date"];
+		$fullmoontime = $moonphase["moondate"][2]["time"];
+		return array("fullmoon" => $fullmoon, "fullmoondate" => $fullmoondate, "fullmoontime" => $fullmoontime);
+	}
 
-    public function Moon_CurrentLastQuarter()
-    {
-        // aktuelles Datum in Jahre umrechnen
-        $year = ((((((date("s") / 60)+ date("i")) / 60)+date("G")) / 24) + date("z") - 1) / (365 + (date("L"))) + date("Y");
-        $moonphase = $this->CalculateMoonphase($year);
-        $lastquarter = $moonphase["lastquarter"];
-        $lastquarterdate = $moonphase["moondate"][3]["date"];
-        $lastquartertime = $moonphase["moondate"][3]["time"];
-        return array("lastquarter" => $lastquarter, "lastquarterdate" => $lastquarterdate, "lastquartertime" => $lastquartertime);
-    }
+	public function Moon_CurrentLastQuarter()
+	{
+		// aktuelles Datum in Jahre umrechnen
+		$year = ((((((date("s") / 60) + date("i")) / 60) + date("G")) / 24) + date("z") - 1) / (365 + (date("L"))) + date("Y");
+		$moonphase = $this->CalculateMoonphase($year);
+		$lastquarter = $moonphase["lastquarter"];
+		$lastquarterdate = $moonphase["moondate"][3]["date"];
+		$lastquartertime = $moonphase["moondate"][3]["time"];
+		return array("lastquarter" => $lastquarter, "lastquarterdate" => $lastquarterdate, "lastquartertime" => $lastquartertime);
+	}
 
-    public function Moon_FirstQuarterDate(string $date)
-    {
-        $timestamp = strtotime($date);
-        // Datum in Jahre umrechnen
-        $year = ((((((date("s") / 60)+ date("i")) / 60)+date("G")) / 24) + date("z", $timestamp) - 1) / (365 + (date("L", $timestamp))) + date("Y", $timestamp);
-        $moonphase = $this->CalculateMoonphase($year);
-        $firstquarter = $moonphase["firstquarter"];
-        $firstquarterdate = $moonphase["moondate"][1]["date"];
-        $firstquartertime = $moonphase["moondate"][1]["time"];
-        return array("firstquarter" => $firstquarter, "firstquarterdate" => $firstquarterdate, "firstquartertime" => $firstquartertime);
-    }
+	public function Moon_FirstQuarterDate(string $date)
+	{
+		$timestamp = strtotime($date);
+		// Datum in Jahre umrechnen
+		$year = ((((((date("s") / 60) + date("i")) / 60) + date("G")) / 24) + date("z", $timestamp) - 1) / (365 + (date("L", $timestamp))) + date("Y", $timestamp);
+		$moonphase = $this->CalculateMoonphase($year);
+		$firstquarter = $moonphase["firstquarter"];
+		$firstquarterdate = $moonphase["moondate"][1]["date"];
+		$firstquartertime = $moonphase["moondate"][1]["time"];
+		return array("firstquarter" => $firstquarter, "firstquarterdate" => $firstquarterdate, "firstquartertime" => $firstquartertime);
+	}
 
-    public function Moon_NewmoonDate(string $date)
-    {
-        $timestamp = strtotime($date);
-        // Datum in Jahre umrechnen
-        $year = ((((((date("s") / 60)+ date("i")) / 60)+date("G")) / 24) + date("z", $timestamp) - 1) / (365 + (date("L", $timestamp))) + date("Y", $timestamp);
-        $moonphase = $this->CalculateMoonphase($year);
-        $newmoon = $moonphase["newmoon"];
-        $newmoondate = $moonphase["moondate"][0]["date"];
-        $newmoontime = $moonphase["moondate"][0]["time"];
-        return array("newmoon" => $newmoon, "newmoondate" => $newmoondate, "newmoontime" => $newmoontime);
-    }
+	public function Moon_NewmoonDate(string $date)
+	{
+		$timestamp = strtotime($date);
+		// Datum in Jahre umrechnen
+		$year = ((((((date("s") / 60) + date("i")) / 60) + date("G")) / 24) + date("z", $timestamp) - 1) / (365 + (date("L", $timestamp))) + date("Y", $timestamp);
+		$moonphase = $this->CalculateMoonphase($year);
+		$newmoon = $moonphase["newmoon"];
+		$newmoondate = $moonphase["moondate"][0]["date"];
+		$newmoontime = $moonphase["moondate"][0]["time"];
+		return array("newmoon" => $newmoon, "newmoondate" => $newmoondate, "newmoontime" => $newmoontime);
+	}
 
-    public function Moon_FullmoonDate(string $date)
-    {
-        $timestamp = strtotime($date);
-        // Datum in Jahre umrechnen
-        $year = ((((((date("s") / 60)+ date("i")) / 60)+date("G")) / 24) + date("z", $timestamp) - 1) / (365 + (date("L", $timestamp))) + date("Y", $timestamp);
-        $moonphase = $this->CalculateMoonphase($year);
-        $fullmoon = $moonphase["fullmoon"];
-        $fullmoondate = $moonphase["moondate"][2]["date"];
-        $fullmoontime = $moonphase["moondate"][2]["time"];
-        return array("fullmoon" => $fullmoon, "fullmoondate" => $fullmoondate, "fullmoontime" => $fullmoontime);
-    }
+	public function Moon_FullmoonDate(string $date)
+	{
+		$timestamp = strtotime($date);
+		// Datum in Jahre umrechnen
+		$year = ((((((date("s") / 60) + date("i")) / 60) + date("G")) / 24) + date("z", $timestamp) - 1) / (365 + (date("L", $timestamp))) + date("Y", $timestamp);
+		$moonphase = $this->CalculateMoonphase($year);
+		$fullmoon = $moonphase["fullmoon"];
+		$fullmoondate = $moonphase["moondate"][2]["date"];
+		$fullmoontime = $moonphase["moondate"][2]["time"];
+		return array("fullmoon" => $fullmoon, "fullmoondate" => $fullmoondate, "fullmoontime" => $fullmoontime);
+	}
 
-    public function Moon_LastQuarterDate(string $date)
-    {
-        $timestamp = strtotime($date);
-        // Datum in Jahre umrechnen
-        $year = ((((((date("s") / 60)+ date("i")) / 60)+date("G")) / 24) + date("z", $timestamp) - 1) / (365 + (date("L", $timestamp))) + date("Y", $timestamp);
-        $moonphase = $this->CalculateMoonphase($year);
-        $lastquarter = $moonphase["lastquarter"];
-        $lastquarterdate = $moonphase["moondate"][3]["date"];
-        $lastquartertime = $moonphase["moondate"][3]["time"];
-        return array("lastquarter" => $lastquarter, "lastquarterdate" => $lastquarterdate, "lastquartertime" => $lastquartertime);
-    }
+	public function Moon_LastQuarterDate(string $date)
+	{
+		$timestamp = strtotime($date);
+		// Datum in Jahre umrechnen
+		$year = ((((((date("s") / 60) + date("i")) / 60) + date("G")) / 24) + date("z", $timestamp) - 1) / (365 + (date("L", $timestamp))) + date("Y", $timestamp);
+		$moonphase = $this->CalculateMoonphase($year);
+		$lastquarter = $moonphase["lastquarter"];
+		$lastquarterdate = $moonphase["moondate"][3]["date"];
+		$lastquartertime = $moonphase["moondate"][3]["time"];
+		return array("lastquarter" => $lastquarter, "lastquarterdate" => $lastquarterdate, "lastquartertime" => $lastquartertime);
+	}
 
-    protected function CompareDateWithToday($datetocompare)
-    {
-        $datetimetoday = new DateTime(date("d.m.Y",time()));
-        $datetimecompare = new DateTime($datetocompare);
-        $interval = $datetimetoday->diff($datetimecompare);
-        $daydifference = intval($interval->format('%R%a')); // int
-        if($daydifference >= 0) // present or future
-        {
-            return false;
-        }
-        else // past
-        {
-            return true;
-        }
-    }
+	protected function CompareDateWithToday($datetocompare)
+	{
+		$datetimetoday = new DateTime(date("d.m.Y", time()));
+		$datetimecompare = new DateTime($datetocompare);
+		$interval = $datetimetoday->diff($datetimecompare);
+		$daydifference = intval($interval->format('%R%a')); // int
+		if ($daydifference >= 0) // present or future
+		{
+			return false;
+		} else // past
+		{
+			return true;
+		}
+	}
 
-    protected function GetNextPhase()
-    {
-        $currentnewmoon = $this->Moon_CurrentNewmoon();
-        $currentnewmoondate = $currentnewmoon["newmoondate"];
-        $datetimenewmoon = new DateTime($currentnewmoondate);
-        $datetimenewmoon->add(new DateInterval('P30D'));
-        // Datum für nächsten Zyklus in Jahre umrechnen
-        $year = ((((((date("s") / 60)+ date("i")) / 60)+date("G")) / 24) + $datetimenewmoon->format('z') - 1) / (365 + ($datetimenewmoon->format('L'))) + $datetimenewmoon->format('Y');
-        return $year;
-    }
+	protected function GetNextPhase()
+	{
+		$currentnewmoon = $this->Moon_CurrentNewmoon();
+		$currentnewmoondate = $currentnewmoon["newmoondate"];
+		$datetimenewmoon = new DateTime($currentnewmoondate);
+		$datetimenewmoon->add(new DateInterval('P30D'));
+		// Datum für nächsten Zyklus in Jahre umrechnen
+		$year = ((((((date("s") / 60) + date("i")) / 60) + date("G")) / 24) + $datetimenewmoon->format('z') - 1) / (365 + ($datetimenewmoon->format('L'))) + $datetimenewmoon->format('Y');
+		return $year;
+	}
 
 	public function GetMoonPicture(float $mondphase)
-	{	
+	{
 		$language = $this->ReadPropertyInteger("language");
 		$picturemoonselection = $this->ReadPropertyBoolean("picturemoonselection");
-			if ($picturemoonselection)
-			{
-				$firstfullmoonpic = $this->ReadPropertyInteger("firstfullmoonpic");
-				$lastfullmoonpic = $this->ReadPropertyInteger("lastfullmoonpic");
-				$firstincreasingmoonpic = $this->ReadPropertyInteger("firstincreasingmoonpic");
-				$lastincreasingmoonpic = $this->ReadPropertyInteger("lastincreasingmoonpic");
-				$firstnewmoonpic = $this->ReadPropertyInteger("firstnewmoonpic");
-				$lastnewmoonpic = $this->ReadPropertyInteger("lastnewmoonpic");
-				$firstdecreasingmoonpic = $this->ReadPropertyInteger("firstdecreasingmoonpic");
-				$lastdecreasingmoonpic = $this->ReadPropertyInteger("lastdecreasingmoonpic");
-			}
-			else
-			{
-				$firstfullmoonpic = 172;
-				$lastfullmoonpic = 182;
-				$firstincreasingmoonpic = 183;
-				$lastincreasingmoonpic = 352;
-				$firstnewmoonpic = 353;
-				$lastnewmoonpic = 362;
-				$firstdecreasingmoonpic = 8;
-				$lastdecreasingmoonpic = 171;
-			}
-		if ($mondphase <= 1 || $mondphase >= 99 )  //--Vollmond
-		{ 
-			if($language == 1)
-			{
+		if ($picturemoonselection) {
+			$firstfullmoonpic = $this->ReadPropertyInteger("firstfullmoonpic");
+			$lastfullmoonpic = $this->ReadPropertyInteger("lastfullmoonpic");
+			$firstincreasingmoonpic = $this->ReadPropertyInteger("firstincreasingmoonpic");
+			$lastincreasingmoonpic = $this->ReadPropertyInteger("lastincreasingmoonpic");
+			$firstnewmoonpic = $this->ReadPropertyInteger("firstnewmoonpic");
+			$lastnewmoonpic = $this->ReadPropertyInteger("lastnewmoonpic");
+			$firstdecreasingmoonpic = $this->ReadPropertyInteger("firstdecreasingmoonpic");
+			$lastdecreasingmoonpic = $this->ReadPropertyInteger("lastdecreasingmoonpic");
+		} else {
+			$firstfullmoonpic = 172;
+			$lastfullmoonpic = 182;
+			$firstincreasingmoonpic = 183;
+			$lastincreasingmoonpic = 352;
+			$firstnewmoonpic = 353;
+			$lastnewmoonpic = 362;
+			$firstdecreasingmoonpic = 8;
+			$lastdecreasingmoonpic = 171;
+		}
+		if ($mondphase <= 1 || $mondphase >= 99)  //--Vollmond
+		{
+			if ($language == 1) {
 				$phase_text = 'Vollmond';
-			}
-			else
-			{
+			} else {
 				$phase_text = 'full moon';
 			}
-			if ($picturemoonselection)
-			{
-				if($mondphase>=99)
-				{
-					$pic = $this->rescale([99,100],[$firstfullmoonpic,$lastfullmoonpic]); // ([Mondphasen von,bis],[Bildnummern von,bis])
-				} 
-				else
-				{
-					$pic = $this->rescale([0,1],[$firstfullmoonpic,$lastfullmoonpic]);
+			if ($picturemoonselection) {
+				if ($mondphase >= 99) {
+					$pic = $this->rescale([99, 100], [$firstfullmoonpic, $lastfullmoonpic]); // ([Mondphasen von,bis],[Bildnummern von,bis])
+				} else {
+					$pic = $this->rescale([0, 1], [$firstfullmoonpic, $lastfullmoonpic]);
 				}
-			}
-			else
-			{
-				if($mondphase>=99)
-				{
-					$pic = $this->rescale([99,100],[172,177]); // ([Mondphasen von,bis],[Bildnummern von,bis])
-				} 
-				else
-				{
-					$pic = $this->rescale([0,1],[178,182]);
+			} else {
+				if ($mondphase >= 99) {
+					$pic = $this->rescale([99, 100], [172, 177]); // ([Mondphasen von,bis],[Bildnummern von,bis])
+				} else {
+					$pic = $this->rescale([0, 1], [178, 182]);
 				}
 			}
 			$pic_n = floor($pic($mondphase));
-			if($pic_n<10){
-			   $pic_n = "00".$pic_n;}
-			elseif($pic_n<100){
-			   $pic_n = "0".$pic_n;}
-		}
-		elseif ($mondphase > 1 && $mondphase < 49){  //--abnehmender Mond
-			if($language == 1)
-			{
-				$phase_text = 'abnehmender Mond';
+			if ($pic_n < 10) {
+				$pic_n = "00" . $pic_n;
+			} elseif ($pic_n < 100) {
+				$pic_n = "0" . $pic_n;
 			}
-			else
-			{
+		} elseif ($mondphase > 1 && $mondphase < 49) {  //--abnehmender Mond
+			if ($language == 1) {
+				$phase_text = 'abnehmender Mond';
+			} else {
 				$phase_text = 'decreasing moon';
 			}
-			$pic = $this->rescale([2,48],[$firstincreasingmoonpic,$lastincreasingmoonpic]);
+			$pic = $this->rescale([2, 48], [$firstincreasingmoonpic, $lastincreasingmoonpic]);
 			$pic_n = floor($pic($mondphase));
-			if($pic_n<10){
-			   $pic_n = "00".$pic_n;}
-			elseif($pic_n<100){
-			   $pic_n = "0".$pic_n;}
-		}
-		elseif ($mondphase >= 49 && $mondphase <= 51){  //--Neumond
-			if($language == 1)
-			{
-				$phase_text = 'Neumond';
+			if ($pic_n < 10) {
+				$pic_n = "00" . $pic_n;
+			} elseif ($pic_n < 100) {
+				$pic_n = "0" . $pic_n;
 			}
-			else
-			{
+		} elseif ($mondphase >= 49 && $mondphase <= 51) {  //--Neumond
+			if ($language == 1) {
+				$phase_text = 'Neumond';
+			} else {
 				$phase_text = 'new moon';
 			}
-			$pic = $this->rescale([49,51],[$firstnewmoonpic,$lastnewmoonpic]);
+			$pic = $this->rescale([49, 51], [$firstnewmoonpic, $lastnewmoonpic]);
 			$pic_n = floor($pic($mondphase));
-			if($pic_n<10){
-			   $pic_n = "00".$pic_n;}
-			elseif($pic_n<100){
-			   $pic_n = "0".$pic_n;}
-		}
-		else{  //--zunehmender Mond
-			if($language == 1)
-			{
-				$phase_text = 'zunehmender Mond';
+			if ($pic_n < 10) {
+				$pic_n = "00" . $pic_n;
+			} elseif ($pic_n < 100) {
+				$pic_n = "0" . $pic_n;
 			}
-			else
-			{
+		} else {  //--zunehmender Mond
+			if ($language == 1) {
+				$phase_text = 'zunehmender Mond';
+			} else {
 				$phase_text = 'increasing moon';
 			}
-			$pic = $this->rescale([52,98],[$firstdecreasingmoonpic,$lastdecreasingmoonpic]);
+			$pic = $this->rescale([52, 98], [$firstdecreasingmoonpic, $lastdecreasingmoonpic]);
 			$pic_n = floor($pic($mondphase));
-			if($pic_n<10){
-			   $pic_n = "00".$pic_n;}
-			elseif($pic_n<100){
-			   $pic_n = "0".$pic_n;}
+			if ($pic_n < 10) {
+				$pic_n = "00" . $pic_n;
+			} elseif ($pic_n < 100) {
+				$pic_n = "0" . $pic_n;
+			}
 		}
-		
+
 		$picture = array("picid" => $pic_n, "phase" => $phase_text);
 		return $picture;
 	}
 
 	protected function rescale($ab, $cd) //--Funktion zum anpassen der Mondphase 0-100 an Bildnummer 001-362 (Bilder der Seite http://www.avgoe.de)
 	{
-		list($a1,$b1) = $ab;
-		list($c1,$d1) = $cd;
-		if($a1 == $b1)
-		{
-		   trigger_error("Invalid scale",E_USER_WARNING);
-		   return false;
+		list($a1, $b1) = $ab;
+		list($c1, $d1) = $cd;
+		if ($a1 == $b1) {
+			trigger_error("Invalid scale", E_USER_WARNING);
+			return false;
 		}
-		$o = ($b1*$c1-$a1*$d1)/($b1-$a1);
-		$s = ($d1-$c1)/($b1-$a1);
-		return function($x)use($o,$s)
-		{
-		   return $s*$x+$o;
+		$o = ($b1 * $c1 - $a1 * $d1) / ($b1 - $a1);
+		$s = ($d1 - $c1) / ($b1 - $a1);
+		return function ($x) use ($o, $s) {
+			return $s * $x + $o;
 		};
 	}
 
-
-
-
-	
 
 	// Berechnung der Mondauf/untergangs Zeiten
 	public function Mondaufgang()
@@ -4194,83 +3979,83 @@ class Astronomy extends IPSModule
 		$month = date("m");
 		$day = date("d");
 		$year = date("Y");
-        $location = $this->getlocation();
-        $latitude = $location["Latitude"];
-        $longitude = $location["Longitude"];
+		$location = $this->getlocation();
+		$latitude = $location["Latitude"];
+		$longitude = $location["Longitude"];
 		$data = (Moon::calculateMoonTimes($month, $day, $year, $latitude, $longitude));
 
 		$moonrise = $data->{'moonrise'}; //Aufgang
 		$timeformat = $this->GetTimeformat();
 		$moonrisedate = date("d.m.Y", $moonrise);
 		$moonrisetime = date($timeformat, $moonrise);
-		if($this->ReadPropertyBoolean("moonrise") == true) // float
+		if ($this->ReadPropertyBoolean("moonrise") == true) // float
 		{
-			SetValue($this->GetIDForIdent("moonrise"), $moonrise);
-			if($this->ReadPropertyBoolean("extinfoselection") == true) // float
+			$this->SetValue('moonrise', $moonrise);
+			if ($this->ReadPropertyBoolean("extinfoselection") == true) // float
 			{
-				SetValue($this->GetIDForIdent("moonrisedate"), $moonrisedate);
-				SetValue($this->GetIDForIdent("moonrisetime"), $moonrisetime);
+				$this->SetValue('moonrisedate', $moonrisedate);
+				$this->SetValue('moonrisetime', $moonrisetime);
 			}
 		}
-		$moonrisedata = array ("moonrisedate" => $moonrisedate, "moonrisetime" =>  $moonrisetime);
+		$moonrisedata = array("moonrisedate" => $moonrisedate, "moonrisetime" => $moonrisetime);
 		return $moonrisedata;
 	}
-	
+
 	public function Monduntergang()
 	{
 		$month = date("m");
 		$day = date("d");
 		$year = date("Y");
-        $location = $this->getlocation();
-        $latitude = $location["Latitude"];
-        $longitude = $location["Longitude"];
+		$location = $this->getlocation();
+		$latitude = $location["Latitude"];
+		$longitude = $location["Longitude"];
 		$data = (Moon::calculateMoonTimes($month, $day, $year, $latitude, $longitude));
 
 		$moonset = $data->{'moonset'}; //Untergang
 		$timeformat = $this->GetTimeformat();
 		$moonsetdate = date("d.m.Y", $moonset);
 		$moonsettime = date($timeformat, $moonset);
-		if($this->ReadPropertyBoolean("moonset") == true) // float
+		if ($this->ReadPropertyBoolean("moonset") == true) // float
 		{
-			SetValue($this->GetIDForIdent("moonset"), $moonset); 
-			if($this->ReadPropertyBoolean("extinfoselection") == true) // float
+			$this->SetValue('moonset', $moonset);
+			if ($this->ReadPropertyBoolean("extinfoselection") == true) // float
 			{
-				SetValue($this->GetIDForIdent("moonsetdate"), $moonsetdate);
-				SetValue($this->GetIDForIdent("moonsettime"), $moonsettime);
+				$this->SetValue('moonsetdate', $moonsetdate);
+				$this->SetValue('moonsettime', $moonsettime);
 			}
 		}
-		$moonsetdata = array ("moonsetdate" => $moonsetdate, "moonsettime" =>  $moonsettime);
+		$moonsetdata = array("moonsetdate" => $moonsetdate, "moonsettime" => $moonsettime);
 		return $moonsetdata;
-	}	
-	
+	}
+
 	// ------------------------------
-	
-	
+
+
 	//Profile
 	protected function RegisterProfileInteger($Name, $Icon, $Prefix, $Suffix, $MinValue, $MaxValue, $StepSize, $Digits)
 	{
-        
-        if(!IPS_VariableProfileExists($Name)) {
-            IPS_CreateVariableProfile($Name, 1);
-        } else {
-            $profile = IPS_GetVariableProfile($Name);
-            if($profile['ProfileType'] != 1)
-            throw new Exception("Variable profile type does not match for profile ".$Name);
-        }
-        
-        IPS_SetVariableProfileIcon($Name, $Icon);
-        IPS_SetVariableProfileText($Name, $Prefix, $Suffix);
+
+		if (!IPS_VariableProfileExists($Name)) {
+			IPS_CreateVariableProfile($Name, 1);
+		} else {
+			$profile = IPS_GetVariableProfile($Name);
+			if ($profile['ProfileType'] != 1)
+				throw new Exception("Variable profile type does not match for profile " . $Name);
+		}
+
+		IPS_SetVariableProfileIcon($Name, $Icon);
+		IPS_SetVariableProfileText($Name, $Prefix, $Suffix);
 		IPS_SetVariableProfileDigits($Name, $Digits); //  Nachkommastellen
-        IPS_SetVariableProfileValues($Name, $MinValue, $MaxValue, $StepSize); // string $ProfilName, float $Minimalwert, float $Maximalwert, float $Schrittweite
-        
-    }
-	
+		IPS_SetVariableProfileValues($Name, $MinValue, $MaxValue, $StepSize); // string $ProfilName, float $Minimalwert, float $Maximalwert, float $Schrittweite
+
+	}
+
 	protected function RegisterProfileIntegerAss($Name, $Icon, $Prefix, $Suffix, $MinValue, $MaxValue, $Stepsize, $Digits, $Associations)
 	{
-        if ( sizeof($Associations) === 0 ){
-            $MinValue = 0;
-            $MaxValue = 0;
-        } 
+		if (sizeof($Associations) === 0) {
+			$MinValue = 0;
+			$MaxValue = 0;
+		}
 		/*
 		else {
             //undefiened offset
@@ -4278,59 +4063,57 @@ class Astronomy extends IPSModule
             $MaxValue = $Associations[sizeof($Associations)-1][0];
         }
         */
-        $this->RegisterProfileInteger($Name, $Icon, $Prefix, $Suffix, $MinValue, $MaxValue, $Stepsize, $Digits);
-        
+		$this->RegisterProfileInteger($Name, $Icon, $Prefix, $Suffix, $MinValue, $MaxValue, $Stepsize, $Digits);
+
 		//boolean IPS_SetVariableProfileAssociation ( string $ProfilName, float $Wert, string $Name, string $Icon, integer $Farbe )
-        foreach($Associations as $Association) {
-            IPS_SetVariableProfileAssociation($Name, $Association[0], $Association[1], $Association[2], $Association[3]);
-        }
-        
-    }
-			
+		foreach ($Associations as $Association) {
+			IPS_SetVariableProfileAssociation($Name, $Association[0], $Association[1], $Association[2], $Association[3]);
+		}
+
+	}
+
 	protected function RegisterProfileString($Name, $Icon)
 	{
-        
-        if(!IPS_VariableProfileExists($Name))
-			{
-            IPS_CreateVariableProfile($Name, 3);
+
+		if (!IPS_VariableProfileExists($Name)) {
+			IPS_CreateVariableProfile($Name, 3);
 			IPS_SetVariableProfileIcon($Name, $Icon);
-			} 
-		else {
-            $profile = IPS_GetVariableProfile($Name);
-            if($profile['ProfileType'] != 3)
-            throw new Exception("Variable profile type does not match for profile ".$Name);
-        }
-        
-        
-        //IPS_SetVariableProfileText($Name, $Prefix, $Suffix);
-        //IPS_SetVariableProfileValues($Name, $MinValue, $MaxValue, $StepSize);
-        
-    }
-	
+		} else {
+			$profile = IPS_GetVariableProfile($Name);
+			if ($profile['ProfileType'] != 3)
+				throw new Exception("Variable profile type does not match for profile " . $Name);
+		}
+
+
+		//IPS_SetVariableProfileText($Name, $Prefix, $Suffix);
+		//IPS_SetVariableProfileValues($Name, $MinValue, $MaxValue, $StepSize);
+
+	}
+
 	protected function RegisterProfileFloat($Name, $Icon, $Prefix, $Suffix, $MinValue, $MaxValue, $StepSize, $Digits)
 	{
-        
-        if(!IPS_VariableProfileExists($Name)) {
-            IPS_CreateVariableProfile($Name, 2);
-        } else {
-            $profile = IPS_GetVariableProfile($Name);
-            if($profile['ProfileType'] != 2)
-            throw new Exception("Variable profile type does not match for profile ".$Name);
-        }
-        
-        IPS_SetVariableProfileIcon($Name, $Icon);
-        IPS_SetVariableProfileText($Name, $Prefix, $Suffix);
+
+		if (!IPS_VariableProfileExists($Name)) {
+			IPS_CreateVariableProfile($Name, 2);
+		} else {
+			$profile = IPS_GetVariableProfile($Name);
+			if ($profile['ProfileType'] != 2)
+				throw new Exception("Variable profile type does not match for profile " . $Name);
+		}
+
+		IPS_SetVariableProfileIcon($Name, $Icon);
+		IPS_SetVariableProfileText($Name, $Prefix, $Suffix);
 		IPS_SetVariableProfileDigits($Name, $Digits); //  Nachkommastellen
-        IPS_SetVariableProfileValues($Name, $MinValue, $MaxValue, $StepSize);
-        
-    }
-	
+		IPS_SetVariableProfileValues($Name, $MinValue, $MaxValue, $StepSize);
+
+	}
+
 	protected function RegisterProfileFloatAss($Name, $Icon, $Prefix, $Suffix, $MinValue, $MaxValue, $Stepsize, $Digits, $Associations)
 	{
-        if ( sizeof($Associations) === 0 ){
-            $MinValue = 0;
-            $MaxValue = 0;
-        } 
+		if (sizeof($Associations) === 0) {
+			$MinValue = 0;
+			$MaxValue = 0;
+		}
 		/*
 		else {
             //undefiened offset
@@ -4338,194 +4121,117 @@ class Astronomy extends IPSModule
             $MaxValue = $Associations[sizeof($Associations)-1][0];
         }
         */
-        $this->RegisterProfileFloat($Name, $Icon, $Prefix, $Suffix, $MinValue, $MaxValue, $Stepsize, $Digits);
-        
+		$this->RegisterProfileFloat($Name, $Icon, $Prefix, $Suffix, $MinValue, $MaxValue, $Stepsize, $Digits);
+
 		//boolean IPS_SetVariableProfileAssociation ( string $ProfilName, float $Wert, string $Name, string $Icon, integer $Farbe )
-        foreach($Associations as $Association) {
-            IPS_SetVariableProfileAssociation($Name, $Association[0], $Association[1], $Association[2], $Association[3]);
-        }
-        
-    }
-	
+		foreach ($Associations as $Association) {
+			IPS_SetVariableProfileAssociation($Name, $Association[0], $Association[1], $Association[2], $Association[3]);
+		}
+
+	}
+
 	//Configuration Form
-		public function GetConfigurationForm()
-		{
-			$UTC = $this->ReadPropertyFloat("UTC");
-			$formhead = $this->FormHead();
-			$formselection = $this->FormSelection();
-			$formstatus = $this->FormStatus();
-			$formactions = $this->FormActions();
-			$formutctext = $this->FormUTCText($UTC);
-			$formelementsend = '{ "type": "Label", "label": "__________________________________________________________________________________________________" }';
-			
-			return	'{ '.$formhead.$formutctext.$formselection.$formelementsend.'],'.$formactions.$formstatus.' }';
+	public function GetConfigurationForm()
+	{
+		$UTC = $this->ReadPropertyFloat("UTC");
+		$formhead = $this->FormHead();
+		$formselection = $this->FormSelection();
+		$formstatus = $this->FormStatus();
+		$formactions = $this->FormActions();
+		$formutctext = $this->FormUTCText($UTC);
+		$formelementsend = '{ "type": "Label", "label": "__________________________________________________________________________________________________" }';
+
+		return '{ ' . $formhead . $formutctext . $formselection . $formelementsend . '],' . $formactions . $formstatus . ' }';
+	}
+
+	protected function FormUTCText($UTC)
+	{
+		$form = '';
+		if ($UTC == 14) {
+			$form .= '{ "type": "Label", "label": "UTC +14 Tonga und 2 weitere LINT Kiritimati" },';
+		} elseif ($UTC == 13.75) {
+			$form .= '{ "type": "Label", "label": "UTC +13:45 Chatham-Inseln/Neuseeland CHADT Chatham-Inseln" },';
+		} elseif ($UTC == 13) {
+			$form .= '{ "type": "Label", "label": "UTC +13 Neuseeland mit Ausnahmen und 4 weitere NZDT Auckland" },';
+		} elseif ($UTC == 12) {
+			$form .= '{ "type": "Label", "label": "UTC +12 Kleines Gebiet in Russland und 6 weitere ANAT Anadyr" },';
+		} elseif ($UTC == 11) {
+			$form .= '{ "type": "Label", "label": "UTC +11 Großteil von Australien und 8 weitere AEDT Melbourne" },';
+		} elseif ($UTC == 10.5) {
+			$form .= '{ "type": "Label", "label": "UTC +10:30 Kleines Gebiet in Australien ACDT Adelaide" },';
+		} elseif ($UTC == 10) {
+			$form .= '{ "type": "Label", "label": "UTC +10 Queensland/Australien und 6 weitere AEST Brisbane" },';
+		} elseif ($UTC == 9.5) {
+			$form .= '{ "type": "Label", "label": "UTC +9:30 Northern Territory/Australien ACST Darwin" },';
+		} elseif ($UTC == 9) {
+			$form .= '{ "type": "Label", "label": "UTC +9 Japan, Südkorea und 4 weitere JST Tokio" },';
+		} elseif ($UTC == 8.75) {
+			$form .= '{ "type": "Label", "label": "UTC +8:45 Western Australia/Australien ACWST Eucla" },';
+		} elseif ($UTC == 8.5) {
+			$form .= '{ "type": "Label", "label": "UTC +8:30 Nordkorea PYT Pjöngjang" },';
+		} elseif ($UTC == 8) {
+			$form .= '{ "type": "Label", "label": "UTC +8 China, Philippinen und 10 weitere CST Peking" },';
+		} elseif ($UTC == 7) {
+			$form .= '{ "type": "Label", "label": "UTC +7 Großteil von Indonesien und 8 weitere WIB Jakarta" },';
+		} elseif ($UTC == 6.5) {
+			$form .= '{ "type": "Label", "label": "UTC +6:30 Myanmar und Kokosinseln MMT Rangun" },';
+		} elseif ($UTC == 6) {
+			$form .= '{ "type": "Label", "label": "UTC +6 Bangladesch und 6 weitere BST Dhaka },';
+		} elseif ($UTC == 5.75) {
+			$form .= '{ "type": "Label", "label": "UTC +5:45 Nepal NPT Kathmandu" },';
+		} elseif ($UTC == 5.5) {
+			$form .= '{ "type": "Label", "label": "UTC +5:30 Indien und Sri Lanka IST Neu-Delhi" },';
+		} elseif ($UTC == 5) {
+			$form .= '{ "type": "Label", "label": "UTC +5 Pakistan und 8 weitere UZT Taschkent" },';
+		} elseif ($UTC == 4.5) {
+			$form .= '{ "type": "Label", "label": "UTC +4:30 Afghanistan AFT Kabul" },';
+		} elseif ($UTC == 4) {
+			$form .= '{ "type": "Label", "label": "UTC +4 Aserbaidschan und 8 weitere GST Dubai" },';
+		} elseif ($UTC == 3.5) {
+			$form .= '{ "type": "Label", "label": "UTC +3:30 Iran IRST Teheran" },';
+		} elseif ($UTC == 3) {
+			$form .= '{ "type": "Label", "label": "UTC +3 Moskau/Russland und 24 weitere MSK Moskau" },';
+		} elseif ($UTC == 2) {
+			$form .= '{ "type": "Label", "label": "UTC +2 Griechenland und 30 weitere OEZ Kairo" },';
+		} elseif ($UTC == 1) {
+			$form .= '{ "type": "Label", "label": "UTC +1 Deutschland und 43 weitere MEZ Berlin" },';
+		} elseif ($UTC == 0) {
+			$form .= '{ "type": "Label", "label": "UTC +0 Großbritannien und 26 weitere GMT London" },';
+		} elseif ($UTC == -1) {
+			$form .= '{ "type": "Label", "label": "UTC -1 Cabo Verde und 2 weitere CVT Praia" },';
+		} elseif ($UTC == -2) {
+			$form .= '{ "type": "Label", "label": "UTC -2 Brasilien (manche Regionen) und Südgeorgien und die Südlichen Sandwichinseln BRST Rio de Janeiro" },';
+		} elseif ($UTC == -3) {
+			$form .= '{ "type": "Label", "label": "UTC -3 Brasilien (manche Regionen) und 10 weitere ART Buenos Aires" },';
+		} elseif ($UTC == -3.5) {
+			$form .= '{ "type": "Label", "label": "UTC -3:30 Neufundland und Labrador/Kanada NST St. John\'s" },';
+		} elseif ($UTC == -4) {
+			$form .= '{ "type": "Label", "label": "UTC -4 einige Gebiete von Kanada und 29 weitere VET Caracas" },';
+		} elseif ($UTC == -5) {
+			$form .= '{ "type": "Label", "label": "UTC -5 Vereinigte Staaten (manche Regionen) und 13 weitere EST New York" },';
+		} elseif ($UTC == -6) {
+			$form .= '{ "type": "Label", "label": "UTC -6 Vereinigte Staaten (manche Regionen) und 9 weitere CST Mexiko-Stadt" },';
+		} elseif ($UTC == -7) {
+			$form .= '{ "type": "Label", "label": "UTC -7 einige Gebiete von Vereinigte Staaten und 2 weitere MST Calgary" },';
+		} elseif ($UTC == -8) {
+			$form .= '{ "type": "Label", "label": "UTC -8 Vereinigte Staaten (manche Regionen) und 3 weitere PST Los Angeles" },';
+		} elseif ($UTC == -9) {
+			$form .= '{ "type": "Label", "label": "UTC -9 Alaska/Vereinigte Staaten und Französisch-Polynesien (manche Regionen) AKST Anchorage" },';
+		} elseif ($UTC == -9.5) {
+			$form .= '{ "type": "Label", "label": "UTC -9:30 Marquesas/Französisch-Polynesien MART Taiohae" },';
+		} elseif ($UTC == -10) {
+			$form .= '{ "type": "Label", "label": "UTC -10 Kleines Gebiet in Vereinigte Staaten und 2 weitere HAST Honolulu" },';
+		} elseif ($UTC == -11) {
+			$form .= '{ "type": "Label", "label": "UTC -11 American Samoa und 2 weitere NUT Alofi" },';
+		} elseif ($UTC == -12) {
+			$form .= '{ "type": "Label", "label": "UTC -12 Großteil von US Minor Outlying Islands AoE Bakerinsel" },';
 		}
-		
-		protected function FormUTCText($UTC)
-		{
-			$form = '';
-			if($UTC == 14)
-			{
-				$form .= '{ "type": "Label", "label": "UTC +14 Tonga und 2 weitere LINT Kiritimati" },';
-			}
-			elseif($UTC == 13.75)
-			{
-				$form .= '{ "type": "Label", "label": "UTC +13:45 Chatham-Inseln/Neuseeland CHADT Chatham-Inseln" },';
-			}
-			elseif($UTC == 13)
-			{
-				$form .= '{ "type": "Label", "label": "UTC +13 Neuseeland mit Ausnahmen und 4 weitere NZDT Auckland" },';
-			}
-			elseif($UTC == 12)
-			{
-				$form .= '{ "type": "Label", "label": "UTC +12 Kleines Gebiet in Russland und 6 weitere ANAT Anadyr" },';
-			}
-			elseif($UTC == 11)
-			{
-				$form .= '{ "type": "Label", "label": "UTC +11 Großteil von Australien und 8 weitere AEDT Melbourne" },';
-			}
-			elseif($UTC == 10.5)
-			{
-				$form .= '{ "type": "Label", "label": "UTC +10:30 Kleines Gebiet in Australien ACDT Adelaide" },';
-			}
-			elseif($UTC == 10)
-			{
-				$form .= '{ "type": "Label", "label": "UTC +10 Queensland/Australien und 6 weitere AEST Brisbane" },';
-			}
-			elseif($UTC == 9.5)
-			{
-				$form .= '{ "type": "Label", "label": "UTC +9:30 Northern Territory/Australien ACST Darwin" },';
-			}
-			elseif($UTC == 9)
-			{
-				$form .= '{ "type": "Label", "label": "UTC +9 Japan, Südkorea und 4 weitere JST Tokio" },';
-			}
-			elseif($UTC == 8.75)
-			{
-				$form .= '{ "type": "Label", "label": "UTC +8:45 Western Australia/Australien ACWST Eucla" },';
-			}
-			elseif($UTC == 8.5)
-			{
-				$form .= '{ "type": "Label", "label": "UTC +8:30 Nordkorea PYT Pjöngjang" },';
-			}
-			elseif($UTC == 8)
-			{
-				$form .= '{ "type": "Label", "label": "UTC +8 China, Philippinen und 10 weitere CST Peking" },';
-			}
-			elseif($UTC == 7)
-			{
-				$form .= '{ "type": "Label", "label": "UTC +7 Großteil von Indonesien und 8 weitere WIB Jakarta" },';
-			}
-			elseif($UTC == 6.5)
-			{
-				$form .= '{ "type": "Label", "label": "UTC +6:30 Myanmar und Kokosinseln MMT Rangun" },';
-			}
-			elseif($UTC == 6)
-			{
-				$form .= '{ "type": "Label", "label": "UTC +6 Bangladesch und 6 weitere BST Dhaka },';
-			}
-			elseif($UTC == 5.75)
-			{
-				$form .= '{ "type": "Label", "label": "UTC +5:45 Nepal NPT Kathmandu" },';
-			}
-			elseif($UTC == 5.5)
-			{
-				$form .= '{ "type": "Label", "label": "UTC +5:30 Indien und Sri Lanka IST Neu-Delhi" },';
-			}
-			elseif($UTC == 5)
-			{
-				$form .= '{ "type": "Label", "label": "UTC +5 Pakistan und 8 weitere UZT Taschkent" },';
-			}
-			elseif($UTC == 4.5)
-			{
-				$form .= '{ "type": "Label", "label": "UTC +4:30 Afghanistan AFT Kabul" },';
-			}
-			elseif($UTC == 4)
-			{
-				$form .= '{ "type": "Label", "label": "UTC +4 Aserbaidschan und 8 weitere GST Dubai" },';
-			}
-			elseif($UTC == 3.5)
-			{
-				$form .= '{ "type": "Label", "label": "UTC +3:30 Iran IRST Teheran" },';
-			}
-			elseif($UTC == 3)
-			{
-				$form .= '{ "type": "Label", "label": "UTC +3 Moskau/Russland und 24 weitere MSK Moskau" },';
-			}
-			elseif($UTC == 2)
-			{
-				$form .= '{ "type": "Label", "label": "UTC +2 Griechenland und 30 weitere OEZ Kairo" },';
-			}
-			elseif($UTC == 1)
-			{
-				$form .= '{ "type": "Label", "label": "UTC +1 Deutschland und 43 weitere MEZ Berlin" },';
-			}
-			elseif($UTC == 0)
-			{
-				$form .= '{ "type": "Label", "label": "UTC +0 Großbritannien und 26 weitere GMT London" },';
-			}
-			elseif($UTC == -1)
-			{
-				$form .= '{ "type": "Label", "label": "UTC -1 Cabo Verde und 2 weitere CVT Praia" },';
-			}
-			elseif($UTC == -2)
-			{
-				$form .= '{ "type": "Label", "label": "UTC -2 Brasilien (manche Regionen) und Südgeorgien und die Südlichen Sandwichinseln BRST Rio de Janeiro" },';
-			}
-			elseif($UTC == -3)
-			{
-				$form .= '{ "type": "Label", "label": "UTC -3 Brasilien (manche Regionen) und 10 weitere ART Buenos Aires" },';
-			}
-			elseif($UTC == -3.5)
-			{
-				$form .= '{ "type": "Label", "label": "UTC -3:30 Neufundland und Labrador/Kanada NST St. John\'s" },';
-			}
-			elseif($UTC == -4)
-			{
-				$form .= '{ "type": "Label", "label": "UTC -4 einige Gebiete von Kanada und 29 weitere VET Caracas" },';
-			}
-			elseif($UTC == -5)
-			{
-				$form .= '{ "type": "Label", "label": "UTC -5 Vereinigte Staaten (manche Regionen) und 13 weitere EST New York" },';
-			}
-			elseif($UTC == -6)
-			{
-				$form .= '{ "type": "Label", "label": "UTC -6 Vereinigte Staaten (manche Regionen) und 9 weitere CST Mexiko-Stadt" },';
-			}
-			elseif($UTC == -7)
-			{
-				$form .= '{ "type": "Label", "label": "UTC -7 einige Gebiete von Vereinigte Staaten und 2 weitere MST Calgary" },';
-			}
-			elseif($UTC == -8)
-			{
-				$form .= '{ "type": "Label", "label": "UTC -8 Vereinigte Staaten (manche Regionen) und 3 weitere PST Los Angeles" },';
-			}
-			elseif($UTC == -9)
-			{
-				$form .= '{ "type": "Label", "label": "UTC -9 Alaska/Vereinigte Staaten und Französisch-Polynesien (manche Regionen) AKST Anchorage" },';
-			}
-			elseif($UTC == -9.5)
-			{
-				$form .= '{ "type": "Label", "label": "UTC -9:30 Marquesas/Französisch-Polynesien MART Taiohae" },';
-			}
-			elseif($UTC == -10)
-			{
-				$form .= '{ "type": "Label", "label": "UTC -10 Kleines Gebiet in Vereinigte Staaten und 2 weitere HAST Honolulu" },';
-			}
-			elseif($UTC == -11)
-			{
-				$form .= '{ "type": "Label", "label": "UTC -11 American Samoa und 2 weitere NUT Alofi" },';
-			}
-			elseif($UTC == -12)
-			{
-				$form .= '{ "type": "Label", "label": "UTC -12 Großteil von US Minor Outlying Islands AoE Bakerinsel" },';
-			}
-			return $form;
-		}
-		
-		protected function FormSelection()
-		{			 
-			$form = '{ "type": "Select", "name": "UTC", "caption": "UTC",
+		return $form;
+	}
+
+	protected function FormSelection()
+	{
+		$form = '{ "type": "Select", "name": "UTC", "caption": "UTC",
 					"options": [
 						{ "label": "UTC +14 LINT Kiritimati", "value": 14 },
 						{ "label": "UTC +13:45 CHADT Chatham-Inseln", "value": 13.75 },
@@ -4849,12 +4555,12 @@ class Astronomy extends IPSModule
 						{ "label": "G:i:s", "value": 8 }
 					]
 				},';
-			return $form;
-		}
-		
-		protected function FormHead()
-		{
-			$form = '"elements":
+		return $form;
+	}
+
+	protected function FormHead()
+	{
+		$form = '"elements":
             [
 				{ "type": "Label", "label": "Astronomy values" },
 				{ "type": "Label", "label": "Display language Webfront:" },
@@ -4865,23 +4571,23 @@ class Astronomy extends IPSModule
 					]
 				},
 				{ "type": "Label", "label": "Coordinated Universal Time (UTC):" },';
-			
-			return $form;
-		}
-		
-		protected function FormActions()
-		{
-			$form = '"actions":
+
+		return $form;
+	}
+
+	protected function FormActions()
+	{
+		$form = '"actions":
 			[
 				{ "type": "Label", "label": "update values" },
 				{ "type": "Button", "label": "update", "onClick": "Astronomy_SetAstronomyValues($id);" }
 			],';
-			return  $form;
-		}	
-		
-		protected function FormStatus()
-		{
-			$form = '"status":
+		return $form;
+	}
+
+	protected function FormStatus()
+	{
+		$form = '"status":
             [
                 {
                     "code": 101,
@@ -4909,179 +4615,146 @@ class Astronomy extends IPSModule
                     "caption": "select moonrise first to setup variable"
                 }
             ]';
-			return $form;
+		return $form;
+	}
+
+	public function AlexaResponse()
+	{
+		$astronomyinfo = $this->SetAstronomyValues();
+		$isday = $astronomyinfo['IsDay'];
+		if ($isday) {
+			$isday = "Tag";
+		} else {
+			$isday = "Nacht";
 		}
-		
-		public function AlexaResponse()
-		{
-			$astronomyinfo = $this->SetAstronomyValues();
-			$isday = $astronomyinfo['IsDay'];
-			if ($isday)
-			{
-				$isday = "Tag";
-			}
-			else
-			{
-				$isday = "Nacht";
-			}
-			$timeformat = $this->GetTimeformat();
-			$sunrise = $astronomyinfo['Sunrise'];
-			$sunset = $astronomyinfo['Sunset'];
-			$sunsetdate = date("d.m.Y", $sunset);
-			$sunsettime = date($timeformat, $sunset);
-			$sunrisedate = date("d.m.Y", $sunrise);
-			$sunrisetime = date($timeformat, $sunrise);
-			$moonsetdate = $astronomyinfo['moonsetdate'];
-			$moonsettime = $astronomyinfo['moonsettime'];
-			$moonrisedate = $astronomyinfo['moonrisedate'];
-			$moonrisetime = $astronomyinfo['moonrisetime'];
-			$civiltwilightstart = date($timeformat, $astronomyinfo['CivilTwilightStart']);
-			$civiltwilightend = date($timeformat, $astronomyinfo['CivilTwilightEnd']);
-			$nautictwilightstart = date($timeformat, $astronomyinfo['NauticTwilightStart']);
-			$nautictwilightend = date($timeformat, $astronomyinfo['NauticTwilightEnd']);
-			$astronomictwilightstart = date($timeformat, $astronomyinfo['AstronomicTwilightStart']);
-			$astronomictwilightend = date($timeformat, $astronomyinfo['AstronomicTwilightEnd']);
-			$Latitude = $astronomyinfo['latitude']." Grad";
-			$Longitude = $astronomyinfo['longitude']." Grad";
-			$JD = $astronomyinfo['juliandate']." Tage";
-			$season = $astronomyinfo['season'];
-			if ($season == 1)
-			{
-				$season = "Frühling";
-			}
-			elseif ($season == 2)
-			{
-				$season = "Sommer";
-			}
-			if ($season == 3)
-			{
-				$season = "Herbst";
-			}
-			if ($season == 4)
-			{
-				$season = "Winter";
-			}
-			$sunazimut = round($astronomyinfo['sunazimut'], 2)." Grad";
-			$SunDazimut = $this->GetSpokenDirection($astronomyinfo['sundirection']);
-			$sunaltitude = round($astronomyinfo['sunaltitude'], 2)." Grad";
-			$rSun = round($astronomyinfo['sundistance'], 0)." Kilometer";
-			$moonazimut = round($astronomyinfo['moonazimut'], 2)." Grad";
-			$moonaltitude = round($astronomyinfo['moonaltitude'], 2)." Grad";
-			$dazimut = $this->GetSpokenDirection($astronomyinfo['moondirection']);
-			$MoonDist = round($astronomyinfo['moondistance'], 0)." Kilometer";
-			$Moonphase = $astronomyinfo['moonvisibility']." Prozent";
-			$Moonpabl = round($astronomyinfo['moonbrightlimbangle'], 2)." Grad";
-			$newmoonstring = $astronomyinfo['newmoon'];
-			$firstquarterstring = $astronomyinfo['firstquarter'];
-			$fullmoonstring = $astronomyinfo['fullmoon'];
-			$lastquarterstring = $astronomyinfo['lastquarter'];
-			$moonphasepercent = $astronomyinfo['moonphasepercent'];
-			$moonphasetext = $astronomyinfo['moonphasetext'];
-			$alexaresponse = array("isday" => $isday, "sunrisetime" => $sunrisetime, "sunrisedate" => $sunrisedate, "sunsettime" => $sunsettime, "sunsetdate" => $sunsetdate, "moonsetdate" => $moonsetdate, "moonsettime" => $moonsettime, "moonrisedate" => $moonrisedate, "moonrisetime" => $moonrisetime,"CivilTwilightStart" => $civiltwilightstart, "CivilTwilightEnd" => $civiltwilightend, "NauticTwilightStart" => $nautictwilightstart, "NauticTwilightEnd" => $nautictwilightend, "AstronomicTwilightStart" => $astronomictwilightstart, "AstronomicTwilightEnd" => $astronomictwilightend,
+		$timeformat = $this->GetTimeformat();
+		$sunrise = $astronomyinfo['Sunrise'];
+		$sunset = $astronomyinfo['Sunset'];
+		$sunsetdate = date("d.m.Y", $sunset);
+		$sunsettime = date($timeformat, $sunset);
+		$sunrisedate = date("d.m.Y", $sunrise);
+		$sunrisetime = date($timeformat, $sunrise);
+		$moonsetdate = $astronomyinfo['moonsetdate'];
+		$moonsettime = $astronomyinfo['moonsettime'];
+		$moonrisedate = $astronomyinfo['moonrisedate'];
+		$moonrisetime = $astronomyinfo['moonrisetime'];
+		$civiltwilightstart = date($timeformat, $astronomyinfo['CivilTwilightStart']);
+		$civiltwilightend = date($timeformat, $astronomyinfo['CivilTwilightEnd']);
+		$nautictwilightstart = date($timeformat, $astronomyinfo['NauticTwilightStart']);
+		$nautictwilightend = date($timeformat, $astronomyinfo['NauticTwilightEnd']);
+		$astronomictwilightstart = date($timeformat, $astronomyinfo['AstronomicTwilightStart']);
+		$astronomictwilightend = date($timeformat, $astronomyinfo['AstronomicTwilightEnd']);
+		$Latitude = $astronomyinfo['latitude'] . " Grad";
+		$Longitude = $astronomyinfo['longitude'] . " Grad";
+		$JD = $astronomyinfo['juliandate'] . " Tage";
+		$season = $astronomyinfo['season'];
+		if ($season == 1) {
+			$season = "Frühling";
+		} elseif ($season == 2) {
+			$season = "Sommer";
+		}
+		if ($season == 3) {
+			$season = "Herbst";
+		}
+		if ($season == 4) {
+			$season = "Winter";
+		}
+		$sunazimut = round($astronomyinfo['sunazimut'], 2) . " Grad";
+		$SunDazimut = $this->GetSpokenDirection($astronomyinfo['sundirection']);
+		$sunaltitude = round($astronomyinfo['sunaltitude'], 2) . " Grad";
+		$rSun = round($astronomyinfo['sundistance'], 0) . " Kilometer";
+		$moonazimut = round($astronomyinfo['moonazimut'], 2) . " Grad";
+		$moonaltitude = round($astronomyinfo['moonaltitude'], 2) . " Grad";
+		$dazimut = $this->GetSpokenDirection($astronomyinfo['moondirection']);
+		$MoonDist = round($astronomyinfo['moondistance'], 0) . " Kilometer";
+		$Moonphase = $astronomyinfo['moonvisibility'] . " Prozent";
+		$Moonpabl = round($astronomyinfo['moonbrightlimbangle'], 2) . " Grad";
+		$newmoonstring = $astronomyinfo['newmoon'];
+		$firstquarterstring = $astronomyinfo['firstquarter'];
+		$fullmoonstring = $astronomyinfo['fullmoon'];
+		$lastquarterstring = $astronomyinfo['lastquarter'];
+		$moonphasepercent = $astronomyinfo['moonphasepercent'];
+		$moonphasetext = $astronomyinfo['moonphasetext'];
+		$alexaresponse = array("isday" => $isday, "sunrisetime" => $sunrisetime, "sunrisedate" => $sunrisedate, "sunsettime" => $sunsettime, "sunsetdate" => $sunsetdate, "moonsetdate" => $moonsetdate, "moonsettime" => $moonsettime, "moonrisedate" => $moonrisedate, "moonrisetime" => $moonrisetime, "CivilTwilightStart" => $civiltwilightstart, "CivilTwilightEnd" => $civiltwilightend, "NauticTwilightStart" => $nautictwilightstart, "NauticTwilightEnd" => $nautictwilightend, "AstronomicTwilightStart" => $astronomictwilightstart, "AstronomicTwilightEnd" => $astronomictwilightend,
 			"latitude" => $Latitude, "longitude" => $Longitude, "juliandate" => $JD, "season" => $season, "sunazimut" => $sunazimut, "sundirection" => $SunDazimut, "sunaltitude" => $sunaltitude, "sundistance" => $rSun, "moonazimut" => $moonazimut, "moonaltitude" => $moonaltitude, "moondirection" => $dazimut, "moondistance" => $MoonDist, "moonvisibility" => $Moonphase, "moonbrightlimbangle" => $Moonpabl,
 			"newmoon" => $newmoonstring, "firstquarter" => $firstquarterstring, "fullmoon" => $fullmoonstring, "lastquarter" => $lastquarterstring, "moonphasetext" => $moonphasetext, "moonphasepercent" => $moonphasepercent);
-			return $alexaresponse;
-		}
-		
-		protected function GetSpokenDirection($direction)
-		{
-			if($direction == 0)
-			{
-				$direction = "Nord";
-			}
-			elseif($direction == 1)
-			{
-				$direction = "Nord Nord Ost";
-			}
-			elseif($direction == 2)
-			{
-				$direction = "Nord Ost";
-			}
-			elseif($direction == 3)
-			{
-				$direction = "Ost Nord Ost";
-			}
-			elseif($direction == 4)
-			{
-				$direction = "Ost";
-			}
-			elseif($direction == 5)
-			{
-				$direction = "Ost Süd Ost";
-			}
-			elseif($direction == 6)
-			{
-				$direction = "Süd Ost";
-			}
-			elseif($direction == 7)
-			{
-				$direction = "Süd Süd Ost";
-			}
-			elseif($direction == 8)
-			{
-				$direction = "Süd";
-			}
-			elseif($direction == 9)
-			{
-				$direction = "Süd Süd West";
-			}
-			elseif($direction == 10)
-			{
-				$direction = "Süd West";
-			}
-			elseif($direction == 11)
-			{
-				$direction = "West Süd West";
-			}
-			elseif($direction == 12)
-			{
-				$direction = "West";
-			}
-			elseif($direction == 13)
-			{
-				$direction = "West Nord West";
-			}
-			elseif($direction == 14)
-			{
-				$direction = "Nord West";
-			}
-			elseif($direction == 15)
-			{
-				$direction = "Nord Nord West";
-			}
-			return $direction;
-		}
-		
-		protected function GetIPSVersion ()
-		{
-            $ipsversion = floatval(IPS_GetKernelVersion());
-            if($ipsversion < 4.1) // 4.0
-            {
-                $ipsversion = 0;
-            }
-            elseif ($ipsversion >= 4.1 && $ipsversion < 4.2) // 4.1
-            {
-                $ipsversion = 1;
-            }
-            elseif ($ipsversion >= 4.2 && $ipsversion < 4.3) // 4.2
-            {
-                $ipsversion = 2;
-            }
-            elseif ($ipsversion >= 4.3 && $ipsversion < 4.4) // 4.3
-            {
-                $ipsversion = 3;
-            }
-            elseif ($ipsversion >= 4.4 && $ipsversion < 5) // 4.4
-            {
-                $ipsversion = 4;
-            }
-            else   // 5
-            {
-                $ipsversion = 5;
-            }
+		return $alexaresponse;
+	}
 
-            return $ipsversion;
+	protected function GetSpokenDirection($direction)
+	{
+		if ($direction == 0) {
+			$direction = "Nord";
+		} elseif ($direction == 1) {
+			$direction = "Nord Nord Ost";
+		} elseif ($direction == 2) {
+			$direction = "Nord Ost";
+		} elseif ($direction == 3) {
+			$direction = "Ost Nord Ost";
+		} elseif ($direction == 4) {
+			$direction = "Ost";
+		} elseif ($direction == 5) {
+			$direction = "Ost Süd Ost";
+		} elseif ($direction == 6) {
+			$direction = "Süd Ost";
+		} elseif ($direction == 7) {
+			$direction = "Süd Süd Ost";
+		} elseif ($direction == 8) {
+			$direction = "Süd";
+		} elseif ($direction == 9) {
+			$direction = "Süd Süd West";
+		} elseif ($direction == 10) {
+			$direction = "Süd West";
+		} elseif ($direction == 11) {
+			$direction = "West Süd West";
+		} elseif ($direction == 12) {
+			$direction = "West";
+		} elseif ($direction == 13) {
+			$direction = "West Nord West";
+		} elseif ($direction == 14) {
+			$direction = "Nord West";
+		} elseif ($direction == 15) {
+			$direction = "Nord Nord West";
 		}
+		return $direction;
+	}
+
+	protected function GetIPSVersion()
+	{
+		$ipsversion = floatval(IPS_GetKernelVersion());
+		if ($ipsversion < 4.1) // 4.0
+		{
+			$ipsversion = 0;
+		} elseif ($ipsversion >= 4.1 && $ipsversion < 4.2) // 4.1
+		{
+			$ipsversion = 1;
+		} elseif ($ipsversion >= 4.2 && $ipsversion < 4.3) // 4.2
+		{
+			$ipsversion = 2;
+		} elseif ($ipsversion >= 4.3 && $ipsversion < 4.4) // 4.3
+		{
+			$ipsversion = 3;
+		} elseif ($ipsversion >= 4.4 && $ipsversion < 5) // 4.4
+		{
+			$ipsversion = 4;
+		} else   // 5
+		{
+			$ipsversion = 5;
+		}
+
+		return $ipsversion;
+	}
+
+	//Add this Polyfill for IP-Symcon 4.4 and older
+	protected function SetValue($Ident, $Value)
+	{
+
+		if (IPS_GetKernelVersion() >= 5) {
+			parent::SetValue($Ident, $Value);
+		} else {
+			SetValue($this->GetIDForIdent($Ident), $Value);
+		}
+	}
 }
 
 ?>
