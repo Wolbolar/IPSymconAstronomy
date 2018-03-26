@@ -1,5 +1,11 @@
 <?
 // Modul AstronomieTimer
+// set base dir
+define('__ROOT__', dirname(dirname(__FILE__)));
+
+// load ips constants
+require_once(__ROOT__ . '/libs/ips.constants.php');
+
 require_once(__DIR__ . "/../bootstrap.php");
 
 use Fonzo\IPS\IPSVarType;
@@ -16,7 +22,7 @@ class AstronomyTimer extends IPSModule
 		//These lines are parsed on Symcon Startup or Instance creation
 		//You cannot use variables here. Just static values.
 
-		$this->RegisterPropertyInteger("timertype", 1);
+		$this->RegisterPropertyInteger("timertype", 0);
 		$this->RegisterPropertyInteger("offset", 0);
 		$this->RegisterPropertyBoolean("cutoffselect", false);
 		$this->RegisterPropertyString("cutofftime", "00:00:00");
@@ -194,6 +200,9 @@ class AstronomyTimer extends IPSModule
 		}
 
 		switch ($timertype) {
+			case "NoTimer":
+				$this->SendDebug("Astronomy Timer:", "no timer type selected", 0);
+				break;
 			case "Sunrise":
 				$timertype = "Sunrise";
 				$this->RegisterAstroTimer($timertype, $offset, $settype, $objectid, $varvalue);
@@ -378,6 +387,9 @@ class AstronomyTimer extends IPSModule
 	protected function GetTypeTimer($timertype)
 	{
 		switch ($timertype) {
+			case 0:
+				$timertype = "NoTimer";
+				break;
 			case 1:
 				$timertype = "Sunrise";
 				break;
@@ -912,6 +924,7 @@ class AstronomyTimer extends IPSModule
 	{
 		$form = '{ "type": "Select", "name": "timertype", "caption": "event for the timer",
 					"options": [
+						{ "label": "please select timer type", "value": 0 },
 						{ "label": "sunrise", "value": 1 },
 						{ "label": "sunset", "value": 2 },
 						{ "label": "civilTwilightStart", "value": 3 },

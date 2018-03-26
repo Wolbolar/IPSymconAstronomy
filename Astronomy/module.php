@@ -3,6 +3,11 @@
 // Formeln aus "Practical Astronomy" von Peter Duffett-Smith und Jonathan Zwart, Fourth Edition
 // basiert auf den Skripten von ChokZul https://www.symcon.de/forum/threads/31467-Astronomische-Berechnungen?highlight=astronomie 
 // Twilight Grafiken generiert mit Skripten von Brownson aus der IPSLibrary
+// set base dir
+define('__ROOT__', dirname(dirname(__FILE__)));
+
+// load ips constants
+require_once(__ROOT__ . '/libs/ips.constants.php');
 
 require_once(__DIR__ . "/../bootstrap.php");
 
