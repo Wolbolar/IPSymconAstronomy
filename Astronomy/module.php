@@ -1418,6 +1418,7 @@ class Astronomy extends IPSModule
 		$Minute = intval(date("i"));
 		$Second = intval(date("s"));
 		$summer = intval(date("I"));
+
 		if ($summer == 0) {   //Summertime
 			$DS = 0;
 		}         //$DS = Daylight Saving
@@ -1425,7 +1426,6 @@ class Astronomy extends IPSModule
 			$DS = 1;
 		}
 		$ZC = $this->ReadPropertyFloat("UTC"); // Zone Correction to Greenwich: 1 = UTC+1
-
 
 		// $timestamp = time();
 		// $mondphase = $this->moon_phase(date('Y', $timestamp), date('n', $timestamp), date('j', $timestamp));
@@ -1536,7 +1536,7 @@ class Astronomy extends IPSModule
 
 		//Sun's ecliptic longitude in decimal degrees
 		$Sunlong = $this->SunLong($LCH, $LCM, $LCS, $DS, $ZC, $day, $month, $year);
-		$this->SendDebug("Astronomy:", "Sun's ecliptic longitude" . $Sunlong, 0);
+		$this->SendDebug("Astronomy:", "Sun's ecliptic longitude " . $Sunlong, 0);
 		$SunlongDeg = $this->DDDeg($Sunlong);
 		$SunlongMin = $this->DDMin($Sunlong);
 		$SunlongSec = $this->DDSec($Sunlong);
@@ -1571,7 +1571,7 @@ class Astronomy extends IPSModule
 		$SunDecm = $this->DDmin($SunDec);
 		$SunDecs = $this->DDSec($SunDec);
 		$SunDecdms = $SunDecd . ":" . $SunDecm . ":" . $SunDecs;
-		$this->SendDebug("Astronomy:", "Sun decimal degrees" . $SunDecdms, 0);
+		$this->SendDebug("Astronomy:", "Sun decimal degrees " . $SunDecdms, 0);
 
 
 		//RH Right Ascension in HMS, LH Local Civil Time in HMS, DS Daylight saving, ZC Zonecorrection,
@@ -1586,7 +1586,6 @@ class Astronomy extends IPSModule
 		$sunazimut = $this->EQAz($SunHh, $SunHm, $SunHs, $SunDecd, $SunDecm, $SunDecs, $P);
 		$sunaltitude = $this->EQAlt($SunHh, $SunHm, $SunHs, $SunDecd, $SunDecm, $SunDecs, $P);
 		$SunDazimut = $this->direction($sunazimut);
-
 
 		// $SunDist = $this->SunDist($Hour, $Minute, $Second, $DS, $ZC, $day, $month, $year);
 		$SunTA = $this->Radians($this->SunTrueAnomaly($Hour, $Minute, $Second, $DS, $ZC, $day, $month, $year));
@@ -1846,7 +1845,7 @@ class Astronomy extends IPSModule
 
 
 	// Greenwich calendar date to Julian date conversion
-	public function CDJD(int $day, int $month, int $year)
+	public function CDJD(float $day, int $month, int $year)
 	{
 		if ($month < 3) {
 			$Y = $year - 1;
@@ -1972,7 +1971,7 @@ class Astronomy extends IPSModule
 	}
 
 	// Converting hours, minutes and seconds to decimal hours
-	public function HMSDH(int $Hour, int $Minute, int $Second)
+	public function HMSDH(float $Hour, int $Minute, int $Second)
 	{
 		$A = abs($Second) / 60;
 		$B = (abs($Minute) + $A) / 60;
@@ -2098,7 +2097,7 @@ class Astronomy extends IPSModule
 	}
 
 	//Conversion of GST to UT --- Achtung: hier wird ein Array ausgegeben !!!
-	public function GSTUT(int $GSH, int $GSM, int $GSS, int $GD, int $GM, int $GY)
+	public function GSTUT(float $GSH, int $GSM, int $GSS, int $GD, int $GM, int $GY)
 	{
 		$A = $this->CDJD($GD, $GM, $GY);
 		$B = $A - 2451545;
@@ -2118,7 +2117,7 @@ class Astronomy extends IPSModule
 	}
 
 	//Conversion of GST to LST (Local Sideral Time)
-	public function GSTLST(int $GH, int $GM, int $GS, float $L)
+	public function GSTLST(float $GH, int $GM, int $GS, float $L)
 	{
 		$A = $this->HMSDH($GH, $GM, $GS);
 		$B = $L / 15;
@@ -2128,7 +2127,7 @@ class Astronomy extends IPSModule
 	}
 
 	//Conversion of LST to GST (Greenwich Sideral Time)
-	public function LSTGST(int $LH, int $LM, int $LS, float $L)
+	public function LSTGST(float $LH, int $LM, int $LS, float $L)
 	{
 		$A = $this->HMSDH($LH, $LM, $LS);
 		$B = $L / 15;
@@ -2152,7 +2151,7 @@ class Astronomy extends IPSModule
 	}
 
 	//Converting degrees, minutes and seconds to decimal degrees
-	public function DMSDD(int $D, int $M, int $S)
+	public function DMSDD(float $D, int $M, int $S)
 	{
 		$A = abs($S) / 60;
 		$B = (abs($M) + $A) / 60;
