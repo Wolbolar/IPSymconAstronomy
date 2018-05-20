@@ -481,7 +481,7 @@ class AstronomyTimer extends IPSModule
 			$vartypecheck = true;
 		}
 		if ($vartypecheck) {
-			$this->SetValue('triggervariable', $varvalue);
+			SetValue($triggervariable, $varvalue);
 		} else {
 			echo "Variablenwert und Variablentyp stimmen nicht überein.";
 		}
