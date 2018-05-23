@@ -1621,12 +1621,7 @@ class Astronomy extends IPSModule
 
 		//Sun's ecliptic longitude in decimal degrees
 		$Sunlong = $this->SunLong($LCH, $LCM, $LCS, $DS, $ZC, $day, $month, $year);
-		
-		if( $this->ReadPropertyBoolean("sunlong") == true )
-		{
-			$this->SetValue('sunlong', $Sunlong);
-		}
-		
+
 		if( $this->ReadPropertyBoolean("sunstarsign") == true )
 		{
 			$this->SetValue('sunstarsign', floor($Sunlong/30));
@@ -1706,22 +1701,13 @@ class Astronomy extends IPSModule
 			$this->SetValue('sundistance', $rSun);
 		}
 
+
 		//Calculation Moon--------------------------------------------------------------
 
 		$MoonLong = $this->MoonLong($LCH, $LCM, $LCS, $DS, $ZC, $day, $month, $year); //Moon ecliptic longitude (degrees)
 		$this->SendDebug("Astronomy:", "Moon ecliptic longitude " . $MoonLong, 0);
 		$MoonLat = $this->MoonLat($LCH, $LCM, $LCS, $DS, $ZC, $day, $month, $year); //Moon elciptic latitude (degrees)
 		$this->SendDebug("Astronomy:", "Moon elciptic latitude " . $MoonLat, 0);
-
-		if( $this->ReadPropertyBoolean("moonlong") == true )
-		{
-			$this->SetValue('moonlong', $MoonLong);
-		}
-		
-		if( $this->ReadPropertyBoolean("moonlat") == true )
-		{
-			$this->SetValue('moonlat', $MoonLat);
-		}
 			
 		if( $this->ReadPropertyBoolean("moonstarsign") == true )
 		{
@@ -1804,6 +1790,7 @@ class Astronomy extends IPSModule
 		}
 		$moonrisedate = $moonrise['moonrisedate'];
 		$moonrisetime = $moonrise['moonrisetime'];
+
 
 		$astronomyinfo = array("IsDay" => $isday, "Sunrise" => $sunrise, "Sunset" => $sunset, "moonsetdate" => $moonsetdate, "moonsettime" => $moonsettime, "moonrisedate" => $moonrisedate, "moonrisetime" => $moonrisetime, "CivilTwilightStart" => $civiltwilightstart, "CivilTwilightEnd" => $civiltwilightend, "NauticTwilightStart" => $nautictwilightstart, "NauticTwilightEnd" => $nautictwilightend, "AstronomicTwilightStart" => $astronomictwilightstart, "AstronomicTwilightEnd" => $astronomictwilightend,
 			"latitude" => $Latitude, "longitude" => $Longitude, "juliandate" => $JD, "season" => $season, "sunazimut" => $sunazimut, "sundirection" => $SunDazimut, "sunaltitude" => $sunaltitude, "sundistance" => $rSun, "moonazimut" => $moonazimut, "moonaltitude" => $moonaltitude, "moondirection" => $dazimut, "moondistance" => $MoonDist, "moonvisibility" => $Moonphase, "moonbrightlimbangle" => $MoonBrightLimbAngle,
@@ -4678,8 +4665,7 @@ class Astronomy extends IPSModule
 						{ "label": "G:i", "value": 7 },
 						{ "label": "G:i:s", "value": 8 }
 					]
-				},				
-                ';
+				},';
 		return $form;
 	}
 
