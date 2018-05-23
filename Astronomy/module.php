@@ -1624,7 +1624,7 @@ class Astronomy extends IPSModule
 
 		if( $this->ReadPropertyBoolean("sunstarsign") == true )
 		{
-			$this->SetValue('sunstarsign', floor($Sunlong/30));
+			$this->SetValue('sunstarsign', floor($Sunlong/30)+1);
 		}
 		
 		$this->SendDebug("Astronomy:", "Sun's ecliptic longitude " . $Sunlong, 0);
@@ -1711,7 +1711,7 @@ class Astronomy extends IPSModule
 			
 		if( $this->ReadPropertyBoolean("moonstarsign") == true )
 		{
-			$this->SetValue('moonstarsign', floor($MoonLong/30));
+			$this->SetValue('moonstarsign', floor($MoonLong/30)+1);
 		}
 		
 		$Nutation = $this->NutatLong($GD, $GM, $GY); //nutation in longitude (degrees)
