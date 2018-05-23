@@ -46,11 +46,13 @@ class Astronomy extends IPSModule
 		$this->RegisterPropertyBoolean("currentfirstquarter", false);
 		$this->RegisterPropertyBoolean("currentfullmoon", false);
 		$this->RegisterPropertyBoolean("currentlastquarter", false);
+		$this->RegisterPropertyBoolean("moonstarsign", false);
 		$this->RegisterPropertyBoolean("sunazimut", false);
 		$this->RegisterPropertyBoolean("sundistance", false);
 		$this->RegisterPropertyBoolean("sunaltitude", false);
 		$this->RegisterPropertyBoolean("sundirection", false);
 		$this->RegisterPropertyBoolean("season", false);
+		$this->RegisterPropertyBoolean("sunstarsign", false);
 		$this->RegisterPropertyBoolean("pictureyeartwilight", false);
 		$this->RegisterPropertyBoolean("picturedaytwilight", false);
 		$this->RegisterPropertyBoolean("picturetwilightlimited", false);
@@ -587,6 +589,89 @@ class Astronomy extends IPSModule
 			$this->SetupVariable("moonsetdate", "Monduntergang Datum", "Astronomie.Mond_Monduntergang_Datum", 39, IPSVarType::vtInteger, false);
 			$this->SetupVariable("moonsettime", "Monduntergang Zeit", "Astronomie.Mond_Monduntergang_Zeit", 40, IPSVarType::vtInteger, false);
 		}
+		if ($this->ReadPropertyBoolean("sunstarsign") == true) // integer
+		{
+			$language = $this->ReadPropertyInteger("language");
+			if ($language == 1) //ger
+			{
+				$associations = Array(
+					Array(1, "Widder", "", -1),
+					Array(2, "Stier", "", -1),
+					Array(3, "Zwillinge", "", -1),
+					Array(4, "Krebs", "", -1),
+					Array(5, "Löwe", "", -1),
+					Array(6, "Jungfrau", "", -1),
+					Array(7, "Waage", "", -1),
+					Array(8, "Skorpion", "", -1),
+					Array(9, "Schütze", "", -1),
+					Array(10, "Steinbock", "", -1),
+					Array(11, "Wassermann", "", -1),
+					Array(12, "Fische", "", -1)
+				);
+			} elseif ($language == 2) // eng
+			{
+				$associations = Array(
+					Array(1, "Aries", "", -1),
+					Array(2, "Taurus", "", -1),
+					Array(3, "Gemini", "", -1),
+					Array(4, "Cancer", "", -1),
+					Array(5, "Leo", "", -1),
+					Array(6, "Virgo", "", -1),
+					Array(7, "Libra", "", -1),
+					Array(8, "Scorpio", "", -1),
+					Array(9, "Sagittarius", "", -1),
+					Array(10, "Capricorn", "", -1),
+					Array(11, "Aquarius", "", -1),
+					Array(12, "Pisces", "", -1)
+				);
+			}
+			$this->SetupProfile(IPSVarType::vtInteger, "Astronomie.Sonne_Sternzeichen", "Sun", "", "", 0, 0, 0, 0, $associations);
+			$this->SetupVariable("sunstarsign", "Sonne im Sternzeichen", "Astronomie.Sonne_Sternzeichen", 44, IPSVarType::vtInteger, true);
+		} else {
+			$this->SetupVariable("sunstarsign", "Sonne im Sternzeichen", "Astronomie.Sonne_Sternzeichen", 44, IPSVarType::vtInteger, false);
+		}	
+		if ($this->ReadPropertyBoolean("moonstarsign") == true) // integer
+		{
+			$language = $this->ReadPropertyInteger("language");
+			if ($language == 1) //ger
+			{
+				$associations = Array(
+					Array(1, "Widder", "", -1),
+					Array(2, "Stier", "", -1),
+					Array(3, "Zwillinge", "", -1),
+					Array(4, "Krebs", "", -1),
+					Array(5, "Löwe", "", -1),
+					Array(6, "Jungfrau", "", -1),
+					Array(7, "Waage", "", -1),
+					Array(8, "Skorpion", "", -1),
+					Array(9, "Schütze", "", -1),
+					Array(10, "Steinbock", "", -1),
+					Array(11, "Wassermann", "", -1),
+					Array(12, "Fische", "", -1)
+				);
+			} elseif ($language == 2) // eng
+			{
+				$associations = Array(
+					Array(1, "Aries", "", -1),
+					Array(2, "Taurus", "", -1),
+					Array(3, "Gemini", "", -1),
+					Array(4, "Cancer", "", -1),
+					Array(5, "Leo", "", -1),
+					Array(6, "Virgo", "", -1),
+					Array(7, "Libra", "", -1),
+					Array(8, "Scorpio", "", -1),
+					Array(9, "Sagittarius", "", -1),
+					Array(10, "Capricorn", "", -1),
+					Array(11, "Aquarius", "", -1),
+					Array(12, "Pisces", "", -1)
+				);
+			}
+			$this->SetupProfile(IPSVarType::vtInteger, "Astronomie.Mond_Sternzeichen", "Moon", "", "", 0, 0, 0, 0, $associations);
+			$this->SetupVariable("moonstarsign", "Mond im Sternzeichen", "Astronomie.Mond_Sternzeichen", 45, IPSVarType::vtInteger, true);
+		} else {
+			$this->SetupVariable("moonstarsign", "Mond im Sternzeichen", "Astronomie.Mond_Sternzeichen", 45, IPSVarType::vtInteger, false);
+		}
+		
 		// Status Aktiv
 		$this->SetStatus(102);
 
@@ -1536,6 +1621,17 @@ class Astronomy extends IPSModule
 
 		//Sun's ecliptic longitude in decimal degrees
 		$Sunlong = $this->SunLong($LCH, $LCM, $LCS, $DS, $ZC, $day, $month, $year);
+		
+		if( $this->ReadPropertyBoolean("sunlong") == true )
+		{
+			$this->SetValue('sunlong', $Sunlong);
+		}
+		
+		if( $this->ReadPropertyBoolean("sunstarsign") == true )
+		{
+			$this->SetValue('sunstarsign', floor($Sunlong/30));
+		}
+		
 		$this->SendDebug("Astronomy:", "Sun's ecliptic longitude " . $Sunlong, 0);
 		$SunlongDeg = $this->DDDeg($Sunlong);
 		$SunlongMin = $this->DDMin($Sunlong);
@@ -1610,13 +1706,28 @@ class Astronomy extends IPSModule
 			$this->SetValue('sundistance', $rSun);
 		}
 
-
 		//Calculation Moon--------------------------------------------------------------
 
 		$MoonLong = $this->MoonLong($LCH, $LCM, $LCS, $DS, $ZC, $day, $month, $year); //Moon ecliptic longitude (degrees)
 		$this->SendDebug("Astronomy:", "Moon ecliptic longitude " . $MoonLong, 0);
 		$MoonLat = $this->MoonLat($LCH, $LCM, $LCS, $DS, $ZC, $day, $month, $year); //Moon elciptic latitude (degrees)
 		$this->SendDebug("Astronomy:", "Moon elciptic latitude " . $MoonLat, 0);
+
+		if( $this->ReadPropertyBoolean("moonlong") == true )
+		{
+			$this->SetValue('moonlong', $MoonLong);
+		}
+		
+		if( $this->ReadPropertyBoolean("moonlat") == true )
+		{
+			$this->SetValue('moonlat', $MoonLat);
+		}
+			
+		if( $this->ReadPropertyBoolean("moonstarsign") == true )
+		{
+			$this->SetValue('moonstarsign', floor($MoonLong/30));
+		}
+		
 		$Nutation = $this->NutatLong($GD, $GM, $GY); //nutation in longitude (degrees)
 		$this->SendDebug("Astronomy:", "nutation in longitude " . $Nutation, 0);
 		$Moonlongcorr = $MoonLong + $Nutation; //corrected longitude (degrees)
@@ -1693,7 +1804,6 @@ class Astronomy extends IPSModule
 		}
 		$moonrisedate = $moonrise['moonrisedate'];
 		$moonrisetime = $moonrise['moonrisetime'];
-
 
 		$astronomyinfo = array("IsDay" => $isday, "Sunrise" => $sunrise, "Sunset" => $sunset, "moonsetdate" => $moonsetdate, "moonsettime" => $moonsettime, "moonrisedate" => $moonrisedate, "moonrisetime" => $moonrisetime, "CivilTwilightStart" => $civiltwilightstart, "CivilTwilightEnd" => $civiltwilightend, "NauticTwilightStart" => $nautictwilightstart, "NauticTwilightEnd" => $nautictwilightend, "AstronomicTwilightStart" => $astronomictwilightstart, "AstronomicTwilightEnd" => $astronomictwilightend,
 			"latitude" => $Latitude, "longitude" => $Longitude, "juliandate" => $JD, "season" => $season, "sunazimut" => $sunazimut, "sundirection" => $SunDazimut, "sunaltitude" => $sunaltitude, "sundistance" => $rSun, "moonazimut" => $moonazimut, "moonaltitude" => $moonaltitude, "moondirection" => $dazimut, "moondistance" => $MoonDist, "moonvisibility" => $Moonphase, "moonbrightlimbangle" => $MoonBrightLimbAngle,
@@ -4370,6 +4480,11 @@ class Astronomy extends IPSModule
                     "caption": "current cycle last quarter"
                 },		
 				{
+                    "name": "moonstarsign",
+                    "type": "CheckBox",
+                    "caption": "moon in star sign"
+                },	
+				{
                     "name": "sunazimut",
                     "type": "CheckBox",
                     "caption": "sun azimut"
@@ -4394,6 +4509,11 @@ class Astronomy extends IPSModule
                     "type": "CheckBox",
                     "caption": "season"
                 },
+				{
+                    "name": "sunstarsign",
+                    "type": "CheckBox",
+                    "caption": "sun in star sign"
+                },	
 				{ "type": "Label", "label": "____________________________________________________________________" },
 				{
                     "name": "pictureyeartwilight",
@@ -4558,7 +4678,8 @@ class Astronomy extends IPSModule
 						{ "label": "G:i", "value": 7 },
 						{ "label": "G:i:s", "value": 8 }
 					]
-				},';
+				},				
+                ';
 		return $form;
 	}
 
