@@ -39,12 +39,19 @@ class AstronomyTimer extends IPSModule
 		$this->RegisterPropertyBoolean("saturday", true);
 		$this->RegisterPropertyBoolean("sunday", true);
 		$this->RegisterTimer('AstroTimerUpdate', 0, 'AstronomyTimer_Set(' . $this->InstanceID . ');');
+
+		//we will wait until the kernel is ready
+		$this->RegisterMessage(0, IPS_KERNELMESSAGE);
 	}
 
 	public function ApplyChanges()
 	{
 		//Never delete this line!
 		parent::ApplyChanges();
+
+		if (IPS_GetKernelRunlevel() !== KR_READY) {
+			return;
+		}
 
 		$this->ValidateConfiguration();
 		$this->SetCyclicTimerInterval();
@@ -112,6 +119,27 @@ class AstronomyTimer extends IPSModule
 		// Status Aktiv
 		$this->SetStatus(102);
 
+	}
+
+	public function MessageSink($TimeStamp, $SenderID, $Message, $Data)
+	{
+
+		switch ($Message) {
+			case IM_CHANGESTATUS:
+				if ($Data[0] === IS_ACTIVE) {
+					$this->ApplyChanges();
+				}
+				break;
+
+			case IPS_KERNELMESSAGE:
+				if ($Data[0] === KR_READY) {
+					$this->ApplyChanges();
+				}
+				break;
+
+			default:
+				break;
+		}
 	}
 
 	protected function SetCyclicTimerInterval()
