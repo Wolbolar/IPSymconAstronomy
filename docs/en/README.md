@@ -126,6 +126,18 @@ and confirm with _OK_.
     
 Then an entry for the module appears in the list of the instance _Modules_
 
+By default, the branch _master_ is loaded, which contains current changes and adjustments.
+Only the _master_ branch is kept current.
+
+![Master](img/master.png?raw=true "master") 
+
+If an older version of IP-Symcon smaller than version 5.1 (min 4.1) is used, click on the gear on the right side of the list.
+It opens another window,
+
+![SelectBranch](img/select_branch_en.png?raw=true "select branch") 
+
+here you can switch to another branch, for older versions smaller than 5.1 select _Old_ .
+
 ### b. Check Location
 
 Zur Berechnung der Astronomischen Daten wird der Breitengrad und Längengrad benötigt. Dieser wird aus der Location Instanz unter Kerninstanzen entnommen.

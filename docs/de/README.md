@@ -124,6 +124,21 @@ Im Feld die folgende URL eintragen und mit _OK_ bestätigen:
 https://github.com/Wolbolar/IPSymconAstronomy 
 ```  
 	
+Anschließend erscheint ein Eintrag für das Modul in der Liste der Instanz _Modules_    
+
+Es wird im Standard der Zweig (Branch) _master_ geladen, dieser enthält aktuelle Änderungen und Anpassungen.
+Nur der Zweig _master_ wird aktuell gehalten.
+
+![Master](img/master.png?raw=true "master") 
+
+Sollte eine ältere Version von IP-Symcon die kleiner ist als Version 5.1 (min 4.1) eingesetzt werden, ist auf das Zahnrad rechts in der Liste zu klicken.
+Es öffnet sich ein weiteres Fenster,
+
+![SelectBranch](img/select_branch.png?raw=true "select branch") 
+
+hier kann man auf einen anderen Zweig wechseln, für ältere Versionen kleiner als 5.1 ist hier
+_Old_ auszuwählen. 
+	
 ### b. Überprüfen von Location
 
 Zur Berechnung der Astronomischen Daten wird der Breitengrad und Längengrad benötigt. Dieser wird aus der Location Instanz unter Kerninstanzen entnommen.
