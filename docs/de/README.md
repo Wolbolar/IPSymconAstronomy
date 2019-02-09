@@ -18,7 +18,7 @@ Modul für IP-Symcon ab Version 5.1 zeigt Astonomische Daten an und erstellt Ast
 ## 1. Funktionsumfang
 
 Mit dem Modul wird unter Kerninstanzen eine Instanz mit Astonomischen Werten angelegt. Welche Werte angezeigt werden sollen lässt sich im Modul auswählen.
-Berechung der Werte erfolgt über Formeln aus _"Practical Astronomy with your Calculator or Spreadsheet"_ von Peter Duffet-Smith und Jonathan Zwart. 
+Berechnung der Werte erfolgt über Formeln aus _"Practical Astronomy with your Calculator or Spreadsheet"_ von Peter Duffet-Smith und Jonathan Zwart. 
 
 ### Astronomische Werte:  
 
@@ -124,13 +124,21 @@ Im Feld die folgende URL eintragen und mit _OK_ bestätigen:
 https://github.com/Wolbolar/IPSymconAstronomy 
 ```  
 	
+Anschließend erscheint ein Eintrag für das Modul in der Liste der Instanz _Modules_    
 
-### a. Laden des Moduls
+Es wird im Standard der Zweig (Branch) _master_ geladen, dieser enthält aktuelle Änderungen und Anpassungen.
+Nur der Zweig _master_ wird aktuell gehalten.
 
-In IP-Symcon (Ver. 4.1) unter Kerninstanzen über _*Modules*_ -> Hinzufügen das Modul ergänzen mit der URL:
+![Master](img/master.png?raw=true "master") 
+
+Sollte eine ältere Version von IP-Symcon die kleiner ist als Version 5.1 (min 4.1) eingesetzt werden, ist auf das Zahnrad rechts in der Liste zu klicken.
+Es öffnet sich ein weiteres Fenster,
+
+![SelectBranch](img/select_branch.png?raw=true "select branch") 
+
+hier kann man auf einen anderen Zweig wechseln, für ältere Versionen kleiner als 5.1 ist hier
+_Old_ auszuwählen. 
 	
-    `https://github.com/Wolbolar/IPSymconAstronomy`  
-
 ### b. Überprüfen von Location
 
 Zur Berechnung der Astronomischen Daten wird der Breitengrad und Längengrad benötigt. Dieser wird aus der Location Instanz unter Kerninstanzen entnommen.
