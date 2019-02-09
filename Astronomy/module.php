@@ -88,12 +88,20 @@ class Astronomy extends IPSModule
 		$this->RegisterTimer('Update', 360000, 'Astronomy_SetAstronomyValues(' . $this->InstanceID . ');');
 		$this->RegisterPropertyInteger("zeropointy", 50);
 		$this->RegisterPropertyInteger("zeropointx", 50);
+
+		//we will wait until the kernel is ready
+		$this->RegisterMessage(0, IPS_KERNELMESSAGE);
 	}
 
 	public function ApplyChanges()
 	{
 		//Never delete this line!
 		parent::ApplyChanges();
+
+		if (IPS_GetKernelRunlevel() !== KR_READY) {
+			return;
+		}
+
 		$this->ValidateConfiguration();
 
 	}
@@ -590,6 +598,27 @@ class Astronomy extends IPSModule
 		// Status Aktiv
 		$this->SetStatus(102);
 
+	}
+
+	public function MessageSink($TimeStamp, $SenderID, $Message, $Data)
+	{
+
+		switch ($Message) {
+			case IM_CHANGESTATUS:
+				if ($Data[0] === IS_ACTIVE) {
+					$this->ApplyChanges();
+				}
+				break;
+
+			case IPS_KERNELMESSAGE:
+				if ($Data[0] === KR_READY) {
+					$this->ApplyChanges();
+				}
+				break;
+
+			default:
+				break;
+		}
 	}
 
 	protected function UpdateMedia($picid)
