@@ -12,7 +12,7 @@ Modul für IP-Symcon ab Version 5.1 zeigt Astonomische Daten an und erstellt Ast
 2. [Voraussetzungen](#2-voraussetzungen)  
 3. [Installation](#3-installation)  
 4. [Funktionsreferenz](#4-funktionsreferenz)
-5. [Konfiguration](#5-konfiguartion)  
+5. [Konfiguration](#5-konfiguration)  
 6. [Anhang](#6-anhang)  
 
 ## 1. Funktionsumfang
