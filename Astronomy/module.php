@@ -1,4 +1,4 @@
-<?
+github<?
 // Modul Astronomie
 // Formeln aus "Practical Astronomy" von Peter Duffett-Smith und Jonathan Zwart, Fourth Edition
 // basiert auf den Skripten von ChokZul https://www.symcon.de/forum/threads/31467-Astronomische-Berechnungen?highlight=astronomie 
@@ -85,7 +85,8 @@ class Astronomy extends IPSModule
 		$this->RegisterPropertyInteger("framewidthtype", 2);
 		$this->RegisterPropertyBoolean("extinfoselection", false);
 		$this->RegisterPropertyInteger("timeformat", 1);
-		$this->RegisterTimer('Update', 360000, 'Astronomy_SetAstronomyValues(' . $this->InstanceID . ');');
+		$this->RegisterPropertyInteger("Updateinterval", 0);
+		$this->RegisterTimer('Update', 0, 'Astronomy_SetAstronomyValues(' . $this->InstanceID . ');');
 		$this->RegisterPropertyInteger("zeropointy", 50);
 		$this->RegisterPropertyInteger("zeropointx", 50);
 
@@ -103,6 +104,14 @@ class Astronomy extends IPSModule
 		}
 
 		$this->ValidateConfiguration();
+		$this->SetCyclicTimerInterval();
+	}
+
+	protected function SetCyclicTimerInterval()
+	{
+		$seconds = $this->ReadPropertyInteger("Updateinterval");
+		$Interval = $seconds * 1000;
+		$this->SetTimerInterval("Update", $Interval);
 
 	}
 
@@ -1736,7 +1745,7 @@ class Astronomy extends IPSModule
 		//Location auslesen
 		$LocationID = IPS_GetInstanceListByModuleID("{45E97A63-F870-408A-B259-2933F7EABF74}")[0];
 		$ipsversion = $this->GetIPSVersion();
-		if ($ipsversion == 5) {
+		if ($ipsversion >= 5) {
 			$Location = json_decode(IPS_GetProperty($LocationID, "Location"));
 			$Latitude = $Location->latitude;
 			$Longitude = $Location->longitude;
@@ -4223,6 +4232,23 @@ class Astronomy extends IPSModule
 				]
 			]
 		];
+		$form = array_merge_recursive(
+			$form,
+			[
+				[
+					'type' => 'ExpansionPanel',
+					'caption' => 'Update Interval:',
+					'items' => [
+						[
+							'type' => 'NumberSpinner',
+							'name' => 'Updateinterval',
+							'caption' => 'Seconds',
+							'suffix' => 'seconds'
+						]
+					]
+				]
+			]
+		);
 		$UTC = $this->ReadPropertyFloat("UTC");
 		$form = array_merge_recursive(
 			$form,
@@ -4630,11 +4656,11 @@ class Astronomy extends IPSModule
 							'caption' => 'frame width type',
 							'options' => [
 								[
-									'label' => 'px',
+									'caption' => 'px',
 									'value' => 1
 								],
 								[
-									'label' => '%',
+									'caption' => '%',
 									'value' => 2
 								]
 							]
