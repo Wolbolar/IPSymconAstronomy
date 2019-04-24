@@ -38,6 +38,7 @@ class AstronomyTimer extends IPSModule
 		$this->RegisterPropertyBoolean("friday", true);
 		$this->RegisterPropertyBoolean("saturday", true);
 		$this->RegisterPropertyBoolean("sunday", true);
+		$this->RegisterTimer('AstroTimer', 0, 'AstronomyTimer_AstroTimerEvent(' . $this->InstanceID . ');');
 		$this->RegisterTimer('AstroTimerUpdate', 0, 'AstronomyTimer_Set(' . $this->InstanceID . ');');
 
 		//we will wait until the kernel is ready
@@ -151,6 +152,7 @@ class AstronomyTimer extends IPSModule
 		$Diff = $Target->getTimestamp() - $Now->getTimestamp();
 		$Interval = $Diff * 1000;
 		$this->SetTimerInterval("AstroTimerUpdate", $Interval);
+
 	}
 
 	// Profil anlegen
@@ -204,9 +206,25 @@ class AstronomyTimer extends IPSModule
 		return $objid;
 	}
 
+	public function AstroTimerEvent()
+	{
+		$varselect = $this->ReadPropertyBoolean("varselect");
+		if ($varselect) {
+			$var_objectid = $this->ReadPropertyInteger("triggervariable");
+			$varvalue = $this->GetTriggerVarValue();
+			$this->SendDebug("ObjektID Variable:", $var_objectid, 0);
+		}
+		$script_objectid = $this->ReadPropertyInteger("triggerscript");
+		$this->SendDebug("ObjektID Skript:", $script_objectid, 0);
+
+	}
+
 	public function Set()
 	{
 		$debug = false;
+		// todo internen timer nutzten
+		//$this->SetTimerInterval("AstroTimer", $Interval);
+
 		$timertype = $this->GetTimerName();
 		$offset = $this->ReadPropertyInteger("offset");
 		$varselect = $this->ReadPropertyBoolean("varselect");
@@ -649,6 +667,8 @@ class AstronomyTimer extends IPSModule
 
 	protected function RegisterAstroTimerVariable($timestamp, $Stunde, $Minute, $Sekunde, $objectid, $varvalue, $ident, $name)
 	{
+
+		// todo internen timer nutzten
 		$eventid = @IPS_GetObjectIDByIdent($ident, $objectid);
 		if (!$eventid) {
 			$eventid = IPS_CreateEvent(1);
@@ -675,6 +695,8 @@ class AstronomyTimer extends IPSModule
 
 	protected function RegisterAstroTimerScript($timestamp, $Stunde, $Minute, $Sekunde, $objectid, $ident, $name)
 	{
+
+		// todo internen timer nutzten
 		$eventid = @IPS_GetObjectIDByIdent($ident, $objectid);
 		if (!$eventid) {
 			$eventid = IPS_CreateEvent(1);
