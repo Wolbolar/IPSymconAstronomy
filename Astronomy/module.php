@@ -633,7 +633,6 @@ class Astronomy extends IPSModule
 	protected function UpdateMedia($picid)
 	{
 		//testen ob im Medienpool existent
-		$repository = "github"; //bitbucket, github
 		$picturename = $this->ReadPropertyString("picturename");
 		$selectionresize = $this->ReadPropertyBoolean("selectionresize");
 		$mediaimgwidth = $this->ReadPropertyInteger("mediaimgwidth");
@@ -653,19 +652,10 @@ class Astronomy extends IPSModule
 			$ImageFile = IPS_GetKernelDir() . $path . DIRECTORY_SEPARATOR . $picturename . $picid . "." . $filetype;
 		} else {
 			$background = $this->ReadPropertyInteger("moonbackground");
-			if ($repository == "github") {
-				if ($background == 1) {
-					$ImageFile = IPS_GetKernelDir() . "modules" . DIRECTORY_SEPARATOR . "IPSymconAstronomy" . DIRECTORY_SEPARATOR . "Astronomy" . DIRECTORY_SEPARATOR . "images" . DIRECTORY_SEPARATOR . "mond" . DIRECTORY_SEPARATOR . "mond" . $picid . ".gif";  // Image-Datei
-				} elseif ($background == 2) {
-					$ImageFile = IPS_GetKernelDir() . "modules" . DIRECTORY_SEPARATOR . "IPSymconAstronomy" . DIRECTORY_SEPARATOR . "Astronomy" . DIRECTORY_SEPARATOR . "images" . DIRECTORY_SEPARATOR . "mondtransparent" . DIRECTORY_SEPARATOR . "mond" . $picid . ".png";  // Image-Datei
-				}
-			} elseif ($repository == "bitbucket") {
-				if ($background == 1) {
-					$ImageFile = IPS_GetKernelDir() . "modules" . DIRECTORY_SEPARATOR . "ipsymconastronomy" . DIRECTORY_SEPARATOR . "Astronomy" . DIRECTORY_SEPARATOR . "images" . DIRECTORY_SEPARATOR . "mond" . DIRECTORY_SEPARATOR . "mond" . $picid . ".gif";  // Image-Datei
-				} elseif ($background == 2) {
-					$ImageFile = IPS_GetKernelDir() . "modules" . DIRECTORY_SEPARATOR . "ipsymconastronomy" . DIRECTORY_SEPARATOR . "Astronomy" . DIRECTORY_SEPARATOR . "images" . DIRECTORY_SEPARATOR . "mondtransparent" . DIRECTORY_SEPARATOR . "mond" . $picid . ".png";  // Image-Datei
-				}
-
+			if ($background == 1) {
+				$ImageFile = IPS_GetKernelDir() . "modules" . DIRECTORY_SEPARATOR . ".store" . DIRECTORY_SEPARATOR . "fonzo.ipsymconastronomy" . DIRECTORY_SEPARATOR . "Astronomy" . DIRECTORY_SEPARATOR . "images" . DIRECTORY_SEPARATOR . "mond" . DIRECTORY_SEPARATOR . "mond" . $picid . ".gif";  // Image-Datei
+			} elseif ($background == 2) {
+				$ImageFile = IPS_GetKernelDir() . "modules" . DIRECTORY_SEPARATOR . ".store" . DIRECTORY_SEPARATOR . "fonzo.ipsymconastronomy" . DIRECTORY_SEPARATOR . "Astronomy" . DIRECTORY_SEPARATOR . "images" . DIRECTORY_SEPARATOR . "mondtransparent" . DIRECTORY_SEPARATOR . "mond" . $picid . ".png";  // Image-Datei
 			}
 		}
 		if ($selectionresize)//resize image
