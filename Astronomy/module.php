@@ -654,9 +654,9 @@ class Astronomy extends IPSModule
 			$background = $this->ReadPropertyInteger("moonbackground");
 			$this->SendDebug("module directory", __DIR__, 0);
 			if ($background == 1) {
-				$ImageFile =  __DIR__ . DIRECTORY_SEPARATOR . "Astronomy" . DIRECTORY_SEPARATOR . "images" . DIRECTORY_SEPARATOR . "mond" . DIRECTORY_SEPARATOR . "mond" . $picid . ".gif";  // Image-Datei
+				$ImageFile =  __DIR__ . DIRECTORY_SEPARATOR . "images" . DIRECTORY_SEPARATOR . "mond" . DIRECTORY_SEPARATOR . "mond" . $picid . ".gif";  // Image-Datei
 			} elseif ($background == 2) {
-				$ImageFile =  __DIR__ . DIRECTORY_SEPARATOR . "Astronomy" . DIRECTORY_SEPARATOR . "images" . DIRECTORY_SEPARATOR . "mondtransparent" . DIRECTORY_SEPARATOR . "mond" . $picid . ".png";  // Image-Datei
+				$ImageFile =  __DIR__ . DIRECTORY_SEPARATOR .  "images" . DIRECTORY_SEPARATOR . "mondtransparent" . DIRECTORY_SEPARATOR . "mond" . $picid . ".png";  // Image-Datei
 			}
 		}
 		if ($selectionresize)//resize image
@@ -679,6 +679,13 @@ class Astronomy extends IPSModule
 		$name = "Mond Ansicht";
 		$MediaID = $this->CreateMediaImage('picturemoon', $name, $picid, $Content, $ImageFile, 21, "picturemoonvisible");
 		return $MediaID;
+	}
+
+
+	public function GetModuleDirectory()
+	{
+		$dir = __DIR__;
+		return $dir;
 	}
 
 	protected function CreateMediaImage($Ident, $name, $picid, $Content, $ImageFile, $position, $visible)
