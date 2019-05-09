@@ -681,6 +681,13 @@ class Astronomy extends IPSModule
 		return $MediaID;
 	}
 
+
+	public function GetModuleDirectory()
+	{
+		$dir = __DIR__;
+		return $dir;
+	}
+
 	protected function CreateMediaImage($Ident, $name, $picid, $Content, $ImageFile, $position, $visible)
 	{
 		$MediaID = false;
