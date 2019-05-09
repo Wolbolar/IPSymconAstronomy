@@ -652,10 +652,11 @@ class Astronomy extends IPSModule
 			$ImageFile = IPS_GetKernelDir() . $path . DIRECTORY_SEPARATOR . $picturename . $picid . "." . $filetype;
 		} else {
 			$background = $this->ReadPropertyInteger("moonbackground");
+			$this->SendDebug("module directory", __DIR__, 0);
 			if ($background == 1) {
-				$ImageFile = IPS_GetKernelDir() . "modules" . DIRECTORY_SEPARATOR . ".store" . DIRECTORY_SEPARATOR . "fonzo.ipsymconastronomy" . DIRECTORY_SEPARATOR . "Astronomy" . DIRECTORY_SEPARATOR . "images" . DIRECTORY_SEPARATOR . "mond" . DIRECTORY_SEPARATOR . "mond" . $picid . ".gif";  // Image-Datei
+				$ImageFile =  __DIR__ . DIRECTORY_SEPARATOR . "Astronomy" . DIRECTORY_SEPARATOR . "images" . DIRECTORY_SEPARATOR . "mond" . DIRECTORY_SEPARATOR . "mond" . $picid . ".gif";  // Image-Datei
 			} elseif ($background == 2) {
-				$ImageFile = IPS_GetKernelDir() . "modules" . DIRECTORY_SEPARATOR . ".store" . DIRECTORY_SEPARATOR . "fonzo.ipsymconastronomy" . DIRECTORY_SEPARATOR . "Astronomy" . DIRECTORY_SEPARATOR . "images" . DIRECTORY_SEPARATOR . "mondtransparent" . DIRECTORY_SEPARATOR . "mond" . $picid . ".png";  // Image-Datei
+				$ImageFile =  __DIR__ . DIRECTORY_SEPARATOR . "Astronomy" . DIRECTORY_SEPARATOR . "images" . DIRECTORY_SEPARATOR . "mondtransparent" . DIRECTORY_SEPARATOR . "mond" . $picid . ".png";  // Image-Datei
 			}
 		}
 		if ($selectionresize)//resize image
