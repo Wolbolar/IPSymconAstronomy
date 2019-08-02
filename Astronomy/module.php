@@ -1118,40 +1118,40 @@ class Astronomy extends IPSModule
 
         $timestamp = mktime(12, 0, 0, 1, 1, intval(date('Y'))) - 15 * 3600 * 24;
         $sunrise = date_sunrise($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 90 + 50 / 60, date('O') / 100);
-        $this->SendDebug('sunrise', $sunrise . '(' . gettype($sunrise) . ')', 0);
+        $this->SendDebug('sunrise', $sunrise . ' (' . gettype($sunrise) . ')', 0);
         $sunset = date_sunset($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 90 + 50 / 60, date('O') / 100);
-        $this->SendDebug('sunset', $sunset . '(' . gettype($sunset) . ')', 0);
+        $this->SendDebug('sunset', $sunset . ' (' . gettype($sunset) . ')', 0);
         $sunrise1 = date_sunrise($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 96, date('O') / 100);
-        $this->SendDebug('sunrise', $sunrise1 . '(' . gettype($sunrise1) . ')', 0);
+        $this->SendDebug('sunrise', $sunrise1 . ' (' . gettype($sunrise1) . ')', 0);
         $sunset1 = date_sunset($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 96, date('O') / 100);
-        $this->SendDebug('sunset', $sunset1 . '(' . gettype($sunset1) . ')', 0);
+        $this->SendDebug('sunset', $sunset1 . ' (' . gettype($sunset1) . ')', 0);
         $sunrise2 = date_sunrise($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 102, date('O') / 100);
-        $this->SendDebug('sunrise', $sunrise2 . '(' . gettype($sunrise2) . ')', 0);
+        $this->SendDebug('sunrise', $sunrise2 . ' (' . gettype($sunrise2) . ')', 0);
         $sunset2 = date_sunset($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 102, date('O') / 100);
-        $this->SendDebug('sunset', $sunset2 . '(' . gettype($sunset2) . ')', 0);
+        $this->SendDebug('sunset', $sunset2 . ' (' . gettype($sunset2) . ')', 0);
         $sunrise3 = date_sunrise($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 108, date('O') / 100);
-        $this->SendDebug('sunrise', $sunrise3 . '(' . gettype($sunrise3) . ')', 0);
+        $this->SendDebug('sunrise', $sunrise3 . ' (' . gettype($sunrise3) . ')', 0);
         $sunset3 = date_sunset($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 108, date('O') / 100);
-        $this->SendDebug('sunset', $sunset3 . '(' . gettype($sunset3) . ')', 0);
+        $this->SendDebug('sunset', $sunset3 . ' (' . gettype($sunset3) . ')', 0);
 
         $sunriseMins = (date('H', $sunrise) * 60 + date('i', $sunrise)) / $dayDivisor;
-        $this->SendDebug('sunriseMins', $sunriseMins . '(' . gettype($sunriseMins) . ')', 0);
+        $this->SendDebug('sunriseMins', $sunriseMins . ' (' . gettype($sunriseMins) . ')', 0);
         $sunsetMins = (date('H', $sunset) * 60 + date('i', $sunset)) / $dayDivisor;
-        $this->SendDebug('sunsetMins', $sunsetMins . '(' . gettype($sunsetMins) . ')', 0);
+        $this->SendDebug('sunsetMins', $sunsetMins . ' (' . gettype($sunsetMins) . ')', 0);
         $sunrise1Mins = (date('H', $sunrise1) * 60 + date('i', $sunrise1)) / $dayDivisor;
-        $this->SendDebug('sunrise1Mins', $sunrise1Mins . '(' . gettype($sunrise1Mins) . ')', 0);
+        $this->SendDebug('sunrise1Mins', $sunrise1Mins . ' (' . gettype($sunrise1Mins) . ')', 0);
         $sunset1Mins = (date('H', $sunset1) * 60 + date('i', $sunset1)) / $dayDivisor;
-        $this->SendDebug('sunset1Mins', $sunset1Mins . '(' . gettype($sunset1Mins) . ')', 0);
+        $this->SendDebug('sunset1Mins', $sunset1Mins . ' (' . gettype($sunset1Mins) . ')', 0);
         $sunrise2Mins = (date('H', $sunrise2) * 60 + date('i', $sunrise2)) / $dayDivisor;
-        $this->SendDebug('sunrise2Mins', $sunrise2Mins . '(' . gettype($sunrise2Mins) . ')', 0);
+        $this->SendDebug('sunrise2Mins', $sunrise2Mins . ' (' . gettype($sunrise2Mins) . ')', 0);
         $sunset2Mins = (date('H', $sunset2) * 60 + date('i', $sunset2)) / $dayDivisor;
-        $this->SendDebug('sunset2Mins', $sunset2Mins . '(' . gettype($sunset2Mins) . ')', 0);
+        $this->SendDebug('sunset2Mins', $sunset2Mins . ' (' . gettype($sunset2Mins) . ')', 0);
         $sunrise3Mins = (date('H', $sunrise3) * 60 + date('i', $sunrise3)) / $dayDivisor;
-        $this->SendDebug('sunrise3Mins', $sunrise3Mins . '(' . gettype($sunrise3Mins) . ')', 0);
+        $this->SendDebug('sunrise3Mins', $sunrise3Mins . ' (' . gettype($sunrise3Mins) . ')', 0);
         $sunset3Mins = (date('H', $sunset3) * 60 + date('i', $sunset3)) / $dayDivisor;
-        $this->SendDebug('sunset3Mins', $sunset3Mins . '(' . gettype($sunset3Mins) . ')', 0);
+        $this->SendDebug('sunset3Mins', $sunset3Mins . ' (' . gettype($sunset3Mins) . ')', 0);
         $middayMins = (12 * 60) / $dayDivisor;
-        $this->SendDebug('middayMins', $middayMins . '(' . gettype($middayMins) . ')', 0);
+        $this->SendDebug('middayMins', $middayMins . ' (' . gettype($middayMins) . ')', 0);
         for ($day = 0; $day < 365 + 30; $day++) {
             $dayBeg = $marginLeft + $day * $dayWidth - $dayWidth + 1;
             $dayEnd = $marginLeft + $day * $dayWidth;
@@ -1197,7 +1197,7 @@ class Astronomy extends IPSModule
         // Hour Lines/Text
         for ($hour = 0; $hour <= 24; $hour = $hour + 2) {
             imageline($image, intval($marginLeft), intval($marginTop + $dayHeight / 24 * $hour), intval($marginLeft + (365 + 30) * $dayWidth - 2), intval($marginTop + $dayHeight / 24 * $hour), intval($grey_line));
-            imagestring($image, 2, 2, intval($marginTop + $dayHeight - 8 - ($dayHeight / 24 * $hour)), str_pad($hour, 2, '0', STR_PAD_LEFT), intval($textColor));
+            imagestring($image, 2, 2, intval($marginTop + $dayHeight - 8 - ($dayHeight / 24 * $hour)), str_pad(strval($hour), 2, '0', STR_PAD_LEFT), intval($textColor));
         }
 
         $ImagePath = IPS_GetKernelDir() . 'media' . DIRECTORY_SEPARATOR . $filename . '.gif';
