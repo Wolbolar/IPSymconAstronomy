@@ -3157,7 +3157,7 @@ class Astronomy extends IPSModule
         $GD = $this->LctGDay($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
         $GM = $this->LctGMonth($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
         $GY = $this->LctGYear($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
-        $T = (($this->CDJD($GD, $GM, $GY) - 2415020) / 36525) + ($UT / 876600);
+        $T = (($this->CDJD(floatval($GD), intval($GM), intval($GY)) - 2415020) / 36525) + ($UT / 876600);
         $T2 = $T * $T;
 
         // $M1 = 27.32158213;
@@ -3166,7 +3166,7 @@ class Astronomy extends IPSModule
         // $M4 = 29.53058868;
         // $M5 = 27.21222039;
         $M6 = 6798.363307;
-        $Q = $this->CDJD($GD, $GM, $GY) - 2415020 + ($UT / 24);
+        $Q = $this->CDJD(floatval($GD), intval($GM), intval($GY)) - 2415020 + ($UT / 24);
         // $M1 = $Q / $M1;
         // $M2 = $Q / $M2;
         // $M3 = $Q / $M3;
@@ -3201,8 +3201,8 @@ class Astronomy extends IPSModule
             $Y0 = $Y0 + 1;
         }
 
-        $J0 = $this->CDJD(0, 1, $Y0) - 2415020;
-        $DJ = $this->CDJD($D0, $M0, $Y0) - 2415020;
+        $J0 = $this->CDJD(0, 1, intval($Y0)) - 2415020;
+        $DJ = $this->CDJD(floatval($D0), intval($M0), intval($Y0)) - 2415020;
         $K = $this->LINT((($Y0 - 1900 + (($DJ - $J0) / 365)) * 12.3685) + 0.5);
         $TN = $K / 1236.85;
         //  $TF = ($K + 0.5) / 1236.85;
@@ -3347,7 +3347,7 @@ class Astronomy extends IPSModule
         $BB = $this->LctGMonth($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
         $CC = $this->LctGYear($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
         $UT = $this->LctUT(intval($LCH), intval($LCM), intval($LCS), intval($DS), floatval($ZC), intval($LD), intval($LM), intval($LY))['UTDec'];
-        $DJ = $this->CDJD($AA, $BB, $CC) - 2415020;
+        $DJ = $this->CDJD(floatval($AA), intval($BB), intval($CC)) - 2415020;
         $T = ($DJ / 36525) + ($UT / 876600);
         $T2 = $T * $T;
         $A = 100.0021359 * $T;
@@ -3364,7 +3364,7 @@ class Astronomy extends IPSModule
         $BB = $this->LctGMonth($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
         $CC = $this->LctGYear($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
         $UT = $this->LctUT(intval($LCH), intval($LCM), intval($LCS), intval($DS), floatval($ZC), intval($LD), intval($LM), intval($LY))['UTDec'];
-        $DJ = $this->CDJD($AA, $BB, $CC) - 2415020;
+        $DJ = $this->CDJD(floatval($AA), intval($BB), intval($CC)) - 2415020;
         $T = ($DJ / 36525) + ($UT / 876600);
         $T2 = $T * $T;
         $A = 100.0021359 * $T;
@@ -3415,7 +3415,7 @@ class Astronomy extends IPSModule
         $BB = $this->LctGMonth($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
         $CC = $this->LctGYear($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
         $UT = $this->LctUT(intval($LCH), intval($LCM), intval($LCS), intval($DS), floatval($ZC), intval($LD), intval($LM), intval($LY))['UTDec'];
-        $DJ = $this->CDJD($AA, $BB, $CC) - 2415020;
+        $DJ = $this->CDJD(floatval($AA), intval($BB), intval($CC)) - 2415020;
         $T = ($DJ / 36525) + ($UT / 876600);
         $T2 = $T * $T;
         // $A = 100.0021359 * $T;
@@ -3464,7 +3464,7 @@ class Astronomy extends IPSModule
         $BB = $this->LctGMonth($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
         $CC = $this->LctGYear($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
         $UT = $this->LctUT(intval($LCH), intval($LCM), intval($LCS), intval($DS), floatval($ZC), intval($LD), intval($LM), intval($LY))['UTDec'];
-        $DJ = $this->CDJD($AA, $BB, $CC) - 2415020;
+        $DJ = $this->CDJD(floatval($AA), intval($BB), intval($CC)) - 2415020;
         $T = ($DJ / 36525) + ($UT / 876600);
         $T2 = $T * $T;
         // $A = 100.0021359 * $T;
@@ -3482,7 +3482,7 @@ class Astronomy extends IPSModule
 
     protected function SunEcc($GD, $GM, $GY)
     {
-        $T = ($this->CDJD($GD, $GM, $GY) - 2415020) / 36525;
+        $T = ($this->CDJD(floatval($GD), intval($GM), intval($GY)) - 2415020) / 36525;
         $T2 = $T * $T;
         $SunEcc = 0.01675104 - 0.0000418 * $T - 0.000000126 * $T2;
         return $SunEcc;
