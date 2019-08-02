@@ -2409,7 +2409,7 @@ class Astronomy extends IPSModule
         $B = $this->LctGDay($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
         $C = $this->LctGMonth($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
         $D = $this->LctGYear($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
-        $E = $this->UTGST($A, 0, 0, $B, $C, $D);
+        $E = $this->UTGST(floatval($A), 0, 0, intval($B), intval($C), intval($D));
         $F = $this->GSTLST($E, 0, 0, $L);
         $G = $this->HMSDH(floatval($RH), intval($RM), intval($RS));
         $H = $F - $G;
@@ -2428,7 +2428,7 @@ class Astronomy extends IPSModule
         $B = $this->LctGDay($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
         $C = $this->LctGMonth($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
         $D = $this->LctGYear($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
-        $E = $this->UTGST($A, 0, 0, $B, $C, $D);
+        $E = $this->UTGST(floatval($A), 0, 0, intval($B), intval($C), intval($D));
         $F = $this->GSTLST($E, 0, 0, $L);
         $G = $this->HMSDH(floatval($HH), intval($HM), intval($HS));
         $H = $F - $G;
