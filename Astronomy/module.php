@@ -2371,7 +2371,7 @@ class Astronomy extends IPSModule
 
     protected function LctGDay($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY)
     {
-        $A = $this->HMSDH(floatval($LCH), $LCM, $LCS);
+        $A = $this->HMSDH(floatval($LCH), intval($LCM), intval($LCS));
         $B = $A - $DS - $ZC;
         $C = floatval($LD + ($B / 24));
         $D = $this->CDJD($C, $LM, $LY);
@@ -2382,7 +2382,7 @@ class Astronomy extends IPSModule
 
     protected function LctGMonth($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY)
     {
-        $A = $this->HMSDH(floatval($LCH), $LCM, $LCS);
+        $A = $this->HMSDH(floatval($LCH), intval($LCM), intval($LCS));
         $B = $A - $DS - $ZC;
         $C = floatval($LD + ($B / 24));
         $D = $this->CDJD($C, $LM, $LY);
@@ -2392,7 +2392,7 @@ class Astronomy extends IPSModule
 
     protected function LctGYear($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY)
     {
-        $A = $this->HMSDH(floatval($LCH), $LCM, $LCS);
+        $A = $this->HMSDH(floatval($LCH), intval($LCM), intval($LCS));
         $B = $A - $DS - $ZC;
         $C = floatval($LD + ($B / 24));
         $D = $this->CDJD($C, $LM, $LY);
@@ -2411,7 +2411,7 @@ class Astronomy extends IPSModule
         $D = $this->LctGYear($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
         $E = $this->UTGST($A, 0, 0, $B, $C, $D);
         $F = $this->GSTLST($E, 0, 0, $L);
-        $G = $this->HMSDH(floatval($RH), $RM, $RS);
+        $G = $this->HMSDH(floatval($RH), intval($RM), intval($RS));
         $H = $F - $G;
         if ($H < 0) {
             $RAHA = 24 + $H;
@@ -2430,7 +2430,7 @@ class Astronomy extends IPSModule
         $D = $this->LctGYear($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
         $E = $this->UTGST($A, 0, 0, $B, $C, $D);
         $F = $this->GSTLST($E, 0, 0, $L);
-        $G = $this->HMSDH(floatval($HH), $HM, $HS);
+        $G = $this->HMSDH(floatval($HH), intval($HM), intval($HS));
         $H = $F - $G;
         if ($H < 0) {
             $HARA = 24 + $H;
@@ -2456,7 +2456,7 @@ class Astronomy extends IPSModule
     //HH HourAngle in HMS, DD Declination in DMS, P Latitude in decimal Degrees
     protected function EQAz($HH, $HM, $HS, $DD, $DM, $DS, $P)
     {
-        $A = $this->HMSDH(floatval($HH), $HM, $HS);
+        $A = $this->HMSDH(floatval($HH), intval($HM), intval($HS));
         $B = $A * 15;
         $C = $this->Radians($B);
         $D = $this->DMSDD($DD, $DM, $DS);
@@ -2473,7 +2473,7 @@ class Astronomy extends IPSModule
     ////Equatorial to Horizon coordinate conversion (Alt)
     protected function EQAlt($HH, $HM, $HS, $DD, $DM, $DS, $P)
     {
-        $A = $this->HMSDH(floatval($HH), $HM, $HS);
+        $A = $this->HMSDH(floatval($HH), intval($HM), intval($HS));
         $B = $A * 15;
         $C = $this->Radians($B);
         $D = $this->DMSDD($DD, $DM, $DS);
@@ -2546,7 +2546,7 @@ class Astronomy extends IPSModule
 
     protected function EQElat($RAH, $RAM, $RAS, $DD, $DM, $DS, $GD, $GM, $GY)
     {
-        $A = $this->Radians($this->DHDD($this->HMSDH(floatval($RAH), $RAM, $RAS)));
+        $A = $this->Radians($this->DHDD($this->HMSDH(floatval($RAH), intval($RAM), intval($RAS))));
         $B = $this->Radians($this->DMSDD($DD, $DM, $DS));
         $C = $this->Radians($this->Obliq($GD, $GM, $GY));
         $D = sin($B) * cos($C) - cos($B) * sin($C) * sin($A);
@@ -2556,7 +2556,7 @@ class Astronomy extends IPSModule
 
     protected function EQElong($RAH, $RAM, $RAS, $DD, $DM, $DS, $GD, $GM, $GY)
     {
-        $A = $this->Radians($this->DHDD($this->HMSDH(floatval($RAH), $RAM, $RAS)));
+        $A = $this->Radians($this->DHDD($this->HMSDH(floatval($RAH), intval($RAM), intval($RAS))));
         $B = $this->Radians($this->DMSDD($DD, $DM, $DS));
         $C = $this->Radians($this->Obliq($GD, $GM, $GY));
         $D = sin($A) * cos($C) + tan($B) * sin($C);
@@ -2568,7 +2568,7 @@ class Astronomy extends IPSModule
 
     protected function EQGlong($RAH, $RAM, $RAS, $DD, $DM, $DS)
     {
-        $A = $this->Radians($this->DHDD($this->HMSDH(floatval($RAH), $RAM, $RAS)));
+        $A = $this->Radians($this->DHDD($this->HMSDH(floatval($RAH), intval($RAM), intval($RAS))));
         $B = $this->Radians($this->DMSDD($DD, $DM, $DS));
         $C = cos($this->Radians(27.4));
         $D = sin($this->Radians(27.4));
@@ -2583,7 +2583,7 @@ class Astronomy extends IPSModule
 
     protected function EQGlat($RAH, $RAM, $RAS, $DD, $DM, $DS)
     {
-        $A = $this->Radians($this->DHDD($this->HMSDH(floatval($RAH), $RAM, $RAS)));
+        $A = $this->Radians($this->DHDD($this->HMSDH(floatval($RAH), intval($RAM), intval($RAS))));
         $B = $this->Radians($this->DMSDD($DD, $DM, $DS));
         $C = cos($this->Radians(27.4));
         $D = sin($this->Radians(27.4));
