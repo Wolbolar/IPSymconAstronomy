@@ -1054,15 +1054,15 @@ class Astronomy extends IPSModule
 
         imagesetthickness($image, 1);
         for ($alpha = 0; $alpha < 360; $alpha = $alpha + 30) {
-            imageline($image, $marginLeft + $clockWidth / 2 * (1 + cos(deg2rad($alpha))),
-                $marginTop + $clockWidth / 2 * (1 + sin(deg2rad($alpha))),
-                $marginLeft + 10 + ($clockWidth - 20) / 2 * (1 + cos(deg2rad($alpha))),
-                $marginTop + 10 + ($clockWidth - 20) / 2 * (1 + sin(deg2rad($alpha))), $grey_line);
+            imageline($image, intval($marginLeft + $clockWidth / 2 * (1 + cos(deg2rad($alpha)))),
+                intval($marginTop + $clockWidth / 2 * (1 + sin(deg2rad($alpha)))),
+                intval($marginLeft + 10 + ($clockWidth - 20) / 2 * (1 + cos(deg2rad($alpha)))),
+                intval($marginTop + 10 + ($clockWidth - 20) / 2 * (1 + sin(deg2rad($alpha)))), intval($grey_line));
 
-            imageline($image, $marginLeft + $clockWidth / 2 * (1 + cos(deg2rad($alpha))),
-                $marginTop + $clockHeight + $marginMiddle + $clockWidth / 2 * (1 + sin(deg2rad($alpha))),
-                $marginLeft + 10 + ($clockWidth - 20) / 2 * (1 + cos(deg2rad($alpha))),
-                $marginTop + $clockHeight + $marginMiddle + 10 + ($clockWidth - 20) / 2 * (1 + sin(deg2rad($alpha))), $grey_line);
+            imageline($image, intval($marginLeft + $clockWidth / 2 * (1 + cos(deg2rad($alpha)))),
+                intval($marginTop + $clockHeight + $marginMiddle + $clockWidth / 2 * (1 + sin(deg2rad($alpha)))),
+                intval($marginLeft + 10 + ($clockWidth - 20) / 2 * (1 + cos(deg2rad($alpha)))),
+                intval($marginTop + $clockHeight + $marginMiddle + 10 + ($clockWidth - 20) / 2 * (1 + sin(deg2rad($alpha)))), intval($grey_line));
 
         }
 
