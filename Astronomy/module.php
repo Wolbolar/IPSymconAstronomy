@@ -863,7 +863,7 @@ class Astronomy extends IPSModule
         }
 
         // Thumbnail erstellen
-        $thumbimg = imagecreatetruecolor($thumbwidth, $thumbheight);
+        $thumbimg = imagecreatetruecolor(intval($thumbwidth), intval($thumbheight));
         imagesavealpha($thumbimg, true);
         $trans_colour = imagecolorallocatealpha($thumbimg, 0, 0, 0, 127);
         imagefill($thumbimg, 0, 0, $trans_colour);
@@ -1091,8 +1091,8 @@ class Astronomy extends IPSModule
         $marginTop = 5;
         $marginBottom = 30;
         $marginRight = 5;
-        $imageWidth = (365 + 30) * $dayWidth + $marginLeft + $marginRight; // 365days, 2*365=730
-        $imageHeight = $dayHeight + $marginBottom + $marginTop;
+        $imageWidth = intval((365 + 30) * $dayWidth + $marginLeft + $marginRight); // 365days, 2*365=730
+        $imageHeight = intval($dayHeight + $marginBottom + $marginTop);
 
         $image = imagecreate($imageWidth, $imageHeight);
 
