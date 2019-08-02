@@ -1138,48 +1138,48 @@ class Astronomy extends IPSModule
             $dayBeg = $marginLeft + $day * $dayWidth - $dayWidth + 1;
             $dayEnd = $marginLeft + $day * $dayWidth;
 
-            imagefilledrectangle($image, $dayBeg, $marginTop, $marginLeft + $day * $dayWidth, $marginTop + $dayHeight, $grey);
+            imagefilledrectangle($image, intval($dayBeg), intval($marginTop), intval($marginLeft + $day * $dayWidth), intval($marginTop + $dayHeight), intval($grey));
             if ($sunset3Mins < $sunrise3Mins or $sunset3Mins < $middayMins) {
-                imagefilledrectangle($image, $dayBeg, $marginTop, $dayEnd, $marginTop + $dayHeight - $sunrise3Mins, $grey_sunrise3);
-                imagefilledrectangle($image, $dayBeg, $marginTop + $dayHeight - $sunset3Mins, $dayEnd, $marginTop + $dayHeight, $grey_sunrise3);
+                imagefilledrectangle($image, intval($dayBeg), intval($marginTop), intval($dayEnd), intval($marginTop + $dayHeight - $sunrise3Mins), intval($grey_sunrise3));
+                imagefilledrectangle($image, intval($dayBeg), intval($marginTop + $dayHeight - $sunset3Mins), intval($dayEnd), intval($marginTop + $dayHeight), intval($grey_sunrise3));
             } else {
-                imagefilledrectangle($image, $dayBeg, $marginTop + $dayHeight - $sunrise3Mins, $dayEnd, $marginTop + $dayHeight - $sunset3Mins, $grey_sunrise3);
+                imagefilledrectangle($image, intval($dayBeg), intval($marginTop + $dayHeight - $sunrise3Mins), intval($dayEnd), intval($marginTop + $dayHeight - $sunset3Mins), intval($grey_sunrise3));
             }
             if ($sunset2Mins < $sunrise2Mins or $sunset2Mins < $middayMins) {
-                imagefilledrectangle($image, $dayBeg, $marginTop, $dayEnd, $marginTop + $dayHeight - $sunrise2Mins, $grey_sunrise2);
-                imagefilledrectangle($image, $dayBeg, $marginTop + $dayHeight - $sunset2Mins, $dayEnd, $marginTop + $dayHeight, $grey_sunrise2);
+                imagefilledrectangle($image, intval($dayBeg), intval($marginTop), intval($dayEnd), intval($marginTop + $dayHeight - $sunrise2Mins), intval($grey_sunrise2));
+                imagefilledrectangle($image, intval($dayBeg), intval($marginTop + $dayHeight - $sunset2Mins), intval($dayEnd), intval($marginTop + $dayHeight), intval($grey_sunrise2));
             } else {
-                imagefilledrectangle($image, $dayBeg, $marginTop + $dayHeight - $sunrise2Mins, $dayEnd, $marginTop + $dayHeight - $sunset2Mins, $grey_sunrise2);
+                imagefilledrectangle($image, intval($dayBeg), intval($marginTop + $dayHeight - $sunrise2Mins), intval($dayEnd), intval($marginTop + $dayHeight - $sunset2Mins), intval($grey_sunrise2));
             }
             if ($sunset1Mins < $sunrise1Mins or $sunset1Mins < $middayMins) {
-                imagefilledrectangle($image, $dayBeg, $marginTop, $dayEnd, $marginTop + $dayHeight - $sunrise1Mins, $grey_sunrise1);
-                imagefilledrectangle($image, $dayBeg, $marginTop + $dayHeight - $sunset1Mins, $dayEnd, $marginTop + $dayHeight, $grey_sunrise1);
+                imagefilledrectangle($image, intval($dayBeg), intval($marginTop), intval($dayEnd), intval($marginTop + $dayHeight - $sunrise1Mins), intval($grey_sunrise1));
+                imagefilledrectangle($image, intval($dayBeg), intval($marginTop + $dayHeight - $sunset1Mins), intval($dayEnd), intval($marginTop + $dayHeight), intval($grey_sunrise1));
             } else {
-                imagefilledrectangle($image, $dayBeg, $marginTop + $dayHeight - $sunrise1Mins, $dayEnd, $marginTop + $dayHeight - $sunset1Mins, $grey_sunrise1);
+                imagefilledrectangle($image, intval($dayBeg), intval($marginTop + $dayHeight - $sunrise1Mins), intval($dayEnd), intval($marginTop + $dayHeight - $sunset1Mins), intval($grey_sunrise1));
             }
-            imagefilledrectangle($image, $dayBeg, $marginTop + $dayHeight - $sunriseMins, $dayEnd, $marginTop + $dayHeight - $sunsetMins, $yellow);
-            imagefilledrectangle($image, $dayBeg, $marginTop + $dayHeight - $sunriseMins, $dayEnd, $marginTop + $dayHeight - $sunriseMins, $red);
-            imagefilledrectangle($image, $dayBeg, $marginTop + $dayHeight - $sunsetMins, $dayEnd, $marginTop + $dayHeight - $sunsetMins, $red);
+            imagefilledrectangle($image, intval($dayBeg), intval($marginTop + $dayHeight - $sunriseMins), intval($dayEnd), intval($marginTop + $dayHeight - $sunsetMins), intval($yellow));
+            imagefilledrectangle($image, intval($dayBeg), intval($marginTop + $dayHeight - $sunriseMins), intval($dayEnd), intval($marginTop + $dayHeight - $sunriseMins), intval($red));
+            imagefilledrectangle($image, intval($dayBeg), intval($marginTop + $dayHeight - $sunsetMins), intval($dayEnd), intval($marginTop + $dayHeight - $sunsetMins), intval($red));
 
             // Line for new Month
             if (date('d', $timestamp) == 1) {
-                imagefilledrectangle($image, $dayEnd, $marginTop, $dayEnd, $marginTop + $dayHeight, $grey_line);
+                imagefilledrectangle($image, intval($dayEnd), intval($marginTop), intval($dayEnd), intval($marginTop + $dayHeight), intval($grey_line));
                 if ($day < 365) {
-                    imagestring($image, 2, $dayBeg + 30 * $dayWidth / 2 - 8, $marginTop + $dayHeight + 5, date('M', $timestamp), $textColor);
+                    imagestring($image, 2, intval($dayBeg + 30 * $dayWidth / 2 - 8), intval($marginTop + $dayHeight + 5), date('M', $timestamp), intval($textColor));
                 }
             }
             // Line for current Day
             if (date('d', $timestamp) == date('d', time()) and date('m', $timestamp) == date('m', time())) {
-                imagefilledrectangle($image, $dayBeg, $marginTop, $dayEnd, $marginTop + $dayHeight, $blue);
-                imagefilledrectangle($image, $dayBeg - 1, $marginTop, $dayEnd - 1, $marginTop + $dayHeight, $blue);
+                imagefilledrectangle($image, intval($dayBeg), intval($marginTop), intval($dayEnd), intval($marginTop + $dayHeight), intval($blue));
+                imagefilledrectangle($image, intval($dayBeg - 1), intval($marginTop), intval($dayEnd - 1), intval($marginTop + $dayHeight), intval($blue));
             }
             $timestamp = $timestamp + 60 * 60 * 24;
         }
 
         // Hour Lines/Text
         for ($hour = 0; $hour <= 24; $hour = $hour + 2) {
-            imageline($image, $marginLeft, $marginTop + $dayHeight / 24 * $hour, $marginLeft + (365 + 30) * $dayWidth - 2, $marginTop + $dayHeight / 24 * $hour, $grey_line);
-            imagestring($image, 2, 2, $marginTop + $dayHeight - 8 - ($dayHeight / 24 * $hour), str_pad($hour, 2, '0', STR_PAD_LEFT), $textColor);
+            imageline($image, intval($marginLeft), intval($marginTop + $dayHeight / 24 * $hour), intval($marginLeft + (365 + 30) * $dayWidth - 2), intval($marginTop + $dayHeight / 24 * $hour), intval($grey_line));
+            imagestring($image, 2, 2, intval($marginTop + $dayHeight - 8 - ($dayHeight / 24 * $hour)), str_pad($hour, 2, '0', STR_PAD_LEFT), intval($textColor));
         }
 
         $ImagePath = IPS_GetKernelDir() . 'media' . DIRECTORY_SEPARATOR . $filename . '.gif';
