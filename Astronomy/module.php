@@ -1098,7 +1098,7 @@ class Astronomy extends IPSModule
 
         $white = imagecolorallocate($image, 255, 255, 255);
         $textColor = imagecolorallocate($image, 250, 250, 250);
-        $transparent = imagecolortransparent($image, $white);
+        $transparent = intval(imagecolortransparent($image, $white));
         $black = imagecolorallocate($image, 0, 0, 0);
         $red = imagecolorallocate($image, 255, 0, 0);
         //$green         = imagecolorallocate($image,0,255,0);
@@ -1112,7 +1112,7 @@ class Astronomy extends IPSModule
         $yellow = imagecolorallocate($image, 255, 255, 0);
 
         imagefilledrectangle($image, 1, 1, $imageWidth, $imageHeight, $transparent);
-        imagefilledrectangle($image, $marginLeft - 2, $marginTop - 2, $marginLeft + (365 + 30) * $dayWidth + 1, $marginTop + $dayHeight + 2, $black);
+        imagefilledrectangle($image, intval($marginLeft - 2), intval($marginTop - 2), intval($marginLeft + (365 + 30) * $dayWidth + 1), intval($marginTop + $dayHeight + 2), intval($black));
 
         $timestamp = mktime(12, 0, 0, 1, 1, date('Y')) - 15 * 3600 * 24;
         for ($day = 0; $day < 365 + 30; $day++) {
