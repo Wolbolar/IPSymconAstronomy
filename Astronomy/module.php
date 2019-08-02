@@ -2189,7 +2189,7 @@ class Astronomy extends IPSModule
         $A = $this->HMSDH(floatval($Hour), $Minute, $Second);     //LCT
         $B = $A - $DS - $ZC;                   //UT
         $C = floatval($day + ($B / 24));                 //G day
-        $D = $this->CDJD($C, $month, $year);  //JD
+        $D = $this->CDJD(floatval($C), intval($month), intval($year));  //JD
         $GD = $this->JDCDay($D);                       //G day
         $GM = $this->JDCMonth($D);                    //G month
         $GY = $this->JDCYear($D);                      //G year
@@ -2204,7 +2204,7 @@ class Astronomy extends IPSModule
         $A = $this->HMSDH($UH, intval($UM), intval($US));
         $B = $A + $ZC;
         $C = $B + $DS;
-        $D = $this->CDJD(floatval($GD), $GM, $GY) + ($C / 24);
+        $D = $this->CDJD(floatval($GD), intval($GM), intval($GY)) + ($C / 24);
         $E = $this->JDCDay($D);
         $F = $this->JDCMonth($D);
         $G = $this->JDCYear($D);
@@ -2216,7 +2216,7 @@ class Astronomy extends IPSModule
     //Conversion of UT to GST (Greenwich Sideral Time)
     public function UTGST(float $UH, float $UM, float $US, int $GD, int $GM, int $GY)
     {
-        $A = $this->CDJD(floatval($GD), $GM, $GY);
+        $A = $this->CDJD(floatval($GD), intval($GM), intval($GY));
         $B = $A - 2451545;
         $C = $B / 36525;
         $D = 6.697374558 + (2400.051336 * $C) + (0.000025862 * $C * $C);
@@ -2231,7 +2231,7 @@ class Astronomy extends IPSModule
     //Conversion of GST to UT --- Achtung: hier wird ein Array ausgegeben !!!
     public function GSTUT(float $GSH, int $GSM, int $GSS, int $GD, int $GM, int $GY)
     {
-        $A = $this->CDJD(floatval($GD), $GM, $GY);
+        $A = $this->CDJD(floatval($GD), intval($GM), intval($GY));
         $B = $A - 2451545;
         $C = $B / 36525;
         $D = 6.697374558 + (2400.051336 * $C) + (0.000025862 * $C * $C);
@@ -2374,7 +2374,7 @@ class Astronomy extends IPSModule
         $A = $this->HMSDH(floatval($LCH), intval($LCM), intval($LCS));
         $B = $A - $DS - $ZC;
         $C = floatval($LD + ($B / 24));
-        $D = $this->CDJD($C, $LM, $LY);
+        $D = $this->CDJD(floatval($C), intval($LM), intval($LY));
         $E = $this->JDCDay($D);
         $LctGDay = $this->roundvariantfix($E);
         return $LctGDay;
@@ -2385,7 +2385,7 @@ class Astronomy extends IPSModule
         $A = $this->HMSDH(floatval($LCH), intval($LCM), intval($LCS));
         $B = $A - $DS - $ZC;
         $C = floatval($LD + ($B / 24));
-        $D = $this->CDJD($C, $LM, $LY);
+        $D = $this->CDJD(floatval($C), intval($LM), intval($LY));
         $LctGMonth = $this->JDCMonth($D);
         return $LctGMonth;
     }
@@ -2395,7 +2395,7 @@ class Astronomy extends IPSModule
         $A = $this->HMSDH(floatval($LCH), intval($LCM), intval($LCS));
         $B = $A - $DS - $ZC;
         $C = floatval($LD + ($B / 24));
-        $D = $this->CDJD($C, $LM, $LY);
+        $D = $this->CDJD(floatval($C), intval($LM), intval($LY));
         $LctGYear = $this->JDCYear($D);
         return $LctGYear;
     }
@@ -2513,7 +2513,7 @@ class Astronomy extends IPSModule
 
     protected function Obliq($GD, $GM, $GY)
     {
-        $A = $this->CDJD(floatval($GD), $GM, $GY);
+        $A = $this->CDJD(floatval($GD), intval($GM), intval($GY));
         $B = $A - 2415020;
         $C = ($B / 36525) - 1;
         $D = $C * (46.815 + $C * (0.0006 - ($C * 0.00181)));
@@ -2604,7 +2604,7 @@ class Astronomy extends IPSModule
 
     protected function NutatLong($GD, $GM, $GY)
     {
-        $DJ = $this->CDJD($GD, $GM, $GY) - 2415020;
+        $DJ = $this->CDJD(floatval($GD), intval($GM), intval($GY)) - 2415020;
         $T = $DJ / 36525;
         $T2 = $T * $T;
         $A = 100.0021358 * $T;
@@ -2643,7 +2643,7 @@ class Astronomy extends IPSModule
 
     protected function NutatObl($GD, $GM, $GY)
     {
-        $DJ = $this->CDJD($GD, $GM, $GY) - 2415020;
+        $DJ = $this->CDJD(floatval($GD), intval($GM), intval($GY)) - 2415020;
         $T = $DJ / 36525;
         $T2 = $T * $T;
         $A = 100.0021358 * $T;
@@ -2728,8 +2728,8 @@ class Astronomy extends IPSModule
             $Y0 = $Y0 + 1;
         }
 
-        $J0 = $this->CDJD(0, 1, $Y0) - 2415020;
-        $DJ = $this->CDJD($D0, $M0, $Y0) - 2415020;
+        $J0 = $this->CDJD(0, 1, intval($Y0)) - 2415020;
+        $DJ = $this->CDJD(floatval($D0), intval($M0), intval($Y0)) - 2415020;
         $K = $this->LINT((($Y0 - 1900 + (($DJ - $J0) / 365)) * 12.3685) + 0.5);
         // $TN = $K / 1236.85;
         $TF = ($K + 0.5) / 1236.85;
@@ -2793,7 +2793,7 @@ class Astronomy extends IPSModule
         $GD = $this->LctGDay($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
         $GM = $this->LctGMonth($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
         $GY = $this->LctGYear($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
-        $T = (($this->CDJD($GD, $GM, $GY) - 2415020) / 36525) + ($UT / 876600);
+        $T = (($this->CDJD(floatval($GD), intval($GM), intval($GY)) - 2415020) / 36525) + ($UT / 876600);
         $T2 = $T * $T;
 
         // $M1 = 27.32158213;
@@ -2802,7 +2802,7 @@ class Astronomy extends IPSModule
         $M4 = 29.53058868;
         $M5 = 27.21222039;
         $M6 = 6798.363307;
-        $Q = $this->CDJD($GD, $GM, $GY) - 2415020 + ($UT / 24);
+        $Q = $this->CDJD(floatval($GD), intval($GM), intval($GY)) - 2415020 + ($UT / 24);
         // $M1 = $Q / $M1;
         $M2 = $Q / $M2;
         $M3 = $Q / $M3;
@@ -2866,7 +2866,7 @@ class Astronomy extends IPSModule
 
     protected function CRN($GD, $GM, $GY)
     {
-        $A = $this->CDJD($GD, $GM, $GY);
+        $A = $this->CDJD(floatval($GD), intval($GM), intval($GY));
         $CRN = 1690 + round(($A - 2444235.34) / 27.2753, 0);
         return $CRN;
     }
@@ -2895,7 +2895,7 @@ class Astronomy extends IPSModule
         $GD = $this->LctGDay($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
         $GM = $this->LctGMonth($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
         $GY = $this->LctGYear($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
-        $T = (($this->CDJD($GD, $GM, $GY) - 2415020) / 36525) + ($UT / 876600);
+        $T = (($this->CDJD(floatval($GD), intval($GM), intval($GY)) - 2415020) / 36525) + ($UT / 876600);
         $T2 = $T * $T;
 
         // $M1 = 27.32158213;
@@ -2904,7 +2904,7 @@ class Astronomy extends IPSModule
         // $M4 = 29.53058868;
         // $M5 = 27.21222039;
         $M6 = 6798.363307;
-        $Q = $this->CDJD($GD, $GM, $GY) - 2415020 + ($UT / 24);
+        $Q = $this->CDJD(floatval($GD), intval($GM), intval($GY)) - 2415020 + ($UT / 24);
         // $M1 = $Q / $M1;
         // $M2 = $Q / $M2;
         $M3 = $Q / $M3;
@@ -2978,7 +2978,7 @@ class Astronomy extends IPSModule
         $GD = $this->LctGDay($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
         $GM = $this->LctGMonth($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
         $GY = $this->LctGYear($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
-        $T = (($this->CDJD($GD, $GM, $GY) - 2415020) / 36525) + ($UT / 876600);
+        $T = (($this->CDJD(floatval($GD), intval($GM), intval($GY)) - 2415020) / 36525) + ($UT / 876600);
         $T2 = $T * $T;
 
         $M1 = 27.32158213;
@@ -2987,7 +2987,7 @@ class Astronomy extends IPSModule
         $M4 = 29.53058868;
         $M5 = 27.21222039;
         $M6 = 6798.363307;
-        $Q = $this->CDJD($GD, $GM, $GY) - 2415020 + ($UT / 24);
+        $Q = $this->CDJD(floatval($GD), intval($GM), intval($GY)) - 2415020 + ($UT / 24);
         $M1 = $Q / $M1;
         $M2 = $Q / $M2;
         $M3 = $Q / $M3;
@@ -3068,7 +3068,7 @@ class Astronomy extends IPSModule
         $GD = $this->LctGDay($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
         $GM = $this->LctGMonth($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
         $GY = $this->LctGYear($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
-        $T = (($this->CDJD($GD, $GM, $GY) - 2415020) / 36525) + ($UT / 876600);
+        $T = (($this->CDJD(floatval($GD), intval($GM), intval($GY)) - 2415020) / 36525) + ($UT / 876600);
         $T2 = $T * $T;
 
         // $M1 = 27.32158213;
@@ -3077,7 +3077,7 @@ class Astronomy extends IPSModule
         $M4 = 29.53058868;
         $M5 = 27.21222039;
         $M6 = 6798.363307;
-        $Q = $this->CDJD($GD, $GM, $GY) - 2415020 + ($UT / 24);
+        $Q = $this->CDJD(floatval($GD), intval($GM), intval($GY)) - 2415020 + ($UT / 24);
         // $M1 = $Q / $M1;
         $M2 = $Q / $M2;
         $M3 = $Q / $M3;
