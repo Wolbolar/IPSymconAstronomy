@@ -1114,7 +1114,7 @@ class Astronomy extends IPSModule
         imagefilledrectangle($image, 1, 1, $imageWidth, $imageHeight, $transparent);
         imagefilledrectangle($image, intval($marginLeft - 2), intval($marginTop - 2), intval($marginLeft + (365 + 30) * $dayWidth + 1), intval($marginTop + $dayHeight + 2), intval($black));
 
-        $timestamp = mktime(12, 0, 0, 1, 1, date('Y')) - 15 * 3600 * 24;
+        $timestamp = mktime(12, 0, 0, 1, 1, intval(date('Y'))) - 15 * 3600 * 24;
         for ($day = 0; $day < 365 + 30; $day++) {
             $sunrise = date_sunrise($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 90 + 50 / 60, date('O') / 100);
             $sunset = date_sunset($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 90 + 50 / 60, date('O') / 100);
@@ -3691,9 +3691,9 @@ class Astronomy extends IPSModule
 
             $sommerzeit = date('I');
             if ($sommerzeit == 0) {
-                $datum = mktime($stunde, $minute, $sekunde + 3600, $monat, $tag, $jahr);
+                $datum = mktime(intval($stunde), intval($minute), intval($sekunde + 3600), intval($monat), intval($tag), intval($jahr));
             } else {
-                $datum = mktime($stunde, $minute, $sekunde + 7200, $monat, $tag, $jahr);
+                $datum = mktime(intval($stunde), intval($minute), intval($sekunde + 7200), intval($monat), intval($tag), intval($jahr));
             }
 
             switch ($phase) {
