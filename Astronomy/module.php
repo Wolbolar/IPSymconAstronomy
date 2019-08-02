@@ -1643,9 +1643,9 @@ class Astronomy extends IPSModule
 
         $HMSDec = $this->HMSDH(floatval($Hour), $Minute, $Second); //Local Time HMS in Decimal Hours
         // $UTDec = $this->LctUT($Hour, $Minute, $Second, $DS, $ZC, $day, $month, $year)["UTDec"];
-        $GD = floatval($this->LctUT($Hour, $Minute, $Second, $DS, $ZC, $day, $month, $year)['GD']);
-        $GM = intval($this->LctUT($Hour, $Minute, $Second, $DS, $ZC, $day, $month, $year)['GM']);
-        $GY = intval($this->LctUT($Hour, $Minute, $Second, $DS, $ZC, $day, $month, $year)['GY']);
+        $GD = floatval($this->LctUT(intval($Hour), $Minute, $Second, $DS, $ZC, $day, $month, $year)['GD']);
+        $GM = intval($this->LctUT(intval($Hour), $Minute, $Second, $DS, $ZC, $day, $month, $year)['GM']);
+        $GY = intval($this->LctUT(intval($Hour), $Minute, $Second, $DS, $ZC, $day, $month, $year)['GY']);
         $JD = $this->CDJD($GD, $GM, $GY);  //UT Julian Date
         if ($this->ReadPropertyBoolean('juliandate') == true) {
             $this->SetValue('juliandate', $JD);
@@ -2405,7 +2405,7 @@ class Astronomy extends IPSModule
     //LD Local Calender Date in DMY, L geographical Longitude in Degrees
     protected function RAHA($RH, $RM, $RS, $LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY, $L)
     {
-        $A = $this->LctUT($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY)['UTDec'];
+        $A = $this->LctUT(intval($LCH), $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY)['UTDec'];
         $B = $this->LctGDay($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
         $C = $this->LctGMonth($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
         $D = $this->LctGYear($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
@@ -2424,7 +2424,7 @@ class Astronomy extends IPSModule
     //Conversion of hour angle to right ascension
     protected function HARA($HH, $HM, $HS, $LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY, $L)
     {
-        $A = $this->LctUT($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY)['UTDec'];
+        $A = $this->LctUT(intval($LCH), $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY)['UTDec'];
         $B = $this->LctGDay($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
         $C = $this->LctGMonth($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
         $D = $this->LctGYear($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
@@ -2789,7 +2789,7 @@ class Astronomy extends IPSModule
 
     protected function MoonHP($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR)
     {
-        $UT = $this->LctUT($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR)['UTDec'];
+        $UT = $this->LctUT(intval($LH), $LM, $LS, $DS, $ZC, $DY, $MN, $YR)['UTDec'];
         $GD = $this->LctGDay($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
         $GM = $this->LctGMonth($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
         $GY = $this->LctGYear($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
@@ -2891,7 +2891,7 @@ class Astronomy extends IPSModule
 
     protected function MoonMeanAnomaly($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR)
     {
-        $UT = $this->LctUT($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR)['UTDec'];
+        $UT = $this->LctUT(intval($LH), $LM, $LS, $DS, $ZC, $DY, $MN, $YR)['UTDec'];
         $GD = $this->LctGDay($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
         $GM = $this->LctGMonth($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
         $GY = $this->LctGYear($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
@@ -2974,7 +2974,7 @@ class Astronomy extends IPSModule
 
     protected function MoonLong($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR)
     {
-        $UT = $this->LctUT($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR)['UTDec'];
+        $UT = $this->LctUT(intval($LH), $LM, $LS, $DS, $ZC, $DY, $MN, $YR)['UTDec'];
         $GD = $this->LctGDay($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
         $GM = $this->LctGMonth($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
         $GY = $this->LctGYear($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
@@ -3064,7 +3064,7 @@ class Astronomy extends IPSModule
 
     protected function MoonLat($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR)
     {
-        $UT = $this->LctUT($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR)['UTDec'];
+        $UT = $this->LctUT(intval($LH), $LM, $LS, $DS, $ZC, $DY, $MN, $YR)['UTDec'];
         $GD = $this->LctGDay($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
         $GM = $this->LctGMonth($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
         $GY = $this->LctGYear($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
@@ -3153,7 +3153,7 @@ class Astronomy extends IPSModule
 
     protected function MoonNodeLong($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR)
     {
-        $UT = $this->LctUT($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR)['UTDec'];
+        $UT = $this->LctUT(intval($LH), $LM, $LS, $DS, $ZC, $DY, $MN, $YR)['UTDec'];
         $GD = $this->LctGDay($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
         $GM = $this->LctGMonth($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
         $GY = $this->LctGYear($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
@@ -3346,7 +3346,7 @@ class Astronomy extends IPSModule
         $AA = $this->LctGDay($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
         $BB = $this->LctGMonth($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
         $CC = $this->LctGYear($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
-        $UT = $this->LctUT($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY)['UTDec'];
+        $UT = $this->LctUT(intval($LCH), $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY)['UTDec'];
         $DJ = $this->CDJD($AA, $BB, $CC) - 2415020;
         $T = ($DJ / 36525) + ($UT / 876600);
         $T2 = $T * $T;
@@ -3363,7 +3363,7 @@ class Astronomy extends IPSModule
         $AA = $this->LctGDay($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
         $BB = $this->LctGMonth($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
         $CC = $this->LctGYear($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
-        $UT = $this->LctUT($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY)['UTDec'];
+        $UT = $this->LctUT(intval($LCH), $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY)['UTDec'];
         $DJ = $this->CDJD($AA, $BB, $CC) - 2415020;
         $T = ($DJ / 36525) + ($UT / 876600);
         $T2 = $T * $T;
@@ -3414,7 +3414,7 @@ class Astronomy extends IPSModule
         $AA = $this->LctGDay($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
         $BB = $this->LctGMonth($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
         $CC = $this->LctGYear($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
-        $UT = $this->LctUT($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY)['UTDec'];
+        $UT = $this->LctUT(intval($LCH), $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY)['UTDec'];
         $DJ = $this->CDJD($AA, $BB, $CC) - 2415020;
         $T = ($DJ / 36525) + ($UT / 876600);
         $T2 = $T * $T;
@@ -3463,7 +3463,7 @@ class Astronomy extends IPSModule
         $AA = $this->LctGDay($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
         $BB = $this->LctGMonth($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
         $CC = $this->LctGYear($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
-        $UT = $this->LctUT($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY)['UTDec'];
+        $UT = $this->LctUT(intval($LCH), $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY)['UTDec'];
         $DJ = $this->CDJD($AA, $BB, $CC) - 2415020;
         $T = ($DJ / 36525) + ($UT / 876600);
         $T2 = $T * $T;
