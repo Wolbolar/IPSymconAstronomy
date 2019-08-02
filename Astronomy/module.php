@@ -748,9 +748,11 @@ class Astronomy extends IPSModule
                 $image = $this->createimage($ImageFile, $imageinfo['imagetype']);
                 $thumb = $this->createthumbnail($mediaimgwidth, $mediaimgheight, $imageinfo['imagewidth'], $imageinfo['imageheight']);
                 $thumbimg = $thumb['img'];
-                $thumbwidth = $thumb['width'];
-                $thumbheight = $thumb['height'];
-                $ImageFile = $this->copyimgtothumbnail($thumbimg, $image, $thumbwidth, $thumbheight, $imageinfo['imagewidth'], $imageinfo['imageheight'], $picturename);
+                $thumbwidth = intval($thumb['width']);
+                $thumbheight = intval($thumb['height']);
+                $imagewidth = intval($imageinfo['imagewidth']);
+                $imageheight = intval($imageinfo['imageheight']);
+                $ImageFile = $this->copyimgtothumbnail($thumbimg, $image, $thumbwidth, $thumbheight, $imagewidth, $imageheight, $picturename);
             } else {
                 IPS_LogMessage('Astronomy', 'Bild wurde nicht gefunden.');
             }
@@ -871,7 +873,7 @@ class Astronomy extends IPSModule
         return $thumb;
     }
 
-    protected function copyimgtothumbnail($thumb, $image, $thumbwidth, $thumbheight, $imagewidth, $imageheight, $picturename)
+    protected function copyimgtothumbnail($thumb, $image, int $thumbwidth, int $thumbheight, int $imagewidth, int $imageheight, $picturename)
     {
         imagecopyresampled(
             $thumb,
