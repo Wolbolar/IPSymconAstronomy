@@ -748,9 +748,11 @@ class Astronomy extends IPSModule
                 $image = $this->createimage($ImageFile, $imageinfo['imagetype']);
                 $thumb = $this->createthumbnail($mediaimgwidth, $mediaimgheight, $imageinfo['imagewidth'], $imageinfo['imageheight']);
                 $thumbimg = $thumb['img'];
-                $thumbwidth = $thumb['width'];
-                $thumbheight = $thumb['height'];
-                $ImageFile = $this->copyimgtothumbnail($thumbimg, $image, $thumbwidth, $thumbheight, $imageinfo['imagewidth'], $imageinfo['imageheight'], $picturename);
+                $thumbwidth = intval($thumb['width']);
+                $thumbheight = intval($thumb['height']);
+                $imagewidth = intval($imageinfo['imagewidth']);
+                $imageheight = intval($imageinfo['imageheight']);
+                $ImageFile = $this->copyimgtothumbnail($thumbimg, $image, $thumbwidth, $thumbheight, $imagewidth, $imageheight, $picturename);
             } else {
                 IPS_LogMessage('Astronomy', 'Bild wurde nicht gefunden.');
             }
@@ -871,7 +873,7 @@ class Astronomy extends IPSModule
         return $thumb;
     }
 
-    protected function copyimgtothumbnail($thumb, $image, $thumbwidth, $thumbheight, $imagewidth, $imageheight, $picturename)
+    protected function copyimgtothumbnail($thumb, $image, int $thumbwidth, int $thumbheight, int $imagewidth, int $imageheight, $picturename)
     {
         imagecopyresampled(
             $thumb,
@@ -1052,15 +1054,15 @@ class Astronomy extends IPSModule
 
         imagesetthickness($image, 1);
         for ($alpha = 0; $alpha < 360; $alpha = $alpha + 30) {
-            imageline($image, $marginLeft + $clockWidth / 2 * (1 + cos(deg2rad($alpha))),
-                $marginTop + $clockWidth / 2 * (1 + sin(deg2rad($alpha))),
-                $marginLeft + 10 + ($clockWidth - 20) / 2 * (1 + cos(deg2rad($alpha))),
-                $marginTop + 10 + ($clockWidth - 20) / 2 * (1 + sin(deg2rad($alpha))), $grey_line);
+            imageline($image, intval($marginLeft + $clockWidth / 2 * (1 + cos(deg2rad($alpha)))),
+                intval($marginTop + $clockWidth / 2 * (1 + sin(deg2rad($alpha)))),
+                intval($marginLeft + 10 + ($clockWidth - 20) / 2 * (1 + cos(deg2rad($alpha)))),
+                intval($marginTop + 10 + ($clockWidth - 20) / 2 * (1 + sin(deg2rad($alpha)))), intval($grey_line));
 
-            imageline($image, $marginLeft + $clockWidth / 2 * (1 + cos(deg2rad($alpha))),
-                $marginTop + $clockHeight + $marginMiddle + $clockWidth / 2 * (1 + sin(deg2rad($alpha))),
-                $marginLeft + 10 + ($clockWidth - 20) / 2 * (1 + cos(deg2rad($alpha))),
-                $marginTop + $clockHeight + $marginMiddle + 10 + ($clockWidth - 20) / 2 * (1 + sin(deg2rad($alpha))), $grey_line);
+            imageline($image, intval($marginLeft + $clockWidth / 2 * (1 + cos(deg2rad($alpha)))),
+                intval($marginTop + $clockHeight + $marginMiddle + $clockWidth / 2 * (1 + sin(deg2rad($alpha)))),
+                intval($marginLeft + 10 + ($clockWidth - 20) / 2 * (1 + cos(deg2rad($alpha)))),
+                intval($marginTop + $clockHeight + $marginMiddle + 10 + ($clockWidth - 20) / 2 * (1 + sin(deg2rad($alpha)))), intval($grey_line));
 
         }
 
@@ -1115,71 +1117,87 @@ class Astronomy extends IPSModule
         imagefilledrectangle($image, intval($marginLeft - 2), intval($marginTop - 2), intval($marginLeft + (365 + 30) * $dayWidth + 1), intval($marginTop + $dayHeight + 2), intval($black));
 
         $timestamp = mktime(12, 0, 0, 1, 1, intval(date('Y'))) - 15 * 3600 * 24;
+        $sunrise = date_sunrise($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 90 + 50 / 60, date('O') / 100);
+        $this->SendDebug('sunrise', $sunrise . ' (' . gettype($sunrise) . ')', 0);
+        $sunset = date_sunset($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 90 + 50 / 60, date('O') / 100);
+        $this->SendDebug('sunset', $sunset . ' (' . gettype($sunset) . ')', 0);
+        $sunrise1 = date_sunrise($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 96, date('O') / 100);
+        $this->SendDebug('sunrise', $sunrise1 . ' (' . gettype($sunrise1) . ')', 0);
+        $sunset1 = date_sunset($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 96, date('O') / 100);
+        $this->SendDebug('sunset', $sunset1 . ' (' . gettype($sunset1) . ')', 0);
+        $sunrise2 = date_sunrise($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 102, date('O') / 100);
+        $this->SendDebug('sunrise', $sunrise2 . ' (' . gettype($sunrise2) . ')', 0);
+        $sunset2 = date_sunset($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 102, date('O') / 100);
+        $this->SendDebug('sunset', $sunset2 . ' (' . gettype($sunset2) . ')', 0);
+        $sunrise3 = date_sunrise($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 108, date('O') / 100);
+        $this->SendDebug('sunrise', $sunrise3 . ' (' . gettype($sunrise3) . ')', 0);
+        $sunset3 = date_sunset($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 108, date('O') / 100);
+        $this->SendDebug('sunset', $sunset3 . ' (' . gettype($sunset3) . ')', 0);
+
+        $sunriseMins = (date('H', $sunrise) * 60 + date('i', $sunrise)) / $dayDivisor;
+        $this->SendDebug('sunriseMins', $sunriseMins . ' (' . gettype($sunriseMins) . ')', 0);
+        $sunsetMins = (date('H', $sunset) * 60 + date('i', $sunset)) / $dayDivisor;
+        $this->SendDebug('sunsetMins', $sunsetMins . ' (' . gettype($sunsetMins) . ')', 0);
+        $sunrise1Mins = (date('H', $sunrise1) * 60 + date('i', $sunrise1)) / $dayDivisor;
+        $this->SendDebug('sunrise1Mins', $sunrise1Mins . ' (' . gettype($sunrise1Mins) . ')', 0);
+        $sunset1Mins = (date('H', $sunset1) * 60 + date('i', $sunset1)) / $dayDivisor;
+        $this->SendDebug('sunset1Mins', $sunset1Mins . ' (' . gettype($sunset1Mins) . ')', 0);
+        $sunrise2Mins = (date('H', $sunrise2) * 60 + date('i', $sunrise2)) / $dayDivisor;
+        $this->SendDebug('sunrise2Mins', $sunrise2Mins . ' (' . gettype($sunrise2Mins) . ')', 0);
+        $sunset2Mins = (date('H', $sunset2) * 60 + date('i', $sunset2)) / $dayDivisor;
+        $this->SendDebug('sunset2Mins', $sunset2Mins . ' (' . gettype($sunset2Mins) . ')', 0);
+        $sunrise3Mins = (date('H', $sunrise3) * 60 + date('i', $sunrise3)) / $dayDivisor;
+        $this->SendDebug('sunrise3Mins', $sunrise3Mins . ' (' . gettype($sunrise3Mins) . ')', 0);
+        $sunset3Mins = (date('H', $sunset3) * 60 + date('i', $sunset3)) / $dayDivisor;
+        $this->SendDebug('sunset3Mins', $sunset3Mins . ' (' . gettype($sunset3Mins) . ')', 0);
+        $middayMins = (12 * 60) / $dayDivisor;
+        $this->SendDebug('middayMins', $middayMins . ' (' . gettype($middayMins) . ')', 0);
         for ($day = 0; $day < 365 + 30; $day++) {
-            $sunrise = date_sunrise($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 90 + 50 / 60, date('O') / 100);
-            $sunset = date_sunset($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 90 + 50 / 60, date('O') / 100);
-            $sunrise1 = date_sunrise($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 96, date('O') / 100);
-            $sunset1 = date_sunset($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 96, date('O') / 100);
-            $sunrise2 = date_sunrise($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 102, date('O') / 100);
-            $sunset2 = date_sunset($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 102, date('O') / 100);
-            $sunrise3 = date_sunrise($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 108, date('O') / 100);
-            $sunset3 = date_sunset($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 108, date('O') / 100);
-
-            $sunriseMins = (date('H', $sunrise) * 60 + date('i', $sunrise)) / $dayDivisor;
-            $sunsetMins = (date('H', $sunset) * 60 + date('i', $sunset)) / $dayDivisor;
-            $sunrise1Mins = (date('H', $sunrise1) * 60 + date('i', $sunrise1)) / $dayDivisor;
-            $sunset1Mins = (date('H', $sunset1) * 60 + date('i', $sunset1)) / $dayDivisor;
-            $sunrise2Mins = (date('H', $sunrise2) * 60 + date('i', $sunrise2)) / $dayDivisor;
-            $sunset2Mins = (date('H', $sunset2) * 60 + date('i', $sunset2)) / $dayDivisor;
-            $sunrise3Mins = (date('H', $sunrise3) * 60 + date('i', $sunrise3)) / $dayDivisor;
-            $sunset3Mins = (date('H', $sunset3) * 60 + date('i', $sunset3)) / $dayDivisor;
-            $middayMins = (12 * 60) / $dayDivisor;
-
             $dayBeg = $marginLeft + $day * $dayWidth - $dayWidth + 1;
             $dayEnd = $marginLeft + $day * $dayWidth;
 
-            imagefilledrectangle($image, $dayBeg, $marginTop, $marginLeft + $day * $dayWidth, $marginTop + $dayHeight, $grey);
+            imagefilledrectangle($image, intval($dayBeg), intval($marginTop), intval($marginLeft + $day * $dayWidth), intval($marginTop + $dayHeight), intval($grey));
             if ($sunset3Mins < $sunrise3Mins or $sunset3Mins < $middayMins) {
-                imagefilledrectangle($image, $dayBeg, $marginTop, $dayEnd, $marginTop + $dayHeight - $sunrise3Mins, $grey_sunrise3);
-                imagefilledrectangle($image, $dayBeg, $marginTop + $dayHeight - $sunset3Mins, $dayEnd, $marginTop + $dayHeight, $grey_sunrise3);
+                imagefilledrectangle($image, intval($dayBeg), intval($marginTop), intval($dayEnd), intval($marginTop + $dayHeight - $sunrise3Mins), intval($grey_sunrise3));
+                imagefilledrectangle($image, intval($dayBeg), intval($marginTop + $dayHeight - $sunset3Mins), intval($dayEnd), intval($marginTop + $dayHeight), intval($grey_sunrise3));
             } else {
-                imagefilledrectangle($image, $dayBeg, $marginTop + $dayHeight - $sunrise3Mins, $dayEnd, $marginTop + $dayHeight - $sunset3Mins, $grey_sunrise3);
+                imagefilledrectangle($image, intval($dayBeg), intval($marginTop + $dayHeight - $sunrise3Mins), intval($dayEnd), intval($marginTop + $dayHeight - $sunset3Mins), intval($grey_sunrise3));
             }
             if ($sunset2Mins < $sunrise2Mins or $sunset2Mins < $middayMins) {
-                imagefilledrectangle($image, $dayBeg, $marginTop, $dayEnd, $marginTop + $dayHeight - $sunrise2Mins, $grey_sunrise2);
-                imagefilledrectangle($image, $dayBeg, $marginTop + $dayHeight - $sunset2Mins, $dayEnd, $marginTop + $dayHeight, $grey_sunrise2);
+                imagefilledrectangle($image, intval($dayBeg), intval($marginTop), intval($dayEnd), intval($marginTop + $dayHeight - $sunrise2Mins), intval($grey_sunrise2));
+                imagefilledrectangle($image, intval($dayBeg), intval($marginTop + $dayHeight - $sunset2Mins), intval($dayEnd), intval($marginTop + $dayHeight), intval($grey_sunrise2));
             } else {
-                imagefilledrectangle($image, $dayBeg, $marginTop + $dayHeight - $sunrise2Mins, $dayEnd, $marginTop + $dayHeight - $sunset2Mins, $grey_sunrise2);
+                imagefilledrectangle($image, intval($dayBeg), intval($marginTop + $dayHeight - $sunrise2Mins), intval($dayEnd), intval($marginTop + $dayHeight - $sunset2Mins), intval($grey_sunrise2));
             }
             if ($sunset1Mins < $sunrise1Mins or $sunset1Mins < $middayMins) {
-                imagefilledrectangle($image, $dayBeg, $marginTop, $dayEnd, $marginTop + $dayHeight - $sunrise1Mins, $grey_sunrise1);
-                imagefilledrectangle($image, $dayBeg, $marginTop + $dayHeight - $sunset1Mins, $dayEnd, $marginTop + $dayHeight, $grey_sunrise1);
+                imagefilledrectangle($image, intval($dayBeg), intval($marginTop), intval($dayEnd), intval($marginTop + $dayHeight - $sunrise1Mins), intval($grey_sunrise1));
+                imagefilledrectangle($image, intval($dayBeg), intval($marginTop + $dayHeight - $sunset1Mins), intval($dayEnd), intval($marginTop + $dayHeight), intval($grey_sunrise1));
             } else {
-                imagefilledrectangle($image, $dayBeg, $marginTop + $dayHeight - $sunrise1Mins, $dayEnd, $marginTop + $dayHeight - $sunset1Mins, $grey_sunrise1);
+                imagefilledrectangle($image, intval($dayBeg), intval($marginTop + $dayHeight - $sunrise1Mins), intval($dayEnd), intval($marginTop + $dayHeight - $sunset1Mins), intval($grey_sunrise1));
             }
-            imagefilledrectangle($image, $dayBeg, $marginTop + $dayHeight - $sunriseMins, $dayEnd, $marginTop + $dayHeight - $sunsetMins, $yellow);
-            imagefilledrectangle($image, $dayBeg, $marginTop + $dayHeight - $sunriseMins, $dayEnd, $marginTop + $dayHeight - $sunriseMins, $red);
-            imagefilledrectangle($image, $dayBeg, $marginTop + $dayHeight - $sunsetMins, $dayEnd, $marginTop + $dayHeight - $sunsetMins, $red);
+            imagefilledrectangle($image, intval($dayBeg), intval($marginTop + $dayHeight - $sunriseMins), intval($dayEnd), intval($marginTop + $dayHeight - $sunsetMins), intval($yellow));
+            imagefilledrectangle($image, intval($dayBeg), intval($marginTop + $dayHeight - $sunriseMins), intval($dayEnd), intval($marginTop + $dayHeight - $sunriseMins), intval($red));
+            imagefilledrectangle($image, intval($dayBeg), intval($marginTop + $dayHeight - $sunsetMins), intval($dayEnd), intval($marginTop + $dayHeight - $sunsetMins), intval($red));
 
             // Line for new Month
             if (date('d', $timestamp) == 1) {
-                imagefilledrectangle($image, $dayEnd, $marginTop, $dayEnd, $marginTop + $dayHeight, $grey_line);
+                imagefilledrectangle($image, intval($dayEnd), intval($marginTop), intval($dayEnd), intval($marginTop + $dayHeight), intval($grey_line));
                 if ($day < 365) {
-                    imagestring($image, 2, $dayBeg + 30 * $dayWidth / 2 - 8, $marginTop + $dayHeight + 5, date('M', $timestamp), $textColor);
+                    imagestring($image, 2, intval($dayBeg + 30 * $dayWidth / 2 - 8), intval($marginTop + $dayHeight + 5), date('M', $timestamp), intval($textColor));
                 }
             }
             // Line for current Day
             if (date('d', $timestamp) == date('d', time()) and date('m', $timestamp) == date('m', time())) {
-                imagefilledrectangle($image, $dayBeg, $marginTop, $dayEnd, $marginTop + $dayHeight, $blue);
-                imagefilledrectangle($image, $dayBeg - 1, $marginTop, $dayEnd - 1, $marginTop + $dayHeight, $blue);
+                imagefilledrectangle($image, intval($dayBeg), intval($marginTop), intval($dayEnd), intval($marginTop + $dayHeight), intval($blue));
+                imagefilledrectangle($image, intval($dayBeg - 1), intval($marginTop), intval($dayEnd - 1), intval($marginTop + $dayHeight), intval($blue));
             }
             $timestamp = $timestamp + 60 * 60 * 24;
         }
 
         // Hour Lines/Text
         for ($hour = 0; $hour <= 24; $hour = $hour + 2) {
-            imageline($image, $marginLeft, $marginTop + $dayHeight / 24 * $hour, $marginLeft + (365 + 30) * $dayWidth - 2, $marginTop + $dayHeight / 24 * $hour, $grey_line);
-            imagestring($image, 2, 2, $marginTop + $dayHeight - 8 - ($dayHeight / 24 * $hour), str_pad($hour, 2, '0', STR_PAD_LEFT), $textColor);
+            imageline($image, intval($marginLeft), intval($marginTop + $dayHeight / 24 * $hour), intval($marginLeft + (365 + 30) * $dayWidth - 2), intval($marginTop + $dayHeight / 24 * $hour), intval($grey_line));
+            imagestring($image, 2, 2, intval($marginTop + $dayHeight - 8 - ($dayHeight / 24 * $hour)), str_pad(strval($hour), 2, '0', STR_PAD_LEFT), intval($textColor));
         }
 
         $ImagePath = IPS_GetKernelDir() . 'media' . DIRECTORY_SEPARATOR . $filename . '.gif';
@@ -1623,11 +1641,11 @@ class Astronomy extends IPSModule
         $mediaid_twilight_day = $twilightdaypic['mediaid_twilight_day'];
         $twilight_day_image_path = $twilightdaypic['twilight_day_image_path'];
 
-        $HMSDec = $this->HMSDH($Hour, $Minute, $Second); //Local Time HMS in Decimal Hours
+        $HMSDec = $this->HMSDH(floatval($Hour), $Minute, $Second); //Local Time HMS in Decimal Hours
         // $UTDec = $this->LctUT($Hour, $Minute, $Second, $DS, $ZC, $day, $month, $year)["UTDec"];
-        $GD = $this->LctUT($Hour, $Minute, $Second, $DS, $ZC, $day, $month, $year)['GD'];
-        $GM = $this->LctUT($Hour, $Minute, $Second, $DS, $ZC, $day, $month, $year)['GM'];
-        $GY = $this->LctUT($Hour, $Minute, $Second, $DS, $ZC, $day, $month, $year)['GY'];
+        $GD = floatval($this->LctUT(intval($Hour), $Minute, $Second, $DS, $ZC, $day, $month, $year)['GD']);
+        $GM = intval($this->LctUT(intval($Hour), $Minute, $Second, $DS, $ZC, $day, $month, $year)['GM']);
+        $GY = intval($this->LctUT(intval($Hour), $Minute, $Second, $DS, $ZC, $day, $month, $year)['GY']);
         $JD = $this->CDJD($GD, $GM, $GY);  //UT Julian Date
         if ($this->ReadPropertyBoolean('juliandate') == true) {
             $this->SetValue('juliandate', $JD);
@@ -2168,10 +2186,10 @@ class Astronomy extends IPSModule
     // Conversion of Local Civil Time to UT (Universal Time) --- Achtung: hier wird ein Array ausgegeben !!!
     public function LctUT(int $Hour, int $Minute, int $Second, int $DS, float $ZC, int $day, int $month, int $year)
     {
-        $A = $this->HMSDH($Hour, $Minute, $Second);     //LCT
+        $A = $this->HMSDH(floatval($Hour), $Minute, $Second);     //LCT
         $B = $A - $DS - $ZC;                   //UT
-        $C = $day + ($B / 24);                 //G day
-        $D = $this->CDJD($C, $month, $year);  //JD
+        $C = floatval($day + ($B / 24));                 //G day
+        $D = $this->CDJD(floatval($C), intval($month), intval($year));  //JD
         $GD = $this->JDCDay($D);                       //G day
         $GM = $this->JDCMonth($D);                    //G month
         $GY = $this->JDCYear($D);                      //G year
@@ -2186,7 +2204,7 @@ class Astronomy extends IPSModule
         $A = $this->HMSDH($UH, intval($UM), intval($US));
         $B = $A + $ZC;
         $C = $B + $DS;
-        $D = $this->CDJD($GD, $GM, $GY) + ($C / 24);
+        $D = $this->CDJD(floatval($GD), intval($GM), intval($GY)) + ($C / 24);
         $E = $this->JDCDay($D);
         $F = $this->JDCMonth($D);
         $G = $this->JDCYear($D);
@@ -2198,7 +2216,7 @@ class Astronomy extends IPSModule
     //Conversion of UT to GST (Greenwich Sideral Time)
     public function UTGST(float $UH, float $UM, float $US, int $GD, int $GM, int $GY)
     {
-        $A = $this->CDJD($GD, $GM, $GY);
+        $A = $this->CDJD(floatval($GD), intval($GM), intval($GY));
         $B = $A - 2451545;
         $C = $B / 36525;
         $D = 6.697374558 + (2400.051336 * $C) + (0.000025862 * $C * $C);
@@ -2213,7 +2231,7 @@ class Astronomy extends IPSModule
     //Conversion of GST to UT --- Achtung: hier wird ein Array ausgegeben !!!
     public function GSTUT(float $GSH, int $GSM, int $GSS, int $GD, int $GM, int $GY)
     {
-        $A = $this->CDJD($GD, $GM, $GY);
+        $A = $this->CDJD(floatval($GD), intval($GM), intval($GY));
         $B = $A - 2451545;
         $C = $B / 36525;
         $D = 6.697374558 + (2400.051336 * $C) + (0.000025862 * $C * $C);
@@ -2353,10 +2371,10 @@ class Astronomy extends IPSModule
 
     protected function LctGDay($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY)
     {
-        $A = $this->HMSDH($LCH, $LCM, $LCS);
+        $A = $this->HMSDH(floatval($LCH), intval($LCM), intval($LCS));
         $B = $A - $DS - $ZC;
-        $C = $LD + ($B / 24);
-        $D = $this->CDJD($C, $LM, $LY);
+        $C = floatval($LD + ($B / 24));
+        $D = $this->CDJD(floatval($C), intval($LM), intval($LY));
         $E = $this->JDCDay($D);
         $LctGDay = $this->roundvariantfix($E);
         return $LctGDay;
@@ -2364,20 +2382,20 @@ class Astronomy extends IPSModule
 
     protected function LctGMonth($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY)
     {
-        $A = $this->HMSDH($LCH, $LCM, $LCS);
+        $A = $this->HMSDH(floatval($LCH), intval($LCM), intval($LCS));
         $B = $A - $DS - $ZC;
-        $C = $LD + ($B / 24);
-        $D = $this->CDJD($C, $LM, $LY);
+        $C = floatval($LD + ($B / 24));
+        $D = $this->CDJD(floatval($C), intval($LM), intval($LY));
         $LctGMonth = $this->JDCMonth($D);
         return $LctGMonth;
     }
 
     protected function LctGYear($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY)
     {
-        $A = $this->HMSDH($LCH, $LCM, $LCS);
+        $A = $this->HMSDH(floatval($LCH), intval($LCM), intval($LCS));
         $B = $A - $DS - $ZC;
-        $C = $LD + ($B / 24);
-        $D = $this->CDJD($C, $LM, $LY);
+        $C = floatval($LD + ($B / 24));
+        $D = $this->CDJD(floatval($C), intval($LM), intval($LY));
         $LctGYear = $this->JDCYear($D);
         return $LctGYear;
     }
@@ -2387,13 +2405,13 @@ class Astronomy extends IPSModule
     //LD Local Calender Date in DMY, L geographical Longitude in Degrees
     protected function RAHA($RH, $RM, $RS, $LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY, $L)
     {
-        $A = $this->LctUT($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY)['UTDec'];
+        $A = $this->LctUT(intval($LCH), intval($LCM), intval($LCS), intval($DS), floatval($ZC), intval($LD), intval($LM), intval($LY))['UTDec'];
         $B = $this->LctGDay($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
         $C = $this->LctGMonth($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
         $D = $this->LctGYear($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
-        $E = $this->UTGST($A, 0, 0, $B, $C, $D);
+        $E = $this->UTGST(floatval($A), 0, 0, intval($B), intval($C), intval($D));
         $F = $this->GSTLST($E, 0, 0, $L);
-        $G = $this->HMSDH($RH, $RM, $RS);
+        $G = $this->HMSDH(floatval($RH), intval($RM), intval($RS));
         $H = $F - $G;
         if ($H < 0) {
             $RAHA = 24 + $H;
@@ -2406,13 +2424,13 @@ class Astronomy extends IPSModule
     //Conversion of hour angle to right ascension
     protected function HARA($HH, $HM, $HS, $LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY, $L)
     {
-        $A = $this->LctUT($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY)['UTDec'];
+        $A = $this->LctUT(intval($LCH), intval($LCM), intval($LCS), intval($DS), floatval($ZC), intval($LD), intval($LM), intval($LY))['UTDec'];
         $B = $this->LctGDay($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
         $C = $this->LctGMonth($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
         $D = $this->LctGYear($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
-        $E = $this->UTGST($A, 0, 0, $B, $C, $D);
+        $E = $this->UTGST(floatval($A), 0, 0, intval($B), intval($C), intval($D));
         $F = $this->GSTLST($E, 0, 0, $L);
-        $G = $this->HMSDH($HH, $HM, $HS);
+        $G = $this->HMSDH(floatval($HH), intval($HM), intval($HS));
         $H = $F - $G;
         if ($H < 0) {
             $HARA = 24 + $H;
@@ -2438,10 +2456,10 @@ class Astronomy extends IPSModule
     //HH HourAngle in HMS, DD Declination in DMS, P Latitude in decimal Degrees
     protected function EQAz($HH, $HM, $HS, $DD, $DM, $DS, $P)
     {
-        $A = $this->HMSDH($HH, $HM, $HS);
+        $A = $this->HMSDH(floatval($HH), intval($HM), intval($HS));
         $B = $A * 15;
         $C = $this->Radians($B);
-        $D = $this->DMSDD($DD, $DM, $DS);
+        $D = $this->DMSDD(floatval($DD), intval($DM), intval($DS));
         $E = $this->Radians($D);
         $F = $this->Radians($P);
         $G = sin($E) * sin($F) + cos($E) * cos($F) * cos($C);
@@ -2455,10 +2473,10 @@ class Astronomy extends IPSModule
     ////Equatorial to Horizon coordinate conversion (Alt)
     protected function EQAlt($HH, $HM, $HS, $DD, $DM, $DS, $P)
     {
-        $A = $this->HMSDH($HH, $HM, $HS);
+        $A = $this->HMSDH(floatval($HH), intval($HM), intval($HS));
         $B = $A * 15;
         $C = $this->Radians($B);
-        $D = $this->DMSDD($DD, $DM, $DS);
+        $D = $this->DMSDD(floatval($DD), intval($DM), intval($DS));
         $E = $this->Radians($D);
         $F = $this->Radians($P);
         $G = sin($E) * sin($F) + cos($E) * cos($F) * cos($C);
@@ -2468,8 +2486,8 @@ class Astronomy extends IPSModule
 
     protected function HORDec($AZD, $AZM, $AZS, $ALD, $ALM, $ALS, $P)
     {
-        $A = $this->DMSDD($AZD, $AZM, $AZS);
-        $B = $this->DMSDD($ALD, $ALM, $ALS);
+        $A = $this->DMSDD(floatval($AZD), intval($AZM), intval($AZS));
+        $B = $this->DMSDD(floatval($ALD), intval($ALM), intval($ALS));
         $C = $this->Radians($A);
         $D = $this->Radians($B);
         $E = $this->Radians($P);
@@ -2480,8 +2498,8 @@ class Astronomy extends IPSModule
 
     protected function HORHa($AZD, $AZM, $AZS, $ALD, $ALM, $ALS, $P)
     {
-        $A = $this->DMSDD($AZD, $AZM, $AZS);
-        $B = $this->DMSDD($ALD, $ALM, $ALS);
+        $A = $this->DMSDD(floatval($AZD), intval($AZM), intval($AZS));
+        $B = $this->DMSDD(floatval($ALD), intval($ALM), intval($ALS));
         $C = $this->Radians($A);
         $D = $this->Radians($B);
         $E = $this->Radians($P);
@@ -2495,7 +2513,7 @@ class Astronomy extends IPSModule
 
     protected function Obliq($GD, $GM, $GY)
     {
-        $A = $this->CDJD($GD, $GM, $GY);
+        $A = $this->CDJD(floatval($GD), intval($GM), intval($GY));
         $B = $A - 2415020;
         $C = ($B / 36525) - 1;
         $D = $C * (46.815 + $C * (0.0006 - ($C * 0.00181)));
@@ -2506,8 +2524,8 @@ class Astronomy extends IPSModule
 
     protected function ECDec($ELD, $ELM, $ELS, $BD, $BM, $BS, $GD, $GM, $GY)
     {
-        $A = $this->Radians($this->DMSDD($ELD, $ELM, $ELS));                      //eclon
-        $B = $this->Radians($this->DMSDD($BD, $BM, $BS));                         //eclat
+        $A = $this->Radians($this->DMSDD(floatval($ELD), intval($ELM), intval($ELS)));                      //eclon
+        $B = $this->Radians($this->DMSDD(floatval($BD), intval($BM), intval($BS)));                         //eclat
         $C = $this->Radians($this->Obliq($GD, $GM, $GY));                         //obliq
         $D = sin($B) * cos($C) + cos($B) * sin($C) * sin($A);   //sin Dec
         $ECDec = $this->Degrees(asin($D));                             //Dec Deg
@@ -2516,8 +2534,8 @@ class Astronomy extends IPSModule
 
     protected function ECRA($ELD, $ELM, $ELS, $BD, $BM, $BS, $GD, $GM, $GY)
     {
-        $A = $this->Radians($this->DMSDD($ELD, $ELM, $ELS));       //eclon
-        $B = $this->Radians($this->DMSDD($BD, $BM, $BS));          //eclat
+        $A = $this->Radians($this->DMSDD(floatval($ELD), intval($ELM), intval($ELS)));       //eclon
+        $B = $this->Radians($this->DMSDD(floatval($BD), intval($BM), intval($BS)));          //eclat
         $C = $this->Radians($this->Obliq($GD, $GM, $GY));          //obliq
         $D = sin($A) * cos($C) - tan($B) * sin($C); //y
         $E = cos($A);                                //x
@@ -2528,8 +2546,8 @@ class Astronomy extends IPSModule
 
     protected function EQElat($RAH, $RAM, $RAS, $DD, $DM, $DS, $GD, $GM, $GY)
     {
-        $A = $this->Radians($this->DHDD($this->HMSDH($RAH, $RAM, $RAS)));
-        $B = $this->Radians($this->DMSDD($DD, $DM, $DS));
+        $A = $this->Radians($this->DHDD($this->HMSDH(floatval($RAH), intval($RAM), intval($RAS))));
+        $B = $this->Radians($this->DMSDD(floatval($DD), intval($DM), intval($DS)));
         $C = $this->Radians($this->Obliq($GD, $GM, $GY));
         $D = sin($B) * cos($C) - cos($B) * sin($C) * sin($A);
         $EQElat = $this->Degrees(asin($D));
@@ -2538,8 +2556,8 @@ class Astronomy extends IPSModule
 
     protected function EQElong($RAH, $RAM, $RAS, $DD, $DM, $DS, $GD, $GM, $GY)
     {
-        $A = $this->Radians($this->DHDD($this->HMSDH($RAH, $RAM, $RAS)));
-        $B = $this->Radians($this->DMSDD($DD, $DM, $DS));
+        $A = $this->Radians($this->DHDD($this->HMSDH(floatval($RAH), intval($RAM), intval($RAS))));
+        $B = $this->Radians($this->DMSDD(floatval($DD), intval($DM), intval($DS)));
         $C = $this->Radians($this->Obliq($GD, $GM, $GY));
         $D = sin($A) * cos($C) + tan($B) * sin($C);
         $E = cos($A);
@@ -2550,8 +2568,8 @@ class Astronomy extends IPSModule
 
     protected function EQGlong($RAH, $RAM, $RAS, $DD, $DM, $DS)
     {
-        $A = $this->Radians($this->DHDD($this->HMSDH($RAH, $RAM, $RAS)));
-        $B = $this->Radians($this->DMSDD($DD, $DM, $DS));
+        $A = $this->Radians($this->DHDD($this->HMSDH(floatval($RAH), intval($RAM), intval($RAS))));
+        $B = $this->Radians($this->DMSDD(floatval($DD), intval($DM), intval($DS)));
         $C = cos($this->Radians(27.4));
         $D = sin($this->Radians(27.4));
         $E = $this->Radians(192.25);
@@ -2565,8 +2583,8 @@ class Astronomy extends IPSModule
 
     protected function EQGlat($RAH, $RAM, $RAS, $DD, $DM, $DS)
     {
-        $A = $this->Radians($this->DHDD($this->HMSDH($RAH, $RAM, $RAS)));
-        $B = $this->Radians($this->DMSDD($DD, $DM, $DS));
+        $A = $this->Radians($this->DHDD($this->HMSDH(floatval($RAH), intval($RAM), intval($RAS))));
+        $B = $this->Radians($this->DMSDD(floatval($DD), intval($DM), intval($DS)));
         $C = cos($this->Radians(27.4));
         $D = sin($this->Radians(27.4));
         $E = $this->Radians(192.25);
@@ -2586,7 +2604,7 @@ class Astronomy extends IPSModule
 
     protected function NutatLong($GD, $GM, $GY)
     {
-        $DJ = $this->CDJD($GD, $GM, $GY) - 2415020;
+        $DJ = $this->CDJD(floatval($GD), intval($GM), intval($GY)) - 2415020;
         $T = $DJ / 36525;
         $T2 = $T * $T;
         $A = 100.0021358 * $T;
@@ -2625,7 +2643,7 @@ class Astronomy extends IPSModule
 
     protected function NutatObl($GD, $GM, $GY)
     {
-        $DJ = $this->CDJD($GD, $GM, $GY) - 2415020;
+        $DJ = $this->CDJD(floatval($GD), intval($GM), intval($GY)) - 2415020;
         $T = $DJ / 36525;
         $T2 = $T * $T;
         $A = 100.0021358 * $T;
@@ -2710,8 +2728,8 @@ class Astronomy extends IPSModule
             $Y0 = $Y0 + 1;
         }
 
-        $J0 = $this->CDJD(0, 1, $Y0) - 2415020;
-        $DJ = $this->CDJD($D0, $M0, $Y0) - 2415020;
+        $J0 = $this->CDJD(0, 1, intval($Y0)) - 2415020;
+        $DJ = $this->CDJD(floatval($D0), intval($M0), intval($Y0)) - 2415020;
         $K = $this->LINT((($Y0 - 1900 + (($DJ - $J0) / 365)) * 12.3685) + 0.5);
         // $TN = $K / 1236.85;
         $TF = ($K + 0.5) / 1236.85;
@@ -2771,11 +2789,11 @@ class Astronomy extends IPSModule
 
     protected function MoonHP($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR)
     {
-        $UT = $this->LctUT($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR)['UTDec'];
+        $UT = $this->LctUT(intval($LH), intval($LM), intval($LS), intval($DS), floatval($ZC), intval($DY), intval($MN), intval($YR))['UTDec'];
         $GD = $this->LctGDay($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
         $GM = $this->LctGMonth($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
         $GY = $this->LctGYear($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
-        $T = (($this->CDJD($GD, $GM, $GY) - 2415020) / 36525) + ($UT / 876600);
+        $T = (($this->CDJD(floatval($GD), intval($GM), intval($GY)) - 2415020) / 36525) + ($UT / 876600);
         $T2 = $T * $T;
 
         // $M1 = 27.32158213;
@@ -2784,7 +2802,7 @@ class Astronomy extends IPSModule
         $M4 = 29.53058868;
         $M5 = 27.21222039;
         $M6 = 6798.363307;
-        $Q = $this->CDJD($GD, $GM, $GY) - 2415020 + ($UT / 24);
+        $Q = $this->CDJD(floatval($GD), intval($GM), intval($GY)) - 2415020 + ($UT / 24);
         // $M1 = $Q / $M1;
         $M2 = $Q / $M2;
         $M3 = $Q / $M3;
@@ -2848,7 +2866,7 @@ class Astronomy extends IPSModule
 
     protected function CRN($GD, $GM, $GY)
     {
-        $A = $this->CDJD($GD, $GM, $GY);
+        $A = $this->CDJD(floatval($GD), intval($GM), intval($GY));
         $CRN = 1690 + round(($A - 2444235.34) / 27.2753, 0);
         return $CRN;
     }
@@ -2873,11 +2891,11 @@ class Astronomy extends IPSModule
 
     protected function MoonMeanAnomaly($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR)
     {
-        $UT = $this->LctUT($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR)['UTDec'];
+        $UT = $this->LctUT(intval($LH), intval($LM), intval($LS), intval($DS), floatval($ZC), intval($DY), intval($MN), intval($YR))['UTDec'];
         $GD = $this->LctGDay($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
         $GM = $this->LctGMonth($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
         $GY = $this->LctGYear($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
-        $T = (($this->CDJD($GD, $GM, $GY) - 2415020) / 36525) + ($UT / 876600);
+        $T = (($this->CDJD(floatval($GD), intval($GM), intval($GY)) - 2415020) / 36525) + ($UT / 876600);
         $T2 = $T * $T;
 
         // $M1 = 27.32158213;
@@ -2886,7 +2904,7 @@ class Astronomy extends IPSModule
         // $M4 = 29.53058868;
         // $M5 = 27.21222039;
         $M6 = 6798.363307;
-        $Q = $this->CDJD($GD, $GM, $GY) - 2415020 + ($UT / 24);
+        $Q = $this->CDJD(floatval($GD), intval($GM), intval($GY)) - 2415020 + ($UT / 24);
         // $M1 = $Q / $M1;
         // $M2 = $Q / $M2;
         $M3 = $Q / $M3;
@@ -2956,11 +2974,11 @@ class Astronomy extends IPSModule
 
     protected function MoonLong($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR)
     {
-        $UT = $this->LctUT($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR)['UTDec'];
+        $UT = $this->LctUT(intval($LH), intval($LM), intval($LS), intval($DS), floatval($ZC), intval($DY), intval($MN), intval($YR))['UTDec'];
         $GD = $this->LctGDay($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
         $GM = $this->LctGMonth($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
         $GY = $this->LctGYear($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
-        $T = (($this->CDJD($GD, $GM, $GY) - 2415020) / 36525) + ($UT / 876600);
+        $T = (($this->CDJD(floatval($GD), intval($GM), intval($GY)) - 2415020) / 36525) + ($UT / 876600);
         $T2 = $T * $T;
 
         $M1 = 27.32158213;
@@ -2969,7 +2987,7 @@ class Astronomy extends IPSModule
         $M4 = 29.53058868;
         $M5 = 27.21222039;
         $M6 = 6798.363307;
-        $Q = $this->CDJD($GD, $GM, $GY) - 2415020 + ($UT / 24);
+        $Q = $this->CDJD(floatval($GD), intval($GM), intval($GY)) - 2415020 + ($UT / 24);
         $M1 = $Q / $M1;
         $M2 = $Q / $M2;
         $M3 = $Q / $M3;
@@ -3046,11 +3064,11 @@ class Astronomy extends IPSModule
 
     protected function MoonLat($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR)
     {
-        $UT = $this->LctUT($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR)['UTDec'];
+        $UT = $this->LctUT(intval($LH), intval($LM), intval($LS), intval($DS), floatval($ZC), intval($DY), intval($MN), intval($YR))['UTDec'];
         $GD = $this->LctGDay($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
         $GM = $this->LctGMonth($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
         $GY = $this->LctGYear($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
-        $T = (($this->CDJD($GD, $GM, $GY) - 2415020) / 36525) + ($UT / 876600);
+        $T = (($this->CDJD(floatval($GD), intval($GM), intval($GY)) - 2415020) / 36525) + ($UT / 876600);
         $T2 = $T * $T;
 
         // $M1 = 27.32158213;
@@ -3059,7 +3077,7 @@ class Astronomy extends IPSModule
         $M4 = 29.53058868;
         $M5 = 27.21222039;
         $M6 = 6798.363307;
-        $Q = $this->CDJD($GD, $GM, $GY) - 2415020 + ($UT / 24);
+        $Q = $this->CDJD(floatval($GD), intval($GM), intval($GY)) - 2415020 + ($UT / 24);
         // $M1 = $Q / $M1;
         $M2 = $Q / $M2;
         $M3 = $Q / $M3;
@@ -3135,11 +3153,11 @@ class Astronomy extends IPSModule
 
     protected function MoonNodeLong($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR)
     {
-        $UT = $this->LctUT($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR)['UTDec'];
+        $UT = $this->LctUT(intval($LH), intval($LM), intval($LS), intval($DS), floatval($ZC), intval($DY), intval($MN), intval($YR))['UTDec'];
         $GD = $this->LctGDay($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
         $GM = $this->LctGMonth($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
         $GY = $this->LctGYear($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR);
-        $T = (($this->CDJD($GD, $GM, $GY) - 2415020) / 36525) + ($UT / 876600);
+        $T = (($this->CDJD(floatval($GD), intval($GM), intval($GY)) - 2415020) / 36525) + ($UT / 876600);
         $T2 = $T * $T;
 
         // $M1 = 27.32158213;
@@ -3148,7 +3166,7 @@ class Astronomy extends IPSModule
         // $M4 = 29.53058868;
         // $M5 = 27.21222039;
         $M6 = 6798.363307;
-        $Q = $this->CDJD($GD, $GM, $GY) - 2415020 + ($UT / 24);
+        $Q = $this->CDJD(floatval($GD), intval($GM), intval($GY)) - 2415020 + ($UT / 24);
         // $M1 = $Q / $M1;
         // $M2 = $Q / $M2;
         // $M3 = $Q / $M3;
@@ -3183,8 +3201,8 @@ class Astronomy extends IPSModule
             $Y0 = $Y0 + 1;
         }
 
-        $J0 = $this->CDJD(0, 1, $Y0) - 2415020;
-        $DJ = $this->CDJD($D0, $M0, $Y0) - 2415020;
+        $J0 = $this->CDJD(0, 1, intval($Y0)) - 2415020;
+        $DJ = $this->CDJD(floatval($D0), intval($M0), intval($Y0)) - 2415020;
         $K = $this->LINT((($Y0 - 1900 + (($DJ - $J0) / 365)) * 12.3685) + 0.5);
         $TN = $K / 1236.85;
         //  $TF = ($K + 0.5) / 1236.85;
@@ -3328,8 +3346,8 @@ class Astronomy extends IPSModule
         $AA = $this->LctGDay($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
         $BB = $this->LctGMonth($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
         $CC = $this->LctGYear($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
-        $UT = $this->LctUT($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY)['UTDec'];
-        $DJ = $this->CDJD($AA, $BB, $CC) - 2415020;
+        $UT = $this->LctUT(intval($LCH), intval($LCM), intval($LCS), intval($DS), floatval($ZC), intval($LD), intval($LM), intval($LY))['UTDec'];
+        $DJ = $this->CDJD(floatval($AA), intval($BB), intval($CC)) - 2415020;
         $T = ($DJ / 36525) + ($UT / 876600);
         $T2 = $T * $T;
         $A = 100.0021359 * $T;
@@ -3345,8 +3363,8 @@ class Astronomy extends IPSModule
         $AA = $this->LctGDay($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
         $BB = $this->LctGMonth($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
         $CC = $this->LctGYear($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
-        $UT = $this->LctUT($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY)['UTDec'];
-        $DJ = $this->CDJD($AA, $BB, $CC) - 2415020;
+        $UT = $this->LctUT(intval($LCH), intval($LCM), intval($LCS), intval($DS), floatval($ZC), intval($LD), intval($LM), intval($LY))['UTDec'];
+        $DJ = $this->CDJD(floatval($AA), intval($BB), intval($CC)) - 2415020;
         $T = ($DJ / 36525) + ($UT / 876600);
         $T2 = $T * $T;
         $A = 100.0021359 * $T;
@@ -3396,8 +3414,8 @@ class Astronomy extends IPSModule
         $AA = $this->LctGDay($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
         $BB = $this->LctGMonth($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
         $CC = $this->LctGYear($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
-        $UT = $this->LctUT($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY)['UTDec'];
-        $DJ = $this->CDJD($AA, $BB, $CC) - 2415020;
+        $UT = $this->LctUT(intval($LCH), intval($LCM), intval($LCS), intval($DS), floatval($ZC), intval($LD), intval($LM), intval($LY))['UTDec'];
+        $DJ = $this->CDJD(floatval($AA), intval($BB), intval($CC)) - 2415020;
         $T = ($DJ / 36525) + ($UT / 876600);
         $T2 = $T * $T;
         // $A = 100.0021359 * $T;
@@ -3445,8 +3463,8 @@ class Astronomy extends IPSModule
         $AA = $this->LctGDay($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
         $BB = $this->LctGMonth($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
         $CC = $this->LctGYear($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY);
-        $UT = $this->LctUT($LCH, $LCM, $LCS, $DS, $ZC, $LD, $LM, $LY)['UTDec'];
-        $DJ = $this->CDJD($AA, $BB, $CC) - 2415020;
+        $UT = $this->LctUT(intval($LCH), intval($LCM), intval($LCS), intval($DS), floatval($ZC), intval($LD), intval($LM), intval($LY))['UTDec'];
+        $DJ = $this->CDJD(floatval($AA), intval($BB), intval($CC)) - 2415020;
         $T = ($DJ / 36525) + ($UT / 876600);
         $T2 = $T * $T;
         // $A = 100.0021359 * $T;
@@ -3464,7 +3482,7 @@ class Astronomy extends IPSModule
 
     protected function SunEcc($GD, $GM, $GY)
     {
-        $T = ($this->CDJD($GD, $GM, $GY) - 2415020) / 36525;
+        $T = ($this->CDJD(floatval($GD), intval($GM), intval($GY)) - 2415020) / 36525;
         $T2 = $T * $T;
         $SunEcc = 0.01675104 - 0.0000418 * $T - 0.000000126 * $T2;
         return $SunEcc;
