@@ -1194,16 +1194,16 @@ class Astronomy extends IPSModule
         if (!IPS_VariableProfileExists($name)) {
             switch ($vartype) {
                 case VARIABLETYPE_BOOLEAN:
-
+                    $this->RegisterProfileAssociation($name, $icon, $prefix, $suffix, $minvalue, $maxvalue, $stepsize, $digits, $vartype, $associations);
                     break;
                 case VARIABLETYPE_INTEGER:
-                    $this->RegisterProfileIntegerAss($name, $icon, $prefix, $suffix, $minvalue, $maxvalue, $stepsize, $digits, $associations);
+                    $this->RegisterProfileAssociation($name, $icon, $prefix, $suffix, $minvalue, $maxvalue, $stepsize, $digits, $vartype, $associations);
                     break;
                 case VARIABLETYPE_FLOAT:
-                    $this->RegisterProfileFloatAss($name, $icon, $prefix, $suffix, $minvalue, $maxvalue, $stepsize, $digits, $associations);
+                    $this->RegisterProfileAssociation($name, $icon, $prefix, $suffix, $minvalue, $maxvalue, $stepsize, $digits, $vartype, $associations);
                     break;
                 case VARIABLETYPE_STRING:
-                    $this->RegisterProfileString($name, $icon);
+                    $this->RegisterProfileAssociation($name, $icon, $prefix, $suffix, $minvalue, $maxvalue, $stepsize, $digits, $vartype, $associations);
                     break;
             }
         }
@@ -1301,7 +1301,7 @@ class Astronomy extends IPSModule
 
         //Erstellung der Html Datei-----------------------------------------------------
         $html =
-            '<html>
+            '<html lang="de">
 
 		<head>
 		<script type="text/javascript">
@@ -1367,7 +1367,7 @@ class Astronomy extends IPSModule
 			}
 		}
 
-		</script>
+		</script><title>sun and moon</title>
 		</head>
 
 		<body onload="draw()">
@@ -2183,7 +2183,7 @@ class Astronomy extends IPSModule
     // Conversion of UT (Universal Time) to Local Civil Time --- Achtung: hier wird ein Array ausgegeben !!!
     public function UTLct(float $UH, float $UM, float $US, int $DS, float $ZC, int $GD, int $GM, int $GY)
     {
-        $A = $this->HMSDH($UH, $UM, $US);
+        $A = $this->HMSDH($UH, intval($UM), intval($US));
         $B = $A + $ZC;
         $C = $B + $DS;
         $D = $this->CDJD($GD, $GM, $GY) + ($C / 24);
@@ -2203,7 +2203,7 @@ class Astronomy extends IPSModule
         $C = $B / 36525;
         $D = 6.697374558 + (2400.051336 * $C) + (0.000025862 * $C * $C);
         $E = $D - (24 * $this->roundvariantint($D / 24));
-        $F = $this->HMSDH($UH, $UM, $US);
+        $F = $this->HMSDH($UH, intval($UM), intval($US));
         $G = $F * 1.002737909;
         $H = $E + $G;
         $UTGST = $H - (24 * $this->roundvariantint($H / 24));
@@ -4144,99 +4144,73 @@ class Astronomy extends IPSModule
     // ------------------------------
 
     //Profile
-    protected function RegisterProfileInteger($Name, $Icon, $Prefix, $Suffix, $MinValue, $MaxValue, $StepSize, $Digits)
+
+    /**
+     * register profiles.
+     *
+     * @param $Name
+     * @param $Icon
+     * @param $Prefix
+     * @param $Suffix
+     * @param $MinValue
+     * @param $MaxValue
+     * @param $StepSize
+     * @param $Digits
+     * @param $Vartype
+     */
+    protected function RegisterProfile($Name, $Icon, $Prefix, $Suffix, $MinValue, $MaxValue, $StepSize, $Digits, $Vartype)
     {
 
         if (!IPS_VariableProfileExists($Name)) {
-            IPS_CreateVariableProfile($Name, 1);
+            IPS_CreateVariableProfile($Name, $Vartype); // 0 boolean, 1 int, 2 float, 3 string,
         } else {
             $profile = IPS_GetVariableProfile($Name);
-            if ($profile['ProfileType'] != 1)
-                throw new Exception('Variable profile type does not match for profile ' . $Name);
+            if ($profile['ProfileType'] != $Vartype) {
+                $this->SendDebug('profile', 'Variable profile type does not match for profile ' . $Name, 0);
+            }
         }
 
         IPS_SetVariableProfileIcon($Name, $Icon);
         IPS_SetVariableProfileText($Name, $Prefix, $Suffix);
-        IPS_SetVariableProfileDigits($Name, $Digits); //  Nachkommastellen
-        IPS_SetVariableProfileValues($Name, $MinValue, $MaxValue, $StepSize); // string $ProfilName, float $Minimalwert, float $Maximalwert, float $Schrittweite
-
+        if ($Vartype != VARIABLETYPE_STRING) {
+            IPS_SetVariableProfileDigits($Name, $Digits); //  Nachkommastellen
+            IPS_SetVariableProfileValues(
+                $Name, $MinValue, $MaxValue, $StepSize
+            ); // string $ProfilName, float $Minimalwert, float $Maximalwert, float $Schrittweite
+        }
     }
 
-    protected function RegisterProfileIntegerAss($Name, $Icon, $Prefix, $Suffix, $MinValue, $MaxValue, $Stepsize, $Digits, $Associations)
+    /**
+     * register profile association.
+     *
+     * @param $Name
+     * @param $Icon
+     * @param $Prefix
+     * @param $Suffix
+     * @param $MinValue
+     * @param $MaxValue
+     * @param $Stepsize
+     * @param $Digits
+     * @param $Vartype
+     * @param $Associations
+     */
+    protected function RegisterProfileAssociation($Name, $Icon, $Prefix, $Suffix, $MinValue, $MaxValue, $Stepsize, $Digits, $Vartype, $Associations)
     {
-        if (count($Associations) === 0) {
+        if (is_array($Associations) && count($Associations) === 0) {
             $MinValue = 0;
             $MaxValue = 0;
         }
-        /*
-        else {
-            //undefiened offset
-            $MinValue = $Associations[0][0];
-            $MaxValue = $Associations[sizeof($Associations)-1][0];
-        }
-        */
-        $this->RegisterProfileInteger($Name, $Icon, $Prefix, $Suffix, $MinValue, $MaxValue, $Stepsize, $Digits);
+        $this->RegisterProfile($Name, $Icon, $Prefix, $Suffix, $MinValue, $MaxValue, $Stepsize, $Digits, $Vartype);
 
-        //boolean IPS_SetVariableProfileAssociation ( string $ProfilName, float $Wert, string $Name, string $Icon, integer $Farbe )
-        foreach ($Associations as $Association) {
-            IPS_SetVariableProfileAssociation($Name, $Association[0], $Association[1], $Association[2], $Association[3]);
-        }
-
-    }
-
-    protected function RegisterProfileString($Name, $Icon)
-    {
-
-        if (!IPS_VariableProfileExists($Name)) {
-            IPS_CreateVariableProfile($Name, 3);
-            IPS_SetVariableProfileIcon($Name, $Icon);
+        if (is_array($Associations)) {
+            foreach ($Associations as $Association) {
+                IPS_SetVariableProfileAssociation($Name, $Association[0], $Association[1], $Association[2], $Association[3]);
+            }
         } else {
-            $profile = IPS_GetVariableProfile($Name);
-            if ($profile['ProfileType'] != 3)
-                throw new Exception('Variable profile type does not match for profile ' . $Name);
-        }
-
-        //IPS_SetVariableProfileText($Name, $Prefix, $Suffix);
-        //IPS_SetVariableProfileValues($Name, $MinValue, $MaxValue, $StepSize);
-
-    }
-
-    protected function RegisterProfileFloat($Name, $Icon, $Prefix, $Suffix, $MinValue, $MaxValue, $StepSize, $Digits)
-    {
-
-        if (!IPS_VariableProfileExists($Name)) {
-            IPS_CreateVariableProfile($Name, 2);
-        } else {
-            $profile = IPS_GetVariableProfile($Name);
-            if ($profile['ProfileType'] != 2)
-                throw new Exception('Variable profile type does not match for profile ' . $Name);
-        }
-
-        IPS_SetVariableProfileIcon($Name, $Icon);
-        IPS_SetVariableProfileText($Name, $Prefix, $Suffix);
-        IPS_SetVariableProfileDigits($Name, $Digits); //  Nachkommastellen
-        IPS_SetVariableProfileValues($Name, $MinValue, $MaxValue, $StepSize);
-
-    }
-
-    protected function RegisterProfileFloatAss($Name, $Icon, $Prefix, $Suffix, $MinValue, $MaxValue, $Stepsize, $Digits, $Associations)
-    {
-        if (count($Associations) === 0) {
-            $MinValue = 0;
-            $MaxValue = 0;
-        }
-        /*
-        else {
-            //undefiened offset
-            $MinValue = $Associations[0][0];
-            $MaxValue = $Associations[sizeof($Associations)-1][0];
-        }
-        */
-        $this->RegisterProfileFloat($Name, $Icon, $Prefix, $Suffix, $MinValue, $MaxValue, $Stepsize, $Digits);
-
-        //boolean IPS_SetVariableProfileAssociation ( string $ProfilName, float $Wert, string $Name, string $Icon, integer $Farbe )
-        foreach ($Associations as $Association) {
-            IPS_SetVariableProfileAssociation($Name, $Association[0], $Association[1], $Association[2], $Association[3]);
+            $Associations = $this->$Associations;
+            foreach ($Associations as $code => $association) {
+                IPS_SetVariableProfileAssociation($Name, $code, $this->Translate($association), $Icon, -1);
+            }
         }
 
     }
