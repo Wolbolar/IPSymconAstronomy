@@ -1131,10 +1131,9 @@ class Astronomy extends IPSModule
             $sunset2 = date_sunset($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 102, date('O') / 100);
             // $this->SendDebug('sunset', $sunset2 . ' (' . gettype($sunset2) . ')', 0);
             $sunrise3 = date_sunrise($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 108, date('O') / 100);
-            // $this->SendDebug('sunrise', $sunrise3 . ' (' . gettype($sunrise3) . ')', 0);
+            //$this->SendDebug('sunrise3', $sunrise3 . ' (' . gettype($sunrise3) . ')', 0);
             $sunset3 = date_sunset($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 108, date('O') / 100);
-            // $this->SendDebug('sunset', $sunset3 . ' (' . gettype($sunset3) . ')', 0);
-
+            //$this->SendDebug('sunset3', $sunset3 . ' (' . gettype($sunset3) . ')', 0);
             $sunriseMins = (date('H', $sunrise) * 60 + date('i', $sunrise)) / $dayDivisor;
             // $this->SendDebug('sunriseMins', $sunriseMins . ' (' . gettype($sunriseMins) . ')', 0);
             $sunsetMins = (date('H', $sunset) * 60 + date('i', $sunset)) / $dayDivisor;
@@ -1147,9 +1146,15 @@ class Astronomy extends IPSModule
             // $this->SendDebug('sunrise2Mins', $sunrise2Mins . ' (' . gettype($sunrise2Mins) . ')', 0);
             $sunset2Mins = (date('H', $sunset2) * 60 + date('i', $sunset2)) / $dayDivisor;
             // $this->SendDebug('sunset2Mins', $sunset2Mins . ' (' . gettype($sunset2Mins) . ')', 0);
-            $sunrise3Mins = (date('H', $sunrise3) * 60 + date('i', $sunrise3)) / $dayDivisor;
+            if($sunrise3)
+            {
+                $sunrise3Mins = (date('H', $sunrise3) * 60 + date('i', $sunrise3)) / $dayDivisor;
+            }
             // $this->SendDebug('sunrise3Mins', $sunrise3Mins . ' (' . gettype($sunrise3Mins) . ')', 0);
-            $sunset3Mins = (date('H', $sunset3) * 60 + date('i', $sunset3)) / $dayDivisor;
+            if($sunset3)
+            {
+                $sunset3Mins = (date('H', $sunset3) * 60 + date('i', $sunset3)) / $dayDivisor;
+            }
             // $this->SendDebug('sunset3Mins', $sunset3Mins . ' (' . gettype($sunset3Mins) . ')', 0);
             $middayMins = (12 * 60) / $dayDivisor;
             // $this->SendDebug('middayMins', $middayMins . ' (' . gettype($middayMins) . ')', 0);
