@@ -4430,14 +4430,9 @@ class Astronomy extends IPSModule
                             'caption' => 'current cycle last quarter'
                         ],
                         [
-                            'name'    => 'moonstarsign',
-                            'type'    => 'CheckBox',
-                            'caption' => 'sun azimut'
-                        ],
-                        [
                             'name'    => 'sunazimut',
                             'type'    => 'CheckBox',
-                            'caption' => 'moon in star sign'
+                            'caption' => 'sun azimut'
                         ],
                         [
                             'name'    => 'sundistance',
@@ -4458,6 +4453,11 @@ class Astronomy extends IPSModule
                             'name'    => 'season',
                             'type'    => 'CheckBox',
                             'caption' => 'season'
+                        ],
+                        [
+                            'name'    => 'moonstarsign',
+                            'type'    => 'CheckBox',
+                            'caption' => 'moon in star sign'
                         ],
                         [
                             'name'    => 'sunstarsign',
