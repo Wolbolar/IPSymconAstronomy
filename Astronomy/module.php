@@ -4367,38 +4367,43 @@ class Astronomy extends IPSModule
         // BRAS
         $el = $this->ReadAttributeFloat('sunaltitude'); // Elevation angle
         $R = $this->ReadAttributeFloat('sundistance') / 1.496e+8; // distance
+        if($R != 0)
+        {
+            $sinel = sin(deg2rad($el));
+            $io = $sinel * self::NREL / (pow($R, 2));
 
-        $sinel = sin(deg2rad($el));
-        $io = $sinel * self::NREL / (pow($R, 2));
+            if ($sinel >= 0) {
+                # optical air mass (bras eqn 2.22)
+                $m = 1.0 / ($sinel + 0.15 * pow($el + 3.885, -1.253));
+                # molecular scattering coefficient (bras eqn 2.26)
+                $a1 = 0.128 - 0.054 * log($m) / log(10.0);
+                # clear-sky radiation at earth surface W / m^2 (bras eqn 2.25)
+                $sr = $io * exp(-$nfac * $a1 * $m);
+            }
 
-        if ($sinel >= 0) {
-            # optical air mass (bras eqn 2.22)
-            $m = 1.0 / ($sinel + 0.15 * pow($el + 3.885, -1.253));
-            # molecular scattering coefficient (bras eqn 2.26)
-            $a1 = 0.128 - 0.054 * log($m) / log(10.0);
-            # clear-sky radiation at earth surface W / m^2 (bras eqn 2.25)
-            $sr = $io * exp(-$nfac * $a1 * $m);
+            // RS
+            /*
+             * //def solar_rad_RS(lat, lon, altitude_m, ts=None, atc=0.8):
+            const atc=0.8;
+            $sr = 0.0;
+            $el = GetValueFloat(38646);
+            $R = GetValueFloat(21994)/1.496e+8;
+            $z = 0;
+            $sinal = sin(deg2rad($el));
+            if ($sinal >= 0){
+                $rm = pow((288.0-0.0065*$z)/288.0,5.256)/($sinal+0.15*pow($el+3.885,-1.253));
+                $toa = nrel * $sinal / (pow($R,2));
+                $sr = $toa * pow(atc, $rm);
+            }
+            echo " RS: ".$sr;
+             */
+
+
+            $radiant_power = round($sr);
         }
-
-        // RS
-        /*
-         * //def solar_rad_RS(lat, lon, altitude_m, ts=None, atc=0.8):
-        const atc=0.8;
-        $sr = 0.0;
-        $el = GetValueFloat(38646);
-        $R = GetValueFloat(21994)/1.496e+8;
-        $z = 0;
-        $sinal = sin(deg2rad($el));
-        if ($sinal >= 0){
-            $rm = pow((288.0-0.0065*$z)/288.0,5.256)/($sinal+0.15*pow($el+3.885,-1.253));
-            $toa = nrel * $sinal / (pow($R,2));
-            $sr = $toa * pow(atc, $rm);
+        else{
+            $radiant_power = 0;
         }
-        echo " RS: ".$sr;
-         */
-
-
-        $radiant_power = round($sr);
         return $radiant_power;
     }
 
