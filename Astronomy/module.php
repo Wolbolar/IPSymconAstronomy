@@ -415,10 +415,10 @@ class Astronomy extends IPSModule
         if ($this->ReadPropertyBoolean('radiant_power') == true) // float
         {
             $associations = [];
-            $this->SetupProfile(VARIABLETYPE_FLOAT, 'Astronomie.Radiant_Power', 'Sun', '', '', 0, 0, 0, 2, $associations);
-            $this->SetupVariable('radiant_power', $this->Translate('RadiantPower'), 'Astronomie.Radiant_Power', 23, VARIABLETYPE_FLOAT, true);
+            $this->SetupProfile(VARIABLETYPE_FLOAT, 'Astronomie.Radiant_Power', 'Sun', '', ' W/m²', 0, 0, 0, 2, $associations);
+            $this->SetupVariable('radiant_power', $this->Translate('radiant power'), 'Astronomie.Radiant_Power', 23, VARIABLETYPE_FLOAT, true);
         } else {
-            $this->SetupVariable('radiant_power', $this->Translate('RadiantPower'), 'Astronomie.Radiant_Power', 23, VARIABLETYPE_FLOAT, false);
+            $this->SetupVariable('radiant_power', $this->Translate('radiant power'), 'Astronomie.Radiant_Power', 23, VARIABLETYPE_FLOAT, false);
         }
 
         // radiant_power
@@ -2266,6 +2266,11 @@ class Astronomy extends IPSModule
                             'name' => 'sundirection',
                             'type' => 'CheckBox',
                             'caption' => 'sun direction'
+                        ],
+                        [
+                            'name' => 'radiant_power',
+                            'type' => 'CheckBox',
+                            'caption' => 'radiant power'
                         ],
                         [
                             'name' => 'season',
