@@ -243,27 +243,41 @@ class Astronomy extends IPSModule
         }
         if ($this->ReadPropertyBoolean('moonrise') == true) // int
         {
+            $obj_moonrise = @$this->GetIDForIdent('moonrise');
+            if($obj_moonrise == false)
+            {
+                $moonrise_exist = false;
+            }
             $ipsversion = $this->GetIPSVersion();
             if ($ipsversion == 0 || $ipsversion == 1) {
                 $objid = $this->SetupVariable('moonrise', 'Mondaufgang', '~UnixTimestamp', 8, VARIABLETYPE_INTEGER, true);
             } else {
                 $objid = $this->SetupVariable('moonrise', 'Mondaufgang', '~UnixTimestampTime', 8, VARIABLETYPE_INTEGER, true);
             }
-
-            IPS_SetIcon($objid, 'Moon');
+            if($moonrise_exist == false)
+            {
+                IPS_SetIcon($objid, 'Moon');
+            }
         } else {
             $this->SetupVariable('moonrise', 'Mondaufgang', '~UnixTimestampTime', 8, VARIABLETYPE_INTEGER, false);
         }
         if ($this->ReadPropertyBoolean('moonset') == true) // int
         {
+            $obj_moonset = @$this->GetIDForIdent('moonset');
+            if($obj_moonset == false)
+            {
+                $moonset_exist = false;
+            }
             $ipsversion = $this->GetIPSVersion();
             if ($ipsversion == 0 || $ipsversion == 1) {
                 $objid = $this->SetupVariable('moonset', 'Monduntergang', '~UnixTimestamp', 9, VARIABLETYPE_INTEGER, true);
             } else {
                 $objid = $this->SetupVariable('moonset', 'Monduntergang', '~UnixTimestampTime', 9, VARIABLETYPE_INTEGER, true);
             }
-
-            IPS_SetIcon($objid, 'Moon');
+            if($moonset_exist == false)
+            {
+                IPS_SetIcon($objid, 'Moon');
+            }
         } else {
             $this->SetupVariable('moonset', 'Monduntergang', '~UnixTimestampTime', 9, VARIABLETYPE_INTEGER, false);
         }
@@ -478,10 +492,11 @@ class Astronomy extends IPSModule
             $mondphase = $this->MoonphasePercent();
             $picture = $this->GetMoonPicture($mondphase);
             $objid = $this->UpdateMedia($picture['picid']);
+            /*
             if ($objid > 0) {
                 IPS_SetIcon($objid, 'Moon');
             }
-
+            */
         } else {
             //$MediaID = @IPS_GetObjectIDByIdent('picturemoon', $this->InstanceID);
             $MediaID = @$this->GetIDForIdent('picturemoon');
@@ -493,15 +508,31 @@ class Astronomy extends IPSModule
         }
         if ($this->ReadPropertyBoolean('sunmoonview') == true) // string
         {
+            $obj_sunmoonview = @$this->GetIDForIdent('sunmoonview');
+            if($obj_sunmoonview == false)
+            {
+                $sunmoonview_exist = false;
+            }
             $objid = $this->SetupVariable('sunmoonview', 'Position Sonne und Mond', '~HTMLBox', 25, VARIABLETYPE_STRING, true);
-            IPS_SetIcon($objid, 'Sun');
+            if($sunmoonview_exist == false)
+            {
+                IPS_SetIcon($objid, 'Sun');
+            }
         } else {
             $this->SetupVariable('sunmoonview', 'Position Sonne und Mond', '~HTMLBox', 25, VARIABLETYPE_STRING, false);
         }
         if ($this->ReadPropertyBoolean('sunsetselect') == true) // string
         {
+            $obj_sunset = @$this->GetIDForIdent('sunset');
+            if($obj_sunset == false)
+            {
+                $sunset_exist = false;
+            }
             $objid = $this->SetupVariable('sunset', 'Sonnenuntergang', '~UnixTimestamp', 26, VARIABLETYPE_INTEGER, true);
-            IPS_SetIcon($objid, 'Sun');
+            if($sunset_exist == false)
+            {
+                IPS_SetIcon($objid, 'Sun');
+            }
 
             //Moon
             $settype = $this->ReadPropertyInteger('settype');
@@ -519,8 +550,16 @@ class Astronomy extends IPSModule
         }
         if ($this->ReadPropertyBoolean('sunriseselect') == true) // string
         {
+            $obj_sunrise = @$this->GetIDForIdent('sunrise');
+            if($obj_sunrise == false)
+            {
+                $sunrise_exist = false;
+            }
             $objid = $this->SetupVariable('sunrise', 'Sonnenaufgang', '~UnixTimestamp', 27, VARIABLETYPE_INTEGER, true);
-            IPS_SetIcon($objid, 'Sun');
+            if($sunrise_exist == false)
+            {
+                IPS_SetIcon($objid, 'Sun');
+            }
 
             // Moon
             $risetype = $this->ReadPropertyInteger('risetype');
