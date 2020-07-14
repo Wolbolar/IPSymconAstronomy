@@ -248,6 +248,9 @@ class Astronomy extends IPSModule
             {
                 $moonrise_exist = false;
             }
+            else{
+                $moonrise_exist = true;
+            }
             $ipsversion = $this->GetIPSVersion();
             if ($ipsversion == 0 || $ipsversion == 1) {
                 $objid = $this->SetupVariable('moonrise', 'Mondaufgang', '~UnixTimestamp', 8, VARIABLETYPE_INTEGER, true);
@@ -267,6 +270,9 @@ class Astronomy extends IPSModule
             if($obj_moonset == false)
             {
                 $moonset_exist = false;
+            }
+            else{
+                $moonset_exist = true;
             }
             $ipsversion = $this->GetIPSVersion();
             if ($ipsversion == 0 || $ipsversion == 1) {
@@ -513,6 +519,9 @@ class Astronomy extends IPSModule
             {
                 $sunmoonview_exist = false;
             }
+            else{
+                $sunmoonview_exist = true;
+            }
             $objid = $this->SetupVariable('sunmoonview', 'Position Sonne und Mond', '~HTMLBox', 25, VARIABLETYPE_STRING, true);
             if($sunmoonview_exist == false)
             {
@@ -527,6 +536,9 @@ class Astronomy extends IPSModule
             if($obj_sunset == false)
             {
                 $sunset_exist = false;
+            }
+            else{
+                $sunset_exist = true;
             }
             $objid = $this->SetupVariable('sunset', 'Sonnenuntergang', '~UnixTimestamp', 26, VARIABLETYPE_INTEGER, true);
             if($sunset_exist == false)
@@ -554,6 +566,9 @@ class Astronomy extends IPSModule
             if($obj_sunrise == false)
             {
                 $sunrise_exist = false;
+            }
+            else{
+                $sunrise_exist = true;
             }
             $objid = $this->SetupVariable('sunrise', 'Sonnenaufgang', '~UnixTimestamp', 27, VARIABLETYPE_INTEGER, true);
             if($sunrise_exist == false)
