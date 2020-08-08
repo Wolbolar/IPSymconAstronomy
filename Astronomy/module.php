@@ -87,6 +87,8 @@ class Astronomy extends IPSModule
         $this->RegisterPropertyInteger('framewidth', 100);
         $this->RegisterPropertyInteger('canvaswidth', 800);
         $this->RegisterPropertyInteger('canvasheight', 250);
+        $this->RegisterPropertyInteger('canvasbackground', 0);
+        $this->RegisterPropertyFloat('canvasbackgroundtransparency', 0.3);
         $this->RegisterPropertyInteger('frameheighttype', 1);
         $this->RegisterPropertyInteger('framewidthtype', 2);
         $this->RegisterPropertyBoolean('extinfoselection', false);
@@ -2112,6 +2114,10 @@ class Astronomy extends IPSModule
 
     //decimal degrees to degrees
 
+    /***********************************************************
+     * Configuration Form
+     ***********************************************************/
+
     /**
      * build configuration form.
      *
@@ -2669,6 +2675,18 @@ class Astronomy extends IPSModule
                             'type' => 'NumberSpinner',
                             'caption' => 'canvas height'
                         ],
+                        [
+                            'name' => 'canvasbackground',
+                            'type' => 'SelectColor',
+                            'caption' => 'Background Color'
+                        ],
+                        [
+                            'name' => 'canvasbackgroundtransparency',
+                            'type' => 'HorizontalSlider',
+                            'caption' => 'Background Transparency',
+                            'minimum' => 0,
+                            'maximum' => 100
+                        ]
                     ]
                 ]
             ]
@@ -4807,6 +4825,24 @@ class Astronomy extends IPSModule
         $npy = $this->ReadPropertyInteger('zeropointy'); //Nullpunkt y-achse
         $canvaswidth = $this->ReadPropertyInteger('canvaswidth'); //canvas width
         $canvasheight = $this->ReadPropertyInteger('canvasheight'); //canvas height
+        $hexcolor_int = $this->ReadPropertyInteger('canvasbackground');
+
+        if ($hexcolor_int == 0)
+        {
+            $red   = 255;
+            $blue  = 255;
+            $green = 255;
+            $alpha = 0;
+        }
+        else
+        {
+            $red   = floor($hexcolor_int/65536);
+            $blue  = floor(($hexcolor_int-($red*65536))/256);
+            $green = $hexcolor_int-($blue*256)-($red*65536);
+            $canvasbackgroundtransparency = $this->ReadPropertyFloat('canvasbackgroundtransparency') / 100; // canvas background transparency
+            $alpha = str_replace(',', '.', strval($canvasbackgroundtransparency));
+        }
+
         $z = 40;           //Offset y-achse
 
         $lWt = 2;         //Linienstärke Teilstriche
@@ -4855,11 +4891,16 @@ class Astronomy extends IPSModule
         $xmoon = round($npx + $moonazimut);
         $ymoon = round($npy + $z - $moonaltitude);
 
+
         //Erstellung der Html Datei-----------------------------------------------------
         $html =
             '<html lang="de">
-
 		<head>
+     <style>
+body {
+  background-color: rgba(' . $red . ', ' . $green . ', ' . $blue . ', ' . $alpha . ');
+}
+</style>
 		<script type="text/javascript">
 
 		function draw(){
@@ -4927,7 +4968,7 @@ class Astronomy extends IPSModule
 		</head>
 
 		<body onload="draw()">
-		<canvas id="canvas1" width="' . $canvaswidth . '" height="' . $canvasheight . '" > //style="border:1px solid yellow;"
+		<canvas id="canvas1" width="' . $canvaswidth . '" height="' . $canvasheight . '">
 		</canvas>
 		</body>
 
@@ -5577,10 +5618,6 @@ class Astronomy extends IPSModule
         $Fpart = $W - $this->LINT($W);
         return $Fpart;
     }
-
-    /***********************************************************
-     * Configuration Form
-     ***********************************************************/
 
     protected function CRN($GD, $GM, $GY)
     {
