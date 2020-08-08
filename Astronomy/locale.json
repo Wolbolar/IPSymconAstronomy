@@ -198,7 +198,9 @@
 			"interface closed.": "Interface geschlossen.",
 			"sun in star sign": "Sonne im Sternzeichen",
 			"moon in star sign": "Mond im Sternzeichen",
-			"radiant power": "Strahlungsleistung"
+			"radiant power": "Strahlungsleistung",
+			"Background Color": "Hintergrundfarbe",
+			"Background Transparency": "Hintergrundtransparenz"
 		}
 	}
 }
