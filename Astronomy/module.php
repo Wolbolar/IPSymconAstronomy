@@ -4982,7 +4982,11 @@ body {
         $framewidthtypevalue = $this->ReadPropertyInteger('framewidthtype');
         $framewidthtype = $this->GetFrameType($framewidthtypevalue);
         $filename = 'sunmoonline.php';
-        $fullFilename = IPS_GetKernelDir() . 'webfront' . DIRECTORY_SEPARATOR . 'user' . DIRECTORY_SEPARATOR . $filename;
+	if (IPS_GetKernelVersion() >= 7.0) {
+            $fullFilename = IPS_GetKernelDir() . 'user' . DIRECTORY_SEPARATOR . $filename;
+        } else {
+            $fullFilename = IPS_GetKernelDir() . 'webfront' . DIRECTORY_SEPARATOR . 'user' . DIRECTORY_SEPARATOR . $filename;
+        }
         $handle = fopen($fullFilename, 'w');
         fwrite($handle, $html);
         fclose($handle);
