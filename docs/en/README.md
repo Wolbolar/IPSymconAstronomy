@@ -136,6 +136,22 @@ Then confirm with _Apply Changes_.
 
 ![ModulURL](img/apply_changes_en.png?raw=true "Add Module")
 
+#### Visualization
+
+The module provides both classic variables for WebFront, IPSView and custom evaluations as well as a modern tile view.
+
+![Tile overview](img/tile-overview.png?raw=true "Tile overview")
+
+![Tile moon](img/tile-moon.png?raw=true "Tile moon")
+
+![Tile position](img/tile-position.png?raw=true "Tile position")
+
+![Tile twilight](img/tile-twilight.png?raw=true "Tile twilight")
+
+![Tile values](img/tile-values.png?raw=true "Tile values")
+
+![Tile overview compact](img/tile-overview-compact.png?raw=true "Tile overview compact")
+
 
 ## 4. Function reference
 

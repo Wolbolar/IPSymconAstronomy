@@ -139,15 +139,21 @@ Anschließend mit _Änderungen übernehmen_ bestätigen.
 ![ModulURL](img/Accept_Changes.png?raw=true "Add Module")
 
 
-#### Webfront
+#### Visualisierung
 
-![webfront1](img/webfront1.png?raw=true "webfront 1")
+Das Modul stellt sowohl klassische Variablen fuer WebFront, IPSView und eigene Auswertungen als auch eine moderne Kachelansicht bereit.
 
-![webfront2](img/webfront2.png?raw=true "webfront 2")
+![Kachel Ueberblick](img/tile-overview.png?raw=true "Kachel Ueberblick")
 
-![webfront3](img/webfront3.png?raw=true "webfront 3")
+![Kachel Mond](img/tile-moon.png?raw=true "Kachel Mond")
 
-![webfront4](img/webfront4.png?raw=true "webfront 4")
+![Kachel Position](img/tile-position.png?raw=true "Kachel Position")
+
+![Kachel Daemmerung](img/tile-twilight.png?raw=true "Kachel Daemmerung")
+
+![Kachel Werte](img/tile-values.png?raw=true "Kachel Werte")
+
+![Kachel Ueberblick kompakt](img/tile-overview-compact.png?raw=true "Kachel Ueberblick kompakt")
 
 
 ## 4. Funktionsreferenz
