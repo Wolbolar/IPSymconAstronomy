@@ -1,0 +1,723 @@
+<div id="astronomy-tile-root"></div>
+<script>
+(() => {
+    const state = __INITIAL_STATE__;
+    const root = document.getElementById("astronomy-tile-root");
+    if (!root) {
+        return;
+    }
+
+    const labels = state.labels || {};
+    const icons = window.assets || {};
+    const instanceName = state.instanceName || state.title || "";
+    const headerTitleWidth = Math.max(116, Math.min(300, Math.round(instanceName.length * 9.4 + 30)));
+    const summary = state.summary || {};
+    const metrics = state.metrics || {};
+    const panels = state.panels || {};
+    const status = state.status || {};
+    const details = state.details || {};
+
+    const nav = [
+        { key: "overview", icon: "☀️" },
+        { key: "moon", icon: "🌙" },
+        { key: "position", icon: "🧭" },
+        { key: "twilight", icon: "🌆" },
+        { key: "details", icon: "📋" }
+    ];
+
+    const escapeHtml = (value) => String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+
+    const renderMetricRows = (rows) => rows.map((row) => `
+        <div class="astronomyTile__metric">
+            <span class="astronomyTile__metricName">${escapeHtml(row.label)}</span>
+            <span class="astronomyTile__metricValue">${escapeHtml(row.value ?? "--")}</span>
+        </div>
+    `).join("");
+
+    const renderIconImage = (src, className) => src
+        ? `<img class="${className}" src="${src}" alt="">`
+        : "";
+
+    const getMoonPhaseGlyph = () => {
+        const percent = Number(panels.moon?.phasePercent ?? 0);
+        const phaseText = String(summary.phase || "").toLowerCase();
+        if (percent <= 3) {
+            return "🌑";
+        }
+        if (percent >= 97) {
+            return "🌕";
+        }
+        if (phaseText.includes("increasing") || phaseText.includes("zunehmend")) {
+            return percent < 50 ? "🌒" : "🌔";
+        }
+        if (phaseText.includes("decreasing") || phaseText.includes("abnehmend")) {
+            return percent > 50 ? "🌖" : "🌘";
+        }
+        return "🌙";
+    };
+
+    const renderImage = (src, className) => src
+        ? `<img class="${className}" src="${src}" alt="">`
+        : `<div class="astronomyTile__empty">${escapeHtml(labels.noImage)}</div>`;
+
+    const renderOverview = () => `
+        <div class="astronomyTile__page astronomyTile__page--columns3">
+            <article class="astronomyTile__card">
+                <div class="astronomyTile__cardTitle">${escapeHtml(labels.currentState)}</div>
+                ${renderMetricRows([
+                    { label: labels.phase, value: summary.phase },
+                    { label: labels.season, value: status.season },
+                    { label: labels.day, value: status.isDay ? labels.day : labels.night }
+                ])}
+            </article>
+            <article class="astronomyTile__card">
+                <div class="astronomyTile__cardTitle">${escapeHtml(labels.sun)}</div>
+                ${renderMetricRows([
+                    { label: labels.sunrise, value: summary.sunrise },
+                    { label: labels.sunset, value: summary.sunset },
+                    { label: labels.altitude, value: metrics.sun?.altitude },
+                    { label: labels.azimuth, value: metrics.sun?.azimuth },
+                    { label: labels.direction, value: metrics.sun?.direction },
+                    { label: labels.radiantPower, value: metrics.sun?.radiantPower }
+                ])}
+            </article>
+            <article class="astronomyTile__card">
+                <div class="astronomyTile__cardTitle">${escapeHtml(labels.moonTitle)}</div>
+                ${renderMetricRows([
+                    { label: labels.moonrise, value: summary.moonrise },
+                    { label: labels.moonset, value: summary.moonset },
+                    { label: labels.altitude, value: metrics.moon?.altitude },
+                    { label: labels.azimuth, value: metrics.moon?.azimuth },
+                    { label: labels.direction, value: metrics.moon?.direction },
+                    { label: labels.visibility, value: metrics.moon?.visibility }
+                ])}
+            </article>
+        </div>
+    `;
+
+    const renderMoon = () => `
+        <div class="astronomyTile__page astronomyTile__page--moon">
+            <article class="astronomyTile__card">
+                <div class="astronomyTile__cardTitle">${escapeHtml(labels.moonInformation)}</div>
+                <div class="astronomyTile__moonInfo">
+                    <div class="astronomyTile__moonFigure">
+                        ${renderImage(panels.moon?.image, "astronomyTile__moonImage")}
+                    </div>
+                    <div class="astronomyTile__moonFacts">
+                        ${renderMetricRows(panels.moon?.infoRows || [])}
+                    </div>
+                </div>
+            </article>
+            <article class="astronomyTile__card">
+                <div class="astronomyTile__cardTitle">${escapeHtml(labels.nextPhases)}</div>
+                <div class="astronomyTile__detailGrid">
+                    ${renderMetricRows([
+                        { label: labels.phase, value: summary.phase },
+                        { label: labels.newMoon, value: panels.moon?.nextEvents?.newmoon },
+                        { label: labels.firstQuarter, value: panels.moon?.nextEvents?.firstquarter },
+                        { label: labels.fullMoon, value: panels.moon?.nextEvents?.fullmoon },
+                        { label: labels.lastQuarter, value: panels.moon?.nextEvents?.lastquarter },
+                        { label: labels.direction, value: metrics.moon?.direction },
+                        { label: labels.distance, value: metrics.moon?.distance },
+                        { label: labels.brightLimbAngle, value: metrics.moon?.brightLimbAngle }
+                    ])}
+                </div>
+            </article>
+        </div>
+    `;
+
+    const renderPosition = () => `
+        <div class="astronomyTile__page astronomyTile__page--position">
+            <article class="astronomyTile__card">
+                <div class="astronomyTile__cardTitle">${escapeHtml(labels.sunMoonView)}</div>
+                <div class="astronomyTile__media astronomyTile__media--position">
+                    ${panels.position?.html || `<div class="astronomyTile__empty">${escapeHtml(labels.noView)}</div>`}
+                </div>
+            </article>
+            <article class="astronomyTile__card astronomyTile__card--fill">
+                <div class="astronomyTile__cardTitle">${escapeHtml(labels.positionInformation)}</div>
+                <div class="astronomyTile__detailGrid astronomyTile__detailGrid--position">
+                    <div>
+                        <div class="astronomyTile__statLabel">${escapeHtml(labels.sun)}</div>
+                        ${renderMetricRows(panels.position?.sunRows || [])}
+                    </div>
+                    <div>
+                        <div class="astronomyTile__statLabel">${escapeHtml(labels.moonTitle)}</div>
+                        ${renderMetricRows(panels.position?.moonRows || [])}
+                    </div>
+                </div>
+            </article>
+        </div>
+    `;
+
+    const renderTwilight = () => `
+        <div class="astronomyTile__page astronomyTile__page--twilight">
+            <article class="astronomyTile__card">
+                <div class="astronomyTile__cardTitle">${escapeHtml(labels.twilight)}</div>
+                <div class="astronomyTile__twilightInfo">
+                    <div class="astronomyTile__twilightFigure">
+                        <div class="astronomyTile__media astronomyTile__media--day">
+                            ${renderImage(panels.twilight?.dayImage, "astronomyTile__dayImage")}
+                        </div>
+                    </div>
+                    <div class="astronomyTile__twilightFacts">
+                        ${renderMetricRows([
+                            { label: labels.sunrise, value: panels.twilight?.times?.sunrise },
+                            { label: labels.sunset, value: panels.twilight?.times?.sunset },
+                            { label: labels.civilStart, value: panels.twilight?.times?.civilStart },
+                            { label: labels.civilEnd, value: panels.twilight?.times?.civilEnd },
+                            { label: labels.nauticStart, value: panels.twilight?.times?.nauticStart },
+                            { label: labels.nauticEnd, value: panels.twilight?.times?.nauticEnd },
+                            { label: labels.astronomicStart, value: panels.twilight?.times?.astronomicStart },
+                            { label: labels.astronomicEnd, value: panels.twilight?.times?.astronomicEnd }
+                        ])}
+                    </div>
+                </div>
+            </article>
+            <article class="astronomyTile__card">
+                <div class="astronomyTile__cardTitle">${escapeHtml(labels.twilightYear)}</div>
+                <div class="astronomyTile__media astronomyTile__media--year">
+                    ${renderImage(panels.twilight?.yearImage, "astronomyTile__yearImage")}
+                </div>
+            </article>
+        </div>
+    `;
+
+    const renderDetails = () => `
+        <div class="astronomyTile__page">
+            <article class="astronomyTile__card astronomyTile__card--fill">
+                <div class="astronomyTile__cardTitle">${escapeHtml(labels.details)}</div>
+                <div class="astronomyTile__detailGrid astronomyTile__detailGrid--scroll">
+                    ${Object.entries(details).map(([label, value]) => `
+                        <div class="astronomyTile__metric">
+                            <span class="astronomyTile__metricName">${escapeHtml(label)}</span>
+                            <span class="astronomyTile__metricValue">${escapeHtml(value)}</span>
+                        </div>
+                    `).join("")}
+                </div>
+            </article>
+        </div>
+    `;
+
+    const views = {
+        overview: renderOverview,
+        moon: renderMoon,
+        position: renderPosition,
+        twilight: renderTwilight,
+        details: renderDetails
+    };
+
+    let activeView = "overview";
+
+    function render() {
+        root.innerHTML = `
+            <style>
+                html, body {
+                    height: 100%;
+                    margin: 0;
+                    overflow: hidden;
+                    padding: 0;
+                }
+
+                #astronomy-tile-root {
+                    height: 100%;
+                    margin: 0;
+                    padding: 0;
+                    width: 100%;
+                }
+
+                .astronomyTile {
+                    --tile-bg: radial-gradient(circle at top right, rgba(255, 201, 107, 0.24), transparent 24%), linear-gradient(160deg, #0c1a2e 0%, #14314b 52%, #132132 100%);
+                    --panel: rgba(10, 22, 37, 0.76);
+                    --panel-strong: rgba(6, 14, 24, 0.9);
+                    --panel-border: rgba(210, 228, 246, 0.12);
+                    --text-main: #f2ebdb;
+                    --text-muted: rgba(242, 235, 219, 0.72);
+                    --accent: #f0b24f;
+                    --accent-soft: rgba(240, 178, 79, 0.18);
+                    box-sizing: border-box;
+                    color: var(--text-main);
+                    font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+                    height: 100%;
+                    margin: 0;
+                    overflow: hidden;
+                    padding: 0;
+                    position: relative;
+                    width: 100%;
+                }
+
+                .astronomyTile__chrome {
+                    inset: 14px 12px auto 12px;
+                    pointer-events: none;
+                    position: absolute;
+                    z-index: 3;
+                }
+
+                .astronomyTile__chromeTitle,
+                .astronomyTile__chromeIcon {
+                    background: rgba(248, 244, 236, 0.94);
+                    border: 1px solid rgba(58, 68, 80, 0.12);
+                    box-shadow: 0 4px 14px rgba(7, 16, 28, 0.12);
+                    position: absolute;
+                }
+
+                .astronomyTile__chromeTitle {
+                    border-radius: 999px;
+                    height: 28px;
+                    left: 0;
+                    top: 0;
+                }
+
+                .astronomyTile__chromeIcon {
+                    border-radius: 999px;
+                    height: 28px;
+                    right: 4px;
+                    top: 0;
+                    width: 28px;
+                }
+
+                .astronomyTile__shell {
+                    background: var(--tile-bg);
+                    box-sizing: border-box;
+                    display: grid;
+                    gap: 10px;
+                    grid-template-rows: auto auto 1fr;
+                    height: 100%;
+                    min-height: 0;
+                    overflow: hidden;
+                    padding: 56px 12px 12px;
+                    position: relative;
+                    z-index: 1;
+                }
+
+                .astronomyTile__nav {
+                    display: grid;
+                    gap: 8px;
+                    grid-template-columns: repeat(5, minmax(0, 1fr));
+                    min-width: 0;
+                    width: 100%;
+                }
+
+                .astronomyTile__navButton {
+                    align-items: center;
+                    appearance: none;
+                    background: rgba(255, 255, 255, 0.08);
+                    border: 1px solid transparent;
+                    border-radius: 999px;
+                    color: var(--text-main);
+                    cursor: pointer;
+                    display: inline-flex;
+                    gap: 8px;
+                    justify-content: center;
+                    min-width: 0;
+                    padding: 8px 10px;
+                    transition: transform 120ms ease, background 120ms ease, border-color 120ms ease;
+                }
+
+                .astronomyTile__navButton.is-active {
+                    background: var(--accent-soft);
+                    border-color: rgba(240, 178, 79, 0.35);
+                    color: #fff0cb;
+                }
+
+                .astronomyTile__navIcon {
+                    font-size: 18px;
+                    line-height: 1;
+                }
+
+                .astronomyTile__navLabel {
+                    font-size: 11px;
+                    font-weight: 700;
+                    line-height: 1.1;
+                    overflow: hidden;
+                    text-align: center;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                }
+
+                .astronomyTile__meta {
+                    align-items: start;
+                    display: flex;
+                    gap: 12px;
+                    justify-content: space-between;
+                    min-width: 0;
+                }
+
+                .astronomyTile__subtitle {
+                    align-items: center;
+                    color: var(--text-muted);
+                    display: inline-flex;
+                    gap: 8px;
+                    font-size: 13px;
+                    margin-top: 0;
+                }
+
+                .astronomyTile__stamp {
+                    color: var(--text-muted);
+                    display: grid;
+                    font-size: 12px;
+                    gap: 4px;
+                    text-align: right;
+                    white-space: nowrap;
+                }
+
+                .astronomyTile__metaIcon {
+                    display: inline-block;
+                    font-size: 16px;
+                    line-height: 1;
+                }
+
+                .astronomyTile__statusLine {
+                    align-items: center;
+                    display: inline-flex;
+                    gap: 6px;
+                    justify-content: flex-end;
+                }
+
+                .astronomyTile__statusIcon {
+                    display: block;
+                    height: 14px;
+                    width: 14px;
+                }
+
+                .astronomyTile__content {
+                    min-height: 0;
+                    overflow: hidden;
+                }
+
+                .astronomyTile__page {
+                    box-sizing: border-box;
+                    display: grid;
+                    gap: 10px;
+                    height: 100%;
+                    min-height: 0;
+                }
+
+                .astronomyTile__page--columns3 {
+                    grid-template-columns: repeat(3, minmax(0, 1fr));
+                }
+
+                .astronomyTile__page--columns2 {
+                    grid-template-columns: minmax(280px, 0.95fr) minmax(0, 1.05fr);
+                }
+
+                .astronomyTile__page--moon {
+                    grid-template-rows: minmax(0, 1.2fr) minmax(0, 0.8fr);
+                }
+
+                .astronomyTile__page--twilight {
+                    grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
+                }
+
+                .astronomyTile__page--position {
+                    align-items: start;
+                    grid-template-columns: minmax(0, 1.1fr) minmax(300px, 0.9fr);
+                }
+
+                .astronomyTile__moonInfo {
+                    display: grid;
+                    flex: 1 1 auto;
+                    gap: 14px;
+                    grid-template-columns: 112px minmax(0, 1fr);
+                    min-height: 0;
+                }
+
+                .astronomyTile__moonFigure {
+                    align-items: center;
+                    background: var(--panel-strong);
+                    border: 1px solid var(--panel-border);
+                    border-radius: 16px;
+                    display: flex;
+                    justify-content: center;
+                    min-height: 0;
+                    padding: 14px;
+                }
+
+                .astronomyTile__moonFacts {
+                    display: grid;
+                    gap: 0 16px;
+                    grid-template-columns: 1fr;
+                    min-height: 0;
+                }
+
+                .astronomyTile__twilightInfo {
+                    display: grid;
+                    flex: 1 1 auto;
+                    gap: 14px;
+                    grid-template-columns: 172px minmax(0, 1fr);
+                    min-height: 0;
+                }
+
+                .astronomyTile__twilightFigure {
+                    display: grid;
+                    min-height: 0;
+                }
+
+                .astronomyTile__twilightFacts {
+                    display: grid;
+                    gap: 0 16px;
+                    grid-template-columns: 1fr;
+                    min-height: 0;
+                }
+
+                .astronomyTile__card {
+                    background: var(--panel);
+                    border: 1px solid var(--panel-border);
+                    border-radius: 18px;
+                    box-sizing: border-box;
+                    display: flex;
+                    flex-direction: column;
+                    min-height: 0;
+                    overflow: hidden;
+                    padding: 14px;
+                }
+
+                .astronomyTile__card--fill {
+                    height: 100%;
+                }
+
+                .astronomyTile__cardTitle {
+                    font-size: 15px;
+                    font-weight: 700;
+                    margin-bottom: 10px;
+                }
+
+                .astronomyTile__metric {
+                    align-items: baseline;
+                    border-top: 1px solid rgba(255, 255, 255, 0.08);
+                    display: flex;
+                    gap: 14px;
+                    justify-content: space-between;
+                    padding: 7px 0;
+                }
+
+                .astronomyTile__metric:first-child {
+                    border-top: 0;
+                    padding-top: 0;
+                }
+
+                .astronomyTile__metricName {
+                    color: var(--text-muted);
+                    font-size: 13px;
+                }
+
+                .astronomyTile__metricValue {
+                    font-size: 13px;
+                    font-weight: 600;
+                    text-align: right;
+                    word-break: break-word;
+                }
+
+                .astronomyTile__media {
+                    align-items: center;
+                    background: var(--panel-strong);
+                    border: 1px solid var(--panel-border);
+                    border-radius: 16px;
+                    display: flex;
+                    flex: 1 1 auto;
+                    justify-content: center;
+                    min-height: 0;
+                    overflow: hidden;
+                    position: relative;
+                }
+
+                .astronomyTile__media--position {
+                    background: transparent;
+                    border: 0;
+                    min-height: 176px;
+                    padding: 0;
+                }
+
+                .astronomyTile__media--day {
+                    min-height: 112px;
+                    padding: 6px;
+                }
+
+                .astronomyTile__media--year {
+                    min-height: 0;
+                    padding: 10px;
+                }
+
+                .astronomyTile__moonImage {
+                    display: block;
+                    height: 100px;
+                    max-height: 100px;
+                    max-width: 100px;
+                    object-fit: contain;
+                    width: 100px;
+                }
+
+                .astronomyTile__dayImage {
+                    display: block;
+                    height: auto;
+                    max-height: 150px;
+                    max-width: 100%;
+                    object-fit: contain;
+                    width: auto;
+                }
+
+                .astronomyTile__yearImage {
+                    display: block;
+                    height: auto;
+                    max-height: 100%;
+                    max-width: 100%;
+                    object-fit: contain;
+                    width: 100%;
+                }
+
+                .astronomyTile__empty {
+                    align-items: center;
+                    color: var(--text-muted);
+                    display: flex;
+                    height: 100%;
+                    justify-content: center;
+                    padding: 24px;
+                    text-align: center;
+                    width: 100%;
+                }
+
+                .astronomyTile__footerStats {
+                    display: grid;
+                    gap: 10px;
+                    grid-template-columns: repeat(2, minmax(0, 1fr));
+                    margin-top: 10px;
+                }
+
+                .astronomyTile__stat {
+                    background: rgba(255, 255, 255, 0.04);
+                    border: 1px solid rgba(255, 255, 255, 0.08);
+                    border-radius: 14px;
+                    padding: 10px 12px;
+                }
+
+                .astronomyTile__statLabel {
+                    color: var(--text-muted);
+                    display: block;
+                    font-size: 11px;
+                    font-weight: 700;
+                    letter-spacing: 0.04em;
+                    margin-bottom: 4px;
+                    text-transform: uppercase;
+                }
+
+                .astronomyTile__statValue {
+                    font-size: 14px;
+                    font-weight: 700;
+                }
+
+                .astronomyTile__detailGrid {
+                    display: grid;
+                    gap: 0 16px;
+                    grid-template-columns: repeat(2, minmax(0, 1fr));
+                    min-height: 0;
+                }
+
+                .astronomyTile__detailGrid--scroll {
+                    flex: 1 1 auto;
+                    min-height: 0;
+                    overflow: auto;
+                    padding-right: 4px;
+                }
+
+                .astronomyTile__detailGrid--position {
+                    flex: 1 1 auto;
+                    grid-template-columns: 1fr;
+                    overflow: auto;
+                    padding-right: 4px;
+                }
+
+                .astronomyTile__detailGrid--position .astronomyTile__metric {
+                    padding: 5px 0;
+                }
+
+                .astronomyTile__detailGrid--position .astronomyTile__metricName,
+                .astronomyTile__detailGrid--position .astronomyTile__metricValue {
+                    font-size: 12px;
+                }
+
+                .astronomyTile iframe {
+                    background: transparent;
+                    border: 0;
+                    display: block;
+                    height: 100%;
+                    margin: 0 auto;
+                    min-height: 0;
+                    width: 100%;
+                }
+
+                @media (max-width: 900px) {
+                    .astronomyTile__shell {
+                        grid-template-rows: auto auto 1fr;
+                    }
+
+                    .astronomyTile__nav {
+                        grid-template-columns: repeat(5, minmax(0, 1fr));
+                    }
+
+                    .astronomyTile__page--columns3,
+                    .astronomyTile__page--columns2,
+                    .astronomyTile__page--position,
+                    .astronomyTile__detailGrid,
+                    .astronomyTile__footerStats {
+                        grid-template-columns: 1fr;
+                    }
+
+                    .astronomyTile__page--moon {
+                        grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
+                    }
+
+                }
+
+            </style>
+            <section class="astronomyTile">
+                <div class="astronomyTile__chrome">
+                    <div class="astronomyTile__chromeTitle" style="width:${headerTitleWidth}px"></div>
+                    <div class="astronomyTile__chromeIcon"></div>
+                </div>
+                <div class="astronomyTile__shell">
+                    <nav class="astronomyTile__nav">
+                        ${nav.map((item) => `
+                            <button class="astronomyTile__navButton ${activeView === item.key ? "is-active" : ""}" data-view="${item.key}">
+                                <span class="astronomyTile__navIcon">${item.icon}</span>
+                                <span class="astronomyTile__navLabel">${escapeHtml(labels[item.key])}</span>
+                            </button>
+                        `).join("")}
+                    </nav>
+
+                    <div class="astronomyTile__meta">
+                        <div class="astronomyTile__subtitle">
+                            <span class="astronomyTile__metaIcon">${getMoonPhaseGlyph()}</span>
+                            <span>${escapeHtml(summary.phase || "--")}</span>
+                        </div>
+                        <div class="astronomyTile__stamp">
+                            <div class="astronomyTile__statusLine">
+                                ${renderIconImage(status.isDay ? icons.iconSun : icons.iconMoon, "astronomyTile__statusIcon")}
+                                <span>${escapeHtml(status.isDay ? labels.day : labels.night)}</span>
+                            </div>
+                            <div>${new Date((state.generatedAt || 0) * 1000).toLocaleString(state.language || "de-DE")}</div>
+                        </div>
+                    </div>
+
+                    <div class="astronomyTile__content">
+                        ${views[activeView]()}
+                    </div>
+                </div>
+            </section>
+        `;
+
+        root.querySelectorAll("[data-view]").forEach((button) => {
+            button.addEventListener("click", () => {
+                activeView = button.getAttribute("data-view") || "overview";
+                render();
+            });
+        });
+    }
+
+    render();
+})();
+</script>

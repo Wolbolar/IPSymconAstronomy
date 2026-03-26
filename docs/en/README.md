@@ -56,6 +56,7 @@ The values are calculated using formulas from _"Practical Astronomy with your Ca
 * configurable image view moon phase (own graphics possible)
 * Graphic twilight day
 * Graphic twilight years
+* Season
 
 ## 2. Requirements
 

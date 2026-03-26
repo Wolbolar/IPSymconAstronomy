@@ -55,6 +55,8 @@ Berechnung der Werte erfolgt über Formeln aus _"Practical Astronomy with your C
 * konfigurierbare Bildansicht Mondphase (eigene Grafiken möglich)
 * Grafik Dämmerungszeiten Tag
 * Grafik Dämmerungszeiten Jahr
+* Jahreszeit
+* Sternzeichen
 
 ## 2. Voraussetzungen
 
@@ -135,6 +137,17 @@ Die Instanz zur Konfiguration öffnen und die gewünchten Variablen auswählen.
 Anschließend mit _Änderungen übernehmen_ bestätigen.
 
 ![ModulURL](img/Accept_Changes.png?raw=true "Add Module")
+
+
+#### Webfront
+
+![webfront1](img/webfront1.png?raw=true "webfront 1")
+
+![webfront2](img/webfront2.png?raw=true "webfront 2")
+
+![webfront3](img/webfront3.png?raw=true "webfront 3")
+
+![webfront4](img/webfront4.png?raw=true "webfront 4")
 
 
 ## 4. Funktionsreferenz
