@@ -1156,7 +1156,7 @@ class Astronomy extends IPSModuleStrict
     protected function CreateMediaImage($Ident, $name, $picid, $Content, $ImageFile, $position, $visible)
     {
         $MediaID = $this->MaintainMediaImage($Ident, $name, $position, $this->ReadPropertyBoolean($visible));
-        if ($MediaID !== false) {
+        if (is_int($MediaID) && $MediaID > 0 && @IPS_ObjectExists($MediaID)) {
             IPS_SetMediaFile($MediaID, $ImageFile, false);
             IPS_SetInfo($MediaID, $picid);
             IPS_SetMediaContent($MediaID, base64_encode($Content));
@@ -3293,7 +3293,7 @@ class Astronomy extends IPSModuleStrict
     protected function ReadValueByIdent(string $ident)
     {
         $variableId = @$this->GetIDForIdent($ident);
-        if ($variableId === false) {
+        if (!is_int($variableId) || $variableId <= 0 || !@IPS_ObjectExists($variableId)) {
             return null;
         }
 
@@ -3303,7 +3303,7 @@ class Astronomy extends IPSModuleStrict
     protected function SetValueIfIdentExists(string $ident, $value): void
     {
         $variableId = @$this->GetIDForIdent($ident);
-        if ($variableId === false) {
+        if (!is_int($variableId) || $variableId <= 0 || !@IPS_ObjectExists($variableId)) {
             return;
         }
 
