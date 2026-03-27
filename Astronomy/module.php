@@ -591,14 +591,10 @@ class Astronomy extends IPSModuleStrict
             $this->SetupVariable('sunmoonview', 'Position Sonne und Mond', '~HTMLBox', 25, VARIABLETYPE_STRING, false);
         }
         if ($this->ReadPropertyBoolean('sunsetselect') == true) { // string
-            $obj_sunset = @$this->GetIDForIdent('sunset');
-            if ($obj_sunset == false) {
-                $sunset_exist = false;
-            } else {
-                $sunset_exist = true;
-            }
+            $obj_sunset = $this->FindChildIdByIdent('sunset');
+            $sunset_exist = is_int($obj_sunset) && $obj_sunset > 0;
             $objid = $this->SetupVariable('sunset', 'Sonnenuntergang', '~UnixTimestamp', 26, VARIABLETYPE_INTEGER, true);
-            if ($sunset_exist == false) {
+            if ($sunset_exist == false && is_int($objid) && $objid > 0) {
                 IPS_SetIcon($objid, 'Sun');
             }
 
@@ -617,14 +613,10 @@ class Astronomy extends IPSModuleStrict
             $this->SetupVariable('sunset', 'Sonnenuntergang', '~UnixTimestamp', 26, VARIABLETYPE_INTEGER, false);
         }
         if ($this->ReadPropertyBoolean('sunriseselect') == true) { // string
-            $obj_sunrise = @$this->GetIDForIdent('sunrise');
-            if ($obj_sunrise == false) {
-                $sunrise_exist = false;
-            } else {
-                $sunrise_exist = true;
-            }
+            $obj_sunrise = $this->FindChildIdByIdent('sunrise');
+            $sunrise_exist = is_int($obj_sunrise) && $obj_sunrise > 0;
             $objid = $this->SetupVariable('sunrise', 'Sonnenaufgang', '~UnixTimestamp', 27, VARIABLETYPE_INTEGER, true);
-            if ($sunrise_exist == false) {
+            if ($sunrise_exist == false && is_int($objid) && $objid > 0) {
                 IPS_SetIcon($objid, 'Sun');
             }
 
@@ -914,10 +906,22 @@ class Astronomy extends IPSModuleStrict
         $this->MaintainVariable($ident, $name, $vartype, $profile, $position, $visible);
         $objid = false;
         if ($visible) {
-            $objid = @$this->GetIDForIdent($ident);
+            $objid = $this->FindChildIdByIdent($ident);
         }
 
         return $objid;
+    }
+
+    protected function FindChildIdByIdent(string $ident)
+    {
+        foreach (IPS_GetChildrenIDs($this->InstanceID) as $childId) {
+            $object = IPS_GetObject($childId);
+            if ($object['ObjectIdent'] === $ident) {
+                return $childId;
+            }
+        }
+
+        return false;
     }
 
     protected function GetIPSVersion()
@@ -1119,7 +1123,7 @@ class Astronomy extends IPSModuleStrict
 
     protected function MaintainMediaImage(string $ident, string $name, int $position, bool $visible)
     {
-        $mediaID = @$this->GetIDForIdent($ident);
+        $mediaID = $this->FindChildIdByIdent($ident);
         if (!is_int($mediaID) || $mediaID <= 0 || !@IPS_ObjectExists($mediaID)) {
             $mediaID = false;
         } else {
@@ -3292,7 +3296,7 @@ class Astronomy extends IPSModuleStrict
 
     protected function ReadValueByIdent(string $ident)
     {
-        $variableId = @$this->GetIDForIdent($ident);
+        $variableId = $this->FindChildIdByIdent($ident);
         if (!is_int($variableId) || $variableId <= 0 || !@IPS_ObjectExists($variableId)) {
             return null;
         }
@@ -3302,7 +3306,7 @@ class Astronomy extends IPSModuleStrict
 
     protected function SetValueIfIdentExists(string $ident, $value): void
     {
-        $variableId = @$this->GetIDForIdent($ident);
+        $variableId = $this->FindChildIdByIdent($ident);
         if (!is_int($variableId) || $variableId <= 0 || !@IPS_ObjectExists($variableId)) {
             return;
         }
@@ -4488,8 +4492,8 @@ class Astronomy extends IPSModuleStrict
                 $sunsettimestamp = $moonsettime + $sunsetoffset; // "Moonset"
                 break;
         }
-        $sunsetobjid = @$this->GetIDForIdent('sunset');
-        $sunriseobjid = @$this->GetIDForIdent('sunrise');
+        $sunsetobjid = $this->FindChildIdByIdent('sunset');
+        $sunriseobjid = $this->FindChildIdByIdent('sunrise');
         if ($sunsetobjid > 0) {
             $this->SetValue('sunset', $sunsettimestamp);
             if ($this->ReadPropertyBoolean('extinfoselection') == true) { // float
