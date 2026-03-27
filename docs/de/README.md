@@ -1,147 +1,145 @@
 # IPSymconAstronomy
 [![Version](https://img.shields.io/badge/Symcon-PHPModul-red.svg)](https://www.symcon.de/service/dokumentation/entwicklerbereich/sdk-tools/sdk-php/)
-[![Version](https://img.shields.io/badge/Symcon%20Version-%3E%205.1-green.svg)](https://www.symcon.de/service/dokumentation/installation/)
+[![Version](https://img.shields.io/badge/Symcon%20Version-%3E%209.0-green.svg)](https://www.symcon.de/service/dokumentation/installation/)
 ![Code](https://img.shields.io/badge/Code-PHP-blue.svg)
-[![StyleCI](https://github.styleci.io/repos/73331095/shield?branch=master)](https://github.styleci.io/repos/73331095)
+[![PHP Style](https://github.com/Wolbolar/IPSymconAstronomy/actions/workflows/php-style.yml/badge.svg)](https://github.com/Wolbolar/IPSymconAstronomy/actions/workflows/php-style.yml)
 
-Modul für IP-Symcon ab Version 5.1 zeigt Astonomische Daten an
+Modul fuer IP-Symcon ab Version 9.0 zur Anzeige astronomischer Werte, zur Erzeugung von Zeit-/Phasenbildern und zur Bereitstellung einer modernen Tile-Visualisierung.
 
-## Dokumentation
+## Inhaltsverzeichnis
 
-**Inhaltsverzeichnis**
-
-1. [Funktionsumfang](#1-funktionsumfang)  
-2. [Voraussetzungen](#2-voraussetzungen)  
-3. [Installation](#3-installation)  
-4. [Funktionsreferenz](#4-funktionsreferenz)
-5. [Konfiguration](#5-konfiguration)  
-6. [Anhang](#6-anhang)  
+1. [Funktionsumfang](#1-funktionsumfang)
+2. [Voraussetzungen](#2-voraussetzungen)
+3. [Installation](#3-installation)
+4. [Visualisierung](#4-visualisierung)
+5. [Konfiguration](#5-konfiguration)
+6. [Funktionen](#6-funktionen)
 
 ## 1. Funktionsumfang
 
-Mit dem Modul wird unter Kerninstanzen eine Instanz mit Astonomischen Werten angelegt. Welche Werte angezeigt werden sollen lässt sich im Modul auswählen.
-Berechnung der Werte erfolgt über Formeln aus _"Practical Astronomy with your Calculator or Spreadsheet"_ von Peter Duffet-Smith und Jonathan Zwart. 
+Das Modul legt unter den Kerninstanzen eine Astronomie-Instanz an. Die Auswahl der Variablen, Bilder und Zusatzinformationen erfolgt direkt im Instanzformular. Die Berechnung basiert auf Formeln aus _"Practical Astronomy with your Calculator or Spreadsheet"_ von Peter Duffett-Smith und Jonathan Zwart.
 
-### Astronomische Werte:  
+Unterstuetzt werden aktuell:
+
+* klassische Variablen fuer WebFront, IPSView und eigene Skripte
+* Medien fuer Mondbild sowie Tages- und Jahres-Daemmerung
+* konfigurierbare Sonnenaufgangs- und Sonnenuntergangsvariablen mit Offset
+* optionale Zusatzvariablen fuer Datum und Uhrzeit
+* HTML-Ansicht fuer die Position von Sonne und Mond
+* moderne Symcon-Tile-Visualisierung
+
+Auswaehlbare astronomische Werte:
 
 * Julianisches Datum
 * Mond Azimut
 * Mond Entfernung
-* Mond Höhe
-* Mond Positionswinkel der beleuchteten Fläche
-* Mond Himmelsrichtung 
-* Mond Richtung (Grad)
+* Mond Hoehe
+* Mond Positionswinkel der beleuchteten Flaeche
+* Mond Himmelsrichtung
 * Mond Sichtbarkeit
-* Mond Aufgang
-* Mond Untergang
-* Mond Phase
-* Zeitpunkt Aktueller Zyklus Neumond
-* Zeitpunkt Aktueller Zyklus Erstes Viertel
-* Zeitpunkt Aktueller Zyklus Vollmond
-* Zeitpunkt Aktueller Zyklus Letztes Viertel
-* Zeitpunkt Neumond
-* Zeitpunkt Erstes Viertel
-* Zeitpunkt Vollmond
-* Zeitpunkt Letztes Viertel
+* Mondaufgang
+* Monduntergang
+* Mondphase
+* Neumond
+* Erstes Viertel
+* Vollmond
+* Letztes Viertel
+* Neumond aktueller Zyklus
+* Erstes Viertel aktueller Zyklus
+* Vollmond aktueller Zyklus
+* Letztes Viertel aktueller Zyklus
 * Sonne Azimut
 * Sonne Entfernung
-* Sonne Höhe
-* Sonne Richtung
-* Sonne Richtung (Grad)
+* Sonne Hoehe
+* Sonne Himmelsrichtung
+* Strahlungsleistung
 * Jahreszeit
-* Sonnenaufgang mit einstellbaren Offset
-* Sonnenuntergang mit einstellbaren Offset
-* Bildansicht Sonne und Mond
-* konfigurierbare Bildansicht Mondphase (eigene Grafiken möglich)
-* Grafik Dämmerungszeiten Tag
-* Grafik Dämmerungszeiten Jahr
-* Jahreszeit
-* Sternzeichen
+* Mond im Sternzeichen
+* Sonne im Sternzeichen
+* Mondalter
+* Sonnenhoechststand
+* Tageslaenge
+* Nachtlaenge
+* Goldene Stunde morgens Start/Ende
+* Goldene Stunde abends Start/Ende
+* Blaue Stunde morgens Start/Ende
+* Blaue Stunde abends Start/Ende
+* Mond Kulmination
+* Mond untere Kulmination
+* Sonne ueber dem Horizont
+* Mond ueber dem Horizont
+* Aktuelle Daemmerungsphase
+* Rektaszension Sonne
+* Deklination Sonne
+* Rektaszension Mond
+* Deklination Mond
+* Zodiakalaenge Sonne
+* Zodiakalaenge Mond
+* Parallaktischer Winkel Sonne
+* Parallaktischer Winkel Mond
 
 ## 2. Voraussetzungen
 
- - IP-Symcon 5.1
+* IP-Symcon 9.0 oder neuer
+* konfigurierte `Location`-Instanz mit Breiten- und Laengengrad
 
 ## 3. Installation
 
 ### a. Laden des Moduls
 
-Die Webconsole von IP-Symcon mit _http://<IP-Symcon IP>:3777/console/_ öffnen. 
+Die WebConsole von IP-Symcon mit `http://<IP-Symcon IP>:3777/console/` oeffnen.
 
+Anschliessend oben rechts auf das Symbol fuer den Modulstore klicken.
 
-Anschließend oben rechts auf das Symbol für den Modulstore klicken
-
-![Store](img/store_icon.png?raw=true "open store")
+![Store](img/store_icon.png?raw=true "Store")
 
 Im Suchfeld nun
 
-```
+```text
 Astronomie
-```  
-
-eingeben
-
-![Store](img/module_store_search.png?raw=true "module search")
-
-und schließend das Modul auswählen und auf _Installieren_
-
-![Store](img/install.png?raw=true "install")
-
-drücken.
-
-
-#### Alternatives Installieren über Modules Instanz
-
-Den Objektbaum _Öffnen_.
-
-![Objektbaum](img/objektbaum.png?raw=true "Objektbaum")	
-
-Die Instanz _'Modules'_ unterhalb von Kerninstanzen im Objektbaum von IP-Symcon (>=Ver. 5.x) mit einem Doppelklick öffnen und das  _Plus_ Zeichen drücken.
-
-![Modules](img/Modules.png?raw=true "Modules")	
-
-![Plus](img/plus.png?raw=true "Plus")	
-
-![ModulURL](img/add_module.png?raw=true "Add Module")
- 
-Im Feld die folgende URL eintragen und mit _OK_ bestätigen:
-
 ```
-https://github.com/Wolbolar/IPSymconAstronomy 
-```  
-	
-Anschließend erscheint ein Eintrag für das Modul in der Liste der Instanz _Modules_    
 
-Es wird im Standard der Zweig (Branch) _master_ geladen, dieser enthält aktuelle Änderungen und Anpassungen.
-Nur der Zweig _master_ wird aktuell gehalten.
+eingeben.
 
-![Master](img/master.png?raw=true "master") 
+![Suche](img/module_store_search.png?raw=true "Modulsuche")
 
-Sollte eine ältere Version von IP-Symcon die kleiner ist als Version 5.1 (min 4.1) eingesetzt werden, ist auf das Zahnrad rechts in der Liste zu klicken.
-Es öffnet sich ein weiteres Fenster,
+Danach das Modul auswaehlen und auf _Installieren_ klicken.
 
-![SelectBranch](img/select_branch.png?raw=true "select branch") 
+![Installation](img/install.png?raw=true "Installieren")
 
-hier kann man auf einen anderen Zweig wechseln, für ältere Versionen kleiner als 5.1 ist hier
-_Old_ auszuwählen. 
-	
-### b. Überprüfen von Location
+### b. Alternative Installation ueber die Modules-Instanz
 
-Zur Berechnung der Astronomischen Daten wird der Breitengrad und Längengrad benötigt. Dieser wird aus der Location Instanz unter Kerninstanzen entnommen.
-Daher ist zunächst zu prüfen ob in der Instanz Location unter Kerninstanzen ein Breiten und Längengrad hinterlegt wurde.
-	
-### c. Einrichtung in IP-Symcon
+Den Objektbaum oeffnen.
 
-In IP-Symcon unter Kern Instanzen Instanz hinzufügen auswählen und Astronomie auswählen.
-Die Instanz zur Konfiguration öffnen und die gewünchten Variablen auswählen.
-Anschließend mit _Änderungen übernehmen_ bestätigen.
+![Objektbaum](img/objektbaum.png?raw=true "Objektbaum")
 
-![ModulURL](img/Accept_Changes.png?raw=true "Add Module")
+Die Instanz _Modules_ unterhalb der Kerninstanzen per Doppelklick oeffnen und das _Plus_-Symbol waehlen.
 
+![Modules](img/Modules.png?raw=true "Modules")
 
-#### Visualisierung
+![Plus](img/plus.png?raw=true "Plus")
 
-Das Modul stellt sowohl klassische Variablen fuer WebFront, IPSView und eigene Auswertungen als auch eine moderne Kachelansicht bereit.
+![Modul hinzufuegen](img/add_module.png?raw=true "Modul hinzufuegen")
+
+Im Feld folgende URL eintragen:
+
+```text
+https://github.com/Wolbolar/IPSymconAstronomy
+```
+
+Danach mit _OK_ bestaetigen. Standardmaessig wird der Branch `master` geladen.
+
+![Master](img/master.png?raw=true "Master")
+
+### c. Einrichtung
+
+In IP-Symcon unter _Kerninstanzen -> Instanz hinzufuegen_ das Modul _Astronomie_ auswaehlen. Anschliessend die Instanz oeffnen, die gewuenschten Werte und Visualisierungen auswaehlen und mit _Aenderungen uebernehmen_ speichern.
+
+![Aenderungen uebernehmen](img/Accept_Changes.png?raw=true "Aenderungen uebernehmen")
+
+## 4. Visualisierung
+
+Das Modul stellt neben klassischen Variablen auch eine moderne Tile-Darstellung fuer Symcon 9 bereit.
 
 ![Kachel Ueberblick](img/tile-overview.png?raw=true "Kachel Ueberblick")
 
@@ -155,164 +153,152 @@ Das Modul stellt sowohl klassische Variablen fuer WebFront, IPSView und eigene A
 
 ![Kachel Ueberblick kompakt](img/tile-overview-compact.png?raw=true "Kachel Ueberblick kompakt")
 
+## 5. Konfiguration
 
-## 4. Funktionsreferenz
+### Allgemein
 
-### Astronomische Daten:
-* Julianisches Datum
-* Mond Azimut
-* Mond Entfernung
-* Mond Höhe
-* Mond Positionswinkel der beleuchteten Fläche
-* Mond Himmelsrichtung 
-* Mond Richtung (Grad)
-* Mond Sichtbarkeit
-* Mond Aufgang
-* Mond Untergang
-* Mond Phase
-* Zeitpunkt Neumond
-* Zeitpunkt Erstes Viertel
-* Zeitpunkt Vollmond
-* Zeitpunkt Letztes Viertel
-* Sonne Azimut
-* Sonne Entfernung
-* Sonne Höhe
-* Sonne Richtung
-* Sonne Richtung (Grad)
-* Jahreszeit
-	
+| Eigenschaft | Typ | Beschreibung |
+| :-- | :-- | :-- |
+| `language` | Auswahl | Sprache der Ausgaben und Tile-Beschriftungen (`German`, `English`) |
+| `Updateinterval` | Integer | Aktualisierungsintervall in Sekunden |
+| `UTC` | Float | Zeitzonen-Korrektur fuer die astronomischen Berechnungen |
 
+### Auswaehlbare Werte
 
-## 5. Konfiguration:
+| Eigenschaft | Typ | Beschreibung |
+| :-- | :-- | :-- |
+| `juliandate` | Float | Julianisches Datum |
+| `moonazimut` | Float | Mond Azimut |
+| `moondistance` | Float | Entfernung Erde -> Mond |
+| `moonaltitude` | Float | Mond Hoehe |
+| `moonbrightlimbangle` | Float | Positionswinkel der beleuchteten Mondflaeche |
+| `moondirection` | Integer | Himmelsrichtung des Mondes |
+| `moonvisibility` | Float | Sichtbarkeit des Mondes in Prozent |
+| `moonrise` | Integer | Mondaufgang |
+| `moonset` | Integer | Monduntergang |
+| `moonphase` | String | Mondphase |
+| `newmoon` | String | Zeitpunkt Neumond |
+| `firstquarter` | String | Zeitpunkt erstes Viertel |
+| `fullmoon` | String | Zeitpunkt Vollmond |
+| `lastquarter` | String | Zeitpunkt letztes Viertel |
+| `currentnewmoon` | String | Neumond im aktuellen Zyklus |
+| `currentfirstquarter` | String | Erstes Viertel im aktuellen Zyklus |
+| `currentfullmoon` | String | Vollmond im aktuellen Zyklus |
+| `currentlastquarter` | String | Letztes Viertel im aktuellen Zyklus |
+| `sunazimut` | Float | Sonne Azimut |
+| `sundistance` | Float | Entfernung Erde -> Sonne |
+| `sunaltitude` | Float | Sonne Hoehe |
+| `sundirection` | Integer | Himmelsrichtung der Sonne |
+| `radiant_power` | Float | Strahlungsleistung |
+| `season` | Integer | Jahreszeit |
+| `moonstarsign` | String | Sternzeichen des Mondes |
+| `sunstarsign` | String | Sternzeichen der Sonne |
+| `moonage` | Float | Alter des Mondes in Tagen |
+| `solarnoon` | Integer | Sonnenhoechststand |
+| `daylength` | Integer | Tageslaenge |
+| `nightlength` | Integer | Nachtlaenge |
+| `goldenhourmorningstart` | Integer | Beginn goldene Stunde morgens |
+| `goldenhourmorningend` | Integer | Ende goldene Stunde morgens |
+| `goldenhoureveningstart` | Integer | Beginn goldene Stunde abends |
+| `goldenhoureveningend` | Integer | Ende goldene Stunde abends |
+| `bluehourmorningstart` | Integer | Beginn blaue Stunde morgens |
+| `bluehourmorningend` | Integer | Ende blaue Stunde morgens |
+| `bluehoureveningstart` | Integer | Beginn blaue Stunde abends |
+| `bluehoureveningend` | Integer | Ende blaue Stunde abends |
+| `moonculmination` | Integer | Mond Kulmination |
+| `moonlowerculmination` | Integer | Mond untere Kulmination |
+| `sunabovehorizon` | Boolean | Sonne ueber dem Horizont |
+| `moonabovehorizon` | Boolean | Mond ueber dem Horizont |
+| `twilightphase` | String | Aktuelle Daemmerungsphase |
+| `sunrightascension` | Float | Rektaszension Sonne |
+| `sundeclination` | Float | Deklination Sonne |
+| `moonrightascension` | Float | Rektaszension Mond |
+| `moondeclination` | Float | Deklination Mond |
+| `sunzodiaclongitude` | Float | Zodiakalaenge Sonne |
+| `moonzodiaclongitude` | Float | Zodiakalaenge Mond |
+| `sunparallacticangle` | Float | Parallaktischer Winkel Sonne |
+| `moonparallacticangle` | Float | Parallaktischer Winkel Mond |
 
-### Astronomie:
+### Daemmerungsbilder
 
-| Eigenschaft         | Typ     | Wert            | Beschreibung                                 |
-| :-----------------: | :-----: | :-------------: | :------------------------------------------: |
-| juliandate          | float   | JD              | Julianisches Datum                           |
-| moonazimut          | float   | Mond Azimut     | Mond Azimut                                  |
-| moondistance        | float   | Mond Entfernung | Entfernung des Monds zur Erde                |
-| moonaltitude        | float   | Mond Höhe       | Höhe des Monds in Grad                       |
-| moonbrightlimbangle | float   | Positionswinkel | Mond Positionswinkel der beleuchteten Fläche |
-| moondirection       | integer | Himmelsrichtung | Himmelsrichtung des Monds                    |
-| moonvisibility      | float   | Sichtbarkeit    | Sichtbarkeit des Monds                       |
-| moonrise            | integer | Mond Aufgang    | Zeitpunkt Mond Aufgang                       |
-| moonset             | integer | Mond Untergang  | Zeitpunkt Mond Untergang                     |
-| moonphase           | string  | Mond Phase      | Mond Phase                                   |
-| newmoon             | string  | Neumond         | Zeitpunkt Neumond                            |
-| firstquarter        | string  | Erstes Viertel  | Zeitpunkt Erstes Viertel                     |
-| fullmoon            | string  | Vollmond        | Zeitpunkt Vollmond                           |
-| lastquarter         | string  | letztes Viertel | Zeitpunkt Letztes Viertel                    |
-| currentnewmoon      | string  | Neumond         | Zeitpunkt Neumond Aktueller Zyklus                           |
-| currentfirstquarter | string  | Erstes Viertel  | Zeitpunkt Erstes Viertel Aktueller Zyklus                    |
-| currentfullmoon     | string  | Vollmond        | Zeitpunkt Vollmond Aktueller Zyklus                           |
-| currentlastquarter  | string  | letztes Viertel | Zeitpunkt Letztes Viertel Aktueller Zyklus
-| sunazimut           | float   | Sonne Azimut    | Sonne Azimut                                 |
-| sundistance         | float   | Sonne Entfernung| Sonne Entfernung                             |
-| sunaltitude         | float   | Sonne Höhe      | Sonne Höhe                                   |
-| sundirection        | integer | Himmelsrichtung | Himmelsrichtung                              |
-| season              | integer | Jahreszeit      | Jahreszeit                                   |
-| picturemoon         | gif     | Bild Mond       | Bild der aktuellen Ansicht vom Mond          |
-| sunmoonview         | string  | Position        | Position Sonne und Mond                      |
-| sunset              | integer | Sonnenuntergang | Sonnen-, Monduntergang + entstellbarer Offset|
-| sunrise             | integer | Sonnenaufgang   | Sonnen-, Mondaufgang + entstellbarer Offset  |
+| Eigenschaft | Typ | Beschreibung |
+| :-- | :-- | :-- |
+| `pictureyeartwilight` | Boolean | Jahresgrafik der Daemmerungszeiten erzeugen |
+| `picturedaytwilight` | Boolean | Tagesgrafik der Daemmerungszeiten erzeugen |
+| `picturetwilightlimited` | Boolean | Begrenzte Daemmerungsdarstellung verwenden |
 
+### Mondbild
 
-## 6. Anhang
+| Eigenschaft | Typ | Beschreibung |
+| :-- | :-- | :-- |
+| `picturemoonvisible` | Boolean | Mondbild als Medium anlegen |
+| `moonbackground` | Auswahl | Hintergrund `black background` oder `transparent background` |
+| `selectionresize` | Boolean | Bilder fuer das Media-Element skalieren |
+| `mediaimgwidth` | Integer | Zielbreite der Media-Grafik |
+| `mediaimgheight` | Integer | Zielhoehe der Media-Grafik |
+| `picturemoonselection` | Boolean | Eigene Mondgrafiken verwenden |
+| `picturename` | String | Dateiname ohne laufende Nummer |
+| `filetype` | Auswahl | Dateityp (`png`, `gif`, `jpg`) |
+| `firstfullmoonpic` / `lastfullmoonpic` | Integer | erster/letzter Bildindex fuer Vollmond |
+| `firstincreasingmoonpic` / `lastincreasingmoonpic` | Integer | erster/letzter Bildindex fuer zunehmenden Mond |
+| `firstnewmoonpic` / `lastnewmoonpic` | Integer | erster/letzter Bildindex fuer Neumond |
+| `firstdecreasingmoonpic` / `lastdecreasingmoonpic` | Integer | erster/letzter Bildindex fuer abnehmenden Mond |
+| `picturemoonpath` | String | relativer Pfad zum Bilderordner im IP-Symcon-Verzeichnis |
 
-###  a. Funktionen:
+### Position Sonne und Mond
 
-#### Astronomie:
+| Eigenschaft | Typ | Beschreibung |
+| :-- | :-- | :-- |
+| `sunmoonview` | Boolean | HTML-Ansicht fuer die Position von Sonne und Mond erzeugen |
+| `zeropointx` | Integer | Nullpunkt der x-Achse |
+| `zeropointy` | Integer | Nullpunkt der y-Achse |
+| `framewidthtype` | Auswahl | Rahmenbreite in `px` oder `%` |
+| `framewidth` | Integer | Rahmenbreite |
+| `frameheighttype` | Auswahl | Rahmenhoehe in `px` oder `%` |
+| `frameheight` | Integer | Rahmenhoehe |
+| `canvaswidth` | Integer | Canvas-Breite in Pixel |
+| `canvasheight` | Integer | Canvas-Hoehe in Pixel |
+| `canvasbackground` | Farbe | Hintergrundfarbe |
+| `canvasbackgroundtransparency` | Integer | Hintergrund-Transparenz |
+
+### Sonnenaufgang / Sonnenuntergang mit Offset
+
+| Eigenschaft | Typ | Beschreibung |
+| :-- | :-- | :-- |
+| `sunriseselect` | Boolean | Variable fuer Aufgang mit Offset erzeugen |
+| `risetype` | Auswahl | `sunrise`, `civilTwilightStart`, `nauticTwilightStart`, `astronomicTwilightStart`, `moonrise` |
+| `sunriseoffset` | Integer | Offset in Minuten |
+| `sunsetselect` | Boolean | Variable fuer Untergang mit Offset erzeugen |
+| `settype` | Auswahl | `sunset`, `civilTwilightEnd`, `nauticTwilightEnd`, `astronomicTwilightEnd`, `moonset` |
+| `sunsetoffset` | Integer | Offset in Minuten |
+| `extinfoselection` | Boolean | zusaetzliche Datums-/Zeitvariablen erzeugen |
+| `timeformat` | Auswahl | Ausgabeformat fuer Uhrzeit (`H:i`, `H:i:s`, `h:i`, `h:i:s`, `g:i`, `g:i:s`, `G:i`, `G:i:s`) |
+
+## 6. Funktionen
 
 ```php
 Astronomy_SetAstronomyValues(int $InstanceID)
 ```
-Aktualisiert alle im Modul ausgewählten Werte
+
+Aktualisiert alle im Modul aktivierten Werte.
 
 ```php
 Astronomy_MoonphasePercent(int $InstanceID)
 ```
-Gibt den Fortschritt der Mondphase in % aus
+
+Liefert den Fortschritt der Mondphase in Prozent.
 
 ```php
 Astronomy_MoonphaseText(int $InstanceID)
 ```
-Liefert die Mondphase als Ausgabe Text - % z.B. zunehmender Mond - 84%
+
+Liefert die Mondphase als Text.
 
 ```php
 Astronomy_Moon_FirstQuarter(int $InstanceID)
-```
-Zeitpunkt Erstes Viertel, sollte der Zeitpunkt in der Vergangenheit liegen wird das wird der nächste Zeitpunkt der nächsten Mondphase ausgegeben
-
-```php
 Astronomy_Moon_Newmoon(int $InstanceID)
-```
-Zeitpunkt Neumond, sollte der Zeitpunkt in der Vergangenheit liegen wird das wird der nächste Zeitpunkt der nächsten Mondphase ausgegeben
-
-
-```php
 Astronomy_Moon_Fullmoon(int $InstanceID)
-```
-Zeitpunkt Vollmond, sollte der Zeitpunkt in der Vergangenheit liegen wird das wird der nächste Zeitpunkt der nächsten Mondphase ausgegeben
-
-
-```php
 Astronomy_Moon_LastQuarter(int $InstanceID)
 ```
-Zeitpunkt Letztes Viertel, Zeitpunkt Erstes Viertel, sollte der Zeitpunkt in der Vergangenheit liegen wird das wird der nächste Zeitpunkt der nächsten Mondphase ausgegeben
 
-
-```php
-Astronomy_Moon_CurrentFirstQuarter(int $InstanceID)
-```
-Zeitpunkt Erstes Viertel des aktuellen Zyklus
-
-```php
-Astronomy_Moon_CurrentNewmoon(int $InstanceID)
-```
-Zeitpunkt Neumond des aktuellen Zyklus
-
-```php
-Astronomy_Moon_CurrentFullmoon(int $InstanceID)
-```
-Zeitpunkt Vollmond des aktuellen Zyklus
-
-```php
-Astronomy_Moon_CurrentLastQuarter(int $InstanceID)
-```
-Zeitpunkt Letztes Viertel des aktuellen Zyklus
-
-```php
-Astronomy_Moon_FirstQuarterDate(int $InstanceID, string $date)
-```
-Zeitpunkt Erstes Viertel zum übergebenen Datum
-
-_$date_ Datum
-
-```php
-Astronomy_Moon_NewmoonDate(int $InstanceID, string $date)
-```
-Zeitpunkt Neumond zum übergebenen Datum
-
-_$date_ Datum
-
-```php
-Astronomy_Moon_FullmoonDate(int $InstanceID, string $date)
-```
-Zeitpunkt Vollmond zum übergebenen Datum
-
-_$date_ Datum
-
-```php
-Astronomy_Moon_LastQuarterDate(int $InstanceID, string $date)
-```
-Zeitpunkt Letztes Viertel zum übergebenen Datum
-
-_$date_ Datum
-
-
-###  b. GUIDs und Datenaustausch:
-
-#### Astronomy:
-
-GUID: `{AE370BEA-2B51-4C64-A147-0CCE3494FE08}` 
+Liefert den naechsten berechneten Zeitpunkt der jeweiligen Mondphase.

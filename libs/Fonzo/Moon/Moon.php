@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: Fonzo
@@ -31,11 +32,11 @@ namespace Fonzo\Moon;
 
 class Moon extends \stdClass
 {
-
     /**
      * Calculates the moon rise/set for a given location and day of year
      */
-    public static function calculateMoonTimes($month, $day, $year, $lat, $lon) {
+    public static function calculateMoonTimes($month, $day, $year, $lat, $lon)
+    {
 
         $utrise = $utset = 0;
 
@@ -92,15 +93,15 @@ class Moon extends \stdClass
         $retVal = new \stdClass();
         $utrise = self::convertTime($utrise);
         $utset = self::convertTime($utset);
-        $summertime = date("I");
-        if($summertime == 0){
-            $retVal->moonrise = $rise ? mktime($utrise['hrs'], $utrise['min'], 0+3600, $month, $day, $year) : mktime(0, 0, 0, $month, $day + 1, $year);
-            $retVal->moonset = $set ? mktime($utset['hrs'], $utset['min'], 0+3600, $month, $day, $year) : mktime(0, 0, 0, $month, $day + 1, $year);
+        $summertime = date('I');
+        if ($summertime == 0) {
+            $retVal->moonrise = $rise ? mktime($utrise['hrs'], $utrise['min'], 0 + 3600, $month, $day, $year) : mktime(0, 0, 0, $month, $day + 1, $year);
+            $retVal->moonset = $set ? mktime($utset['hrs'], $utset['min'], 0 + 3600, $month, $day, $year) : mktime(0, 0, 0, $month, $day + 1, $year);
+        } else {
+            $retVal->moonrise = $rise ? mktime($utrise['hrs'], $utrise['min'], 0 + 7200, $month, $day, $year) : mktime(0, 0, 0, $month, $day + 1, $year);
+            $retVal->moonset = $set ? mktime($utset['hrs'], $utset['min'], 0 + 7200, $month, $day, $year) : mktime(0, 0, 0, $month, $day + 1, $year);
         }
-        else{
-            $retVal->moonrise = $rise ? mktime($utrise['hrs'], $utrise['min'], 0+7200, $month, $day, $year) : mktime(0, 0, 0, $month, $day + 1, $year);
-            $retVal->moonset = $set ? mktime($utset['hrs'], $utset['min'], 0+7200, $month, $day, $year) : mktime(0, 0, 0, $month, $day + 1, $year);
-        }
+
         return $retVal;
 
     }
@@ -115,7 +116,8 @@ class Moon extends \stdClass
      *
      *  results passed as array [nz, z1, z2, xe, ye]
      */
-    private static function quad($ym, $yz, $yp) {
+    private static function quad($ym, $yz, $yp)
+    {
 
         $nz = $z1 = $z2 = 0;
         $a = 0.5 * ($ym + $yp) - $yz;
@@ -133,7 +135,7 @@ class Moon extends \stdClass
             $z1 = $z1 < -1 ? $z2 : $z1;
         }
 
-        return array($nz, $z1, $z2, $xe, $ye);
+        return [$nz, $z1, $z2, $xe, $ye];
 
     }
 
@@ -141,7 +143,8 @@ class Moon extends \stdClass
      *    this rather mickey mouse function takes a lot of
      *  arguments and then returns the sine of the altitude of the moon
      */
-    private static function sinAlt($mjd, $hour, $glon, $cglat, $sglat) {
+    private static function sinAlt($mjd, $hour, $glon, $cglat, $sglat)
+    {
 
         $mjd += $hour / 24;
         $t = ($mjd - 51544.5) / 36525;
@@ -159,17 +162,21 @@ class Moon extends \stdClass
     /**
      *    returns an angle in degrees in the range 0 to 360
      */
-    private static function degRange($x) {
+    private static function degRange($x)
+    {
         $b = $x / 360;
         $a = 360 * ($b - (int)$b);
         $retVal = $a < 0 ? $a + 360 : $a;
+
         return $retVal;
     }
 
-    private static function lmst($mjd, $glon) {
+    private static function lmst($mjd, $glon)
+    {
         $d = $mjd - 51544.5;
         $t = $d / 36525;
         $lst = self::degRange(280.46061839 + 360.98564736629 * $d + 0.000387933 * $t * $t - $t * $t * $t / 38710000);
+
         return $lst / 15 + $glon / 15;
     }
 
@@ -178,7 +185,8 @@ class Moon extends \stdClass
      * claimed good to 5' (angle) in ra and 1' in dec
      * tallies with another approximate method and with ICE for a couple of dates
      */
-    private static function minimoon($t) {
+    private static function minimoon($t)
+    {
 
         $p2 = 6.283185307;
         $arc = 206264.8062;
@@ -204,7 +212,7 @@ class Moon extends \stdClass
         $dl += -668 * $sinls;
         $dl += -412 * $sinf2;
         $dl += -212 * sin($l2 - $d2);
-        $dl += -206 * sin ($l + $ls - $d2);
+        $dl += -206 * sin($l + $ls - $d2);
         $dl += 192 * sin($l + $d2);
         $dl += -165 * sin($ls - $d2);
         $dl += -125 * sin($d);
@@ -236,15 +244,17 @@ class Moon extends \stdClass
         $ra = (48 / $p2) * atan($y / ($x + $rho));
         $ra = $ra < 0 ? $ra + 24 : $ra;
 
-        return array($dec, $ra);
+        return [$dec, $ra];
 
     }
 
     /**
      *    returns the self::fractional part of x as used in self::minimoon and minisun
      */
-    private static function frac($x) {
+    private static function frac($x)
+    {
         $x -= (int)$x;
+
         return $x < 0 ? $x + 1 : $x;
     }
 
@@ -253,7 +263,8 @@ class Moon extends \stdClass
      * modified julian day number defined as mjd = jd - 2400000.5
      * checked OK for Greg era dates - 26th Dec 02
      */
-    private static function modifiedJulianDate($month, $day, $year) {
+    private static function modifiedJulianDate($month, $day, $year)
+    {
 
         if ($month <= 2) {
             $month += 12;
@@ -269,6 +280,7 @@ class Moon extends \stdClass
         }
 
         $a = 365 * $year - 679004;
+
         return $a + $b + (int)(30.6001 * ($month + 1)) + $day;
 
     }
@@ -276,12 +288,14 @@ class Moon extends \stdClass
     /**
      * Converts an hours decimal to hours and minutes
      */
-    private static function convertTime($hours) {
+    private static function convertTime($hours)
+    {
 
         $hrs = (int)($hours * 60 + 0.5) / 60.0;
         $h = (int)($hrs);
         $m = (int)(60 * ($hrs - $h) + 0.5);
-        return array('hrs'=>$h, 'min'=>$m);
+
+        return ['hrs' => $h, 'min' => $m];
 
     }
 }

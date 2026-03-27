@@ -1,12 +1,13 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: Fonzo
  * Date: 18.06.2017
  * Time: 16:01
  */
-namespace Fonzo;
 
+namespace Fonzo;
 
 /**
  * A PHP PSR-0 Autoloader Class.
@@ -14,7 +15,6 @@ namespace Fonzo;
  */
 class AutoLoader
 {
-
     /**
      * @var array Base directories to be searched for classes.
      * @see AutoLoader::AddBaseDir()
@@ -61,7 +61,9 @@ class AutoLoader
             // Try to load the class from the directory structure
             $success = self::LoadFromPath($baseDir, $className);
             // Break if the class was found
-            if ($success) break;
+            if ($success) {
+                break;
+            }
         }
 
         // Return the result

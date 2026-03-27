@@ -3,7 +3,7 @@ Astronomy PHP Module for IP-Symcon
 [![Version](https://img.shields.io/badge/Symcon-PHPModule-red.svg)](https://www.symcon.de/service/dokumentation/entwicklerbereich/sdk-tools/sdk-php/)
 [![Version](https://img.shields.io/badge/Symcon%20Version-%3E%209.0-green.svg)](https://www.symcon.de/service/dokumentation/installation/migration-v40-v41/)
 ![Code](https://img.shields.io/badge/Code-PHP-blue.svg)
-[![StyleCI](https://github.styleci.io/repos/73331095/shield?branch=master)](https://github.styleci.io/repos/73331095)
+[![PHP Style](https://github.com/Wolbolar/IPSymconAstronomy/actions/workflows/php-style.yml/badge.svg)](https://github.com/Wolbolar/IPSymconAstronomy/actions/workflows/php-style.yml)
 
 Modul fuer IP-Symcon ab Version 9.0 zeigt astronomische Daten an und erstellt Astronomie Timer
 

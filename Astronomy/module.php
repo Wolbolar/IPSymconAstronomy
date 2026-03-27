@@ -175,108 +175,96 @@ class Astronomy extends IPSModuleStrict
     private function ValidateConfiguration()
     {
         $associations = [];
-        if ($this->ReadPropertyBoolean('juliandate') == true) // float
-        {
+        if ($this->ReadPropertyBoolean('juliandate') == true) { // float
             $this->SetupProfile(VARIABLETYPE_FLOAT, 'Astronomie.Julianisches_Datum', 'Calendar', '', ' Tage', 0, 0, 0, 1, $associations);
             $this->SetupVariable('juliandate', 'Julianisches Datum', 'Astronomie.Julianisches_Datum', 1, VARIABLETYPE_FLOAT, true);
         } else {
             $this->SetupVariable('juliandate', 'Julianisches Datum', 'Astronomie.Julianisches_Datum', 1, VARIABLETYPE_FLOAT, false);
         }
-        if ($this->ReadPropertyBoolean('moonazimut') == true) // float
-        {
+        if ($this->ReadPropertyBoolean('moonazimut') == true) { // float
             $this->SetupProfile(VARIABLETYPE_FLOAT, 'Astronomie.Mond_Azimut', 'Moon', '', '°', 0, 0, 0, 2, $associations);
             $this->SetupVariable('moonazimut', 'Mond Azimut', 'Astronomie.Mond_Azimut', 2, VARIABLETYPE_FLOAT, true);
         } else {
             $this->SetupVariable('moonazimut', 'Mond Azimut', 'Astronomie.Mond_Azimut', 2, VARIABLETYPE_FLOAT, false);
         }
-        if ($this->ReadPropertyBoolean('moondistance') == true) // float
-        {
+        if ($this->ReadPropertyBoolean('moondistance') == true) { // float
             $this->SetupProfile(VARIABLETYPE_FLOAT, 'Astronomie.Mond_Entfernung', 'Moon', '', ' km', 0, 0, 0, 0, $associations);
             $this->SetupVariable('moondistance', 'Mond Entfernung', 'Astronomie.Mond_Entfernung', 3, VARIABLETYPE_FLOAT, true);
         } else {
             $this->SetupVariable('moondistance', 'Mond Entfernung', 'Astronomie.Mond_Entfernung', 3, VARIABLETYPE_FLOAT, false);
         }
-        if ($this->ReadPropertyBoolean('moonaltitude') == true) // float
-        {
+        if ($this->ReadPropertyBoolean('moonaltitude') == true) { // float
             $associations = [];
             $this->SetupProfile(VARIABLETYPE_FLOAT, 'Astronomie.Mond_Hoehe', 'Moon', '', '°', 0, 0, 0, 2, $associations);
             $this->SetupVariable('moonaltitude', 'Mond Höhe', 'Astronomie.Mond_Hoehe', 4, VARIABLETYPE_FLOAT, true);
         } else {
             $this->SetupVariable('moonaltitude', 'Mond Höhe', 'Astronomie.Mond_Hoehe', 4, VARIABLETYPE_FLOAT, false);
         }
-        if ($this->ReadPropertyBoolean('moonbrightlimbangle') == true) // float
-        {
+        if ($this->ReadPropertyBoolean('moonbrightlimbangle') == true) { // float
             $associations = [];
             $this->SetupProfile(VARIABLETYPE_FLOAT, 'Astronomie.Mond_Positionswinkel', 'Moon', '', '°', 0, 0, 0, 2, $associations);
             $this->SetupVariable('moonbrightlimbangle', 'Mond Positionswinkel der beleuchteten Fläche', 'Astronomie.Mond_Positionswinkel', 5, VARIABLETYPE_FLOAT, true);
         } else {
             $this->SetupVariable('moonbrightlimbangle', 'Mond Positionswinkel der beleuchteten Fläche', 'Astronomie.Mond_Positionswinkel', 5, VARIABLETYPE_FLOAT, false);
         }
-        if ($this->ReadPropertyBoolean('moondirection') == true) // integer
-        {
+        if ($this->ReadPropertyBoolean('moondirection') == true) { // integer
             $language = $this->ReadPropertyInteger('language');
-            if ($language == 1) //ger
-            {
+            if ($language == 1) { //ger
                 $associations = [
-                    [0, 'N', '', -1],
-                    [1, 'NNO', '', -1],
-                    [2, 'NO', '', -1],
-                    [3, 'ONO', '', -1],
-                    [4, 'O', '', -1],
-                    [5, 'OSO', '', -1],
-                    [6, 'SO', '', -1],
-                    [7, 'SSO', '', -1],
-                    [8, 'S', '', -1],
-                    [9, 'SSW', '', -1],
-                    [10, 'SW', '', -1],
-                    [11, 'WSW', '', -1],
-                    [12, 'W', '', -1],
-                    [13, 'WNW', '', -1],
-                    [14, 'NW', '', -1],
-                    [15, 'NNW', '', -1]
-                ];
-            } elseif ($language == 2) // eng
-            {
+                        [0, 'N', '', -1],
+                        [1, 'NNO', '', -1],
+                        [2, 'NO', '', -1],
+                        [3, 'ONO', '', -1],
+                        [4, 'O', '', -1],
+                        [5, 'OSO', '', -1],
+                        [6, 'SO', '', -1],
+                        [7, 'SSO', '', -1],
+                        [8, 'S', '', -1],
+                        [9, 'SSW', '', -1],
+                        [10, 'SW', '', -1],
+                        [11, 'WSW', '', -1],
+                        [12, 'W', '', -1],
+                        [13, 'WNW', '', -1],
+                        [14, 'NW', '', -1],
+                        [15, 'NNW', '', -1],
+                    ];
+            } elseif ($language == 2) { // eng
                 $associations = [
-                    [0, 'N', '', -1],
-                    [1, 'NNE', '', -1],
-                    [2, 'NE', '', -1],
-                    [3, 'ENE', '', -1],
-                    [4, 'E', '', -1],
-                    [5, 'ESE', '', -1],
-                    [6, 'SE', '', -1],
-                    [7, 'SSE', '', -1],
-                    [8, 'S', '', -1],
-                    [9, 'SSW', '', -1],
-                    [10, 'SW', '', -1],
-                    [11, 'WSW', '', -1],
-                    [12, 'W', '', -1],
-                    [13, 'WNW', '', -1],
-                    [14, 'NW', '', -1],
-                    [15, 'NNW', '', -1]
-                ];
+                        [0, 'N', '', -1],
+                        [1, 'NNE', '', -1],
+                        [2, 'NE', '', -1],
+                        [3, 'ENE', '', -1],
+                        [4, 'E', '', -1],
+                        [5, 'ESE', '', -1],
+                        [6, 'SE', '', -1],
+                        [7, 'SSE', '', -1],
+                        [8, 'S', '', -1],
+                        [9, 'SSW', '', -1],
+                        [10, 'SW', '', -1],
+                        [11, 'WSW', '', -1],
+                        [12, 'W', '', -1],
+                        [13, 'WNW', '', -1],
+                        [14, 'NW', '', -1],
+                        [15, 'NNW', '', -1],
+                    ];
             }
             $this->SetupProfile(VARIABLETYPE_INTEGER, 'Astronomie.Mond_Himmelsrichtung', 'Moon', '', '', 0, 0, 0, 0, $associations);
             $this->SetupVariable('moondirection', 'Mond Richtung', 'Astronomie.Mond_Himmelsrichtung', 6, VARIABLETYPE_INTEGER, true);
         } else {
             $this->SetupVariable('moondirection', 'Mond Richtung', 'Astronomie.Mond_Himmelsrichtung', 6, VARIABLETYPE_INTEGER, false);
         }
-        if ($this->ReadPropertyBoolean('moonvisibility') == true) // float
-        {
+        if ($this->ReadPropertyBoolean('moonvisibility') == true) { // float
             $associations = [];
             $this->SetupProfile(VARIABLETYPE_FLOAT, 'Astronomie.Mond_Sichtbarkeit', 'Moon', '', ' %', 0, 0, 0, 1, $associations);
             $this->SetupVariable('moonvisibility', 'Mond Sichtbarkeit', 'Astronomie.Mond_Sichtbarkeit', 7, VARIABLETYPE_FLOAT, true);
         } else {
             $this->SetupVariable('moonvisibility', 'Mond Sichtbarkeit', 'Astronomie.Mond_Sichtbarkeit', 7, VARIABLETYPE_FLOAT, false);
         }
-        if ($this->ReadPropertyBoolean('moonrise') == true) // int
-        {
+        if ($this->ReadPropertyBoolean('moonrise') == true) { // int
             $obj_moonrise = @$this->GetIDForIdent('moonrise');
-            if($obj_moonrise == false)
-            {
+            if ($obj_moonrise == false) {
                 $moonrise_exist = false;
-            }
-            else{
+            } else {
                 $moonrise_exist = true;
             }
             $ipsversion = $this->GetIPSVersion();
@@ -285,21 +273,17 @@ class Astronomy extends IPSModuleStrict
             } else {
                 $objid = $this->SetupVariable('moonrise', 'Mondaufgang', '~UnixTimestampTime', 8, VARIABLETYPE_INTEGER, true);
             }
-            if($moonrise_exist == false)
-            {
+            if ($moonrise_exist == false) {
                 IPS_SetIcon($objid, 'Moon');
             }
         } else {
             $this->SetupVariable('moonrise', 'Mondaufgang', '~UnixTimestampTime', 8, VARIABLETYPE_INTEGER, false);
         }
-        if ($this->ReadPropertyBoolean('moonset') == true) // int
-        {
+        if ($this->ReadPropertyBoolean('moonset') == true) { // int
             $obj_moonset = @$this->GetIDForIdent('moonset');
-            if($obj_moonset == false)
-            {
+            if ($obj_moonset == false) {
                 $moonset_exist = false;
-            }
-            else{
+            } else {
                 $moonset_exist = true;
             }
             $ipsversion = $this->GetIPSVersion();
@@ -308,160 +292,143 @@ class Astronomy extends IPSModuleStrict
             } else {
                 $objid = $this->SetupVariable('moonset', 'Monduntergang', '~UnixTimestampTime', 9, VARIABLETYPE_INTEGER, true);
             }
-            if($moonset_exist == false)
-            {
+            if ($moonset_exist == false) {
                 IPS_SetIcon($objid, 'Moon');
             }
         } else {
             $this->SetupVariable('moonset', 'Monduntergang', '~UnixTimestampTime', 9, VARIABLETYPE_INTEGER, false);
         }
-        if ($this->ReadPropertyBoolean('moonphase') == true) // string
-        {
+        if ($this->ReadPropertyBoolean('moonphase') == true) { // string
             $associations = [];
             $this->SetupProfile(VARIABLETYPE_STRING, 'Astronomie.Mond_Phase', 'Moon', '', '', 0, 0, 0, 0, $associations);
             $this->SetupVariable('moonphase', 'Mond Phase', 'Astronomie.Mond_Phase', 10, VARIABLETYPE_STRING, true);
         } else {
             $this->SetupVariable('moonphase', 'Mond Phase', 'Astronomie.Mond_Phase', 10, VARIABLETYPE_STRING, false);
         }
-        if ($this->ReadPropertyBoolean('newmoon') == true) // string
-        {
+        if ($this->ReadPropertyBoolean('newmoon') == true) { // string
             $associations = [];
             $this->SetupProfile(VARIABLETYPE_STRING, 'Astronomie.Mond_Neumond', 'Moon', '', '', 0, 0, 0, 0, $associations);
             $this->SetupVariable('newmoon', 'Neumond', 'Astronomie.Mond_Neumond', 11, VARIABLETYPE_STRING, true);
         } else {
             $this->SetupVariable('newmoon', 'Neumond', 'Astronomie.Mond_Neumond', 11, VARIABLETYPE_STRING, false);
         }
-        if ($this->ReadPropertyBoolean('firstquarter') == true) // string
-        {
+        if ($this->ReadPropertyBoolean('firstquarter') == true) { // string
             $associations = [];
             $this->SetupProfile(VARIABLETYPE_STRING, 'Astronomie.Mond_ErstesViertel', 'Moon', '', '', 0, 0, 0, 0, $associations);
             $this->SetupVariable('firstquarter', 'Erstes Viertel', 'Astronomie.Mond_ErstesViertel', 12, VARIABLETYPE_STRING, true);
         } else {
             $this->SetupVariable('firstquarter', 'Erstes Viertel', 'Astronomie.Mond_ErstesViertel', 12, VARIABLETYPE_STRING, false);
         }
-        if ($this->ReadPropertyBoolean('fullmoon') == true) // string
-        {
+        if ($this->ReadPropertyBoolean('fullmoon') == true) { // string
             $associations = [];
             $this->SetupProfile(VARIABLETYPE_STRING, 'Astronomie.Mond_Vollmond', 'Moon', '', '', 0, 0, 0, 0, $associations);
             $this->SetupVariable('fullmoon', 'Vollmond', 'Astronomie.Mond_Vollmond', 13, VARIABLETYPE_STRING, true);
         } else {
             $this->SetupVariable('fullmoon', 'Vollmond', 'Astronomie.Mond_Vollmond', 13, VARIABLETYPE_STRING, false);
         }
-        if ($this->ReadPropertyBoolean('lastquarter') == true) // string
-        {
+        if ($this->ReadPropertyBoolean('lastquarter') == true) { // string
             $associations = [];
             $this->SetupProfile(VARIABLETYPE_STRING, 'Astronomie.Mond_LetztesViertel', 'Moon', '', '', 0, 0, 0, 0, $associations);
             $this->SetupVariable('lastquarter', 'Letztes Viertel', 'Astronomie.Mond_LetztesViertel', 14, VARIABLETYPE_STRING, true);
         } else {
             $this->SetupVariable('lastquarter', 'Letztes Viertel', 'Astronomie.Mond_LetztesViertel', 14, VARIABLETYPE_STRING, false);
         }
-        if ($this->ReadPropertyBoolean('currentnewmoon') == true) // string
-        {
+        if ($this->ReadPropertyBoolean('currentnewmoon') == true) { // string
             $associations = [];
             $this->SetupProfile(VARIABLETYPE_STRING, 'Astronomie.Mond_Neumond', 'Moon', '', '', 0, 0, 0, 0, $associations);
             $this->SetupVariable('currentnewmoon', 'Neumond Aktueller Zyklus', 'Astronomie.Mond_Neumond', 15, VARIABLETYPE_STRING, true);
         } else {
             $this->SetupVariable('currentnewmoon', 'Neumond Aktueller Zyklus', 'Astronomie.Mond_Neumond', 15, VARIABLETYPE_STRING, false);
         }
-        if ($this->ReadPropertyBoolean('currentfirstquarter') == true) // string
-        {
+        if ($this->ReadPropertyBoolean('currentfirstquarter') == true) { // string
             $associations = [];
             $this->SetupProfile(VARIABLETYPE_STRING, 'Astronomie.Mond_ErstesViertel', 'Moon', '', '', 0, 0, 0, 0, $associations);
             $this->SetupVariable('currentfirstquarter', 'Erstes Viertel Aktueller Zyklus', 'Astronomie.Mond_ErstesViertel', 16, VARIABLETYPE_STRING, true);
         } else {
             $this->SetupVariable('currentfirstquarter', 'Erstes Viertel Aktueller Zyklus', 'Astronomie.Mond_ErstesViertel', 16, VARIABLETYPE_STRING, false);
         }
-        if ($this->ReadPropertyBoolean('currentfullmoon') == true) // string
-        {
+        if ($this->ReadPropertyBoolean('currentfullmoon') == true) { // string
             $associations = [];
             $this->SetupProfile(VARIABLETYPE_STRING, 'Astronomie.Mond_Vollmond', 'Moon', '', '', 0, 0, 0, 0, $associations);
             $this->SetupVariable('currentfullmoon', 'Vollmond Aktueller Zyklus', 'Astronomie.Mond_Vollmond', 17, VARIABLETYPE_STRING, true);
         } else {
             $this->SetupVariable('currentfullmoon', 'Vollmond Aktueller Zyklus', 'Astronomie.Mond_Vollmond', 17, VARIABLETYPE_STRING, false);
         }
-        if ($this->ReadPropertyBoolean('currentlastquarter') == true) // string
-        {
+        if ($this->ReadPropertyBoolean('currentlastquarter') == true) { // string
             $associations = [];
             $this->SetupProfile(VARIABLETYPE_STRING, 'Astronomie.Mond_LetztesViertel', 'Moon', '', '', 0, 0, 0, 0, $associations);
             $this->SetupVariable('currentlastquarter', 'Letztes Viertel Aktueller Zyklus', 'Astronomie.Mond_LetztesViertel', 18, VARIABLETYPE_STRING, true);
         } else {
             $this->SetupVariable('currentlastquarter', 'Letztes Viertel Aktueller Zyklus', 'Astronomie.Mond_LetztesViertel', 18, VARIABLETYPE_STRING, false);
         }
-        if ($this->ReadPropertyBoolean('sunazimut') == true) // float
-        {
+        if ($this->ReadPropertyBoolean('sunazimut') == true) { // float
             $associations = [];
             $this->SetupProfile(VARIABLETYPE_FLOAT, 'Astronomie.Sonne_Azimut', 'Sun', '', '°', 0, 0, 0, 2, $associations);
             $this->SetupVariable('sunazimut', 'Sonne Azimut', 'Astronomie.Sonne_Azimut', 19, VARIABLETYPE_FLOAT, true);
         } else {
             $this->SetupVariable('sunazimut', 'Sonne Azimut', 'Astronomie.Sonne_Azimut', 19, VARIABLETYPE_FLOAT, false);
         }
-        if ($this->ReadPropertyBoolean('sundistance') == true) // float
-        {
+        if ($this->ReadPropertyBoolean('sundistance') == true) { // float
             $associations = [];
             $this->SetupProfile(VARIABLETYPE_FLOAT, 'Astronomie.Sonne_Entfernung', 'Sun', '', ' km', 0, 0, 0, 0, $associations);
             $this->SetupVariable('sundistance', 'Sonne Entfernung', 'Astronomie.Sonne_Entfernung', 20, VARIABLETYPE_FLOAT, true);
         } else {
             $this->SetupVariable('sundistance', 'Sonne Entfernung', 'Astronomie.Sonne_Entfernung', 20, VARIABLETYPE_FLOAT, false);
         }
-        if ($this->ReadPropertyBoolean('sunaltitude') == true) // float
-        {
+        if ($this->ReadPropertyBoolean('sunaltitude') == true) { // float
             $associations = [];
             $this->SetupProfile(VARIABLETYPE_FLOAT, 'Astronomie.Sonne_Hoehe', 'Sun', '', '°', 0, 0, 0, 2, $associations);
             $this->SetupVariable('sunaltitude', 'Sonne Höhe', 'Astronomie.Sonne_Hoehe', 21, VARIABLETYPE_FLOAT, true);
         } else {
             $this->SetupVariable('sunaltitude', 'Sonne Höhe', 'Astronomie.Sonne_Hoehe', 21, VARIABLETYPE_FLOAT, false);
         }
-        if ($this->ReadPropertyBoolean('sundirection') == true) // integer
-        {
+        if ($this->ReadPropertyBoolean('sundirection') == true) { // integer
             $language = $this->ReadPropertyInteger('language');
-            if ($language == 1) //ger
-            {
+            if ($language == 1) { //ger
                 $associations = [
-                    [0, 'N', '', -1],
-                    [1, 'NNO', '', -1],
-                    [2, 'NO', '', -1],
-                    [3, 'ONO', '', -1],
-                    [4, 'O', '', -1],
-                    [5, 'OSO', '', -1],
-                    [6, 'SO', '', -1],
-                    [7, 'SSO', '', -1],
-                    [8, 'S', '', -1],
-                    [9, 'SSW', '', -1],
-                    [10, 'SW', '', -1],
-                    [11, 'WSW', '', -1],
-                    [12, 'W', '', -1],
-                    [13, 'WNW', '', -1],
-                    [14, 'NW', '', -1],
-                    [15, 'NNW', '', -1]
-                ];
-            } elseif ($language == 2) // eng
-            {
+                        [0, 'N', '', -1],
+                        [1, 'NNO', '', -1],
+                        [2, 'NO', '', -1],
+                        [3, 'ONO', '', -1],
+                        [4, 'O', '', -1],
+                        [5, 'OSO', '', -1],
+                        [6, 'SO', '', -1],
+                        [7, 'SSO', '', -1],
+                        [8, 'S', '', -1],
+                        [9, 'SSW', '', -1],
+                        [10, 'SW', '', -1],
+                        [11, 'WSW', '', -1],
+                        [12, 'W', '', -1],
+                        [13, 'WNW', '', -1],
+                        [14, 'NW', '', -1],
+                        [15, 'NNW', '', -1],
+                    ];
+            } elseif ($language == 2) { // eng
                 $associations = [
-                    [0, 'N', '', -1],
-                    [1, 'NNE', '', -1],
-                    [2, 'NE', '', -1],
-                    [3, 'ENE', '', -1],
-                    [4, 'E', '', -1],
-                    [5, 'ESE', '', -1],
-                    [6, 'SE', '', -1],
-                    [7, 'SSE', '', -1],
-                    [8, 'S', '', -1],
-                    [9, 'SSW', '', -1],
-                    [10, 'SW', '', -1],
-                    [11, 'WSW', '', -1],
-                    [12, 'W', '', -1],
-                    [13, 'WNW', '', -1],
-                    [14, 'NW', '', -1],
-                    [15, 'NNW', '', -1]
-                ];
+                        [0, 'N', '', -1],
+                        [1, 'NNE', '', -1],
+                        [2, 'NE', '', -1],
+                        [3, 'ENE', '', -1],
+                        [4, 'E', '', -1],
+                        [5, 'ESE', '', -1],
+                        [6, 'SE', '', -1],
+                        [7, 'SSE', '', -1],
+                        [8, 'S', '', -1],
+                        [9, 'SSW', '', -1],
+                        [10, 'SW', '', -1],
+                        [11, 'WSW', '', -1],
+                        [12, 'W', '', -1],
+                        [13, 'WNW', '', -1],
+                        [14, 'NW', '', -1],
+                        [15, 'NNW', '', -1],
+                    ];
             }
             $this->SetupProfile(VARIABLETYPE_INTEGER, 'Astronomie.Sonne_Himmelsrichtung', 'Sun', '', '', 0, 0, 0, 0, $associations);
             $this->SetupVariable('sundirection', 'Sonne Richtung', 'Astronomie.Sonne_Himmelsrichtung', 22, VARIABLETYPE_INTEGER, true);
         } else {
             $this->SetupVariable('sundirection', 'Sonne Richtung', 'Astronomie.Sonne_Himmelsrichtung', 22, VARIABLETYPE_INTEGER, false);
         }
-        if ($this->ReadPropertyBoolean('radiant_power') == true) // float
-        {
+        if ($this->ReadPropertyBoolean('radiant_power') == true) { // float
             $associations = [];
             $this->SetupProfile(VARIABLETYPE_FLOAT, 'Astronomie.Radiant_Power', 'Sun', '', ' W/m²', 0, 0, 0, 2, $associations);
             $this->SetupVariable('radiant_power', $this->Translate('radiant power'), 'Astronomie.Radiant_Power', 23, VARIABLETYPE_FLOAT, true);
@@ -470,25 +437,22 @@ class Astronomy extends IPSModuleStrict
         }
 
         // radiant_power
-        if ($this->ReadPropertyBoolean('season') == true) // integer
-        {
+        if ($this->ReadPropertyBoolean('season') == true) { // integer
             $language = $this->ReadPropertyInteger('language');
-            if ($language == 1) //ger
-            {
+            if ($language == 1) { //ger
                 $associations = [
-                    [1, 'Frühling', '', -1],
-                    [2, 'Sommer', '', -1],
-                    [3, 'Herbst', '', -1],
-                    [4, 'Winter', '', -1]
-                ];
-            } elseif ($language == 2) // eng
-            {
+                        [1, 'Frühling', '', -1],
+                        [2, 'Sommer', '', -1],
+                        [3, 'Herbst', '', -1],
+                        [4, 'Winter', '', -1],
+                    ];
+            } elseif ($language == 2) { // eng
                 $associations = [
-                    [1, 'Spring', '', -1],
-                    [2, 'Sommer', '', -1],
-                    [3, 'Autumn', '', -1],
-                    [4, 'Winter', '', -1]
-                ];
+                        [1, 'Spring', '', -1],
+                        [2, 'Sommer', '', -1],
+                        [3, 'Autumn', '', -1],
+                        [4, 'Winter', '', -1],
+                    ];
             }
             $this->SetupProfile(VARIABLETYPE_INTEGER, 'Astronomie.Jahreszeit', 'Sun', '', '', 0, 0, 0, 0, $associations);
             $this->SetupVariable('season', 'Jahreszeit', 'Astronomie.Jahreszeit', 24, VARIABLETYPE_INTEGER, true);
@@ -528,7 +492,7 @@ class Astronomy extends IPSModuleStrict
             ['bluehoureveningstart', 'Blaue Stunde Abend Beginn', 56],
             ['bluehoureveningend', 'Blaue Stunde Abend Ende', 57],
             ['moonculmination', 'Mondkulmination', 58],
-            ['moonlowerculmination', 'Mond Unterkulmination', 59]
+            ['moonlowerculmination', 'Mond Unterkulmination', 59],
         ];
         foreach ($timeVariables as $timeVariable) {
             [$ident, $name, $position] = $timeVariable;
@@ -562,7 +526,7 @@ class Astronomy extends IPSModuleStrict
             ['sunzodiaclongitude', 'Sonne Tierkreis-Längengrad', 'Astronomie.Sonne_Tierkreislaenge', '°', 67],
             ['moonzodiaclongitude', 'Mond Tierkreis-Längengrad', 'Astronomie.Mond_Tierkreislaenge', '°', 68],
             ['sunparallacticangle', 'Sonne Parallaktischer Winkel', 'Astronomie.Sonne_ParallaktischerWinkel', '°', 69],
-            ['moonparallacticangle', 'Mond Parallaktischer Winkel', 'Astronomie.Mond_ParallaktischerWinkel', '°', 70]
+            ['moonparallacticangle', 'Mond Parallaktischer Winkel', 'Astronomie.Mond_ParallaktischerWinkel', '°', 70],
         ];
         foreach ($floatVariables as $floatVariable) {
             [$ident, $name, $profile, $suffix, $position] = $floatVariable;
@@ -612,37 +576,29 @@ class Astronomy extends IPSModuleStrict
             }
             $this->MaintainMediaImage('picturemoon', 'Mond Ansicht', 21, false);
         }
-        if ($this->ReadPropertyBoolean('sunmoonview') == true) // string
-        {
+        if ($this->ReadPropertyBoolean('sunmoonview') == true) { // string
             $obj_sunmoonview = @$this->GetIDForIdent('sunmoonview');
-            if($obj_sunmoonview == false)
-            {
+            if ($obj_sunmoonview == false) {
                 $sunmoonview_exist = false;
-            }
-            else{
+            } else {
                 $sunmoonview_exist = true;
             }
             $objid = $this->SetupVariable('sunmoonview', 'Position Sonne und Mond', '~HTMLBox', 25, VARIABLETYPE_STRING, true);
-            if($sunmoonview_exist == false)
-            {
+            if ($sunmoonview_exist == false) {
                 IPS_SetIcon($objid, 'Sun');
             }
         } else {
             $this->SetupVariable('sunmoonview', 'Position Sonne und Mond', '~HTMLBox', 25, VARIABLETYPE_STRING, false);
         }
-        if ($this->ReadPropertyBoolean('sunsetselect') == true) // string
-        {
+        if ($this->ReadPropertyBoolean('sunsetselect') == true) { // string
             $obj_sunset = @$this->GetIDForIdent('sunset');
-            if($obj_sunset == false)
-            {
+            if ($obj_sunset == false) {
                 $sunset_exist = false;
-            }
-            else{
+            } else {
                 $sunset_exist = true;
             }
             $objid = $this->SetupVariable('sunset', 'Sonnenuntergang', '~UnixTimestamp', 26, VARIABLETYPE_INTEGER, true);
-            if($sunset_exist == false)
-            {
+            if ($sunset_exist == false) {
                 IPS_SetIcon($objid, 'Sun');
             }
 
@@ -660,19 +616,15 @@ class Astronomy extends IPSModuleStrict
         } else {
             $this->SetupVariable('sunset', 'Sonnenuntergang', '~UnixTimestamp', 26, VARIABLETYPE_INTEGER, false);
         }
-        if ($this->ReadPropertyBoolean('sunriseselect') == true) // string
-        {
+        if ($this->ReadPropertyBoolean('sunriseselect') == true) { // string
             $obj_sunrise = @$this->GetIDForIdent('sunrise');
-            if($obj_sunrise == false)
-            {
+            if ($obj_sunrise == false) {
                 $sunrise_exist = false;
-            }
-            else{
+            } else {
                 $sunrise_exist = true;
             }
             $objid = $this->SetupVariable('sunrise', 'Sonnenaufgang', '~UnixTimestamp', 27, VARIABLETYPE_INTEGER, true);
-            if($sunrise_exist == false)
-            {
+            if ($sunrise_exist == false) {
                 IPS_SetIcon($objid, 'Sun');
             }
 
@@ -690,26 +642,22 @@ class Astronomy extends IPSModuleStrict
         } else {
             $this->SetupVariable('sunrise', 'Sonnenaufgang', '~UnixTimestamp', 27, VARIABLETYPE_INTEGER, false);
         }
-        if ($this->ReadPropertyBoolean('extinfoselection') == true) // string
-        {
-            if ($this->ReadPropertyBoolean('sunsetselect') == true) // string
-            {
+        if ($this->ReadPropertyBoolean('extinfoselection') == true) { // string
+            if ($this->ReadPropertyBoolean('sunsetselect') == true) { // string
                 $associations = [];
                 $this->SetupProfile(VARIABLETYPE_STRING, 'Astronomie.Sonnenuntergang_Zeit', 'Sun', '', '', 0, 0, 0, 0, $associations);
                 $this->SetupVariable('sunsettime', 'Sonnenuntergang Uhrzeit', 'Astronomie.Sonnenuntergang_Zeit', 28, VARIABLETYPE_STRING, true);
             } else {
                 $this->SetupVariable('sunsettime', 'Sonnenuntergang Uhrzeit', 'Astronomie.Sonnenuntergang_Zeit', 28, VARIABLETYPE_INTEGER, false);
             }
-            if ($this->ReadPropertyBoolean('sunriseselect') == true) // string
-            {
+            if ($this->ReadPropertyBoolean('sunriseselect') == true) { // string
                 $associations = [];
                 $this->SetupProfile(VARIABLETYPE_STRING, 'Astronomie.Sonnenaufgang_Zeit', 'Sun', '', '', 0, 0, 0, 0, $associations);
                 $this->SetupVariable('sunrisetime', 'Sonnenaufgang Uhrzeit', 'Astronomie.Sonnenaufgang_Zeit', 29, VARIABLETYPE_STRING, true);
             } else {
                 $this->SetupVariable('sunrisetime', 'Sonnenaufgang Uhrzeit', 'Astronomie.Sonnenaufgang_Zeit', 29, VARIABLETYPE_INTEGER, false);
             }
-            if ($this->ReadPropertyBoolean('newmoon') == true) // string
-            {
+            if ($this->ReadPropertyBoolean('newmoon') == true) { // string
                 $associations = [];
                 $this->SetupProfile(VARIABLETYPE_STRING, 'Astronomie.Mond_Neumond_Datum', 'Moon', '', '', 0, 0, 0, 0, $associations);
                 $this->SetupVariable('newmoondate', 'Neumond Datum', 'Astronomie.Mond_Neumond_Datum', 30, VARIABLETYPE_STRING, true);
@@ -719,8 +667,7 @@ class Astronomy extends IPSModuleStrict
                 $this->SetupVariable('newmoondate', 'Neumond Datum', 'Astronomie.Mond_Neumond_Datum', 30, VARIABLETYPE_STRING, false);
                 $this->SetupVariable('newmoontime', 'Neumond Uhrzeit', 'Astronomie.Mond_Neumond_Zeit', 31, VARIABLETYPE_STRING, false);
             }
-            if ($this->ReadPropertyBoolean('firstquarter') == true) // string
-            {
+            if ($this->ReadPropertyBoolean('firstquarter') == true) { // string
                 $associations = [];
                 $this->SetupProfile(VARIABLETYPE_STRING, 'Astronomie.Mond_ErstesViertel_Datum', 'Moon', '', '', 0, 0, 0, 0, $associations);
                 $this->SetupVariable('firstquarterdate', 'Erstes Viertel Datum', 'Astronomie.Mond_ErstesViertel_Datum', 32, VARIABLETYPE_STRING, true);
@@ -730,8 +677,7 @@ class Astronomy extends IPSModuleStrict
                 $this->SetupVariable('firstquarterdate', 'Erstes Viertel Datum', 'Astronomie.Mond_ErstesViertel_Datum', 32, VARIABLETYPE_STRING, false);
                 $this->SetupVariable('firstquartertime', 'Erstes Viertel Uhrzeit', 'Astronomie.Mond_ErstesViertel_Zeit', 33, VARIABLETYPE_STRING, false);
             }
-            if ($this->ReadPropertyBoolean('fullmoon') == true) // string
-            {
+            if ($this->ReadPropertyBoolean('fullmoon') == true) { // string
                 $associations = [];
                 $this->SetupProfile(VARIABLETYPE_STRING, 'Astronomie.Mond_Vollmond_Datum', 'Moon', '', '', 0, 0, 0, 0, $associations);
                 $this->SetupVariable('fullmoondate', 'Vollmond Datum', 'Astronomie.Mond_Vollmond_Datum', 34, VARIABLETYPE_STRING, true);
@@ -741,8 +687,7 @@ class Astronomy extends IPSModuleStrict
                 $this->SetupVariable('fullmoondate', 'Vollmond', 'Astronomie.Mond_Vollmond_Datum', 34, VARIABLETYPE_STRING, false);
                 $this->SetupVariable('fullmoontime', 'Vollmond', 'Astronomie.Mond_Vollmond_Zeit', 35, VARIABLETYPE_STRING, false);
             }
-            if ($this->ReadPropertyBoolean('lastquarter') == true) // string
-            {
+            if ($this->ReadPropertyBoolean('lastquarter') == true) { // string
                 $associations = [];
                 $this->SetupProfile(VARIABLETYPE_STRING, 'Astronomie.Mond_LetztesViertel_Datum', 'Moon', '', '', 0, 0, 0, 0, $associations);
                 $this->SetupVariable('lastquarterdate', 'Letztes Viertel Datum', 'Astronomie.Mond_LetztesViertel_Datum', 36, VARIABLETYPE_STRING, true);
@@ -752,8 +697,7 @@ class Astronomy extends IPSModuleStrict
                 $this->SetupVariable('lastquarterdate', 'Letztes Viertel Datum', 'Astronomie.Mond_LetztesViertel_Datum', 36, VARIABLETYPE_STRING, false);
                 $this->SetupVariable('lastquartertime', 'Letztes Viertel Zeit', 'Astronomie.Mond_LetztesViertel_Zeit', 37, VARIABLETYPE_STRING, false);
             }
-            if ($this->ReadPropertyBoolean('moonrise') == true) // int
-            {
+            if ($this->ReadPropertyBoolean('moonrise') == true) { // int
                 $associations = [];
                 $this->SetupProfile(VARIABLETYPE_STRING, 'Astronomie.Mond_Mondaufgang_Datum', 'Moon', '', '', 0, 0, 0, 0, $associations);
                 $this->SetupVariable('moonrisedate', 'Mondaufgang Datum', 'Astronomie.Mond_Mondaufgang_Datum', 38, VARIABLETYPE_STRING, true);
@@ -763,8 +707,7 @@ class Astronomy extends IPSModuleStrict
                 $this->SetupVariable('moonrisedate', 'Mondaufgang Datum', 'Astronomie.Mond_Mondaufgang_Datum', 38, VARIABLETYPE_INTEGER, false);
                 $this->SetupVariable('moonrisetime', 'Mondaufgang Uhrzeit', 'Astronomie.Mond_Mondaufgang_Zeit', 39, VARIABLETYPE_INTEGER, false);
             }
-            if ($this->ReadPropertyBoolean('moonset') == true) // int
-            {
+            if ($this->ReadPropertyBoolean('moonset') == true) { // int
                 $associations = [];
                 $this->SetupProfile(VARIABLETYPE_STRING, 'Astronomie.Mond_Monduntergang_Datum', 'Moon', '', '', 0, 0, 0, 0, $associations);
                 $this->SetupVariable('moonsetdate', 'Monduntergang Datum', 'Astronomie.Mond_Monduntergang_Datum', 40, VARIABLETYPE_STRING, true);
@@ -776,79 +719,74 @@ class Astronomy extends IPSModuleStrict
             }
             if ($this->ReadPropertyBoolean('sunstarsign') == true) {
                 $language = $this->ReadPropertyInteger('language');
-                if ($language == 1) //ger
-                {
+                if ($language == 1) { //ger
                     $associations = [
-                        [1, 'Widder', '', -1],
-                        [2, 'Stier', '', -1],
-                        [3, 'Zwillinge', '', -1],
-                        [4, 'Krebs', '', -1],
-                        [5, 'Löwe', '', -1],
-                        [6, 'Jungfrau', '', -1],
-                        [7, 'Waage', '', -1],
-                        [8, 'Skorpion', '', -1],
-                        [9, 'Schütze', '', -1],
-                        [10, 'Steinbock', '', -1],
-                        [11, 'Wassermann', '', -1],
-                        [12, 'Fische', '', -1]
-                    ];
-                } elseif ($language == 2) // eng
-                {
+                            [1, 'Widder', '', -1],
+                            [2, 'Stier', '', -1],
+                            [3, 'Zwillinge', '', -1],
+                            [4, 'Krebs', '', -1],
+                            [5, 'Löwe', '', -1],
+                            [6, 'Jungfrau', '', -1],
+                            [7, 'Waage', '', -1],
+                            [8, 'Skorpion', '', -1],
+                            [9, 'Schütze', '', -1],
+                            [10, 'Steinbock', '', -1],
+                            [11, 'Wassermann', '', -1],
+                            [12, 'Fische', '', -1],
+                        ];
+                } elseif ($language == 2) { // eng
                     $associations = [
-                        [1, 'Aries', '', -1],
-                        [2, 'Taurus', '', -1],
-                        [3, 'Gemini', '', -1],
-                        [4, 'Cancer', '', -1],
-                        [5, 'Leo', '', -1],
-                        [6, 'Virgo', '', -1],
-                        [7, 'Libra', '', -1],
-                        [8, 'Scorpio', '', -1],
-                        [9, 'Sagittarius', '', -1],
-                        [10, 'Capricorn', '', -1],
-                        [11, 'Aquarius', '', -1],
-                        [12, 'Pisces', '', -1]
-                    ];
+                            [1, 'Aries', '', -1],
+                            [2, 'Taurus', '', -1],
+                            [3, 'Gemini', '', -1],
+                            [4, 'Cancer', '', -1],
+                            [5, 'Leo', '', -1],
+                            [6, 'Virgo', '', -1],
+                            [7, 'Libra', '', -1],
+                            [8, 'Scorpio', '', -1],
+                            [9, 'Sagittarius', '', -1],
+                            [10, 'Capricorn', '', -1],
+                            [11, 'Aquarius', '', -1],
+                            [12, 'Pisces', '', -1],
+                        ];
                 }
                 $this->SetupProfile(VARIABLETYPE_INTEGER, 'Astronomie.Sonne_Sternzeichen', 'Sun', '', '', 0, 0, 0, 0, $associations);
                 $this->SetupVariable('sunstarsign', $this->Translate('sun in star sign'), 'Astronomie.Sonne_Sternzeichen', 44, VARIABLETYPE_INTEGER, true);
             } else {
                 $this->SetupVariable('sunstarsign', $this->Translate('sun in star sign'), 'Astronomie.Sonne_Sternzeichen', 44, VARIABLETYPE_INTEGER, false);
             }
-            if ($this->ReadPropertyBoolean('moonstarsign') == true) // integer
-            {
+            if ($this->ReadPropertyBoolean('moonstarsign') == true) { // integer
                 $language = $this->ReadPropertyInteger('language');
-                if ($language == 1) //ger
-                {
+                if ($language == 1) { //ger
                     $associations = [
-                        [1, 'Widder', '', -1],
-                        [2, 'Stier', '', -1],
-                        [3, 'Zwillinge', '', -1],
-                        [4, 'Krebs', '', -1],
-                        [5, 'Löwe', '', -1],
-                        [6, 'Jungfrau', '', -1],
-                        [7, 'Waage', '', -1],
-                        [8, 'Skorpion', '', -1],
-                        [9, 'Schütze', '', -1],
-                        [10, 'Steinbock', '', -1],
-                        [11, 'Wassermann', '', -1],
-                        [12, 'Fische', '', -1]
-                    ];
-                } elseif ($language == 2) // eng
-                {
+                            [1, 'Widder', '', -1],
+                            [2, 'Stier', '', -1],
+                            [3, 'Zwillinge', '', -1],
+                            [4, 'Krebs', '', -1],
+                            [5, 'Löwe', '', -1],
+                            [6, 'Jungfrau', '', -1],
+                            [7, 'Waage', '', -1],
+                            [8, 'Skorpion', '', -1],
+                            [9, 'Schütze', '', -1],
+                            [10, 'Steinbock', '', -1],
+                            [11, 'Wassermann', '', -1],
+                            [12, 'Fische', '', -1],
+                        ];
+                } elseif ($language == 2) { // eng
                     $associations = [
-                        [1, 'Aries', '', -1],
-                        [2, 'Taurus', '', -1],
-                        [3, 'Gemini', '', -1],
-                        [4, 'Cancer', '', -1],
-                        [5, 'Leo', '', -1],
-                        [6, 'Virgo', '', -1],
-                        [7, 'Libra', '', -1],
-                        [8, 'Scorpio', '', -1],
-                        [9, 'Sagittarius', '', -1],
-                        [10, 'Capricorn', '', -1],
-                        [11, 'Aquarius', '', -1],
-                        [12, 'Pisces', '', -1]
-                    ];
+                            [1, 'Aries', '', -1],
+                            [2, 'Taurus', '', -1],
+                            [3, 'Gemini', '', -1],
+                            [4, 'Cancer', '', -1],
+                            [5, 'Leo', '', -1],
+                            [6, 'Virgo', '', -1],
+                            [7, 'Libra', '', -1],
+                            [8, 'Scorpio', '', -1],
+                            [9, 'Sagittarius', '', -1],
+                            [10, 'Capricorn', '', -1],
+                            [11, 'Aquarius', '', -1],
+                            [12, 'Pisces', '', -1],
+                        ];
                 }
                 $this->SetupProfile(VARIABLETYPE_INTEGER, 'Astronomie.Mond_Sternzeichen', 'Moon', '', '', 0, 0, 0, 0, $associations);
                 $this->SetupVariable('moonstarsign', $this->Translate('moon in star sign'), 'Astronomie.Mond_Sternzeichen', 45, VARIABLETYPE_INTEGER, true);
@@ -894,6 +832,7 @@ class Astronomy extends IPSModuleStrict
                     break;
             }
         }
+
         return $name;
     }
 
@@ -962,7 +901,10 @@ class Astronomy extends IPSModuleStrict
         if ($Vartype != VARIABLETYPE_STRING) {
             IPS_SetVariableProfileDigits($Name, $Digits); //  Nachkommastellen
             IPS_SetVariableProfileValues(
-                $Name, $MinValue, $MaxValue, $StepSize
+                $Name,
+                $MinValue,
+                $MaxValue,
+                $StepSize
             ); // string $ProfilName, float $Minimalwert, float $Maximalwert, float $Schrittweite
         }
     }
@@ -981,23 +923,17 @@ class Astronomy extends IPSModuleStrict
     protected function GetIPSVersion()
     {
         $ipsversion = floatval(IPS_GetKernelVersion());
-        if ($ipsversion < 4.1) // 4.0
-        {
+        if ($ipsversion < 4.1) { // 4.0
             $ipsversion = 0;
-        } elseif ($ipsversion >= 4.1 && $ipsversion < 4.2) // 4.1
-        {
+        } elseif ($ipsversion >= 4.1 && $ipsversion < 4.2) { // 4.1
             $ipsversion = 1;
-        } elseif ($ipsversion >= 4.2 && $ipsversion < 4.3) // 4.2
-        {
+        } elseif ($ipsversion >= 4.2 && $ipsversion < 4.3) { // 4.2
             $ipsversion = 2;
-        } elseif ($ipsversion >= 4.3 && $ipsversion < 4.4) // 4.3
-        {
+        } elseif ($ipsversion >= 4.3 && $ipsversion < 4.4) { // 4.3
             $ipsversion = 3;
-        } elseif ($ipsversion >= 4.4 && $ipsversion < 5) // 4.4
-        {
+        } elseif ($ipsversion >= 4.4 && $ipsversion < 5) { // 4.4
             $ipsversion = 4;
-        } else   // 5
-        {
+        } else { // 5
             $ipsversion = 5;
         }
 
@@ -1021,6 +957,7 @@ class Astronomy extends IPSModuleStrict
             $picid = 'TwilightYearPicture';
             $MediaID = $this->CreateMediaImage('TwilightYearPicture', $nameyear, $picid, $ContentYear, $ImagePath, 41, 'pictureyeartwilight');
         }
+
         return ['mediaid_twilight_year' => $MediaID, 'twilight_year_image_path' => $ImagePath];
     }
 
@@ -1158,6 +1095,7 @@ class Astronomy extends IPSModuleStrict
         $ImagePath = IPS_GetKernelDir() . 'media' . DIRECTORY_SEPARATOR . $filename . '.gif';
         imagegif($image, $ImagePath);
         imagedestroy($image);
+
         return $ImagePath;
     }
 
@@ -1175,6 +1113,7 @@ class Astronomy extends IPSModuleStrict
             $Longitude = IPS_GetProperty($LocationID, 'Longitude');
         }
         $location = ['Latitude' => $Latitude, 'Longitude' => $Longitude];
+
         return $location;
     }
 
@@ -1182,9 +1121,13 @@ class Astronomy extends IPSModuleStrict
     {
         $mediaID = @$this->GetIDForIdent($ident);
         if (!$visible) {
-            if ($mediaID !== false) {
-                IPS_DeleteMedia($mediaID, false);
+            if (is_int($mediaID) && $mediaID > 0 && @IPS_ObjectExists($mediaID)) {
+                $object = @IPS_GetObject($mediaID);
+                if (is_array($object) && array_key_exists('ObjectType', $object) && $object['ObjectType'] === 5) {
+                    IPS_DeleteMedia($mediaID, false);
+                }
             }
+
             return false;
         }
 
@@ -1210,6 +1153,7 @@ class Astronomy extends IPSModuleStrict
             IPS_SetMediaContent($MediaID, base64_encode($Content));
             IPS_SendMediaEvent($MediaID);
         }
+
         return $MediaID;
     }
 
@@ -1231,6 +1175,7 @@ class Astronomy extends IPSModuleStrict
             $picid = 'TwilightDayPicture';
             $MediaID = $this->CreateMediaImage('TwilightDayPicture', $nameday, $picid, $ContentDay, $ImagePath, 40, 'picturedaytwilight');
         }
+
         return ['mediaid_twilight_day' => $MediaID, 'twilight_day_image_path' => $ImagePath];
     }
 
@@ -1358,21 +1303,30 @@ class Astronomy extends IPSModuleStrict
 
         imagesetthickness($image, 1);
         for ($alpha = 0; $alpha < 360; $alpha = $alpha + 30) {
-            imageline($image, intval($marginLeft + $clockWidth / 2 * (1 + cos(deg2rad($alpha)))),
+            imageline(
+                $image,
+                intval($marginLeft + $clockWidth / 2 * (1 + cos(deg2rad($alpha)))),
                 intval($marginTop + $clockWidth / 2 * (1 + sin(deg2rad($alpha)))),
                 intval($marginLeft + 10 + ($clockWidth - 20) / 2 * (1 + cos(deg2rad($alpha)))),
-                intval($marginTop + 10 + ($clockWidth - 20) / 2 * (1 + sin(deg2rad($alpha)))), intval($grey_line));
+                intval($marginTop + 10 + ($clockWidth - 20) / 2 * (1 + sin(deg2rad($alpha)))),
+                intval($grey_line)
+            );
 
-            imageline($image, intval($marginLeft + $clockWidth / 2 * (1 + cos(deg2rad($alpha)))),
+            imageline(
+                $image,
+                intval($marginLeft + $clockWidth / 2 * (1 + cos(deg2rad($alpha)))),
                 intval($marginTop + $clockHeight + $marginMiddle + $clockWidth / 2 * (1 + sin(deg2rad($alpha)))),
                 intval($marginLeft + 10 + ($clockWidth - 20) / 2 * (1 + cos(deg2rad($alpha)))),
-                intval($marginTop + $clockHeight + $marginMiddle + 10 + ($clockWidth - 20) / 2 * (1 + sin(deg2rad($alpha)))), intval($grey_line));
+                intval($marginTop + $clockHeight + $marginMiddle + 10 + ($clockWidth - 20) / 2 * (1 + sin(deg2rad($alpha)))),
+                intval($grey_line)
+            );
 
         }
 
         $ImagePath = IPS_GetKernelDir() . 'media' . DIRECTORY_SEPARATOR . $filename . '.gif';
         imagegif($image, $ImagePath);
         imagedestroy($image);
+
         return $ImagePath;
     }
 
@@ -1389,6 +1343,7 @@ class Astronomy extends IPSModuleStrict
         $astronomictwilightstart = GetValue(IPS_GetObjectIDByIdent('AstronomicTwilightStart', $LocationID));
         $astronomictwilightend = GetValue(IPS_GetObjectIDByIdent('AstronomicTwilightEnd', $LocationID));
         $locationinfo = ['IsDay' => $isday, 'Sunrise' => $sunrise, 'Sunset' => $sunset, 'CivilTwilightStart' => $civiltwilightstart, 'CivilTwilightEnd' => $civiltwilightend, 'NauticTwilightStart' => $nautictwilightstart, 'NauticTwilightEnd' => $nautictwilightend, 'AstronomicTwilightStart' => $astronomictwilightstart, 'AstronomicTwilightEnd' => $astronomictwilightend];
+
         return $locationinfo;
     }
 
@@ -1430,8 +1385,7 @@ class Astronomy extends IPSModuleStrict
             $firstdecreasingmoonpic = 8;
             $lastdecreasingmoonpic = 171;
         }
-        if ($mondphase <= 1 || $mondphase >= 99)  //--Vollmond
-        {
+        if ($mondphase <= 1 || $mondphase >= 99) {  //--Vollmond
             if ($language == 1) {
                 $phase_text = 'Vollmond';
             } else {
@@ -1498,6 +1452,7 @@ class Astronomy extends IPSModuleStrict
         }
 
         $picture = ['picid' => $pic_n, 'phase' => $phase_text];
+
         return $picture;
     }
 
@@ -1507,10 +1462,12 @@ class Astronomy extends IPSModuleStrict
         list($c1, $d1) = $cd;
         if ($a1 == $b1) {
             trigger_error('Invalid scale', E_USER_WARNING);
+
             return false;
         }
         $o = ($b1 * $c1 - $a1 * $d1) / ($b1 - $a1);
         $s = ($d1 - $c1) / ($b1 - $a1);
+
         return function ($x) use ($o, $s) {
             return $s * $x + $o;
         };
@@ -1524,8 +1481,7 @@ class Astronomy extends IPSModuleStrict
         $mediaimgwidth = $this->ReadPropertyInteger('mediaimgwidth');
         $mediaimgheight = $this->ReadPropertyInteger('mediaimgheight');
         $ImageFile = $this->ResolveMoonImageFile((string) $picid);
-        if ($selectionresize)//resize image
-        {
+        if ($selectionresize) {//resize image
             $picturename = $picturename . $picid;
             $imageinfo = $this->getimageinfo($ImageFile);
             if ($imageinfo) {
@@ -1545,6 +1501,7 @@ class Astronomy extends IPSModuleStrict
         $Content = file_get_contents($ImageFile);
         $name = 'Mond Ansicht';
         $MediaID = $this->CreateMediaImage('picturemoon', $name, $picid, $Content, $ImageFile, 21, 'picturemoonvisible');
+
         return $MediaID;
     }
 
@@ -1592,6 +1549,7 @@ class Astronomy extends IPSModuleStrict
         } else {
             $imageinfo = '';
         }
+
         return $imageinfo;
     }
 
@@ -1614,6 +1572,7 @@ class Astronomy extends IPSModuleStrict
             default:
                 die('Unsupported imageformat');
         }
+
         return $image;
     }
 
@@ -1656,6 +1615,7 @@ class Astronomy extends IPSModuleStrict
         $trans_colour = imagecolorallocatealpha($thumbimg, 0, 0, 0, 127);
         imagefill($thumbimg, 0, 0, $trans_colour);
         $thumb = ['img' => $thumbimg, 'width' => $thumbwidth, 'height' => $thumbheight];
+
         return $thumb;
     }
 
@@ -1664,14 +1624,20 @@ class Astronomy extends IPSModuleStrict
         imagecopyresampled(
             $thumb,
             $image,
-            0, 0, 0, 0, // Startposition des Ausschnittes
-            $thumbwidth, $thumbheight,
-            $imagewidth, $imageheight
+            0,
+            0,
+            0,
+            0, // Startposition des Ausschnittes
+            $thumbwidth,
+            $thumbheight,
+            $imagewidth,
+            $imageheight
         );
         // In Datei speichern
         $thumbfile = IPS_GetKernelDir() . 'media' . DIRECTORY_SEPARATOR . 'resampled_' . $picturename . '.png';  // Image-Datei
         imagepng($thumb, $thumbfile);
         imagedestroy($thumb);
+
         return $thumbfile;
     }
 
@@ -1690,6 +1656,7 @@ class Astronomy extends IPSModuleStrict
     protected function GetModuleDirectory()
     {
         $dir = __DIR__;
+
         return $dir;
     }
 
@@ -1699,6 +1666,7 @@ class Astronomy extends IPSModuleStrict
         $month = $this->JDCMonth($JD);
         $year = $this->JDCYear($JD);
         $dateCD = ['day' => $day, 'month' => $month, 'year' => $year];
+
         return $dateCD;
     }
 
@@ -1719,16 +1687,19 @@ class Astronomy extends IPSModuleStrict
         $E = $this->roundvariantfix(365.25 * $D);
         $G = $this->roundvariantfix(($C - $E) / 30.6001);
         $JDCDay = $C - $E + $F - $this->roundvariantfix(30.6001 * $G);
+
         return $JDCDay;
     }
 
     protected function roundvariantfix($value)
     {
         $roundvalue = 0;
-        if ($value >= 0)
+        if ($value >= 0) {
             $roundvalue = floor($value);
-        elseif ($value < 0)
+        } elseif ($value < 0) {
             $roundvalue = ceil($value);
+        }
+
         return $roundvalue;
     }
 
@@ -1756,6 +1727,7 @@ class Astronomy extends IPSModuleStrict
         } else {
             $JDCMonth = $G - 13;
         }
+
         return $JDCMonth;
     }
 
@@ -1789,6 +1761,7 @@ class Astronomy extends IPSModuleStrict
         } else {
             $JDCYear = $D - 4715;
         }
+
         return $JDCYear;
     }
 
@@ -1798,6 +1771,7 @@ class Astronomy extends IPSModuleStrict
         $minutes = $this->DHMin($DH);
         $seconds = $this->DHSec($DH);
         $HMS = ['hours' => $hours, 'minutes' => $minutes, 'seconds' => $seconds];
+
         return $HMS;
     }
 
@@ -1820,6 +1794,7 @@ class Astronomy extends IPSModuleStrict
         } else {
             $DHHour = $this->roundvariantfix($E / 3600);
         }
+
         return $DHHour;
     }
 
@@ -1838,6 +1813,7 @@ class Astronomy extends IPSModuleStrict
         }
 
         $DHMin = fmod(floor($E / 60), 60);
+
         return $DHMin;
     }
 
@@ -1855,6 +1831,7 @@ class Astronomy extends IPSModuleStrict
         }
 
         $DHSec = $D;
+
         return $DHSec;
     }
 
@@ -1871,6 +1848,7 @@ class Astronomy extends IPSModuleStrict
         $G = $this->JDCYear($D);
         $E1 = $this->roundvariantfix($E);
         $UTLct = 24 * ($E - $E1);
+
         return [$UTLct, $E1, $F, $G];
     }
 
@@ -1887,6 +1865,7 @@ class Astronomy extends IPSModuleStrict
         } else {
             $HMSDH = $C;
         }
+
         return $HMSDH;
     }
 
@@ -1925,6 +1904,7 @@ class Astronomy extends IPSModuleStrict
 
         $D = $this->roundvariantfix(30.6001 * ($M + 1));
         $JD = $B + $C + $D + $day + 1720994.5;
+
         return $JD;
     }
 
@@ -1934,6 +1914,7 @@ class Astronomy extends IPSModuleStrict
         $B = $L / 15;
         $C = $A - $B;
         $LSTGST = $C - (24 * $this->roundvariantint($C / 24));
+
         return $LSTGST;
     }
 
@@ -1942,6 +1923,7 @@ class Astronomy extends IPSModuleStrict
     protected function roundvariantint($value)
     {
         $roundvalue = floor($value);
+
         return $roundvalue;
     }
 
@@ -1958,6 +1940,7 @@ class Astronomy extends IPSModuleStrict
         if (($UT - $G1) > 6) {
             $UTDayAdjust = $UT - 24;
         }
+
         return $UTDayAdjust;
     }
 
@@ -1972,6 +1955,7 @@ class Astronomy extends IPSModuleStrict
         $firstquarter = $moonphase['firstquarter'];
         $firstquarterdate = $moonphase['moondate'][1]['date'];
         $firstquartertime = $moonphase['moondate'][1]['time'];
+
         return ['firstquarter' => $firstquarter, 'firstquarterdate' => $firstquarterdate, 'firstquartertime' => $firstquartertime];
     }
 
@@ -2139,6 +2123,7 @@ class Astronomy extends IPSModuleStrict
         $lastquarterstring = $moondate[3]['weekday'] . ', ' . $moondate[3]['date'] . ' ' . $moondate[3]['time'];
 
         $moonphase = ['newmoon' => $newmoonstring, 'firstquarter' => $firstquarterstring, 'fullmoon' => $fullmoonstring, 'lastquarter' => $lastquarterstring, 'moondate' => $moondate];
+
         return $moonphase;
     }
 
@@ -2172,6 +2157,7 @@ class Astronomy extends IPSModuleStrict
         if ($formatselection == 8) {
             $timeformat = 'G:i:s';
         }
+
         return $timeformat;
     }
 
@@ -2186,6 +2172,7 @@ class Astronomy extends IPSModuleStrict
         $newmoon = $moonphase['newmoon'];
         $newmoondate = $moonphase['moondate'][0]['date'];
         $newmoontime = $moonphase['moondate'][0]['time'];
+
         return ['newmoon' => $newmoon, 'newmoondate' => $newmoondate, 'newmoontime' => $newmoontime];
     }
 
@@ -2198,6 +2185,7 @@ class Astronomy extends IPSModuleStrict
         $fullmoon = $moonphase['fullmoon'];
         $fullmoondate = $moonphase['moondate'][2]['date'];
         $fullmoontime = $moonphase['moondate'][2]['time'];
+
         return ['fullmoon' => $fullmoon, 'fullmoondate' => $fullmoondate, 'fullmoontime' => $fullmoontime];
     }
 
@@ -2212,6 +2200,7 @@ class Astronomy extends IPSModuleStrict
         $lastquarter = $moonphase['lastquarter'];
         $lastquarterdate = $moonphase['moondate'][3]['date'];
         $lastquartertime = $moonphase['moondate'][3]['time'];
+
         return ['lastquarter' => $lastquarter, 'lastquarterdate' => $lastquarterdate, 'lastquartertime' => $lastquartertime];
     }
 
@@ -2232,7 +2221,7 @@ class Astronomy extends IPSModuleStrict
         return json_encode([
             'elements' => $this->FormHead(),
             'actions' => $this->FormActions(),
-            'status' => $this->FormStatus()
+            'status' => $this->FormStatus(),
         ]);
     }
 
@@ -2271,11 +2260,11 @@ class Astronomy extends IPSModuleStrict
         $form = [
             [
                 'type' => 'Image',
-                'image' => 'data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAALIAAABkCAIAAACtj/0NAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAxRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMDY3IDc5LjE1Nzc0NywgMjAxNS8wMy8zMC0yMzo0MDo0MiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OUYzNEQ1QUYyRTAyMTFFOThDODlEQTQzNzI5RTZFRDAiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OUYzNEQ1QUUyRTAyMTFFOThDODlEQTQzNzI5RTZFRDAiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTUgV2luZG93cyI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJEMzZDMzNGMTM3RTAxMDM0M0IwM0I1QUFGRjY4MEVGQSIgc3RSZWY6ZG9jdW1lbnRJRD0iRDM2QzMzRjEzN0UwMTAzNDNCMDNCNUFBRkY2ODBFRkEiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz6V9qdlAABkBklEQVR42ny9WY8lSZYeZotvd40tI/eqXqq7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'
+                'image' => 'data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAALIAAABkCAIAAACtj/0NAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAxRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMDY3IDc5LjE1Nzc0NywgMjAxNS8wMy8zMC0yMzo0MDo0MiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OUYzNEQ1QUYyRTAyMTFFOThDODlEQTQzNzI5RTZFRDAiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OUYzNEQ1QUUyRTAyMTFFOThDODlEQTQzNzI5RTZFRDAiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTUgV2luZG93cyI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJEMzZDMzNGMTM3RTAxMDM0M0IwM0I1QUFGRjY4MEVGQSIgc3RSZWY6ZG9jdW1lbnRJRD0iRDM2QzMzRjEzN0UwMTAzNDNCMDNCNUFBRkY2ODBFRkEiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz6V9qdlAABkBklEQVR42ny9WY8lSZYeZotvd40tI/eqXqq7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',
             ],
             [
                 'type' => 'Label',
-                'caption' => 'Astronomy values'
+                'caption' => 'Astronomy values',
             ],
             [
                 'type' => 'ExpansionPanel',
@@ -2283,7 +2272,7 @@ class Astronomy extends IPSModuleStrict
                 'items' => [
                     [
                         'type' => 'Label',
-                        'caption' => 'Display language Webfront:'
+                        'caption' => 'Display language Webfront:',
                     ],
                     [
                         'type' => 'Select',
@@ -2292,17 +2281,17 @@ class Astronomy extends IPSModuleStrict
                         'options' => [
                             [
                                 'label' => 'German',
-                                'value' => 1
+                                'value' => 1,
                             ],
                             [
                                 'label' => 'English',
-                                'value' => 2
-                            ]
-                        ]
+                                'value' => 2,
+                            ],
+                        ],
 
-                    ]
-                ]
-            ]
+                    ],
+                ],
+            ],
         ];
         $form = array_merge_recursive(
             $form,
@@ -2315,10 +2304,10 @@ class Astronomy extends IPSModuleStrict
                             'type' => 'NumberSpinner',
                             'name' => 'Updateinterval',
                             'caption' => 'Seconds',
-                            'suffix' => 'seconds'
-                        ]
-                    ]
-                ]
+                            'suffix' => 'seconds',
+                        ],
+                    ],
+                ],
             ]
         );
         $UTC = $this->ReadPropertyFloat('UTC');
@@ -2328,8 +2317,8 @@ class Astronomy extends IPSModuleStrict
                 [
                     'type' => 'ExpansionPanel',
                     'caption' => '🕒 Coordinated Universal Time (UTC):',
-                    'items' => $this->FormUTCText($UTC)
-                ]
+                    'items' => $this->FormUTCText($UTC),
+                ],
             ]
         );
         $form = array_merge_recursive(
@@ -2341,264 +2330,264 @@ class Astronomy extends IPSModuleStrict
                     'items' => [
                         [
                             'type' => 'Label',
-                            'caption' => 'select values for display:'
+                            'caption' => 'select values for display:',
                         ],
                         [
                             'name' => 'juliandate',
                             'type' => 'CheckBox',
-                            'caption' => 'Julian Date'
+                            'caption' => 'Julian Date',
                         ],
                         [
                             'name' => 'moonazimut',
                             'type' => 'CheckBox',
-                            'caption' => 'moon azimut'
+                            'caption' => 'moon azimut',
                         ],
                         [
                             'name' => 'moondistance',
                             'type' => 'CheckBox',
-                            'caption' => 'moon distance'
+                            'caption' => 'moon distance',
                         ],
                         [
                             'name' => 'moonaltitude',
                             'type' => 'CheckBox',
-                            'caption' => 'moon altitude'
+                            'caption' => 'moon altitude',
                         ],
                         [
                             'name' => 'moonbrightlimbangle',
                             'type' => 'CheckBox',
-                            'caption' => 'moon bright limb angle'
+                            'caption' => 'moon bright limb angle',
                         ],
                         [
                             'name' => 'moondirection',
                             'type' => 'CheckBox',
-                            'caption' => 'moon direction'
+                            'caption' => 'moon direction',
                         ],
                         [
                             'name' => 'moonvisibility',
                             'type' => 'CheckBox',
-                            'caption' => 'moon visibility'
+                            'caption' => 'moon visibility',
                         ],
                         [
                             'name' => 'moonrise',
                             'type' => 'CheckBox',
-                            'caption' => 'moon rise'
+                            'caption' => 'moon rise',
                         ],
                         [
                             'name' => 'moonset',
                             'type' => 'CheckBox',
-                            'caption' => 'moon set'
+                            'caption' => 'moon set',
                         ],
                         [
                             'name' => 'moonphase',
                             'type' => 'CheckBox',
-                            'caption' => 'moon phase'
+                            'caption' => 'moon phase',
                         ],
                         [
                             'name' => 'newmoon',
                             'type' => 'CheckBox',
-                            'caption' => 'new moon'
+                            'caption' => 'new moon',
                         ],
                         [
                             'name' => 'firstquarter',
                             'type' => 'CheckBox',
-                            'caption' => 'first quarter'
+                            'caption' => 'first quarter',
                         ],
                         [
                             'name' => 'fullmoon',
                             'type' => 'CheckBox',
-                            'caption' => 'full moon'
+                            'caption' => 'full moon',
                         ],
                         [
                             'name' => 'lastquarter',
                             'type' => 'CheckBox',
-                            'caption' => 'last quarter'
+                            'caption' => 'last quarter',
                         ],
                         [
                             'name' => 'currentnewmoon',
                             'type' => 'CheckBox',
-                            'caption' => 'current cycle new moon'
+                            'caption' => 'current cycle new moon',
                         ],
                         [
                             'name' => 'currentfirstquarter',
                             'type' => 'CheckBox',
-                            'caption' => 'current cycle first quarter'
+                            'caption' => 'current cycle first quarter',
                         ],
                         [
                             'name' => 'currentfullmoon',
                             'type' => 'CheckBox',
-                            'caption' => 'current cycle full moon'
+                            'caption' => 'current cycle full moon',
                         ],
                         [
                             'name' => 'currentlastquarter',
                             'type' => 'CheckBox',
-                            'caption' => 'current cycle last quarter'
+                            'caption' => 'current cycle last quarter',
                         ],
                         [
                             'name' => 'sunazimut',
                             'type' => 'CheckBox',
-                            'caption' => 'sun azimut'
+                            'caption' => 'sun azimut',
                         ],
                         [
                             'name' => 'sundistance',
                             'type' => 'CheckBox',
-                            'caption' => 'sun distance'
+                            'caption' => 'sun distance',
                         ],
                         [
                             'name' => 'sunaltitude',
                             'type' => 'CheckBox',
-                            'caption' => 'sun altitude'
+                            'caption' => 'sun altitude',
                         ],
                         [
                             'name' => 'sundirection',
                             'type' => 'CheckBox',
-                            'caption' => 'sun direction'
+                            'caption' => 'sun direction',
                         ],
                         [
                             'name' => 'radiant_power',
                             'type' => 'CheckBox',
-                            'caption' => 'radiant power'
+                            'caption' => 'radiant power',
                         ],
                         [
                             'name' => 'season',
                             'type' => 'CheckBox',
-                            'caption' => 'season'
+                            'caption' => 'season',
                         ],
                         [
                             'name' => 'moonstarsign',
                             'type' => 'CheckBox',
-                            'caption' => 'moon in star sign'
+                            'caption' => 'moon in star sign',
                         ],
                         [
                             'name' => 'sunstarsign',
                             'type' => 'CheckBox',
-                            'caption' => 'sun in star sign'
+                            'caption' => 'sun in star sign',
                         ],
                         [
                             'name' => 'moonage',
                             'type' => 'CheckBox',
-                            'caption' => 'moon age'
+                            'caption' => 'moon age',
                         ],
                         [
                             'name' => 'solarnoon',
                             'type' => 'CheckBox',
-                            'caption' => 'solar noon'
+                            'caption' => 'solar noon',
                         ],
                         [
                             'name' => 'daylength',
                             'type' => 'CheckBox',
-                            'caption' => 'day length'
+                            'caption' => 'day length',
                         ],
                         [
                             'name' => 'nightlength',
                             'type' => 'CheckBox',
-                            'caption' => 'night length'
+                            'caption' => 'night length',
                         ],
                         [
                             'name' => 'goldenhourmorningstart',
                             'type' => 'CheckBox',
-                            'caption' => 'golden hour morning start'
+                            'caption' => 'golden hour morning start',
                         ],
                         [
                             'name' => 'goldenhourmorningend',
                             'type' => 'CheckBox',
-                            'caption' => 'golden hour morning end'
+                            'caption' => 'golden hour morning end',
                         ],
                         [
                             'name' => 'goldenhoureveningstart',
                             'type' => 'CheckBox',
-                            'caption' => 'golden hour evening start'
+                            'caption' => 'golden hour evening start',
                         ],
                         [
                             'name' => 'goldenhoureveningend',
                             'type' => 'CheckBox',
-                            'caption' => 'golden hour evening end'
+                            'caption' => 'golden hour evening end',
                         ],
                         [
                             'name' => 'bluehourmorningstart',
                             'type' => 'CheckBox',
-                            'caption' => 'blue hour morning start'
+                            'caption' => 'blue hour morning start',
                         ],
                         [
                             'name' => 'bluehourmorningend',
                             'type' => 'CheckBox',
-                            'caption' => 'blue hour morning end'
+                            'caption' => 'blue hour morning end',
                         ],
                         [
                             'name' => 'bluehoureveningstart',
                             'type' => 'CheckBox',
-                            'caption' => 'blue hour evening start'
+                            'caption' => 'blue hour evening start',
                         ],
                         [
                             'name' => 'bluehoureveningend',
                             'type' => 'CheckBox',
-                            'caption' => 'blue hour evening end'
+                            'caption' => 'blue hour evening end',
                         ],
                         [
                             'name' => 'moonculmination',
                             'type' => 'CheckBox',
-                            'caption' => 'moon culmination'
+                            'caption' => 'moon culmination',
                         ],
                         [
                             'name' => 'moonlowerculmination',
                             'type' => 'CheckBox',
-                            'caption' => 'moon lower culmination'
+                            'caption' => 'moon lower culmination',
                         ],
                         [
                             'name' => 'sunabovehorizon',
                             'type' => 'CheckBox',
-                            'caption' => 'sun above horizon'
+                            'caption' => 'sun above horizon',
                         ],
                         [
                             'name' => 'moonabovehorizon',
                             'type' => 'CheckBox',
-                            'caption' => 'moon above horizon'
+                            'caption' => 'moon above horizon',
                         ],
                         [
                             'name' => 'twilightphase',
                             'type' => 'CheckBox',
-                            'caption' => 'current twilight phase'
+                            'caption' => 'current twilight phase',
                         ],
                         [
                             'name' => 'sunrightascension',
                             'type' => 'CheckBox',
-                            'caption' => 'sun right ascension'
+                            'caption' => 'sun right ascension',
                         ],
                         [
                             'name' => 'sundeclination',
                             'type' => 'CheckBox',
-                            'caption' => 'sun declination'
+                            'caption' => 'sun declination',
                         ],
                         [
                             'name' => 'moonrightascension',
                             'type' => 'CheckBox',
-                            'caption' => 'moon right ascension'
+                            'caption' => 'moon right ascension',
                         ],
                         [
                             'name' => 'moondeclination',
                             'type' => 'CheckBox',
-                            'caption' => 'moon declination'
+                            'caption' => 'moon declination',
                         ],
                         [
                             'name' => 'sunzodiaclongitude',
                             'type' => 'CheckBox',
-                            'caption' => 'sun zodiac longitude'
+                            'caption' => 'sun zodiac longitude',
                         ],
                         [
                             'name' => 'moonzodiaclongitude',
                             'type' => 'CheckBox',
-                            'caption' => 'moon zodiac longitude'
+                            'caption' => 'moon zodiac longitude',
                         ],
                         [
                             'name' => 'sunparallacticangle',
                             'type' => 'CheckBox',
-                            'caption' => 'sun parallactic angle'
+                            'caption' => 'sun parallactic angle',
                         ],
                         [
                             'name' => 'moonparallacticangle',
                             'type' => 'CheckBox',
-                            'caption' => 'moon parallactic angle'
-                        ]
-                    ]
+                            'caption' => 'moon parallactic angle',
+                        ],
+                    ],
                 ],
                 [
                     'type' => 'ExpansionPanel',
@@ -2607,19 +2596,19 @@ class Astronomy extends IPSModuleStrict
                         [
                             'name' => 'pictureyeartwilight',
                             'type' => 'CheckBox',
-                            'caption' => 'picture year twilight'
+                            'caption' => 'picture year twilight',
                         ],
                         [
                             'name' => 'picturedaytwilight',
                             'type' => 'CheckBox',
-                            'caption' => 'picture day twilight'
+                            'caption' => 'picture day twilight',
                         ],
                         [
                             'name' => 'picturetwilightlimited',
                             'type' => 'CheckBox',
-                            'caption' => 'show pictures twilight limited'
-                        ]
-                    ]
+                            'caption' => 'show pictures twilight limited',
+                        ],
+                    ],
                 ],
                 [
                     'type' => 'ExpansionPanel',
@@ -2628,11 +2617,11 @@ class Astronomy extends IPSModuleStrict
                         [
                             'name' => 'picturemoonvisible',
                             'type' => 'CheckBox',
-                            'caption' => 'picture moon'
+                            'caption' => 'picture moon',
                         ],
                         [
                             'type' => 'Label',
-                            'caption' => 'background moonpicture:'
+                            'caption' => 'background moonpicture:',
                         ],
                         [
                             'type' => 'Select',
@@ -2641,67 +2630,67 @@ class Astronomy extends IPSModuleStrict
                             'options' => [
                                 [
                                     'label' => 'black background',
-                                    'value' => 1
+                                    'value' => 1,
                                 ],
                                 [
                                     'label' => 'transparent background',
-                                    'value' => 2
-                                ]
-                            ]
+                                    'value' => 2,
+                                ],
+                            ],
 
                         ],
                         [
                             'type' => 'Label',
-                            'caption' => 'resize images for the media element (module images are 100x100):'
+                            'caption' => 'resize images for the media element (module images are 100x100):',
                         ],
                         [
                             'name' => 'selectionresize',
                             'type' => 'CheckBox',
-                            'caption' => 'resize images'
+                            'caption' => 'resize images',
                         ],
                         [
                             'type' => 'Label',
-                            'caption' => 'media image width:'
+                            'caption' => 'media image width:',
                         ],
                         [
                             'name' => 'mediaimgwidth',
                             'type' => 'NumberSpinner',
-                            'caption' => 'width'
+                            'caption' => 'width',
                         ],
                         [
                             'type' => 'Label',
-                            'caption' => 'media image height:'
+                            'caption' => 'media image height:',
                         ],
                         [
                             'name' => 'mediaimgheight',
                             'type' => 'NumberSpinner',
-                            'caption' => 'height'
+                            'caption' => 'height',
                         ],
                         [
                             'type' => 'Label',
-                            'caption' => 'alternative use own moonpictures:'
+                            'caption' => 'alternative use own moonpictures:',
                         ],
                         [
                             'name' => 'picturemoonselection',
                             'type' => 'CheckBox',
-                            'caption' => 'use own moon pictures'
+                            'caption' => 'use own moon pictures',
                         ],
                         [
                             'type' => 'Label',
-                            'caption' => 'pictures must have the number 001 to XXX for example mond001'
+                            'caption' => 'pictures must have the number 001 to XXX for example mond001',
                         ],
                         [
                             'type' => 'Label',
-                            'caption' => 'pictures name (without number)'
+                            'caption' => 'pictures name (without number)',
                         ],
                         [
                             'name' => 'picturename',
                             'type' => 'ValidationTextBox',
-                            'caption' => 'picture name'
+                            'caption' => 'picture name',
                         ],
                         [
                             'type' => 'Label',
-                            'caption' => 'picture file type'
+                            'caption' => 'picture file type',
                         ],
                         [
                             'type' => 'Select',
@@ -2710,122 +2699,122 @@ class Astronomy extends IPSModuleStrict
                             'options' => [
                                 [
                                     'label' => 'png',
-                                    'value' => 1
+                                    'value' => 1,
                                 ],
                                 [
                                     'label' => 'gif',
-                                    'value' => 2
+                                    'value' => 2,
                                 ],
                                 [
                                     'label' => 'jpg',
-                                    'value' => 2
-                                ]
-                            ]
+                                    'value' => 2,
+                                ],
+                            ],
 
                         ],
                         [
                             'type' => 'Label',
-                            'caption' => 'picture number of the first and last picture of the moon phase:'
+                            'caption' => 'picture number of the first and last picture of the moon phase:',
                         ],
                         [
                             'type' => 'Label',
-                            'caption' => 'full moon:'
+                            'caption' => 'full moon:',
                         ],
                         [
                             'type' => 'Label',
-                            'caption' => 'picture number of the first picture full moon:'
+                            'caption' => 'picture number of the first picture full moon:',
                         ],
                         [
                             'name' => 'firstfullmoonpic',
                             'type' => 'NumberSpinner',
-                            'caption' => 'first picture'
+                            'caption' => 'first picture',
                         ],
                         [
                             'type' => 'Label',
-                            'caption' => 'picture number of the last picture full moon:'
+                            'caption' => 'picture number of the last picture full moon:',
                         ],
                         [
                             'name' => 'lastfullmoonpic',
                             'type' => 'NumberSpinner',
-                            'caption' => 'last picture'
+                            'caption' => 'last picture',
                         ],
                         [
                             'type' => 'Label',
-                            'caption' => 'increasing moon:'
+                            'caption' => 'increasing moon:',
                         ],
                         [
                             'type' => 'Label',
-                            'caption' => 'picture number of the first picture increasing moon:'
+                            'caption' => 'picture number of the first picture increasing moon:',
                         ],
                         [
                             'name' => 'firstincreasingmoonpic',
                             'type' => 'NumberSpinner',
-                            'caption' => 'first picture'
+                            'caption' => 'first picture',
                         ],
                         [
                             'type' => 'Label',
-                            'caption' => 'picture number of the last picture increasing moon:'
+                            'caption' => 'picture number of the last picture increasing moon:',
                         ],
                         [
                             'name' => 'lastincreasingmoonpic',
                             'type' => 'NumberSpinner',
-                            'caption' => 'last picture'
+                            'caption' => 'last picture',
                         ],
                         [
                             'type' => 'Label',
-                            'caption' => 'new moon:'
+                            'caption' => 'new moon:',
                         ],
                         [
                             'type' => 'Label',
-                            'caption' => 'picture number of the first picture new moon:'
+                            'caption' => 'picture number of the first picture new moon:',
                         ],
                         [
                             'name' => 'firstnewmoonpic',
                             'type' => 'NumberSpinner',
-                            'caption' => 'first picture'
+                            'caption' => 'first picture',
                         ],
                         [
                             'type' => 'Label',
-                            'caption' => 'picture number of the last picture new moon:'
+                            'caption' => 'picture number of the last picture new moon:',
                         ],
                         [
                             'name' => 'lastnewmoonpic',
                             'type' => 'NumberSpinner',
-                            'caption' => 'last picture'
+                            'caption' => 'last picture',
                         ],
                         [
                             'type' => 'Label',
-                            'caption' => 'decreasing moon:'
+                            'caption' => 'decreasing moon:',
                         ],
                         [
                             'type' => 'Label',
-                            'caption' => 'picture number of the first picture decreasing moon:'
+                            'caption' => 'picture number of the first picture decreasing moon:',
                         ],
                         [
                             'name' => 'firstdecreasingmoonpic',
                             'type' => 'NumberSpinner',
-                            'caption' => 'first picture'
+                            'caption' => 'first picture',
                         ],
                         [
                             'type' => 'Label',
-                            'caption' => 'picture number of the last picture decreasing moon:'
+                            'caption' => 'picture number of the last picture decreasing moon:',
                         ],
                         [
                             'name' => 'lastdecreasingmoonpic',
                             'type' => 'NumberSpinner',
-                            'caption' => 'last picture'
+                            'caption' => 'last picture',
                         ],
                         [
                             'type' => 'Label',
-                            'caption' => 'path of the moonphase pictures relative to the IP-Symcon folder:'
+                            'caption' => 'path of the moonphase pictures relative to the IP-Symcon folder:',
                         ],
                         [
                             'name' => 'picturemoonpath',
                             'type' => 'ValidationTextBox',
-                            'caption' => 'path moon pictures'
+                            'caption' => 'path moon pictures',
                         ],
-                    ]
-                ]
+                    ],
+                ],
             ]
         );
         $form = array_merge_recursive(
@@ -2838,29 +2827,29 @@ class Astronomy extends IPSModuleStrict
                         [
                             'name' => 'sunmoonview',
                             'type' => 'CheckBox',
-                            'caption' => 'view position sun and moon'
+                            'caption' => 'view position sun and moon',
                         ],
                         [
                             'type' => 'Label',
-                            'caption' => 'Zero point x-axis:'
+                            'caption' => 'Zero point x-axis:',
                         ],
                         [
                             'name' => 'zeropointx',
                             'type' => 'NumberSpinner',
-                            'caption' => 'zero point x'
+                            'caption' => 'zero point x',
                         ],
                         [
                             'type' => 'Label',
-                            'caption' => 'Zero point y-axis:'
+                            'caption' => 'Zero point y-axis:',
                         ],
                         [
                             'name' => 'zeropointy',
                             'type' => 'NumberSpinner',
-                            'caption' => 'zero point y'
+                            'caption' => 'zero point y',
                         ],
                         [
                             'type' => 'Label',
-                            'caption' => 'frame width in px or %:'
+                            'caption' => 'frame width in px or %:',
                         ],
                         [
                             'type' => 'Select',
@@ -2869,23 +2858,23 @@ class Astronomy extends IPSModuleStrict
                             'options' => [
                                 [
                                     'caption' => 'px',
-                                    'value' => 1
+                                    'value' => 1,
                                 ],
                                 [
                                     'caption' => '%',
-                                    'value' => 2
-                                ]
-                            ]
+                                    'value' => 2,
+                                ],
+                            ],
 
                         ],
                         [
                             'name' => 'framewidth',
                             'type' => 'NumberSpinner',
-                            'caption' => 'width'
+                            'caption' => 'width',
                         ],
                         [
                             'type' => 'Label',
-                            'caption' => 'frame height in px or %:'
+                            'caption' => 'frame height in px or %:',
                         ],
                         [
                             'type' => 'Select',
@@ -2894,52 +2883,52 @@ class Astronomy extends IPSModuleStrict
                             'options' => [
                                 [
                                     'label' => 'px',
-                                    'value' => 1
+                                    'value' => 1,
                                 ],
                                 [
                                     'label' => '%',
-                                    'value' => 2
-                                ]
-                            ]
+                                    'value' => 2,
+                                ],
+                            ],
 
                         ],
                         [
                             'name' => 'frameheight',
                             'type' => 'NumberSpinner',
-                            'caption' => 'height'
+                            'caption' => 'height',
                         ],
                         [
                             'type' => 'Label',
-                            'caption' => 'canvas width in px:'
+                            'caption' => 'canvas width in px:',
                         ],
                         [
                             'name' => 'canvaswidth',
                             'type' => 'NumberSpinner',
-                            'caption' => 'canvas width'
+                            'caption' => 'canvas width',
                         ],
                         [
                             'type' => 'Label',
-                            'caption' => 'canvas height in px:'
+                            'caption' => 'canvas height in px:',
                         ],
                         [
                             'name' => 'canvasheight',
                             'type' => 'NumberSpinner',
-                            'caption' => 'canvas height'
+                            'caption' => 'canvas height',
                         ],
                         [
                             'name' => 'canvasbackground',
                             'type' => 'SelectColor',
-                            'caption' => 'Background Color'
+                            'caption' => 'Background Color',
                         ],
                         [
                             'name' => 'canvasbackgroundtransparency',
                             'type' => 'HorizontalSlider',
                             'caption' => 'Background Transparency',
                             'minimum' => 0,
-                            'maximum' => 100
-                        ]
-                    ]
-                ]
+                            'maximum' => 100,
+                        ],
+                    ],
+                ],
             ]
         );
         $form = array_merge_recursive(
@@ -2951,16 +2940,16 @@ class Astronomy extends IPSModuleStrict
                     'items' => [
                         [
                             'type' => 'Label',
-                            'caption' => 'sunrise and sunset with offset:'
+                            'caption' => 'sunrise and sunset with offset:',
                         ],
                         [
                             'type' => 'Label',
-                            'caption' => 'sunrise with offset:'
+                            'caption' => 'sunrise with offset:',
                         ],
                         [
                             'name' => 'sunriseselect',
                             'type' => 'CheckBox',
-                            'caption' => 'sunrise'
+                            'caption' => 'sunrise',
                         ],
                         [
                             'type' => 'Select',
@@ -2969,40 +2958,40 @@ class Astronomy extends IPSModuleStrict
                             'options' => [
                                 [
                                     'label' => 'sunrise',
-                                    'value' => 1
+                                    'value' => 1,
                                 ],
                                 [
                                     'label' => 'civilTwilightStart',
-                                    'value' => 2
+                                    'value' => 2,
                                 ],
                                 [
                                     'label' => 'nauticTwilightStart',
-                                    'value' => 3
+                                    'value' => 3,
                                 ],
                                 [
                                     'label' => 'astronomicTwilightStart',
-                                    'value' => 4
+                                    'value' => 4,
                                 ],
                                 [
                                     'label' => 'moonrise',
-                                    'value' => 5
-                                ]
-                            ]
+                                    'value' => 5,
+                                ],
+                            ],
 
                         ],
                         [
                             'name' => 'sunriseoffset',
                             'type' => 'NumberSpinner',
-                            'caption' => 'offset (minute)'
+                            'caption' => 'offset (minute)',
                         ],
                         [
                             'type' => 'Label',
-                            'caption' => 'sunset with offset:'
+                            'caption' => 'sunset with offset:',
                         ],
                         [
                             'name' => 'sunsetselect',
                             'type' => 'CheckBox',
-                            'caption' => 'sunset'
+                            'caption' => 'sunset',
                         ],
                         [
                             'type' => 'Select',
@@ -3011,56 +3000,56 @@ class Astronomy extends IPSModuleStrict
                             'options' => [
                                 [
                                     'label' => 'sunset',
-                                    'value' => 1
+                                    'value' => 1,
                                 ],
                                 [
                                     'label' => 'civilTwilightEnd',
-                                    'value' => 2
+                                    'value' => 2,
                                 ],
                                 [
                                     'label' => 'nauticTwilightEnd',
-                                    'value' => 3
+                                    'value' => 3,
                                 ],
                                 [
                                     'label' => 'astronomicTwilightEnd',
-                                    'value' => 4
+                                    'value' => 4,
                                 ],
                                 [
                                     'label' => 'moonset',
-                                    'value' => 5
-                                ]
-                            ]
+                                    'value' => 5,
+                                ],
+                            ],
 
                         ],
                         [
                             'name' => 'sunsetoffset',
                             'type' => 'NumberSpinner',
-                            'caption' => 'offset (minute)'
+                            'caption' => 'offset (minute)',
                         ],
                         [
                             'type' => 'Label',
-                            'caption' => '____________________________________________________________________'
+                            'caption' => '____________________________________________________________________',
                         ],
                         [
                             'type' => 'Label',
-                            'caption' => 'optional create extended information:'
+                            'caption' => 'optional create extended information:',
                         ],
                         [
                             'type' => 'Label',
-                            'caption' => 'for moonrise, moonset, sunrise, sunset, newmoon, first qarter, full moon,'
+                            'caption' => 'for moonrise, moonset, sunrise, sunset, newmoon, first qarter, full moon,',
                         ],
                         [
                             'type' => 'Label',
-                            'caption' => 'last quarter separate variables with date and time are created if selected'
+                            'caption' => 'last quarter separate variables with date and time are created if selected',
                         ],
                         [
                             'name' => 'extinfoselection',
                             'type' => 'CheckBox',
-                            'caption' => 'extended information'
+                            'caption' => 'extended information',
                         ],
                         [
                             'type' => 'Label',
-                            'caption' => 'time format, see description of date in the PHP manual for more format information'
+                            'caption' => 'time format, see description of date in the PHP manual for more format information',
                         ],
                         [
                             'type' => 'Select',
@@ -3069,43 +3058,44 @@ class Astronomy extends IPSModuleStrict
                             'options' => [
                                 [
                                     'label' => 'H:i',
-                                    'value' => 1
+                                    'value' => 1,
                                 ],
                                 [
                                     'label' => 'H:i:s',
-                                    'value' => 2
+                                    'value' => 2,
                                 ],
                                 [
                                     'label' => 'h:i',
-                                    'value' => 3
+                                    'value' => 3,
                                 ],
                                 [
                                     'label' => 'h:i:s',
-                                    'value' => 4
+                                    'value' => 4,
                                 ],
                                 [
                                     'label' => 'g:i',
-                                    'value' => 5
+                                    'value' => 5,
                                 ],
                                 [
                                     'label' => 'g:i:s',
-                                    'value' => 6
+                                    'value' => 6,
                                 ],
                                 [
                                     'label' => 'G:i',
-                                    'value' => 7
+                                    'value' => 7,
                                 ],
                                 [
                                     'label' => 'G:i:s',
-                                    'value' => 8
-                                ]
-                            ]
+                                    'value' => 8,
+                                ],
+                            ],
 
-                        ]
-                    ]
-                ]
+                        ],
+                    ],
+                ],
             ]
         );
+
         return $form;
     }
 
@@ -3122,22 +3112,22 @@ class Astronomy extends IPSModuleStrict
         return [
             'instanceId' => $this->InstanceID,
             'instanceName' => IPS_GetName($this->InstanceID),
-            'title'      => $this->Translate('Astronomy'),
+            'title' => $this->Translate('Astronomy'),
             'generatedAt' => time(),
-            'language'   => $language,
-            'labels'     => $labels,
-            'status'     => [
+            'language' => $language,
+            'labels' => $labels,
+            'status' => [
                 'isDay' => (bool) $astronomyInfo['IsDay'],
-                'season' => $this->GetSeasonText((int) $astronomyInfo['season'])
+                'season' => $this->GetSeasonText((int) $astronomyInfo['season']),
             ],
-            'summary'    => [
+            'summary' => [
                 'sunrise' => $this->FormatVisualizationTimestamp((int) $astronomyInfo['Sunrise']),
                 'sunset' => $this->FormatVisualizationTimestamp((int) $astronomyInfo['Sunset']),
                 'moonrise' => $astronomyInfo['moonrisetime'],
                 'moonset' => $astronomyInfo['moonsettime'],
-                'phase' => $moonPhaseText . ' - ' . $astronomyInfo['moonphasepercent'] . '%'
+                'phase' => $moonPhaseText . ' - ' . $astronomyInfo['moonphasepercent'] . '%',
             ],
-            'panels'     => [
+            'panels' => [
                 'moon' => [
                     'image' => $this->GetVisualizationImageDataUri($moonImagePath),
                     'phaseText' => $moonPhaseText,
@@ -3150,14 +3140,14 @@ class Astronomy extends IPSModuleStrict
                         ['label' => $this->Translate('moon right ascension'), 'value' => $this->FormatVisualizationFloat((float) $astronomyInfo['moonrightascension'], 2, ' h')],
                         ['label' => $this->Translate('moon declination'), 'value' => $this->FormatVisualizationFloat((float) $astronomyInfo['moondeclination'], 2, '°')],
                         ['label' => $this->Translate('moon zodiac longitude'), 'value' => $this->FormatVisualizationFloat((float) $astronomyInfo['moonzodiaclongitude'], 2, '°')],
-                        ['label' => $this->Translate('moon parallactic angle'), 'value' => $this->FormatVisualizationFloat((float) $astronomyInfo['moonparallacticangle'], 2, '°')]
+                        ['label' => $this->Translate('moon parallactic angle'), 'value' => $this->FormatVisualizationFloat((float) $astronomyInfo['moonparallacticangle'], 2, '°')],
                     ],
                     'nextEvents' => [
                         'newmoon' => $astronomyInfo['newmoon']['newmoon'],
                         'firstquarter' => $astronomyInfo['firstquarter']['firstquarter'],
                         'fullmoon' => $astronomyInfo['fullmoon']['fullmoon'],
-                        'lastquarter' => $astronomyInfo['lastquarter']['lastquarter']
-                    ]
+                        'lastquarter' => $astronomyInfo['lastquarter']['lastquarter'],
+                    ],
                 ],
                 'position' => [
                     'html' => $this->SunMoonView((float) $astronomyInfo['sunazimut'], (float) $astronomyInfo['sunaltitude'], (float) $astronomyInfo['moonazimut'], (float) $astronomyInfo['moonaltitude'], true),
@@ -3166,15 +3156,15 @@ class Astronomy extends IPSModuleStrict
                         ['label' => $this->Translate('Azimuth'), 'value' => $this->FormatVisualizationFloat((float) $astronomyInfo['sunazimut'], 2, '°')],
                         ['label' => $this->Translate('Direction'), 'value' => $sunDirection],
                         ['label' => $this->Translate('sun above horizon'), 'value' => $this->GetBooleanText((bool) $astronomyInfo['sunabovehorizon'])],
-                        ['label' => $this->Translate('solar noon'), 'value' => $this->FormatVisualizationTimestamp((int) $astronomyInfo['solarnoon'])]
+                        ['label' => $this->Translate('solar noon'), 'value' => $this->FormatVisualizationTimestamp((int) $astronomyInfo['solarnoon'])],
                     ],
                     'moonRows' => [
                         ['label' => $this->Translate('Altitude'), 'value' => $this->FormatVisualizationFloat((float) $astronomyInfo['moonaltitude'], 2, '°')],
                         ['label' => $this->Translate('Azimuth'), 'value' => $this->FormatVisualizationFloat((float) $astronomyInfo['moonazimut'], 2, '°')],
                         ['label' => $this->Translate('Direction'), 'value' => $moonDirection],
                         ['label' => $this->Translate('moon above horizon'), 'value' => $this->GetBooleanText((bool) $astronomyInfo['moonabovehorizon'])],
-                        ['label' => $this->Translate('moon culmination'), 'value' => $this->FormatVisualizationTimestamp((int) $astronomyInfo['moonculmination'])]
-                    ]
+                        ['label' => $this->Translate('moon culmination'), 'value' => $this->FormatVisualizationTimestamp((int) $astronomyInfo['moonculmination'])],
+                    ],
                 ],
                 'twilight' => [
                     'dayImage' => $this->GetVisualizationImageDataUri($astronomyInfo['twilight_day_image_path']),
@@ -3187,17 +3177,17 @@ class Astronomy extends IPSModuleStrict
                         'nauticStart' => $this->FormatVisualizationTimestamp((int) $astronomyInfo['NauticTwilightStart']),
                         'nauticEnd' => $this->FormatVisualizationTimestamp((int) $astronomyInfo['NauticTwilightEnd']),
                         'astronomicStart' => $this->FormatVisualizationTimestamp((int) $astronomyInfo['AstronomicTwilightStart']),
-                        'astronomicEnd' => $this->FormatVisualizationTimestamp((int) $astronomyInfo['AstronomicTwilightEnd'])
-                    ]
-                ]
+                        'astronomicEnd' => $this->FormatVisualizationTimestamp((int) $astronomyInfo['AstronomicTwilightEnd']),
+                    ],
+                ],
             ],
-            'metrics'    => [
+            'metrics' => [
                 'sun' => [
                     'azimuth' => $this->FormatVisualizationFloat((float) $astronomyInfo['sunazimut'], 2, '°'),
                     'altitude' => $this->FormatVisualizationFloat((float) $astronomyInfo['sunaltitude'], 2, '°'),
                     'direction' => $sunDirection,
                     'distance' => $this->FormatVisualizationDistance((float) $astronomyInfo['sundistance']),
-                    'radiantPower' => $this->FormatVisualizationFloat((float) $this->Radiant_Power(), 0, ' W/m²')
+                    'radiantPower' => $this->FormatVisualizationFloat((float) $this->Radiant_Power(), 0, ' W/m²'),
                 ],
                 'moon' => [
                     'azimuth' => $this->FormatVisualizationFloat((float) $astronomyInfo['moonazimut'], 2, '°'),
@@ -3205,10 +3195,10 @@ class Astronomy extends IPSModuleStrict
                     'direction' => $moonDirection,
                     'distance' => $this->FormatVisualizationDistance((float) $astronomyInfo['moondistance']),
                     'visibility' => $this->FormatVisualizationFloat((float) $astronomyInfo['moonvisibility'], 1, ' %'),
-                    'brightLimbAngle' => $this->FormatVisualizationFloat((float) $astronomyInfo['moonbrightlimbangle'], 2, '°')
-                ]
+                    'brightLimbAngle' => $this->FormatVisualizationFloat((float) $astronomyInfo['moonbrightlimbangle'], 2, '°'),
+                ],
             ],
-            'details'    => [
+            'details' => [
                 $this->Translate('Julian date') => $this->FormatVisualizationFloat((float) $astronomyInfo['juliandate'], 1, ' Tage'),
                 $this->Translate('Latitude') => $this->FormatVisualizationFloat((float) $astronomyInfo['latitude'], 4, '°'),
                 $this->Translate('Longitude') => $this->FormatVisualizationFloat((float) $astronomyInfo['longitude'], 4, '°'),
@@ -3228,8 +3218,8 @@ class Astronomy extends IPSModuleStrict
                 $this->Translate('Moon direction') => $moonDirection,
                 $this->Translate('Moon distance') => $this->FormatVisualizationDistance((float) $astronomyInfo['moondistance']),
                 $this->Translate('Moon visibility') => $this->FormatVisualizationFloat((float) $astronomyInfo['moonvisibility'], 1, ' %'),
-                $this->Translate('Moon bright limb angle') => $this->FormatVisualizationFloat((float) $astronomyInfo['moonbrightlimbangle'], 2, '°')
-            ]
+                $this->Translate('Moon bright limb angle') => $this->FormatVisualizationFloat((float) $astronomyInfo['moonbrightlimbangle'], 2, '°'),
+            ],
         ];
     }
 
@@ -3277,7 +3267,7 @@ class Astronomy extends IPSModuleStrict
             'newMoon' => $this->Translate('New Moon'),
             'firstQuarter' => $this->Translate('First Quarter'),
             'fullMoon' => $this->Translate('Full Moon'),
-            'lastQuarter' => $this->Translate('Last Quarter')
+            'lastQuarter' => $this->Translate('Last Quarter'),
         ];
     }
 
@@ -3383,7 +3373,7 @@ class Astronomy extends IPSModuleStrict
             'Neumond' => 'New Moon',
             'new moon' => 'New Moon',
             'zunehmender Mond' => 'Increasing Moon',
-            'increasing moon' => 'Increasing Moon'
+            'increasing moon' => 'Increasing Moon',
         ];
 
         return isset($map[$phaseText]) ? $this->Translate($map[$phaseText]) : $phaseText;
@@ -3407,7 +3397,7 @@ class Astronomy extends IPSModuleStrict
             12 => 'W',
             13 => 'WNW',
             14 => 'NW',
-            15 => 'NNW'
+            15 => 'NNW',
         ];
 
         if ($this->ReadPropertyInteger('language') === 2) {
@@ -3427,7 +3417,7 @@ class Astronomy extends IPSModuleStrict
                 12 => 'W',
                 13 => 'WNW',
                 14 => 'NW',
-                15 => 'NNW'
+                15 => 'NNW',
             ];
         }
 
@@ -3478,7 +3468,7 @@ class Astronomy extends IPSModuleStrict
             'hour' => intval(date('H', $timestamp)),
             'minute' => intval(date('i', $timestamp)),
             'second' => intval(date('s', $timestamp)),
-            'daylightSaving' => intval(date('I', $timestamp))
+            'daylightSaving' => intval(date('I', $timestamp)),
         ];
     }
 
@@ -3525,7 +3515,7 @@ class Astronomy extends IPSModuleStrict
             'direction' => $sundirection,
             'rightAscension' => $SunRAh,
             'declination' => $SunDec,
-            'zodiacLongitude' => $Sunlong
+            'zodiacLongitude' => $Sunlong,
         ];
     }
 
@@ -3578,7 +3568,7 @@ class Astronomy extends IPSModuleStrict
             'direction' => $moondirection,
             'rightAscension' => $MoonRA,
             'declination' => $MoonDec,
-            'zodiacLongitude' => $Moonlongcorr
+            'zodiacLongitude' => $Moonlongcorr,
         ];
     }
 
@@ -3648,7 +3638,7 @@ class Astronomy extends IPSModuleStrict
 
         return [
             'upper' => $this->RefineMoonTransit($bestMaxTimestamp, true),
-            'lower' => $this->RefineMoonTransit($bestMinTimestamp, false)
+            'lower' => $this->RefineMoonTransit($bestMinTimestamp, false),
         ];
     }
 
@@ -3698,8 +3688,8 @@ class Astronomy extends IPSModuleStrict
                 [
                     [
                         'type' => 'Label',
-                        'caption' => 'UTC +14 Tonga and 2 more LINT Kiritimati'
-                    ]
+                        'caption' => 'UTC +14 Tonga and 2 more LINT Kiritimati',
+                    ],
                 ]
             );
         }
@@ -3709,8 +3699,8 @@ class Astronomy extends IPSModuleStrict
                 [
                     [
                         'type' => 'Label',
-                        'caption' => '"UTC +13:45 Chatham Islands / New Zealand CHADT Chatham Islands'
-                    ]
+                        'caption' => '"UTC +13:45 Chatham Islands / New Zealand CHADT Chatham Islands',
+                    ],
                 ]
             );
         }
@@ -3720,8 +3710,8 @@ class Astronomy extends IPSModuleStrict
                 [
                     [
                         'type' => 'Label',
-                        'caption' => 'UTC +13 New Zealand with exceptions and 4 more NZDT Auckland'
-                    ]
+                        'caption' => 'UTC +13 New Zealand with exceptions and 4 more NZDT Auckland',
+                    ],
                 ]
             );
         }
@@ -3731,8 +3721,8 @@ class Astronomy extends IPSModuleStrict
                 [
                     [
                         'type' => 'Label',
-                        'caption' => 'UTC +12 Small area in Russia and 6 more ANAT Anadyr'
-                    ]
+                        'caption' => 'UTC +12 Small area in Russia and 6 more ANAT Anadyr',
+                    ],
                 ]
             );
         }
@@ -3742,8 +3732,8 @@ class Astronomy extends IPSModuleStrict
                 [
                     [
                         'type' => 'Label',
-                        'caption' => 'UTC +11 Much of Australia and 8 more AEDT Melbourne'
-                    ]
+                        'caption' => 'UTC +11 Much of Australia and 8 more AEDT Melbourne',
+                    ],
                 ]
             );
         }
@@ -3753,8 +3743,8 @@ class Astronomy extends IPSModuleStrict
                 [
                     [
                         'type' => 'Label',
-                        'caption' => 'UTC +10:30 Small Australia Territory ACDT Adelaide'
-                    ]
+                        'caption' => 'UTC +10:30 Small Australia Territory ACDT Adelaide',
+                    ],
                 ]
             );
         }
@@ -3764,8 +3754,8 @@ class Astronomy extends IPSModuleStrict
                 [
                     [
                         'type' => 'Label',
-                        'caption' => 'UTC +10 Queensland / Australia and 6 more AEST Brisbane'
-                    ]
+                        'caption' => 'UTC +10 Queensland / Australia and 6 more AEST Brisbane',
+                    ],
                 ]
             );
         }
@@ -3775,8 +3765,8 @@ class Astronomy extends IPSModuleStrict
                 [
                     [
                         'type' => 'Label',
-                        'caption' => 'UTC +9:30 Northern Territory / Australia ACST Darwin'
-                    ]
+                        'caption' => 'UTC +9:30 Northern Territory / Australia ACST Darwin',
+                    ],
                 ]
             );
         }
@@ -3786,8 +3776,8 @@ class Astronomy extends IPSModuleStrict
                 [
                     [
                         'type' => 'Label',
-                        'caption' => 'UTC +9 Japan, South Korea and 4 more JST Tokyo'
-                    ]
+                        'caption' => 'UTC +9 Japan, South Korea and 4 more JST Tokyo',
+                    ],
                 ]
             );
         }
@@ -3797,8 +3787,8 @@ class Astronomy extends IPSModuleStrict
                 [
                     [
                         'type' => 'Label',
-                        'caption' => 'UTC +8:45 Western Australia / Australia ACWST Eucla'
-                    ]
+                        'caption' => 'UTC +8:45 Western Australia / Australia ACWST Eucla',
+                    ],
                 ]
             );
         }
@@ -3808,8 +3798,8 @@ class Astronomy extends IPSModuleStrict
                 [
                     [
                         'type' => 'Label',
-                        'caption' => 'UTC +8:30 North Korea PYT Pyongyang'
-                    ]
+                        'caption' => 'UTC +8:30 North Korea PYT Pyongyang',
+                    ],
                 ]
             );
         }
@@ -3819,8 +3809,8 @@ class Astronomy extends IPSModuleStrict
                 [
                     [
                         'type' => 'Label',
-                        'caption' => 'UTC +8 China, Philippines and 10 more CST Beijing'
-                    ]
+                        'caption' => 'UTC +8 China, Philippines and 10 more CST Beijing',
+                    ],
                 ]
             );
         }
@@ -3830,8 +3820,8 @@ class Astronomy extends IPSModuleStrict
                 [
                     [
                         'type' => 'Label',
-                        'caption' => 'UTC +7 Majority of Indonesia and 8 more WIB Jakarta'
-                    ]
+                        'caption' => 'UTC +7 Majority of Indonesia and 8 more WIB Jakarta',
+                    ],
                 ]
             );
         }
@@ -3841,8 +3831,8 @@ class Astronomy extends IPSModuleStrict
                 [
                     [
                         'type' => 'Label',
-                        'caption' => 'UTC +6:30 Myanmar and Cocos Islands MMT Yangon'
-                    ]
+                        'caption' => 'UTC +6:30 Myanmar and Cocos Islands MMT Yangon',
+                    ],
                 ]
             );
         }
@@ -3852,8 +3842,8 @@ class Astronomy extends IPSModuleStrict
                 [
                     [
                         'type' => 'Label',
-                        'caption' => 'UTC +6 Bangladesh and 6 more BST Dhaka'
-                    ]
+                        'caption' => 'UTC +6 Bangladesh and 6 more BST Dhaka',
+                    ],
                 ]
             );
         }
@@ -3863,8 +3853,8 @@ class Astronomy extends IPSModuleStrict
                 [
                     [
                         'type' => 'Label',
-                        'caption' => 'UTC +5:45 Nepal NPT Kathmandu'
-                    ]
+                        'caption' => 'UTC +5:45 Nepal NPT Kathmandu',
+                    ],
                 ]
             );
         }
@@ -3874,8 +3864,8 @@ class Astronomy extends IPSModuleStrict
                 [
                     [
                         'type' => 'Label',
-                        'caption' => 'UTC +5:30 India and Sri Lanka is New Delhi'
-                    ]
+                        'caption' => 'UTC +5:30 India and Sri Lanka is New Delhi',
+                    ],
                 ]
             );
         }
@@ -3885,8 +3875,8 @@ class Astronomy extends IPSModuleStrict
                 [
                     [
                         'type' => 'Label',
-                        'caption' => 'UTC +5 Pakistan and 8 more UZT Tashkent'
-                    ]
+                        'caption' => 'UTC +5 Pakistan and 8 more UZT Tashkent',
+                    ],
                 ]
             );
         }
@@ -3896,8 +3886,8 @@ class Astronomy extends IPSModuleStrict
                 [
                     [
                         'type' => 'Label',
-                        'caption' => 'UTC +4:30 Afghanistan AFT Kabul'
-                    ]
+                        'caption' => 'UTC +4:30 Afghanistan AFT Kabul',
+                    ],
                 ]
             );
         }
@@ -3907,8 +3897,8 @@ class Astronomy extends IPSModuleStrict
                 [
                     [
                         'type' => 'Label',
-                        'caption' => 'UTC +4 Azerbaijan and 8 more GST Dubai'
-                    ]
+                        'caption' => 'UTC +4 Azerbaijan and 8 more GST Dubai',
+                    ],
                 ]
             );
         }
@@ -3918,8 +3908,8 @@ class Astronomy extends IPSModuleStrict
                 [
                     [
                         'type' => 'Label',
-                        'caption' => 'UTC +3:30 Iran IRST Tehran'
-                    ]
+                        'caption' => 'UTC +3:30 Iran IRST Tehran',
+                    ],
                 ]
             );
         }
@@ -3929,8 +3919,8 @@ class Astronomy extends IPSModuleStrict
                 [
                     [
                         'type' => 'Label',
-                        'caption' => 'UTC +3 Moscow / Russia and 24 more MSK Moscow'
-                    ]
+                        'caption' => 'UTC +3 Moscow / Russia and 24 more MSK Moscow',
+                    ],
                 ]
             );
         }
@@ -3940,8 +3930,8 @@ class Astronomy extends IPSModuleStrict
                 [
                     [
                         'type' => 'Label',
-                        'caption' => 'UTC +2 Greece and 30 other OEZ Cairo'
-                    ]
+                        'caption' => 'UTC +2 Greece and 30 other OEZ Cairo',
+                    ],
                 ]
             );
         }
@@ -3951,8 +3941,8 @@ class Astronomy extends IPSModuleStrict
                 [
                     [
                         'type' => 'Label',
-                        'caption' => 'UTC +1 Germany and 43 more CET Berlin'
-                    ]
+                        'caption' => 'UTC +1 Germany and 43 more CET Berlin',
+                    ],
                 ]
             );
         }
@@ -3962,8 +3952,8 @@ class Astronomy extends IPSModuleStrict
                 [
                     [
                         'type' => 'Label',
-                        'caption' => 'UTC +0 UK and 26 more GMT London'
-                    ]
+                        'caption' => 'UTC +0 UK and 26 more GMT London',
+                    ],
                 ]
             );
         }
@@ -3973,8 +3963,8 @@ class Astronomy extends IPSModuleStrict
                 [
                     [
                         'type' => 'Label',
-                        'caption' => 'UTC -1 Cabo Verde and 2 more CVT Praia'
-                    ]
+                        'caption' => 'UTC -1 Cabo Verde and 2 more CVT Praia',
+                    ],
                 ]
             );
         }
@@ -3984,8 +3974,8 @@ class Astronomy extends IPSModuleStrict
                 [
                     [
                         'type' => 'Label',
-                        'caption' => 'UTC -2 Brazil (some regions) and South Georgia and the South Sandwich Islands BRST Rio de Janeiro'
-                    ]
+                        'caption' => 'UTC -2 Brazil (some regions) and South Georgia and the South Sandwich Islands BRST Rio de Janeiro',
+                    ],
                 ]
             );
         }
@@ -3995,8 +3985,8 @@ class Astronomy extends IPSModuleStrict
                 [
                     [
                         'type' => 'Label',
-                        'caption' => 'UTC -3 Brazil (some regions) and 10 other ART Buenos Aires'
-                    ]
+                        'caption' => 'UTC -3 Brazil (some regions) and 10 other ART Buenos Aires',
+                    ],
                 ]
             );
         }
@@ -4006,8 +3996,8 @@ class Astronomy extends IPSModuleStrict
                 [
                     [
                         'type' => 'Label',
-                        'caption' => 'UTC -3:30 Newfoundland and Labrador / Canada NST St. John\'s'
-                    ]
+                        'caption' => 'UTC -3:30 Newfoundland and Labrador / Canada NST St. John\'s',
+                    ],
                 ]
             );
         }
@@ -4017,8 +4007,8 @@ class Astronomy extends IPSModuleStrict
                 [
                     [
                         'type' => 'Label',
-                        'caption' => 'UTC -4 some areas of Canada and 29 more VET Caracas'
-                    ]
+                        'caption' => 'UTC -4 some areas of Canada and 29 more VET Caracas',
+                    ],
                 ]
             );
         }
@@ -4028,8 +4018,8 @@ class Astronomy extends IPSModuleStrict
                 [
                     [
                         'type' => 'Label',
-                        'caption' => 'UTC -5 United States (some regions) and 13 other EST New York'
-                    ]
+                        'caption' => 'UTC -5 United States (some regions) and 13 other EST New York',
+                    ],
                 ]
             );
         }
@@ -4039,8 +4029,8 @@ class Astronomy extends IPSModuleStrict
                 [
                     [
                         'type' => 'Label',
-                        'caption' => 'UTC -6 United States (some regions) and 9 more CST Mexico City'
-                    ]
+                        'caption' => 'UTC -6 United States (some regions) and 9 more CST Mexico City',
+                    ],
                 ]
             );
         }
@@ -4050,8 +4040,8 @@ class Astronomy extends IPSModuleStrict
                 [
                     [
                         'type' => 'Label',
-                        'caption' => 'UTC -7 some areas of United States and 2 more MST Calgary'
-                    ]
+                        'caption' => 'UTC -7 some areas of United States and 2 more MST Calgary',
+                    ],
                 ]
             );
         }
@@ -4061,8 +4051,8 @@ class Astronomy extends IPSModuleStrict
                 [
                     [
                         'type' => 'Label',
-                        'caption' => 'UTC -8 United States (some regions) and 3 other PST Los Angeles'
-                    ]
+                        'caption' => 'UTC -8 United States (some regions) and 3 other PST Los Angeles',
+                    ],
                 ]
             );
         }
@@ -4072,8 +4062,8 @@ class Astronomy extends IPSModuleStrict
                 [
                     [
                         'type' => 'Label',
-                        'caption' => 'UTC -9 Alaska / United States and French Polynesia (some regions) AKST Anchorage'
-                    ]
+                        'caption' => 'UTC -9 Alaska / United States and French Polynesia (some regions) AKST Anchorage',
+                    ],
                 ]
             );
         }
@@ -4083,8 +4073,8 @@ class Astronomy extends IPSModuleStrict
                 [
                     [
                         'type' => 'Label',
-                        'caption' => 'UTC -9:30 Marquesas / French Polynesia MART Taiohae'
-                    ]
+                        'caption' => 'UTC -9:30 Marquesas / French Polynesia MART Taiohae',
+                    ],
                 ]
             );
         }
@@ -4094,8 +4084,8 @@ class Astronomy extends IPSModuleStrict
                 [
                     [
                         'type' => 'Label',
-                        'caption' => 'UTC -10 Small area in United States and 2 other HAST Honolulu'
-                    ]
+                        'caption' => 'UTC -10 Small area in United States and 2 other HAST Honolulu',
+                    ],
                 ]
             );
         }
@@ -4105,8 +4095,8 @@ class Astronomy extends IPSModuleStrict
                 [
                     [
                         'type' => 'Label',
-                        'caption' => 'UTC -11 American Samoa and 2 more NUT Alofi'
-                    ]
+                        'caption' => 'UTC -11 American Samoa and 2 more NUT Alofi',
+                    ],
                 ]
             );
         }
@@ -4116,8 +4106,8 @@ class Astronomy extends IPSModuleStrict
                 [
                     [
                         'type' => 'Label',
-                        'caption' => 'UTC -12 Majority of US Minor Outlying Islands AoE Baker Island'
-                    ]
+                        'caption' => 'UTC -12 Majority of US Minor Outlying Islands AoE Baker Island',
+                    ],
                 ]
             );
         }
@@ -4131,165 +4121,166 @@ class Astronomy extends IPSModuleStrict
                     'options' => [
                         [
                             'label' => 'UTC +14 LINT Kiritimati',
-                            'value' => 14
+                            'value' => 14,
                         ],
                         [
                             'label' => 'UTC +13:45 CHADT Chatham Islands',
-                            'value' => 13.75
+                            'value' => 13.75,
                         ],
                         [
                             'label' => 'UTC +13 NZDT Auckland',
-                            'value' => 13
+                            'value' => 13,
                         ],
                         [
                             'label' => 'UTC +12 ANAT Anadyr',
-                            'value' => 12
+                            'value' => 12,
                         ],
                         [
                             'label' => 'UTC +11 AEDT Melbourne',
-                            'value' => 11
+                            'value' => 11,
                         ],
                         [
                             'label' => 'UTC +10:30 ACDT Adelaide',
-                            'value' => 10.5
+                            'value' => 10.5,
                         ],
                         [
                             'label' => 'UTC +10 AEST Brisbane',
-                            'value' => 10
+                            'value' => 10,
                         ],
                         [
                             'label' => 'UTC +9:30 ACST Darwin',
-                            'value' => 9.5
+                            'value' => 9.5,
                         ],
                         [
                             'label' => 'UTC +9 JST Tokio',
-                            'value' => 9
+                            'value' => 9,
                         ],
                         [
                             'label' => 'UTC +8:45 ACWST Eucla',
-                            'value' => 8.75
+                            'value' => 8.75,
                         ],
                         [
                             'label' => 'UTC +8:30 PYT Pjöngjang',
-                            'value' => 8.5
+                            'value' => 8.5,
                         ],
                         [
                             'label' => 'UTC +8 CST Beijing',
-                            'value' => 8
+                            'value' => 8,
                         ],
                         [
                             'label' => 'UTC +7 WIB Jakarta',
-                            'value' => 7
+                            'value' => 7,
                         ],
                         [
                             'label' => 'UTC +6:30 MMT Rangun',
-                            'value' => 6.5
+                            'value' => 6.5,
                         ],
                         [
                             'label' => 'UTC +6 BST Dhaka',
-                            'value' => 6
+                            'value' => 6,
                         ],
                         [
                             'label' => 'UTC +5:45 NPT Kathmandu',
-                            'value' => 5.75
+                            'value' => 5.75,
                         ],
                         [
                             'label' => 'UTC +5:30 IS New Delhi',
-                            'value' => 5.5
+                            'value' => 5.5,
                         ],
                         [
                             'label' => 'UTC +5 UZT Tashkent',
-                            'value' => 5
+                            'value' => 5,
                         ],
                         [
                             'label' => 'UTC +4:30 AFT Kabul',
-                            'value' => 4.5
+                            'value' => 4.5,
                         ],
                         [
                             'label' => 'UTC +4 GST Dubai',
-                            'value' => 4
+                            'value' => 4,
                         ],
                         [
                             'label' => 'UTC +3:30 IRST Tehran',
-                            'value' => 3.5
+                            'value' => 3.5,
                         ],
                         [
                             'label' => 'UTC +3 MSK Moscow',
-                            'value' => 3
+                            'value' => 3,
                         ],
                         [
                             'label' => 'UTC +2 OEZ Cairo',
-                            'value' => 2
+                            'value' => 2,
                         ],
                         [
                             'label' => 'UTC +1 MEZ Berlin',
-                            'value' => 1
+                            'value' => 1,
                         ],
                         [
                             'label' => 'UTC +0 GMT London',
-                            'value' => 0
+                            'value' => 0,
                         ],
                         [
                             'label' => 'UTC -1 CVT Praia',
-                            'value' => -1
+                            'value' => -1,
                         ],
                         [
                             'label' => 'UTC -2 BRST Rio de Janeiro',
-                            'value' => -2
+                            'value' => -2,
                         ],
                         [
                             'label' => 'UTC -3 ART Buenos Aires',
-                            'value' => -3
+                            'value' => -3,
                         ],
                         [
                             'label' => 'UTC -3:30 NST St. John\'s',
-                            'value' => -3.5
+                            'value' => -3.5,
                         ],
                         [
                             'label' => 'UTC -4 VET Caracas',
-                            'value' => -4
+                            'value' => -4,
                         ],
                         [
                             'label' => 'UTC -5 EST New York',
-                            'value' => -5
+                            'value' => -5,
                         ],
                         [
                             'label' => 'UTC -6 CST Mexico City',
-                            'value' => -6
+                            'value' => -6,
                         ],
                         [
                             'label' => 'UTC -7 MST Calgary',
-                            'value' => -7
+                            'value' => -7,
                         ],
                         [
                             'label' => 'UTC -8 PST Los Angeles',
-                            'value' => -8
+                            'value' => -8,
                         ],
                         [
                             'label' => 'UTC -9 AKST Anchorage',
-                            'value' => -9
+                            'value' => -9,
                         ],
                         [
                             'label' => 'UTC -9:30 MART Taiohae',
-                            'value' => -9.5
+                            'value' => -9.5,
                         ],
                         [
                             'label' => 'UTC -10 HAST Honolulu',
-                            'value' => -10
+                            'value' => -10,
                         ],
                         [
                             'label' => 'UTC -11 NUT Alofi',
-                            'value' => -11
+                            'value' => -11,
                         ],
                         [
                             'label' => 'UTC -12 AoE Baker Island',
-                            'value' => -12
-                        ]
-                    ]
+                            'value' => -12,
+                        ],
+                    ],
 
-                ]
+                ],
             ]
         );
+
         return $form;
     }
 
@@ -4305,13 +4296,13 @@ class Astronomy extends IPSModuleStrict
         $form = [
             [
                 'type' => 'Label',
-                'caption' => 'update values'
+                'caption' => 'update values',
             ],
             [
                 'type' => 'Button',
                 'caption' => 'update',
-                'onClick' => 'Astronomy_SetAstronomyValues($id);'
-            ]
+                'onClick' => 'Astronomy_SetAstronomyValues($id);',
+            ],
         ];
 
         return $form;
@@ -4330,33 +4321,33 @@ class Astronomy extends IPSModuleStrict
             [
                 'code' => 101,
                 'icon' => 'inactive',
-                'caption' => 'Creating instance.'
+                'caption' => 'Creating instance.',
             ],
             [
                 'code' => 102,
                 'icon' => 'active',
-                'caption' => 'Astronomy ok'
+                'caption' => 'Astronomy ok',
             ],
             [
                 'code' => 104,
                 'icon' => 'inactive',
-                'caption' => 'interface closed.'
+                'caption' => 'interface closed.',
             ],
             [
                 'code' => 201,
                 'icon' => 'inactive',
-                'caption' => 'Please follow the instructions.'
+                'caption' => 'Please follow the instructions.',
             ],
             [
                 'code' => 210,
                 'icon' => 'error',
-                'caption' => 'select moonset first to setup variable'
+                'caption' => 'select moonset first to setup variable',
             ],
             [
                 'code' => 211,
                 'icon' => 'error',
-                'caption' => 'select moonrise first to setup variable'
-            ]
+                'caption' => 'select moonrise first to setup variable',
+            ],
         ];
 
         return $form;
@@ -4422,6 +4413,7 @@ class Astronomy extends IPSModuleStrict
         $alexaresponse = ['isday' => $isday, 'sunrisetime' => $sunrisetime, 'sunrisedate' => $sunrisedate, 'sunsettime' => $sunsettime, 'sunsetdate' => $sunsetdate, 'moonsetdate' => $moonsetdate, 'moonsettime' => $moonsettime, 'moonrisedate' => $moonrisedate, 'moonrisetime' => $moonrisetime, 'CivilTwilightStart' => $civiltwilightstart, 'CivilTwilightEnd' => $civiltwilightend, 'NauticTwilightStart' => $nautictwilightstart, 'NauticTwilightEnd' => $nautictwilightend, 'AstronomicTwilightStart' => $astronomictwilightstart, 'AstronomicTwilightEnd' => $astronomictwilightend,
             'latitude' => $Latitude, 'longitude' => $Longitude, 'juliandate' => $JD, 'season' => $season, 'sunazimut' => $sunazimut, 'sundirection' => $SunDazimut, 'sunaltitude' => $sunaltitude, 'sundistance' => $rSun, 'moonazimut' => $moonazimut, 'moonaltitude' => $moonaltitude, 'moondirection' => $dazimut, 'moondistance' => $MoonDist, 'moonvisibility' => $Moonphase, 'moonbrightlimbangle' => $Moonpabl,
             'newmoon' => $newmoonstring, 'firstquarter' => $firstquarterstring, 'fullmoon' => $fullmoonstring, 'lastquarter' => $lastquarterstring, 'moonphasetext' => $moonphasetext, 'moonphasepercent' => $moonphasepercent];
+
         return $alexaresponse;
     }
 
@@ -4491,8 +4483,7 @@ class Astronomy extends IPSModuleStrict
         $sunriseobjid = @$this->GetIDForIdent('sunrise');
         if ($sunsetobjid > 0) {
             $this->SetValue('sunset', $sunsettimestamp);
-            if ($this->ReadPropertyBoolean('extinfoselection') == true) // float
-            {
+            if ($this->ReadPropertyBoolean('extinfoselection') == true) { // float
                 $timeformat = $this->GetTimeformat();
                 $sunsettime = date($timeformat, $sunsettimestamp);
                 $this->SetValue('sunsettime', $sunsettime);
@@ -4501,8 +4492,7 @@ class Astronomy extends IPSModuleStrict
         }
         if ($sunriseobjid > 0) {
             $this->SetValue('sunrise', $sunrisetimestamp);
-            if ($this->ReadPropertyBoolean('extinfoselection') == true) // float
-            {
+            if ($this->ReadPropertyBoolean('extinfoselection') == true) { // float
                 $timeformat = $this->GetTimeformat();
                 $sunrisetime = date($timeformat, $sunrisetimestamp);
                 $this->SetValue('sunrisetime', $sunrisetime);
@@ -4550,8 +4540,7 @@ class Astronomy extends IPSModuleStrict
 
         if ($this->ReadPropertyBoolean('newmoon') == true) {
             $this->SetValue('newmoon', $newmoonstring['newmoon']);
-            if ($this->ReadPropertyBoolean('extinfoselection') == true) // float
-            {
+            if ($this->ReadPropertyBoolean('extinfoselection') == true) { // float
                 $this->SetValue('newmoondate', $newmoonstring['newmoondate']);
                 $this->SetValue('newmoontime', $newmoonstring['newmoontime']);
             }
@@ -4561,8 +4550,7 @@ class Astronomy extends IPSModuleStrict
         }
         if ($this->ReadPropertyBoolean('firstquarter') == true) {
             $this->SetValue('firstquarter', $firstquarterstring['firstquarter']);
-            if ($this->ReadPropertyBoolean('extinfoselection') == true) // float
-            {
+            if ($this->ReadPropertyBoolean('extinfoselection') == true) { // float
                 $this->SetValue('firstquarterdate', $firstquarterstring['firstquarterdate']);
                 $this->SetValue('firstquartertime', $firstquarterstring['firstquartertime']);
             }
@@ -4572,8 +4560,7 @@ class Astronomy extends IPSModuleStrict
         }
         if ($this->ReadPropertyBoolean('fullmoon') == true) {
             $this->SetValue('fullmoon', $fullmoonstring['fullmoon']);
-            if ($this->ReadPropertyBoolean('extinfoselection') == true) // float
-            {
+            if ($this->ReadPropertyBoolean('extinfoselection') == true) { // float
                 $this->SetValue('fullmoondate', $fullmoonstring['fullmoondate']);
                 $this->SetValue('fullmoontime', $fullmoonstring['fullmoontime']);
             }
@@ -4583,8 +4570,7 @@ class Astronomy extends IPSModuleStrict
         }
         if ($this->ReadPropertyBoolean('lastquarter') == true) {
             $this->SetValue('lastquarter', $lastquarterstring['lastquarter']);
-            if ($this->ReadPropertyBoolean('extinfoselection') == true) // float
-            {
+            if ($this->ReadPropertyBoolean('extinfoselection') == true) { // float
                 $this->SetValue('lastquarterdate', $lastquarterstring['lastquarterdate']);
                 $this->SetValue('lastquartertime', $lastquarterstring['lastquartertime']);
             }
@@ -4700,24 +4686,19 @@ class Astronomy extends IPSModuleStrict
         $this->WriteAttributeFloat('sundistance', $rSun);
         $radiant_power = $this->Radiant_Power();
 
-        if ($this->ReadPropertyBoolean('sunazimut') == true) // float
-        {
+        if ($this->ReadPropertyBoolean('sunazimut') == true) { // float
             $this->SetValue('sunazimut', $sunazimut);
         }
-        if ($this->ReadPropertyBoolean('sundirection') == true) // float
-        {
+        if ($this->ReadPropertyBoolean('sundirection') == true) { // float
             $this->SetValue('sundirection', $SunDazimut);
         }
-        if ($this->ReadPropertyBoolean('sunaltitude') == true) // float
-        {
+        if ($this->ReadPropertyBoolean('sunaltitude') == true) { // float
             $this->SetValue('sunaltitude', $sunaltitude);
         }
-        if ($this->ReadPropertyBoolean('sundistance') == true) // float
-        {
+        if ($this->ReadPropertyBoolean('sundistance') == true) { // float
             $this->SetValue('sundistance', $rSun);
         }
-        if ($this->ReadPropertyBoolean('radiant_power') == true) // float
-        {
+        if ($this->ReadPropertyBoolean('radiant_power') == true) { // float
             $this->SetValue('radiant_power', $radiant_power);
         }
 
@@ -4780,28 +4761,22 @@ class Astronomy extends IPSModuleStrict
         $dazimut = $this->direction($moonazimut);
         $this->SunMoonView($sunazimut, $sunaltitude, $moonazimut, $moonaltitude);
 
-        if ($this->ReadPropertyBoolean('moonazimut') == true) // float
-        {
+        if ($this->ReadPropertyBoolean('moonazimut') == true) { // float
             $this->SetValue('moonazimut', $moonazimut);
         }
-        if ($this->ReadPropertyBoolean('moonaltitude') == true) // float
-        {
+        if ($this->ReadPropertyBoolean('moonaltitude') == true) { // float
             $this->SetValue('moonaltitude', $moonaltitude);
         }
-        if ($this->ReadPropertyBoolean('moondirection') == true) // float
-        {
+        if ($this->ReadPropertyBoolean('moondirection') == true) { // float
             $this->SetValue('moondirection', $dazimut);
         }
-        if ($this->ReadPropertyBoolean('moondistance') == true) // float
-        {
+        if ($this->ReadPropertyBoolean('moondistance') == true) { // float
             $this->SetValue('moondistance', $MoonDist);
         }
-        if ($this->ReadPropertyBoolean('moonvisibility') == true) // float
-        {
+        if ($this->ReadPropertyBoolean('moonvisibility') == true) { // float
             $this->SetValue('moonvisibility', $Moonphase);
         }
-        if ($this->ReadPropertyBoolean('moonbrightlimbangle') == true) // float
-        {
+        if ($this->ReadPropertyBoolean('moonbrightlimbangle') == true) { // float
             $this->SetValue('moonbrightlimbangle', $MoonBrightLimbAngle);
         }
         $moonrisedate = $moonrise['moonrisedate'];
@@ -4849,7 +4824,7 @@ class Astronomy extends IPSModuleStrict
             'bluehoureveningstart' => $bluehoureveningstart,
             'bluehoureveningend' => $bluehoureveningend,
             'moonculmination' => $moonTransit['upper'],
-            'moonlowerculmination' => $moonTransit['lower']
+            'moonlowerculmination' => $moonTransit['lower'],
         ];
         foreach ($additionalTimes as $ident => $timestamp) {
             if ($timestamp !== null && $this->ReadPropertyBoolean($ident) == true) {
@@ -4910,6 +4885,7 @@ class Astronomy extends IPSModuleStrict
             $offset = $this->ReadPropertyInteger('sunsetoffset');
         }
         $offset = $offset * 60;
+
         return $offset;
     }
 
@@ -4931,16 +4907,15 @@ class Astronomy extends IPSModuleStrict
         $timeformat = $this->GetTimeformat();
         $moonrisedate = date('d.m.Y', $moonrise);
         $moonrisetime = date($timeformat, $moonrise);
-        if ($this->ReadPropertyBoolean('moonrise') == true) // float
-        {
+        if ($this->ReadPropertyBoolean('moonrise') == true) { // float
             $this->SetValue('moonrise', $moonrise);
-            if ($this->ReadPropertyBoolean('extinfoselection') == true) // float
-            {
+            if ($this->ReadPropertyBoolean('extinfoselection') == true) { // float
                 $this->SetValue('moonrisedate', $moonrisedate);
                 $this->SetValue('moonrisetime', $moonrisetime);
             }
         }
         $moonrisedata = ['moonrisedate' => $moonrisedate, 'moonrisetime' => $moonrisetime];
+
         return $moonrisedata;
     }
 
@@ -4958,16 +4933,15 @@ class Astronomy extends IPSModuleStrict
         $timeformat = $this->GetTimeformat();
         $moonsetdate = date('d.m.Y', $moonset);
         $moonsettime = date($timeformat, $moonset);
-        if ($this->ReadPropertyBoolean('moonset') == true) // float
-        {
+        if ($this->ReadPropertyBoolean('moonset') == true) { // float
             $this->SetValue('moonset', $moonset);
-            if ($this->ReadPropertyBoolean('extinfoselection') == true) // float
-            {
+            if ($this->ReadPropertyBoolean('extinfoselection') == true) { // float
                 $this->SetValue('moonsetdate', $moonsetdate);
                 $this->SetValue('moonsettime', $moonsettime);
             }
         }
         $moonsetdata = ['moonsetdate' => $moonsetdate, 'moonsettime' => $moonsettime];
+
         return $moonsetdata;
     }
 
@@ -4979,6 +4953,7 @@ class Astronomy extends IPSModuleStrict
         $newmoon = $moonphase['newmoon'];
         $newmoondate = $moonphase['moondate'][0]['date'];
         $newmoontime = $moonphase['moondate'][0]['time'];
+
         return ['newmoon' => $newmoon, 'newmoondate' => $newmoondate, 'newmoontime' => $newmoontime];
     }
 
@@ -4993,6 +4968,7 @@ class Astronomy extends IPSModuleStrict
         $firstquarter = $moonphase['firstquarter'];
         $firstquarterdate = $moonphase['moondate'][1]['date'];
         $firstquartertime = $moonphase['moondate'][1]['time'];
+
         return ['firstquarter' => $firstquarter, 'firstquarterdate' => $firstquarterdate, 'firstquartertime' => $firstquartertime];
     }
 
@@ -5006,6 +4982,7 @@ class Astronomy extends IPSModuleStrict
         $fullmoon = $moonphase['fullmoon'];
         $fullmoondate = $moonphase['moondate'][2]['date'];
         $fullmoontime = $moonphase['moondate'][2]['time'];
+
         return ['fullmoon' => $fullmoon, 'fullmoondate' => $fullmoondate, 'fullmoontime' => $fullmoontime];
     }
 
@@ -5017,6 +4994,7 @@ class Astronomy extends IPSModuleStrict
         $lastquarter = $moonphase['lastquarter'];
         $lastquarterdate = $moonphase['moondate'][3]['date'];
         $lastquartertime = $moonphase['moondate'][3]['time'];
+
         return ['lastquarter' => $lastquarter, 'lastquarterdate' => $lastquarterdate, 'lastquartertime' => $lastquartertime];
     }
 
@@ -5036,6 +5014,7 @@ class Astronomy extends IPSModuleStrict
             $nextnewmoon = $nextmoonphase['newmoon'];
             $nextnewmoondate = $nextmoonphase['moondate'][0]['date'];
             $nextnewmoontime = $nextmoonphase['moondate'][0]['time'];
+
             return ['newmoon' => $nextnewmoon, 'newmoondate' => $nextnewmoondate, 'newmoontime' => $nextnewmoontime];
         } else {
             return ['newmoon' => $newmoon, 'newmoondate' => $newmoondate, 'newmoontime' => $newmoontime];
@@ -5048,11 +5027,9 @@ class Astronomy extends IPSModuleStrict
         $datetimecompare = new DateTime($datetocompare);
         $interval = $datetimetoday->diff($datetimecompare);
         $daydifference = intval($interval->format('%R%a')); // int
-        if ($daydifference >= 0) // present or future
-        {
+        if ($daydifference >= 0) { // present or future
             return false;
-        } else // past
-        {
+        } else { // past
             return true;
         }
     }
@@ -5065,6 +5042,7 @@ class Astronomy extends IPSModuleStrict
         $datetimenewmoon->add(new DateInterval('P30D'));
         // Datum für nächsten Zyklus in Jahre umrechnen
         $year = ((((((date('s') / 60) + date('i')) / 60) + date('G')) / 24) + $datetimenewmoon->format('z') - 1) / (365 + ($datetimenewmoon->format('L'))) + $datetimenewmoon->format('Y');
+
         return $year;
     }
 
@@ -5084,6 +5062,7 @@ class Astronomy extends IPSModuleStrict
             $nextfirstquarter = $nextmoonphase['firstquarter'];
             $nextfirstquarterdate = $nextmoonphase['moondate'][1]['date'];
             $nextfirstquartertime = $nextmoonphase['moondate'][1]['time'];
+
             return ['firstquarter' => $nextfirstquarter, 'firstquarterdate' => $nextfirstquarterdate, 'firstquartertime' => $nextfirstquartertime];
         } else {
             return ['firstquarter' => $firstquarter, 'firstquarterdate' => $firstquarterdate, 'firstquartertime' => $firstquartertime];
@@ -5106,6 +5085,7 @@ class Astronomy extends IPSModuleStrict
             $nextfullmoon = $nextmoonphase['fullmoon'];
             $nextfullmoondate = $nextmoonphase['moondate'][2]['date'];
             $nextfullmoontime = $nextmoonphase['moondate'][2]['time'];
+
             return ['fullmoon' => $nextfullmoon, 'fullmoondate' => $nextfullmoondate, 'fullmoontime' => $nextfullmoontime];
         } else {
             return ['fullmoon' => $fullmoon, 'fullmoondate' => $fullmoondate, 'fullmoontime' => $fullmoontime];
@@ -5128,6 +5108,7 @@ class Astronomy extends IPSModuleStrict
             $nextlastquarter = $nextmoonphase['lastquarter'];
             $nextlastquarterdate = $nextmoonphase['moondate'][3]['date'];
             $nextlastquartertime = $nextmoonphase['moondate'][3]['time'];
+
             return ['lastquarter' => $nextlastquarter, 'lastquarterdate' => $nextlastquarterdate, 'lastquartertime' => $nextlastquartertime];
         } else {
             return ['lastquarter' => $lastquarter, 'lastquarterdate' => $lastquarterdate, 'lastquartertime' => $lastquartertime];
@@ -5143,6 +5124,7 @@ class Astronomy extends IPSModuleStrict
             $this->SetValue('moonphase', $phase . ' - ' . $mondphase . '%');
         }
         $phasetext = ['moonphasetext' => $phase, 'moonphasepercent' => $mondphase];
+
         return $phasetext;
     }
 
@@ -5165,6 +5147,7 @@ class Astronomy extends IPSModuleStrict
         } else {
             $DDDeg = $this->roundvariantfix($E / 3600);
         }
+
         return $DDDeg;
     }
 
@@ -5183,6 +5166,7 @@ class Astronomy extends IPSModuleStrict
         }
 
         $DDMin = fmod(floor($E / 60), 60);
+
         return $DDMin;
     }
 
@@ -5198,6 +5182,7 @@ class Astronomy extends IPSModuleStrict
         }
 
         $DDSec = $D;
+
         return $DDSec;
     }
 
@@ -5208,6 +5193,7 @@ class Astronomy extends IPSModuleStrict
         $C = $this->Radians($this->Obliq($GD, $GM, $GY));                         //obliq
         $D = sin($B) * cos($C) + cos($B) * sin($C) * sin($A);   //sin Dec
         $ECDec = $this->Degrees(asin($D));                             //Dec Deg
+
         return $ECDec;
     }
 
@@ -5226,6 +5212,7 @@ class Astronomy extends IPSModuleStrict
         } else {
             $RAHA = $H;
         }
+
         return $RAHA;
     }
 
@@ -5242,6 +5229,7 @@ class Astronomy extends IPSModuleStrict
         $I = sin($E) - (sin($F) * $G);
         $J = $this->Degrees(atan2($H, $I));
         $EQAz = $J - 360 * $this->roundvariantint($J / 360);
+
         return $EQAz;
     }
 
@@ -5255,6 +5243,7 @@ class Astronomy extends IPSModuleStrict
         $F = $this->Radians($P);
         $G = sin($E) * sin($F) + cos($E) * cos($F) * cos($C);
         $EQAlt = $this->Degrees(asin($G));
+
         return $EQAlt;
     }
 
@@ -5309,6 +5298,7 @@ class Astronomy extends IPSModuleStrict
         if (($degree >= 337.5) and ($degree <= 360)) {
             $direction = 15;
         }
+
         return $direction;
     }
 
@@ -5331,6 +5321,7 @@ class Astronomy extends IPSModuleStrict
 
         $AM = $this->Radians($M1);
         $SunTrueAnomaly = $this->Degrees($this->TrueAnomaly($AM, $EC));
+
         return $SunTrueAnomaly;
     }
 
@@ -5339,6 +5330,7 @@ class Astronomy extends IPSModuleStrict
         $T = ($this->CDJD(floatval($GD), intval($GM), intval($GY)) - 2415020) / 36525;
         $T2 = $T * $T;
         $SunEcc = 0.01675104 - 0.0000418 * $T - 0.000000126 * $T2;
+
         return $SunEcc;
     }
 
@@ -5349,8 +5341,7 @@ class Astronomy extends IPSModuleStrict
         $el = $this->ReadAttributeFloat('sunaltitude'); // Elevation angle
         $R = $this->ReadAttributeFloat('sundistance') / 1.496e+8; // distance
         $radiant_power = 0;
-        if($R != 0)
-        {
+        if ($R != 0) {
             $sinel = sin(deg2rad($el));
             $io = $sinel * self::NREL / (pow($R, 2));
 
@@ -5367,21 +5358,20 @@ class Astronomy extends IPSModuleStrict
             // RS
             //def solar_rad_RS(lat, lon, altitude_m, ts=None, atc=0.8):
             $calculate_rs = false;
-            if($calculate_rs)
-            {
+            if ($calculate_rs) {
                 $atc = 0.8;
                 $z = 0;
                 $sinal = sin(deg2rad($el));
-                if ($sinal >= 0){
-                    $rm = pow((288.0-0.0065*$z)/288.0,5.256)/($sinal+0.15*pow($el+3.885,-1.253));
-                    $toa = self::NREL * $sinal / (pow($R,2));
+                if ($sinal >= 0) {
+                    $rm = pow((288.0 - 0.0065 * $z) / 288.0, 5.256) / ($sinal + 0.15 * pow($el + 3.885, -1.253));
+                    $toa = self::NREL * $sinal / (pow($R, 2));
                     $radiant_power = $toa * pow($atc, $rm);
                 }
             }
-        }
-        else{
+        } else {
             $radiant_power = 0;
         }
+
         return $radiant_power;
     }
 
@@ -5472,12 +5462,14 @@ class Astronomy extends IPSModuleStrict
         $MM = $this->Unwind($ML + $this->Radians($L));
 
         $MoonLong = $this->Degrees($MM);
+
         return $MoonLong;
     }
 
     protected function Unwind($W)
     {
         $Unwind = $W - 6.283185308 * $this->roundvariantint($W / 6.283185308);
+
         return $Unwind;
     }
 
@@ -5567,6 +5559,7 @@ class Astronomy extends IPSModuleStrict
         $BM = $this->Radians($G) * (1 - $W1 - $W2);
 
         $MoonLat = $this->Degrees($BM);
+
         return $MoonLat;
     }
 
@@ -5606,6 +5599,7 @@ class Astronomy extends IPSModuleStrict
         $DP = $DP + 0.0124 * sin($l2 - $N1) + 0.0114 * sin($D2 - $M2);
 
         $NutatLong = $DP / 3600;
+
         return $NutatLong;
     }
 
@@ -5614,6 +5608,7 @@ class Astronomy extends IPSModuleStrict
         $HP = $this->Radians($this->MoonHP($LH, $LM, $LS, $DS, $ZC, $DY, $MN, $YR));
         $R = 6378.14 / sin($HP);
         $MoonDist = $R;
+
         return $MoonDist;
     }
 
@@ -5627,6 +5622,7 @@ class Astronomy extends IPSModuleStrict
         $I = 3.141592654 - $D - $this->Radians($I);
         $K = (1 + cos($I)) / 2;
         $MoonPhase = number_format($K * 100, 1, ',', ''); //*100 is %
+
         return $MoonPhase;
     }
 
@@ -5677,6 +5673,7 @@ class Astronomy extends IPSModuleStrict
         $MD = $MD + 0.000817 * $S1 + $S3 + 0.002541 * $S2;
 
         $MoonMeanAnomaly = $this->Radians($MD);
+
         return $MoonMeanAnomaly;
     }
 
@@ -5694,6 +5691,7 @@ class Astronomy extends IPSModuleStrict
         $M1 = 358.47583 - (0.00015 + 0.0000033 * $T) * $T2 + $B;
         $AM = $this->Unwind($this->Radians($M1));
         $SunMeanAnomaly = $AM;
+
         return $SunMeanAnomaly;
     }
 
@@ -5714,6 +5712,7 @@ class Astronomy extends IPSModuleStrict
         $CHI = atan2($Y, $X);
 
         $MoonPABL = $this->Degrees($CHI);
+
         return $MoonPABL;
     }
 
@@ -5728,14 +5727,14 @@ class Astronomy extends IPSModuleStrict
         $hexcolor_int = $this->ReadPropertyInteger('canvasbackground');
 
         if ($hexcolor_int == 0) {
-            $red   = 255;
-            $blue  = 255;
+            $red = 255;
+            $blue = 255;
             $green = 255;
             $alpha = 0;
         } else {
-            $red   = floor($hexcolor_int/65536);
-            $blue  = floor(($hexcolor_int-($red*65536))/256);
-            $green = $hexcolor_int-($blue*256)-($red*65536);
+            $red = floor($hexcolor_int / 65536);
+            $blue = floor(($hexcolor_int - ($red * 65536)) / 256);
+            $green = $hexcolor_int - ($blue * 256) - ($red * 65536);
             $canvasbackgroundtransparency = $this->ReadPropertyFloat('canvasbackgroundtransparency') / 100; // canvas background transparency
             $alpha = str_replace(',', '.', strval($canvasbackgroundtransparency));
         }
@@ -5856,6 +5855,7 @@ svg {
         } elseif ($value == 2) {
             $type = '%';
         }
+
         return $type;
     }
 
@@ -5894,6 +5894,7 @@ svg {
         } elseif ($direction == 15) {
             $direction = 'Nord Nord West';
         }
+
         return $direction;
     }
 
@@ -5916,6 +5917,7 @@ svg {
         } elseif ($day == 'Sun') {
             $daygerman = 'So';
         }
+
         return $daygerman;
     }
 
@@ -5936,6 +5938,7 @@ svg {
         } else {
             $HARA = $H;
         }
+
         return $HARA;
     }
 
@@ -5950,6 +5953,7 @@ svg {
         $GY = $this->JDCYear($D);                      //G year
         $GDfix = $this->roundvariantfix($GD);
         $UTDec = 24 * ($GD - $GDfix);
+
         return ['UTDec' => $UTDec, 'GD' => $GD, 'GM' => $GM, 'GY' => $GY];
     }
 
@@ -5961,6 +5965,7 @@ svg {
         $D = $this->CDJD(floatval($C), intval($LM), intval($LY));
         $E = $this->JDCDay($D);
         $LctGDay = $this->roundvariantfix($E);
+
         return $LctGDay;
     }
 
@@ -5971,6 +5976,7 @@ svg {
         $C = floatval($LD + ($B / 24));
         $D = $this->CDJD(floatval($C), intval($LM), intval($LY));
         $LctGMonth = $this->JDCMonth($D);
+
         return $LctGMonth;
     }
 
@@ -5981,6 +5987,7 @@ svg {
         $C = floatval($LD + ($B / 24));
         $D = $this->CDJD(floatval($C), intval($LM), intval($LY));
         $LctGYear = $this->JDCYear($D);
+
         return $LctGYear;
     }
 
@@ -5995,6 +6002,7 @@ svg {
         $G = $F * 1.002737909;
         $H = $E + $G;
         $UTGST = $H - (24 * $this->roundvariantint($H / 24));
+
         return $UTGST;
     }
 
@@ -6004,6 +6012,7 @@ svg {
         $B = $L / 15;
         $C = $A + $B;
         $GSTLST = $C - (24 * $this->roundvariantint($C / 24));
+
         return $GSTLST;
     }
 
@@ -6016,6 +6025,7 @@ svg {
         $E = $this->Radians($P);
         $F = sin($D) * sin($E) + cos($D) * cos($E) * cos($C);
         $HORDec = $this->Degrees(asin($F));
+
         return $HORDec;
     }
 
@@ -6032,18 +6042,21 @@ svg {
         } else {
             $DMSDD = $C;
         }
+
         return $DMSDD;
     }
 
     protected function Radians($W)
     {
         $Radians = $W * 0.01745329252;
+
         return $Radians;
     }
 
     protected function Degrees($W)
     {
         $Degrees = $W * 57.29577951;
+
         return $Degrees;
     }
 
@@ -6059,12 +6072,14 @@ svg {
         $H = sin($D) - sin($E) * $F;
         $I = $this->DDDH($this->Degrees(atan2($G, $H)));
         $HORHa = $I - 24 * $this->roundvariantint($I / 24);
+
         return $HORHa;
     }
 
     protected function DDDH($DD)
     {
         $DDDH = $DD / 15;
+
         return $DDDH;
     }
 
@@ -6075,12 +6090,14 @@ svg {
         $C = $this->Radians($this->Obliq($GD, $GM, $GY));
         $D = sin($B) * cos($C) - cos($B) * sin($C) * sin($A);
         $EQElat = $this->Degrees(asin($D));
+
         return $EQElat;
     }
 
     protected function DHDD($DH)
     {
         $DHDD = $DH * 15;
+
         return $DHDD;
     }
 
@@ -6092,6 +6109,7 @@ svg {
         $D = $C * (46.815 + $C * (0.0006 - ($C * 0.00181)));
         $E = $D / 3600;
         $Obliq = 23.43929167 - $E + $this->NutatObl($GD, $GM, $GY);
+
         return $Obliq;
     }
 
@@ -6129,6 +6147,7 @@ svg {
         $DDO = $DDO - 0.0093 * cos($l2 - $M1) - 0.0066 * cos($l2 - $N1);
 
         $NutatObl = $DDO / 3600;
+
         return $NutatObl;
     }
 
@@ -6141,6 +6160,7 @@ svg {
         $E = cos($A);
         $F = $this->Degrees(atan2($D, $E));
         $EQElong = $F - 360 * $this->roundvariantint($F / 360);
+
         return $EQElong;
     }
 
@@ -6156,6 +6176,7 @@ svg {
         $H = cos($B) * sin($A - $E) * $C;
         $I = $this->Degrees(atan2($G, $H)) + 33;
         $EQGlong = $I - 360 * $this->roundvariantint($I / 360);
+
         return $EQGlong;
     }
 
@@ -6168,6 +6189,7 @@ svg {
         $E = $this->Radians(192.25);
         $F = cos($B) * $C * cos($A - $E) + sin($B) * $D;
         $EQGlat = $this->Degrees(asin($F));
+
         return $EQGlat;
     }
 
@@ -6177,6 +6199,7 @@ svg {
         $B = $this->DDDH($this->ECRA($A, 0, 0, 0, 0, 0, $GD, $GM, $GY));
         $C = $this->GSTUT($B, 0, 0, $GD, $GM, $GY)[0];
         $EqOfTime = $C - 12;
+
         return $EqOfTime;
     }
 
@@ -6228,6 +6251,7 @@ svg {
         $TP = 6.283185308;
         $SR = $SR - $TP * $this->roundvariantint($SR / $TP);
         $SunLong = $this->Degrees($SR);
+
         return $SunLong;
     }
 
@@ -6251,6 +6275,7 @@ svg {
         $A = sqrt((1 + $EC) / (1 - $EC)) * tan($AE / 2);
         $AT = 2 * atan($A);
         $TrueAnomaly = $AT;
+
         return $TrueAnomaly;
     }
 
@@ -6263,6 +6288,7 @@ svg {
         $E = cos($A);                                //x
         $F = $this->Degrees(atan2($D, $E));                //RA Deg
         $ECRA = $F - 360 * $this->roundvariantint($F / 360);   //RA Deg
+
         return $ECRA;
     }
 
@@ -6282,6 +6308,7 @@ svg {
         } else {
             $eGSTUT = 'OK';
         }
+
         return [$GSTUT, $eGSTUT];
     }
 
@@ -6291,6 +6318,7 @@ svg {
         $R = 6378.14 / sin($HP);
         $TH = 384401 * 0.5181 / $R;
         $MoonSize = $TH;
+
         return $MoonSize;
     }
 
@@ -6368,6 +6396,7 @@ svg {
         $PM = $PM + $E * 0.000019 * cos(4 * $ME1 - $MS - $MD);
 
         $MoonHP = $PM;
+
         return $MoonHP;
     }
 
@@ -6431,18 +6460,21 @@ svg {
         $FF = $B;
         // $FB = $F;
         $FullMoon = $FI + 2415020 + $FF;
+
         return $FullMoon;
     }
 
     protected function LINT($W)
     {
         $LINT = $this->IINT($W) + $this->IINT(((1 * sign($W)) - 1) / 2);
+
         return $LINT;
     }
 
     protected function IINT($W)
     {
         $IINT = $this->sign($W) * $this->roundvariantint(abs($W));
+
         return $IINT;
     }
 
@@ -6456,6 +6488,7 @@ svg {
     protected function FRACT($W)
     {
         $FRACT = $W - $this->LINT($W);
+
         return $FRACT;
     }
 
@@ -6466,12 +6499,14 @@ svg {
     protected function UnwindDeg($W)
     {
         $UnwindDeg = $W - 360 * $this->roundvariantint($W / 360);
+
         return $UnwindDeg;
     }
 
     protected function Fpart($W)
     {
         $Fpart = $W - $this->LINT($W);
+
         return $Fpart;
     }
 
@@ -6479,12 +6514,14 @@ svg {
     {
         $A = $this->CDJD(floatval($GD), intval($GM), intval($GY));
         $CRN = 1690 + round(($A - 2444235.34) / 27.2753, 0);
+
         return $CRN;
     }
 
     protected function UnwindRad($W)
     {
         $UnwindRad = $W - 6.283185308 * $this->roundvariantint($W / 6.283185308);
+
         return $UnwindRad;
     }
 
@@ -6525,6 +6562,7 @@ svg {
         $NA = 259.183275 - $M6 + (0.002078 + 0.0000022 * $T) * $T2;
 
         $MoonNodeLong = $NA;
+
         return $MoonNodeLong;
     }
 
@@ -6613,6 +6651,7 @@ svg {
         // $FF = $B;
         // $FB = $F;
         $NewMoon = $NI + 2415020 + $NF;
+
         return $NewMoon;
     }
 
@@ -6674,6 +6713,7 @@ svg {
 
         ends: //3075
         $Refract = $this->Degrees($Q + $RF);
+
         return $Refract;
     }
 
@@ -6723,6 +6763,7 @@ svg {
 
         $RR = 1.0000002 * (1 - $EC * cos($AE)) + $D3;
         $SunDist = $RR;
+
         return $SunDist;
     }
 
@@ -6744,6 +6785,7 @@ svg {
 
         step2: //3320
         $EccentricAnomaly = $AE;
+
         return $EccentricAnomaly;
     }
 
@@ -6752,10 +6794,11 @@ svg {
         $begin = mktime(0, 0, 0);
         $end = mktime(23, 59, 59);
         // check if given time is between begin and end
-        if ($time >= $begin && $time <= $end)
+        if ($time >= $begin && $time <= $end) {
             return true;
-        else
+        } else {
             return false;
+        }
     }
 
     //Add this Polyfill for IP-Symcon 4.4 and older
