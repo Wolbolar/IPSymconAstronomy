@@ -1120,6 +1120,15 @@ class Astronomy extends IPSModuleStrict
     protected function MaintainMediaImage(string $ident, string $name, int $position, bool $visible)
     {
         $mediaID = @$this->GetIDForIdent($ident);
+        if (!is_int($mediaID) || $mediaID <= 0 || !@IPS_ObjectExists($mediaID)) {
+            $mediaID = false;
+        } else {
+            $object = @IPS_GetObject($mediaID);
+            if (!is_array($object) || !array_key_exists('ObjectType', $object) || $object['ObjectType'] !== 5 || $object['ParentID'] !== $this->InstanceID) {
+                $mediaID = false;
+            }
+        }
+
         if (!$visible) {
             if (is_int($mediaID) && $mediaID > 0 && @IPS_ObjectExists($mediaID)) {
                 $object = @IPS_GetObject($mediaID);
