@@ -276,6 +276,20 @@ Besides classic variables, the module also provides a modern tile view for Symco
 
 ## 6. Functions
 
+## 7. Version history
+
+* `3.0`
+  * modernization for IP-Symcon 9 with `IPSModuleStrict`
+  * new Symcon tile for a compact astronomy visualization
+  * additional values such as day/night length, golden hour, blue hour, culmination, twilight phase, and further sun/moon coordinates
+  * fixes for object lookup and more robust media/tile updates
+  * documentation and screenshots refreshed
+* `2.1`
+  * conversion of deprecated `date_sunrise()` and `date_sunset()` calls to `date_sun_info()`
+  * corrected the assumption that nautical and astronomical sunrise/sunset always exist
+* `2.0`
+  * compatibility with IPS 7
+
 ```php
 Astronomy_SetAstronomyValues(int $InstanceID)
 ```

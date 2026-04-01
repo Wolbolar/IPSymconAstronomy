@@ -276,6 +276,20 @@ Das Modul stellt neben klassischen Variablen auch eine moderne Tile-Darstellung 
 
 ## 6. Funktionen
 
+## 7. Versionshistorie
+
+* `3.0`
+  * Modernisierung fuer IP-Symcon 9 mit `IPSModuleStrict`
+  * neue Symcon-Tile zur kompakten Visualisierung astronomischer Daten
+  * neue zusaetzliche Werte wie Tages-/Nachtlaenge, Goldene Stunde, Blaue Stunde, Kulmination, Daemmerungsphase sowie weitere Sonnen-/Mondkoordinaten
+  * Fehlerbehebungen bei Objektzugriffen und robustere Aktualisierung von Medien- und Tile-Inhalten
+  * Doku und Screenshots auf den aktuellen Stand gebracht
+* `2.1`
+  * Umstellung der als deprecated markierten Funktionen `date_sunrise()` und `date_sunset()` auf `date_sun_info()`
+  * Annahme korrigiert, dass es nautischen beziehungsweise astronomischen Sonnenauf- und -untergang immer gibt
+* `2.0`
+  * Kompatibilitaet mit IPS 7
+
 ```php
 Astronomy_SetAstronomyValues(int $InstanceID)
 ```

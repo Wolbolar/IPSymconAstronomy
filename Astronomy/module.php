@@ -1011,69 +1011,31 @@ class Astronomy extends IPSModuleStrict
 
         $timestamp = mktime(12, 0, 0, 1, 1, intval(date('Y'))) - 15 * 3600 * 24;
         for ($day = 0; $day < 365 + 30; $day++) {
-            $sunrise = date_sunrise($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 90 + 50 / 60, date('O') / 100);
-            // $this->SendDebug('sunrise', $sunrise . ' (' . gettype($sunrise) . ')', 0);
-            $sunset = date_sunset($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 90 + 50 / 60, date('O') / 100);
-            // $this->SendDebug('sunset', $sunset . ' (' . gettype($sunset) . ')', 0);
-            $sunrise1 = date_sunrise($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 96, date('O') / 100);
-            // $this->SendDebug('sunrise', $sunrise1 . ' (' . gettype($sunrise1) . ')', 0);
-            $sunset1 = date_sunset($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 96, date('O') / 100);
-            // $this->SendDebug('sunset', $sunset1 . ' (' . gettype($sunset1) . ')', 0);
-            $sunrise2 = date_sunrise($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 102, date('O') / 100);
-            // $this->SendDebug('sunrise', $sunrise2 . ' (' . gettype($sunrise2) . ')', 0);
-            $sunset2 = date_sunset($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 102, date('O') / 100);
-            // $this->SendDebug('sunset', $sunset2 . ' (' . gettype($sunset2) . ')', 0);
-            $sunrise3 = date_sunrise($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 108, date('O') / 100);
-            //$this->SendDebug('sunrise3', $sunrise3 . ' (' . gettype($sunrise3) . ')', 0);
-            $sunset3 = date_sunset($timestamp, SUNFUNCS_RET_TIMESTAMP, $Latitude, $Longitude, 108, date('O') / 100);
-            //$this->SendDebug('sunset3', $sunset3 . ' (' . gettype($sunset3) . ')', 0);
-            $sunriseMins = (date('H', $sunrise) * 60 + date('i', $sunrise)) / $dayDivisor;
-            // $this->SendDebug('sunriseMins', $sunriseMins . ' (' . gettype($sunriseMins) . ')', 0);
-            $sunsetMins = (date('H', $sunset) * 60 + date('i', $sunset)) / $dayDivisor;
-            // $this->SendDebug('sunsetMins', $sunsetMins . ' (' . gettype($sunsetMins) . ')', 0);
-            $sunrise1Mins = (date('H', $sunrise1) * 60 + date('i', $sunrise1)) / $dayDivisor;
-            // $this->SendDebug('sunrise1Mins', $sunrise1Mins . ' (' . gettype($sunrise1Mins) . ')', 0);
-            $sunset1Mins = (date('H', $sunset1) * 60 + date('i', $sunset1)) / $dayDivisor;
-            // $this->SendDebug('sunset1Mins', $sunset1Mins . ' (' . gettype($sunset1Mins) . ')', 0);
-            $sunrise2Mins = (date('H', $sunrise2) * 60 + date('i', $sunrise2)) / $dayDivisor;
-            // $this->SendDebug('sunrise2Mins', $sunrise2Mins . ' (' . gettype($sunrise2Mins) . ')', 0);
-            $sunset2Mins = (date('H', $sunset2) * 60 + date('i', $sunset2)) / $dayDivisor;
-            // $this->SendDebug('sunset2Mins', $sunset2Mins . ' (' . gettype($sunset2Mins) . ')', 0);
-            if ($sunrise3) {
-                $sunrise3Mins = (date('H', $sunrise3) * 60 + date('i', $sunrise3)) / $dayDivisor;
-            }
-            // $this->SendDebug('sunrise3Mins', $sunrise3Mins . ' (' . gettype($sunrise3Mins) . ')', 0);
-            if ($sunset3) {
-                $sunset3Mins = (date('H', $sunset3) * 60 + date('i', $sunset3)) / $dayDivisor;
-            }
-            // $this->SendDebug('sunset3Mins', $sunset3Mins . ' (' . gettype($sunset3Mins) . ')', 0);
+            $sunInfo = date_sun_info($timestamp, $Latitude, $Longitude);
+            $sunriseMins = $this->ConvertSunInfoTimestampToGraphMinutes($sunInfo['sunrise'], $dayDivisor);
+            $sunsetMins = $this->ConvertSunInfoTimestampToGraphMinutes($sunInfo['sunset'], $dayDivisor);
+            $sunrise1Mins = $this->ConvertSunInfoTimestampToGraphMinutes($sunInfo['civil_twilight_begin'], $dayDivisor);
+            $sunset1Mins = $this->ConvertSunInfoTimestampToGraphMinutes($sunInfo['civil_twilight_end'], $dayDivisor);
+            $sunrise2Mins = $this->ConvertSunInfoTimestampToGraphMinutes($sunInfo['nautical_twilight_begin'], $dayDivisor);
+            $sunset2Mins = $this->ConvertSunInfoTimestampToGraphMinutes($sunInfo['nautical_twilight_end'], $dayDivisor);
+            $sunrise3Mins = $this->ConvertSunInfoTimestampToGraphMinutes($sunInfo['astronomical_twilight_begin'], $dayDivisor);
+            $sunset3Mins = $this->ConvertSunInfoTimestampToGraphMinutes($sunInfo['astronomical_twilight_end'], $dayDivisor);
             $middayMins = (12 * 60) / $dayDivisor;
             // $this->SendDebug('middayMins', $middayMins . ' (' . gettype($middayMins) . ')', 0);
             $dayBeg = $marginLeft + $day * $dayWidth - $dayWidth + 1;
             $dayEnd = $marginLeft + $day * $dayWidth;
 
             imagefilledrectangle($image, intval($dayBeg), intval($marginTop), intval($marginLeft + $day * $dayWidth), intval($marginTop + $dayHeight), intval($grey));
-            if ($sunset3Mins < $sunrise3Mins or $sunset3Mins < $middayMins) {
-                imagefilledrectangle($image, intval($dayBeg), intval($marginTop), intval($dayEnd), intval($marginTop + $dayHeight - $sunrise3Mins), intval($grey_sunrise3));
-                imagefilledrectangle($image, intval($dayBeg), intval($marginTop + $dayHeight - $sunset3Mins), intval($dayEnd), intval($marginTop + $dayHeight), intval($grey_sunrise3));
-            } else {
-                imagefilledrectangle($image, intval($dayBeg), intval($marginTop + $dayHeight - $sunrise3Mins), intval($dayEnd), intval($marginTop + $dayHeight - $sunset3Mins), intval($grey_sunrise3));
+            $this->DrawTwilightBand($image, $dayBeg, $dayEnd, $marginTop, $dayHeight, $sunrise3Mins, $sunset3Mins, $middayMins, $grey_sunrise3);
+            $this->DrawTwilightBand($image, $dayBeg, $dayEnd, $marginTop, $dayHeight, $sunrise2Mins, $sunset2Mins, $middayMins, $grey_sunrise2);
+            $this->DrawTwilightBand($image, $dayBeg, $dayEnd, $marginTop, $dayHeight, $sunrise1Mins, $sunset1Mins, $middayMins, $grey_sunrise1);
+            $this->DrawTwilightBand($image, $dayBeg, $dayEnd, $marginTop, $dayHeight, $sunriseMins, $sunsetMins, $middayMins, $yellow);
+            if ($sunriseMins !== null) {
+                imagefilledrectangle($image, intval($dayBeg), intval($marginTop + $dayHeight - $sunriseMins), intval($dayEnd), intval($marginTop + $dayHeight - $sunriseMins), intval($red));
             }
-            if ($sunset2Mins < $sunrise2Mins or $sunset2Mins < $middayMins) {
-                imagefilledrectangle($image, intval($dayBeg), intval($marginTop), intval($dayEnd), intval($marginTop + $dayHeight - $sunrise2Mins), intval($grey_sunrise2));
-                imagefilledrectangle($image, intval($dayBeg), intval($marginTop + $dayHeight - $sunset2Mins), intval($dayEnd), intval($marginTop + $dayHeight), intval($grey_sunrise2));
-            } else {
-                imagefilledrectangle($image, intval($dayBeg), intval($marginTop + $dayHeight - $sunrise2Mins), intval($dayEnd), intval($marginTop + $dayHeight - $sunset2Mins), intval($grey_sunrise2));
+            if ($sunsetMins !== null) {
+                imagefilledrectangle($image, intval($dayBeg), intval($marginTop + $dayHeight - $sunsetMins), intval($dayEnd), intval($marginTop + $dayHeight - $sunsetMins), intval($red));
             }
-            if ($sunset1Mins < $sunrise1Mins or $sunset1Mins < $middayMins) {
-                imagefilledrectangle($image, intval($dayBeg), intval($marginTop), intval($dayEnd), intval($marginTop + $dayHeight - $sunrise1Mins), intval($grey_sunrise1));
-                imagefilledrectangle($image, intval($dayBeg), intval($marginTop + $dayHeight - $sunset1Mins), intval($dayEnd), intval($marginTop + $dayHeight), intval($grey_sunrise1));
-            } else {
-                imagefilledrectangle($image, intval($dayBeg), intval($marginTop + $dayHeight - $sunrise1Mins), intval($dayEnd), intval($marginTop + $dayHeight - $sunset1Mins), intval($grey_sunrise1));
-            }
-            imagefilledrectangle($image, intval($dayBeg), intval($marginTop + $dayHeight - $sunriseMins), intval($dayEnd), intval($marginTop + $dayHeight - $sunsetMins), intval($yellow));
-            imagefilledrectangle($image, intval($dayBeg), intval($marginTop + $dayHeight - $sunriseMins), intval($dayEnd), intval($marginTop + $dayHeight - $sunriseMins), intval($red));
-            imagefilledrectangle($image, intval($dayBeg), intval($marginTop + $dayHeight - $sunsetMins), intval($dayEnd), intval($marginTop + $dayHeight - $sunsetMins), intval($red));
 
             // Line for new Month
             if (date('d', $timestamp) == 1) {
@@ -1101,6 +1063,108 @@ class Astronomy extends IPSModuleStrict
         imagedestroy($image);
 
         return $ImagePath;
+    }
+
+    protected function ConvertSunInfoTimestampToGraphMinutes($timestamp, float $dayDivisor): ?float
+    {
+        if (!is_int($timestamp) && !is_float($timestamp)) {
+            return null;
+        }
+
+        return (date('H', (int) $timestamp) * 60 + date('i', (int) $timestamp)) / $dayDivisor;
+    }
+
+    protected function DrawTwilightBand($image, float $dayBeg, float $dayEnd, float $marginTop, float $dayHeight, ?float $startMins, ?float $endMins, float $middayMins, int $color): void
+    {
+        if ($startMins === null || $endMins === null) {
+            return;
+        }
+
+        if ($endMins < $startMins || $endMins < $middayMins) {
+            imagefilledrectangle($image, intval($dayBeg), intval($marginTop), intval($dayEnd), intval($marginTop + $dayHeight - $startMins), $color);
+            imagefilledrectangle($image, intval($dayBeg), intval($marginTop + $dayHeight - $endMins), intval($dayEnd), intval($marginTop + $dayHeight), $color);
+
+            return;
+        }
+
+        imagefilledrectangle($image, intval($dayBeg), intval($marginTop + $dayHeight - $startMins), intval($dayEnd), intval($marginTop + $dayHeight - $endMins), $color);
+    }
+
+    protected function NormalizeOptionalTimestamp($value): int
+    {
+        if (!is_int($value) && !is_float($value)) {
+            return 0;
+        }
+
+        $timestamp = (int) $value;
+
+        return $timestamp > 0 ? $timestamp : 0;
+    }
+
+    protected function HasValidTimestamp(int $timestamp): bool
+    {
+        return $timestamp > 0;
+    }
+
+    protected function ApplyOffsetToTimestamp(int $timestamp, int $offset): int
+    {
+        if (!$this->HasValidTimestamp($timestamp)) {
+            return 0;
+        }
+
+        return $timestamp + $offset;
+    }
+
+    protected function FormatOptionalTimestamp(int $timestamp, string $format): string
+    {
+        if (!$this->HasValidTimestamp($timestamp)) {
+            return '--';
+        }
+
+        return date($format, $timestamp);
+    }
+
+    protected function GetMinutesOfDay(int $timestamp): ?int
+    {
+        if (!$this->HasValidTimestamp($timestamp)) {
+            return null;
+        }
+
+        return (int) date('H', $timestamp) * 60 + (int) date('i', $timestamp);
+    }
+
+    protected function ConvertTimestampToClockAngle(int $timestamp): ?float
+    {
+        $minutes = $this->GetMinutesOfDay($timestamp);
+        if ($minutes === null) {
+            return null;
+        }
+
+        return fmod(270 + $minutes * 360 / 720, 360);
+    }
+
+    protected function DrawMorningClockArc($image, float $centerX, float $centerY, float $clockWidth, float $clockHeight, ?float $startAngle, int $color): void
+    {
+        if ($startAngle === null) {
+            return;
+        }
+
+        imagefilledarc($image, (int) $centerX, (int) $centerY, (int) $clockWidth, (int) $clockHeight, (int) round($startAngle), 270, $color, IMG_ARC_PIE);
+    }
+
+    protected function DrawEveningClockArc($image, float $centerX, float $centerY, float $clockWidth, float $clockHeight, ?int $minutesOfDay, ?float $endAngle, int $color): void
+    {
+        if ($minutesOfDay === null || $endAngle === null) {
+            return;
+        }
+
+        if ($minutesOfDay < 720) {
+            imagefilledarc($image, (int) $centerX, (int) $centerY, (int) $clockWidth, (int) $clockHeight, (int) round($endAngle), 270, $color, IMG_ARC_PIE);
+
+            return;
+        }
+
+        imagefilledarc($image, (int) $centerX, (int) $centerY, (int) $clockWidth, (int) $clockHeight, 270, (int) round($endAngle), $color, IMG_ARC_PIE);
     }
 
     protected function getlocation()
@@ -1251,57 +1315,39 @@ class Astronomy extends IPSModuleStrict
         }
         */
 
-        $sunriseMins = (270 + (date('H', $sunrise) * 60 + date('i', $sunrise)) * 360 / 720) % 360;
-        $sunsetMins = (270 + (date('H', $sunset) * 60 + date('i', $sunset)) * 360 / 720) % 360;
-        $sunrise1Mins = (270 + (date('H', $sunrise1) * 60 + date('i', $sunrise1)) * 360 / 720) % 360;
-        $sunset1Mins = (270 + (date('H', $sunset1) * 60 + date('i', $sunset1)) * 360 / 720) % 360;
-        $sunrise2Mins = (270 + (date('H', $sunrise2) * 60 + date('i', $sunrise2)) * 360 / 720) % 360;
-        $sunset2Mins = (270 + (date('H', $sunset2) * 60 + date('i', $sunset2)) * 360 / 720) % 360;
-        $sunrise3Mins = (270 + (date('H', $sunrise3) * 60 + date('i', $sunrise3)) * 360 / 720) % 360;
-        $sunset3Mins = (270 + (date('H', $sunset3) * 60 + date('i', $sunset3)) * 360 / 720) % 360;
-        $middayMins = (12 * 60);
+        $sunriseAngle = $this->ConvertTimestampToClockAngle($sunrise);
+        $sunsetAngle = $this->ConvertTimestampToClockAngle($sunset);
+        $sunrise1Angle = $this->ConvertTimestampToClockAngle($sunrise1);
+        $sunset1Angle = $this->ConvertTimestampToClockAngle($sunset1);
+        $sunrise2Angle = $this->ConvertTimestampToClockAngle($sunrise2);
+        $sunset2Angle = $this->ConvertTimestampToClockAngle($sunset2);
+        $sunrise3Angle = $this->ConvertTimestampToClockAngle($sunrise3);
+        $sunset3Angle = $this->ConvertTimestampToClockAngle($sunset3);
+        $sunsetMinutes = $this->GetMinutesOfDay($sunset);
+        $sunset1Minutes = $this->GetMinutesOfDay($sunset1);
+        $sunset2Minutes = $this->GetMinutesOfDay($sunset2);
+        $sunset3Minutes = $this->GetMinutesOfDay($sunset3);
 
         // 0h - 12h
-        imagefilledarc($image, $marginLeft + $clockWidth / 2, $marginTop + $clockHeight / 2, $clockWidth + 2, $clockHeight + 2, 0, 360, $grey_line, IMG_ARC_PIE);
-        imagefilledarc($image, $marginLeft + $clockWidth / 2, $marginTop + $clockHeight / 2, $clockWidth, $clockHeight, 0, 360, $grey, IMG_ARC_PIE);
-
-        if ((date('H', $sunset3) * 60 + date('i', $sunset3)) < (date('H', $sunrise3) * 60 + date('i', $sunrise3)) or (date('H', $sunset3) * 60 + date('i', $sunset3)) < $middayMins) {
-            imagefilledarc($image, $marginLeft + $clockWidth / 2, $marginTop + $clockHeight / 2, $clockWidth, $clockHeight, $sunrise3Mins, 270, $grey_sunrise3, IMG_ARC_PIE);
-        } else {
-            imagefilledarc($image, $marginLeft + $clockWidth / 2, $marginTop + $clockHeight / 2, $clockWidth, $clockHeight, $sunrise3Mins, 270, $grey_sunrise3, IMG_ARC_PIE);
-        }
-        if ((date('H', $sunset2) * 60 + date('i', $sunset2)) < (date('H', $sunrise2) * 60 + date('i', $sunrise2)) or (date('H', $sunset2) * 60 + date('i', $sunset2)) < $middayMins) {
-            imagefilledarc($image, $marginLeft + $clockWidth / 2, $marginTop + $clockHeight / 2, $clockWidth, $clockHeight, $sunrise2Mins, 270, $grey_sunrise2, IMG_ARC_PIE);
-        } else {
-            imagefilledarc($image, $marginLeft + $clockWidth / 2, $marginTop + $clockHeight / 2, $clockWidth, $clockHeight, $sunrise2Mins, 270, $grey_sunrise2, IMG_ARC_PIE);
-        }
-        if ((date('H', $sunset1) * 60 + date('i', $sunset1)) < (date('H', $sunrise1) * 60 + date('i', $sunrise1)) or (date('H', $sunset1) * 60 + date('i', $sunset1)) < $middayMins) {
-            imagefilledarc($image, $marginLeft + $clockWidth / 2, $marginTop + $clockHeight / 2, $clockWidth, $clockHeight, $sunrise1Mins, 270, $grey_sunrise1, IMG_ARC_PIE);
-        } else {
-            imagefilledarc($image, $marginLeft + $clockWidth / 2, $marginTop + $clockHeight / 2, $clockWidth, $clockHeight, $sunrise1Mins, 270, $grey_sunrise1, IMG_ARC_PIE);
-        }
-        imagefilledarc($image, $marginLeft + $clockWidth / 2, $marginTop + $clockHeight / 2, $clockWidth, $clockHeight, $sunriseMins, 270, $yellow, IMG_ARC_PIE);
+        $upperCenterX = $marginLeft + $clockWidth / 2;
+        $upperCenterY = $marginTop + $clockHeight / 2;
+        imagefilledarc($image, (int) $upperCenterX, (int) $upperCenterY, $clockWidth + 2, $clockHeight + 2, 0, 360, $grey_line, IMG_ARC_PIE);
+        imagefilledarc($image, (int) $upperCenterX, (int) $upperCenterY, $clockWidth, $clockHeight, 0, 360, $grey, IMG_ARC_PIE);
+        $this->DrawMorningClockArc($image, $upperCenterX, $upperCenterY, $clockWidth, $clockHeight, $sunrise3Angle, $grey_sunrise3);
+        $this->DrawMorningClockArc($image, $upperCenterX, $upperCenterY, $clockWidth, $clockHeight, $sunrise2Angle, $grey_sunrise2);
+        $this->DrawMorningClockArc($image, $upperCenterX, $upperCenterY, $clockWidth, $clockHeight, $sunrise1Angle, $grey_sunrise1);
+        $this->DrawMorningClockArc($image, $upperCenterX, $upperCenterY, $clockWidth, $clockHeight, $sunriseAngle, $yellow);
         //imagefilledarc($image, $marginLeft+$clockWidth/2, $marginTop+$clockHeight/2, $clockWidth, $clockHeight, $sunriseMins,  $sunriseMins+1,  $red,        IMG_ARC_PIE);
 
         // 12h - 24h
-        imagefilledarc($image, $marginLeft + $clockWidth / 2, $marginTop + $marginMiddle + $clockHeight + $clockHeight / 2, $clockWidth + 2, $clockHeight + 2, 0, 360, $grey_line, IMG_ARC_PIE);
-        imagefilledarc($image, $marginLeft + $clockWidth / 2, $marginTop + $marginMiddle + $clockHeight + $clockHeight / 2, $clockWidth, $clockHeight, 0, 360, $grey, IMG_ARC_PIE);
-        if ((date('H', $sunset3) * 60 + date('i', $sunset3)) < (date('H', $sunrise3) * 60 + date('i', $sunrise3))) {
-            imagefilledarc($image, $marginLeft + $clockWidth / 2, $marginTop + $marginMiddle + $clockHeight + $clockHeight / 2, $clockWidth, $clockHeight, $sunset3Mins, 270, $grey_sunrise3, IMG_ARC_PIE);
-        } else {
-            imagefilledarc($image, $marginLeft + $clockWidth / 2, $marginTop + $marginMiddle + $clockHeight + $clockHeight / 2, $clockWidth, $clockHeight, 270, $sunset3Mins, $grey_sunrise3, IMG_ARC_PIE);
-        }
-        if ((date('H', $sunset2) * 60 + date('i', $sunset2)) < (date('H', $sunrise2) * 60 + date('i', $sunrise2))) {
-            imagefilledarc($image, $marginLeft + $clockWidth / 2, $marginTop + $marginMiddle + $clockHeight + $clockHeight / 2, $clockWidth, $clockHeight, $sunset2Mins, 270, $grey_sunrise2, IMG_ARC_PIE);
-        } else {
-            imagefilledarc($image, $marginLeft + $clockWidth / 2, $marginTop + $marginMiddle + $clockHeight + $clockHeight / 2, $clockWidth, $clockHeight, 270, $sunset2Mins, $grey_sunrise2, IMG_ARC_PIE);
-        }
-        if ((date('H', $sunset1) * 60 + date('i', $sunset1)) < (date('H', $sunrise1) * 60 + date('i', $sunrise1))) {
-            imagefilledarc($image, $marginLeft + $clockWidth / 2, $marginTop + $marginMiddle + $clockHeight + $clockHeight / 2, $clockWidth, $clockHeight, $sunset1Mins, 270, $grey_sunrise1, IMG_ARC_PIE);
-        } else {
-            imagefilledarc($image, $marginLeft + $clockWidth / 2, $marginTop + $marginMiddle + $clockHeight + $clockHeight / 2, $clockWidth, $clockHeight, 270, $sunset1Mins, $grey_sunrise1, IMG_ARC_PIE);
-        }
-        imagefilledarc($image, $marginLeft + $clockWidth / 2, $marginTop + $marginMiddle + $clockHeight + $clockHeight / 2, $clockWidth, $clockHeight, 270, $sunsetMins, $yellow, IMG_ARC_PIE);
+        $lowerCenterX = $marginLeft + $clockWidth / 2;
+        $lowerCenterY = $marginTop + $marginMiddle + $clockHeight + $clockHeight / 2;
+        imagefilledarc($image, (int) $lowerCenterX, (int) $lowerCenterY, $clockWidth + 2, $clockHeight + 2, 0, 360, $grey_line, IMG_ARC_PIE);
+        imagefilledarc($image, (int) $lowerCenterX, (int) $lowerCenterY, $clockWidth, $clockHeight, 0, 360, $grey, IMG_ARC_PIE);
+        $this->DrawEveningClockArc($image, $lowerCenterX, $lowerCenterY, $clockWidth, $clockHeight, $sunset3Minutes, $sunset3Angle, $grey_sunrise3);
+        $this->DrawEveningClockArc($image, $lowerCenterX, $lowerCenterY, $clockWidth, $clockHeight, $sunset2Minutes, $sunset2Angle, $grey_sunrise2);
+        $this->DrawEveningClockArc($image, $lowerCenterX, $lowerCenterY, $clockWidth, $clockHeight, $sunset1Minutes, $sunset1Angle, $grey_sunrise1);
+        $this->DrawEveningClockArc($image, $lowerCenterX, $lowerCenterY, $clockWidth, $clockHeight, $sunsetMinutes, $sunsetAngle, $yellow);
         //imagefilledarc($image, $marginLeft+$clockWidth/2, $marginTop+$marginMiddle+$clockHeight+$clockHeight/2, $clockWidth, $clockHeight, $sunsetMins,  $sunsetMins+1,  $red,        IMG_ARC_PIE);
 
         imagestring($image, 2, $marginLeft + $clockWidth / 2 - 3, $marginTop - 14, '00', $textColor);
@@ -1347,14 +1393,14 @@ class Astronomy extends IPSModuleStrict
     {
         $LocationID = IPS_GetInstanceListByModuleID('{45E97A63-F870-408A-B259-2933F7EABF74}')[0];
         $isday = GetValue(IPS_GetObjectIDByIdent('IsDay', $LocationID));
-        $sunrise = GetValue(IPS_GetObjectIDByIdent('Sunrise', $LocationID));
-        $sunset = GetValue(IPS_GetObjectIDByIdent('Sunset', $LocationID));
-        $civiltwilightstart = GetValue(IPS_GetObjectIDByIdent('CivilTwilightStart', $LocationID));
-        $civiltwilightend = GetValue(IPS_GetObjectIDByIdent('CivilTwilightEnd', $LocationID));
-        $nautictwilightstart = GetValue(IPS_GetObjectIDByIdent('NauticTwilightStart', $LocationID));
-        $nautictwilightend = GetValue(IPS_GetObjectIDByIdent('NauticTwilightEnd', $LocationID));
-        $astronomictwilightstart = GetValue(IPS_GetObjectIDByIdent('AstronomicTwilightStart', $LocationID));
-        $astronomictwilightend = GetValue(IPS_GetObjectIDByIdent('AstronomicTwilightEnd', $LocationID));
+        $sunrise = $this->NormalizeOptionalTimestamp(GetValue(IPS_GetObjectIDByIdent('Sunrise', $LocationID)));
+        $sunset = $this->NormalizeOptionalTimestamp(GetValue(IPS_GetObjectIDByIdent('Sunset', $LocationID)));
+        $civiltwilightstart = $this->NormalizeOptionalTimestamp(GetValue(IPS_GetObjectIDByIdent('CivilTwilightStart', $LocationID)));
+        $civiltwilightend = $this->NormalizeOptionalTimestamp(GetValue(IPS_GetObjectIDByIdent('CivilTwilightEnd', $LocationID)));
+        $nautictwilightstart = $this->NormalizeOptionalTimestamp(GetValue(IPS_GetObjectIDByIdent('NauticTwilightStart', $LocationID)));
+        $nautictwilightend = $this->NormalizeOptionalTimestamp(GetValue(IPS_GetObjectIDByIdent('NauticTwilightEnd', $LocationID)));
+        $astronomictwilightstart = $this->NormalizeOptionalTimestamp(GetValue(IPS_GetObjectIDByIdent('AstronomicTwilightStart', $LocationID)));
+        $astronomictwilightend = $this->NormalizeOptionalTimestamp(GetValue(IPS_GetObjectIDByIdent('AstronomicTwilightEnd', $LocationID)));
         $locationinfo = ['IsDay' => $isday, 'Sunrise' => $sunrise, 'Sunset' => $sunset, 'CivilTwilightStart' => $civiltwilightstart, 'CivilTwilightEnd' => $civiltwilightend, 'NauticTwilightStart' => $nautictwilightstart, 'NauticTwilightEnd' => $nautictwilightend, 'AstronomicTwilightStart' => $astronomictwilightstart, 'AstronomicTwilightEnd' => $astronomictwilightend];
 
         return $locationinfo;
@@ -3456,16 +3502,17 @@ class Astronomy extends IPSModuleStrict
 
     protected function GetTwilightPhaseText(array $locationInfo, int $timestamp): string
     {
-        if ($timestamp < $locationInfo['AstronomicTwilightStart'] || $timestamp >= $locationInfo['AstronomicTwilightEnd']) {
+        $sunAltitude = $this->CalculateSunSnapshot($timestamp)['altitude'];
+        if ($sunAltitude < -18.0) {
             return $this->Translate('Night');
         }
-        if ($timestamp < $locationInfo['NauticTwilightStart'] || $timestamp >= $locationInfo['NauticTwilightEnd']) {
+        if ($sunAltitude < -12.0) {
             return $this->Translate('Astronomical twilight');
         }
-        if ($timestamp < $locationInfo['CivilTwilightStart'] || $timestamp >= $locationInfo['CivilTwilightEnd']) {
+        if ($sunAltitude < -6.0) {
             return $this->Translate('Nautical twilight');
         }
-        if ($timestamp < $locationInfo['Sunrise'] || $timestamp >= $locationInfo['Sunset']) {
+        if ($sunAltitude < 0.0) {
             return $this->Translate('Civil twilight');
         }
 
@@ -4378,20 +4425,20 @@ class Astronomy extends IPSModuleStrict
         $timeformat = $this->GetTimeformat();
         $sunrise = $astronomyinfo['Sunrise'];
         $sunset = $astronomyinfo['Sunset'];
-        $sunsetdate = date('d.m.Y', $sunset);
-        $sunsettime = date($timeformat, $sunset);
-        $sunrisedate = date('d.m.Y', $sunrise);
-        $sunrisetime = date($timeformat, $sunrise);
+        $sunsetdate = $this->FormatOptionalTimestamp($sunset, 'd.m.Y');
+        $sunsettime = $this->FormatOptionalTimestamp($sunset, $timeformat);
+        $sunrisedate = $this->FormatOptionalTimestamp($sunrise, 'd.m.Y');
+        $sunrisetime = $this->FormatOptionalTimestamp($sunrise, $timeformat);
         $moonsetdate = $astronomyinfo['moonsetdate'];
         $moonsettime = $astronomyinfo['moonsettime'];
         $moonrisedate = $astronomyinfo['moonrisedate'];
         $moonrisetime = $astronomyinfo['moonrisetime'];
-        $civiltwilightstart = date($timeformat, $astronomyinfo['CivilTwilightStart']);
-        $civiltwilightend = date($timeformat, $astronomyinfo['CivilTwilightEnd']);
-        $nautictwilightstart = date($timeformat, $astronomyinfo['NauticTwilightStart']);
-        $nautictwilightend = date($timeformat, $astronomyinfo['NauticTwilightEnd']);
-        $astronomictwilightstart = date($timeformat, $astronomyinfo['AstronomicTwilightStart']);
-        $astronomictwilightend = date($timeformat, $astronomyinfo['AstronomicTwilightEnd']);
+        $civiltwilightstart = $this->FormatOptionalTimestamp((int) $astronomyinfo['CivilTwilightStart'], $timeformat);
+        $civiltwilightend = $this->FormatOptionalTimestamp((int) $astronomyinfo['CivilTwilightEnd'], $timeformat);
+        $nautictwilightstart = $this->FormatOptionalTimestamp((int) $astronomyinfo['NauticTwilightStart'], $timeformat);
+        $nautictwilightend = $this->FormatOptionalTimestamp((int) $astronomyinfo['NauticTwilightEnd'], $timeformat);
+        $astronomictwilightstart = $this->FormatOptionalTimestamp((int) $astronomyinfo['AstronomicTwilightStart'], $timeformat);
+        $astronomictwilightend = $this->FormatOptionalTimestamp((int) $astronomyinfo['AstronomicTwilightEnd'], $timeformat);
         $Latitude = $astronomyinfo['latitude'] . ' Grad';
         $Longitude = $astronomyinfo['longitude'] . ' Grad';
         $JD = $astronomyinfo['juliandate'] . ' Tage';
@@ -4451,22 +4498,22 @@ class Astronomy extends IPSModuleStrict
         $sunrisetimestamp = 0;
         switch ($risetype) {
             case 1:
-                $sunrisetimestamp = $sunrise + $sunriseoffset; // "Sunrise"
+                $sunrisetimestamp = $this->ApplyOffsetToTimestamp($sunrise, $sunriseoffset); // "Sunrise"
                 break;
             case 2:
-                $sunrisetimestamp = $civiltwilightstart + $sunriseoffset; // "CivilTwilightStart"
+                $sunrisetimestamp = $this->ApplyOffsetToTimestamp($civiltwilightstart, $sunriseoffset); // "CivilTwilightStart"
                 break;
             case 3:
-                $sunrisetimestamp = $nautictwilightstart + $sunriseoffset; // "NauticTwilightStart"
+                $sunrisetimestamp = $this->ApplyOffsetToTimestamp($nautictwilightstart, $sunriseoffset); // "NauticTwilightStart"
                 break;
             case 4:
-                $sunrisetimestamp = $astronomictwilightstart + $sunriseoffset; // "AstronomicTwilightStart"
+                $sunrisetimestamp = $this->ApplyOffsetToTimestamp($astronomictwilightstart, $sunriseoffset); // "AstronomicTwilightStart"
                 break;
             case 5:
                 $moonrisedata = $this->Mondaufgang();
                 $moonrisetimestring = $moonrisedata['moonrisetime'];
                 $moonrisetime = strtotime($moonrisetimestring);
-                $sunrisetimestamp = $moonrisetime + $sunriseoffset; // "Moonrise"
+                $sunrisetimestamp = $this->ApplyOffsetToTimestamp($this->NormalizeOptionalTimestamp($moonrisetime), $sunriseoffset); // "Moonrise"
                 break;
         }
 
@@ -4474,22 +4521,22 @@ class Astronomy extends IPSModuleStrict
         $sunsettimestamp = 0;
         switch ($settype) {
             case 1:
-                $sunsettimestamp = $sunset + $sunsetoffset; // "Sunset"
+                $sunsettimestamp = $this->ApplyOffsetToTimestamp($sunset, $sunsetoffset); // "Sunset"
                 break;
             case 2:
-                $sunsettimestamp = $civiltwilightend + $sunsetoffset; // "CivilTwilightEnd"
+                $sunsettimestamp = $this->ApplyOffsetToTimestamp($civiltwilightend, $sunsetoffset); // "CivilTwilightEnd"
                 break;
             case 3:
-                $sunsettimestamp = $nautictwilightend + $sunsetoffset; // "NauticTwilightEnd"
+                $sunsettimestamp = $this->ApplyOffsetToTimestamp($nautictwilightend, $sunsetoffset); // "NauticTwilightEnd"
                 break;
             case 4:
-                $sunsettimestamp = $astronomictwilightend + $sunsetoffset; // "AstronomicTwilightEnd"
+                $sunsettimestamp = $this->ApplyOffsetToTimestamp($astronomictwilightend, $sunsetoffset); // "AstronomicTwilightEnd"
                 break;
             case 5:
                 $moonsetdata = $this->Monduntergang();
                 $moonsettimestring = $moonsetdata['moonsettime'];
                 $moonsettime = strtotime($moonsettimestring);
-                $sunsettimestamp = $moonsettime + $sunsetoffset; // "Moonset"
+                $sunsettimestamp = $this->ApplyOffsetToTimestamp($this->NormalizeOptionalTimestamp($moonsettime), $sunsetoffset); // "Moonset"
                 break;
         }
         $sunsetobjid = $this->FindChildIdByIdent('sunset');
@@ -4498,7 +4545,7 @@ class Astronomy extends IPSModuleStrict
             $this->SetValue('sunset', $sunsettimestamp);
             if ($this->ReadPropertyBoolean('extinfoselection') == true) { // float
                 $timeformat = $this->GetTimeformat();
-                $sunsettime = date($timeformat, $sunsettimestamp);
+                $sunsettime = $this->FormatOptionalTimestamp($sunsettimestamp, $timeformat);
                 $this->SetValue('sunsettime', $sunsettime);
             }
 
@@ -4507,7 +4554,7 @@ class Astronomy extends IPSModuleStrict
             $this->SetValue('sunrise', $sunrisetimestamp);
             if ($this->ReadPropertyBoolean('extinfoselection') == true) { // float
                 $timeformat = $this->GetTimeformat();
-                $sunrisetime = date($timeformat, $sunrisetimestamp);
+                $sunrisetime = $this->FormatOptionalTimestamp($sunrisetimestamp, $timeformat);
                 $this->SetValue('sunrisetime', $sunrisetime);
             }
         }
@@ -4796,19 +4843,28 @@ class Astronomy extends IPSModuleStrict
         $moonrisetime = $moonrise['moonrisetime'];
 
         $moonage = $this->CalculateMoonAgeDays($moonphasepercent);
-        $solarnoon = intval($sunrise + (($sunset - $sunrise) / 2));
-        $daylengthseconds = max(0, $sunset - $sunrise);
-        $nightlengthseconds = max(0, 86400 - $daylengthseconds);
+        $solarnoon = 0;
+        if ($this->HasValidTimestamp($sunrise) && $this->HasValidTimestamp($sunset)) {
+            $solarnoon = intval($sunrise + (($sunset - $sunrise) / 2));
+            $daylengthseconds = max(0, $sunset - $sunrise);
+            $nightlengthseconds = max(0, 86400 - $daylengthseconds);
+        } elseif ($isday) {
+            $daylengthseconds = 86400;
+            $nightlengthseconds = 0;
+        } else {
+            $daylengthseconds = 0;
+            $nightlengthseconds = 86400;
+        }
         $dayStart = strtotime(date('Y-m-d 00:00:00'));
         $moonTransit = $this->FindMoonTransitTimes($dayStart);
-        $goldenhourmorningstart = $this->FindSunAltitudeCrossing($civiltwilightstart, $sunrise, -4);
-        $goldenhourmorningend = $this->FindSunAltitudeCrossing($sunrise, $solarnoon, 6);
-        $goldenhoureveningstart = $this->FindSunAltitudeCrossing($solarnoon, $sunset, 6);
-        $goldenhoureveningend = $this->FindSunAltitudeCrossing($sunset, $civiltwilightend, -4);
-        $bluehourmorningstart = $civiltwilightstart;
+        $goldenhourmorningstart = ($this->HasValidTimestamp($civiltwilightstart) && $this->HasValidTimestamp($sunrise)) ? $this->FindSunAltitudeCrossing($civiltwilightstart, $sunrise, -4) : null;
+        $goldenhourmorningend = ($this->HasValidTimestamp($sunrise) && $this->HasValidTimestamp($solarnoon)) ? $this->FindSunAltitudeCrossing($sunrise, $solarnoon, 6) : null;
+        $goldenhoureveningstart = ($this->HasValidTimestamp($solarnoon) && $this->HasValidTimestamp($sunset)) ? $this->FindSunAltitudeCrossing($solarnoon, $sunset, 6) : null;
+        $goldenhoureveningend = ($this->HasValidTimestamp($sunset) && $this->HasValidTimestamp($civiltwilightend)) ? $this->FindSunAltitudeCrossing($sunset, $civiltwilightend, -4) : null;
+        $bluehourmorningstart = $this->HasValidTimestamp($civiltwilightstart) ? $civiltwilightstart : null;
         $bluehourmorningend = $goldenhourmorningstart;
         $bluehoureveningstart = $goldenhoureveningend;
-        $bluehoureveningend = $civiltwilightend;
+        $bluehoureveningend = $this->HasValidTimestamp($civiltwilightend) ? $civiltwilightend : null;
         $sunabovehorizon = $sunaltitude > 0;
         $moonabovehorizon = $moonaltitude > 0;
         $twilightphase = $this->GetTwilightPhaseText($locationinfo, time());
@@ -4840,8 +4896,8 @@ class Astronomy extends IPSModuleStrict
             'moonlowerculmination' => $moonTransit['lower'],
         ];
         foreach ($additionalTimes as $ident => $timestamp) {
-            if ($timestamp !== null && $this->ReadPropertyBoolean($ident) == true) {
-                $this->SetValue($ident, $timestamp);
+            if ($this->ReadPropertyBoolean($ident) == true) {
+                $this->SetValue($ident, $timestamp ?? 0);
             }
         }
         if ($this->ReadPropertyBoolean('sunabovehorizon') == true) {
