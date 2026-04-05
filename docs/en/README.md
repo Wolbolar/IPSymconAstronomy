@@ -39,6 +39,9 @@ Selectable astronomical values:
 * Moon visibility
 * Moonrise
 * Moonset
+* Next moonrise
+* Next moonset
+* Moon progress
 * Moon phase
 * New moon
 * First quarter
@@ -60,6 +63,7 @@ Selectable astronomical values:
 * Solar noon
 * Day length
 * Night length
+* Sun progress
 * Golden hour morning start/end
 * Golden hour evening start/end
 * Blue hour morning start/end
@@ -176,6 +180,9 @@ Besides classic variables, the module also provides a modern tile view for Symco
 | `moonvisibility` | Float | Moon visibility in percent |
 | `moonrise` | Integer | Moonrise |
 | `moonset` | Integer | Moonset |
+| `nextmoonrise` | Integer | next future moonrise starting from now |
+| `nextmoonset` | Integer | next future moonset starting from now |
+| `moonprogress` | Integer | progress of the current moon visibility interval in percent |
 | `moonphase` | String | Moon phase |
 | `newmoon` | String | New moon time |
 | `firstquarter` | String | First quarter time |
@@ -197,6 +204,7 @@ Besides classic variables, the module also provides a modern tile view for Symco
 | `solarnoon` | Integer | Solar noon |
 | `daylength` | Integer | Day length |
 | `nightlength` | Integer | Night length |
+| `sunprogress` | Integer | progress of the current day between sunrise and sunset in percent |
 | `goldenhourmorningstart` | Integer | Golden hour morning start |
 | `goldenhourmorningend` | Integer | Golden hour morning end |
 | `goldenhoureveningstart` | Integer | Golden hour evening start |
@@ -258,6 +266,16 @@ Besides classic variables, the module also provides a modern tile view for Symco
 | `frameheight` | Integer | frame height |
 | `canvaswidth` | Integer | canvas width in pixels |
 | `canvasheight` | Integer | canvas height in pixels |
+
+### Special time values
+
+`moonrise` and `moonset` remain the daily values for the current reference day.
+
+`nextmoonrise` and `nextmoonset` always return the next future event from the current moment. Because of that, `nextmoonset` may already point to the following day while `moonset` still contains today's daily value.
+
+`sunprogress` returns the percentage progress of the current daytime interval between sunrise and sunset. Before sunrise the value is `0`, after sunset it is `100`.
+
+`moonprogress` returns the percentage progress of the current moon visibility interval between the last moonrise and the next moonset. If the moon is currently below the horizon, the value is `0`.
 | `canvasbackground` | Color | background color |
 | `canvasbackgroundtransparency` | Integer | background transparency |
 

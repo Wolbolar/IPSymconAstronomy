@@ -40,6 +40,9 @@ class Astronomy extends IPSModuleStrict
         $this->RegisterPropertyBoolean('moonvisibility', false);
         $this->RegisterPropertyBoolean('moonrise', false);
         $this->RegisterPropertyBoolean('moonset', false);
+        $this->RegisterPropertyBoolean('nextmoonrise', false);
+        $this->RegisterPropertyBoolean('nextmoonset', false);
+        $this->RegisterPropertyBoolean('moonprogress', false);
         $this->RegisterPropertyBoolean('moonphase', false);
         $this->RegisterPropertyBoolean('newmoon', false);
         $this->RegisterPropertyBoolean('firstquarter', false);
@@ -61,6 +64,7 @@ class Astronomy extends IPSModuleStrict
         $this->RegisterPropertyBoolean('solarnoon', false);
         $this->RegisterPropertyBoolean('daylength', false);
         $this->RegisterPropertyBoolean('nightlength', false);
+        $this->RegisterPropertyBoolean('sunprogress', false);
         $this->RegisterPropertyBoolean('goldenhourmorningstart', false);
         $this->RegisterPropertyBoolean('goldenhourmorningend', false);
         $this->RegisterPropertyBoolean('goldenhoureveningstart', false);
@@ -310,6 +314,50 @@ class Astronomy extends IPSModuleStrict
         } else {
             $this->SetupVariable('moonset', 'Monduntergang', '~UnixTimestampTime', 9, VARIABLETYPE_INTEGER, false);
         }
+        if ($this->ReadPropertyBoolean('nextmoonrise') == true) { // int
+            $obj_nextmoonrise = @$this->GetIDForIdent('nextmoonrise');
+            if ($obj_nextmoonrise == false) {
+                $nextmoonrise_exist = false;
+            } else {
+                $nextmoonrise_exist = true;
+            }
+            $ipsversion = $this->GetIPSVersion();
+            if ($ipsversion == 0 || $ipsversion == 1) {
+                $objid = $this->SetupVariable('nextmoonrise', 'Nächster Mondaufgang', '~UnixTimestamp', 42, VARIABLETYPE_INTEGER, true);
+            } else {
+                $objid = $this->SetupVariable('nextmoonrise', 'Nächster Mondaufgang', '~UnixTimestampTime', 42, VARIABLETYPE_INTEGER, true);
+            }
+            if ($nextmoonrise_exist == false) {
+                IPS_SetIcon($objid, 'Moon');
+            }
+        } else {
+            $this->SetupVariable('nextmoonrise', 'Nächster Mondaufgang', '~UnixTimestampTime', 42, VARIABLETYPE_INTEGER, false);
+        }
+        if ($this->ReadPropertyBoolean('nextmoonset') == true) { // int
+            $obj_nextmoonset = @$this->GetIDForIdent('nextmoonset');
+            if ($obj_nextmoonset == false) {
+                $nextmoonset_exist = false;
+            } else {
+                $nextmoonset_exist = true;
+            }
+            $ipsversion = $this->GetIPSVersion();
+            if ($ipsversion == 0 || $ipsversion == 1) {
+                $objid = $this->SetupVariable('nextmoonset', 'Nächster Monduntergang', '~UnixTimestamp', 43, VARIABLETYPE_INTEGER, true);
+            } else {
+                $objid = $this->SetupVariable('nextmoonset', 'Nächster Monduntergang', '~UnixTimestampTime', 43, VARIABLETYPE_INTEGER, true);
+            }
+            if ($nextmoonset_exist == false) {
+                IPS_SetIcon($objid, 'Moon');
+            }
+        } else {
+            $this->SetupVariable('nextmoonset', 'Nächster Monduntergang', '~UnixTimestampTime', 43, VARIABLETYPE_INTEGER, false);
+        }
+        if ($this->ReadPropertyBoolean('moonprogress') == true) { // int
+            $this->SetupProfile(VARIABLETYPE_INTEGER, 'Astronomie.Fortschritt', 'Clock', '', ' %', 0, 100, 1, 0, []);
+            $this->SetupVariable('moonprogress', 'Mond Fortschritt', 'Astronomie.Fortschritt', 73, VARIABLETYPE_INTEGER, true);
+        } else {
+            $this->SetupVariable('moonprogress', 'Mond Fortschritt', 'Astronomie.Fortschritt', 73, VARIABLETYPE_INTEGER, false);
+        }
         if ($this->ReadPropertyBoolean('moonphase') == true) { // string
             $associations = [];
             $this->SetupProfile(VARIABLETYPE_STRING, 'Astronomie.Mond_Phase', 'Moon', '', '', 0, 0, 0, 0, $associations);
@@ -493,6 +541,12 @@ class Astronomy extends IPSModuleStrict
             $this->SetupVariable('nightlength', 'Nachtlänge', 'Astronomie.Nachtlaenge', 49, VARIABLETYPE_STRING, true);
         } else {
             $this->SetupVariable('nightlength', 'Nachtlänge', 'Astronomie.Nachtlaenge', 49, VARIABLETYPE_STRING, false);
+        }
+        if ($this->ReadPropertyBoolean('sunprogress') == true) {
+            $this->SetupProfile(VARIABLETYPE_INTEGER, 'Astronomie.Fortschritt', 'Clock', '', ' %', 0, 100, 1, 0, []);
+            $this->SetupVariable('sunprogress', 'Sonnen Fortschritt', 'Astronomie.Fortschritt', 74, VARIABLETYPE_INTEGER, true);
+        } else {
+            $this->SetupVariable('sunprogress', 'Sonnen Fortschritt', 'Astronomie.Fortschritt', 74, VARIABLETYPE_INTEGER, false);
         }
         $timeVariables = [
             ['goldenhourmorningstart', 'Goldene Stunde Morgen Beginn', 50],
@@ -720,6 +774,26 @@ class Astronomy extends IPSModuleStrict
             } else {
                 $this->SetupVariable('moonsetdate', 'Monduntergang Datum', 'Astronomie.Mond_Monduntergang_Datum', 40, VARIABLETYPE_INTEGER, false);
                 $this->SetupVariable('moonsettime', 'Monduntergang Zeit', 'Astronomie.Mond_Monduntergang_Zeit', 41, VARIABLETYPE_INTEGER, false);
+            }
+            if ($this->ReadPropertyBoolean('nextmoonrise') == true) { // int
+                $associations = [];
+                $this->SetupProfile(VARIABLETYPE_STRING, 'Astronomie.Mond_NaechsterMondaufgang_Datum', 'Moon', '', '', 0, 0, 0, 0, $associations);
+                $this->SetupVariable('nextmoonrisedate', 'Nächster Mondaufgang Datum', 'Astronomie.Mond_NaechsterMondaufgang_Datum', 67, VARIABLETYPE_STRING, true);
+                $this->SetupProfile(VARIABLETYPE_STRING, 'Astronomie.Mond_NaechsterMondaufgang_Zeit', 'Moon', '', '', 0, 0, 0, 0, $associations);
+                $this->SetupVariable('nextmoonrisetime', 'Nächster Mondaufgang Uhrzeit', 'Astronomie.Mond_NaechsterMondaufgang_Zeit', 68, VARIABLETYPE_STRING, true);
+            } else {
+                $this->SetupVariable('nextmoonrisedate', 'Nächster Mondaufgang Datum', 'Astronomie.Mond_NaechsterMondaufgang_Datum', 67, VARIABLETYPE_STRING, false);
+                $this->SetupVariable('nextmoonrisetime', 'Nächster Mondaufgang Uhrzeit', 'Astronomie.Mond_NaechsterMondaufgang_Zeit', 68, VARIABLETYPE_STRING, false);
+            }
+            if ($this->ReadPropertyBoolean('nextmoonset') == true) { // int
+                $associations = [];
+                $this->SetupProfile(VARIABLETYPE_STRING, 'Astronomie.Mond_NaechsterMonduntergang_Datum', 'Moon', '', '', 0, 0, 0, 0, $associations);
+                $this->SetupVariable('nextmoonsetdate', 'Nächster Monduntergang Datum', 'Astronomie.Mond_NaechsterMonduntergang_Datum', 69, VARIABLETYPE_STRING, true);
+                $this->SetupProfile(VARIABLETYPE_STRING, 'Astronomie.Mond_NaechsterMonduntergang_Zeit', 'Moon', '', '', 0, 0, 0, 0, $associations);
+                $this->SetupVariable('nextmoonsettime', 'Nächster Monduntergang Uhrzeit', 'Astronomie.Mond_NaechsterMonduntergang_Zeit', 70, VARIABLETYPE_STRING, true);
+            } else {
+                $this->SetupVariable('nextmoonsetdate', 'Nächster Monduntergang Datum', 'Astronomie.Mond_NaechsterMonduntergang_Datum', 69, VARIABLETYPE_STRING, false);
+                $this->SetupVariable('nextmoonsettime', 'Nächster Monduntergang Uhrzeit', 'Astronomie.Mond_NaechsterMonduntergang_Zeit', 70, VARIABLETYPE_STRING, false);
             }
             if ($this->ReadPropertyBoolean('sunstarsign') == true) {
                 $language = $this->ReadPropertyInteger('language');
@@ -2547,6 +2621,21 @@ class Astronomy extends IPSModuleStrict
                             'caption' => 'moon set',
                         ],
                         [
+                            'name' => 'nextmoonrise',
+                            'type' => 'CheckBox',
+                            'caption' => 'next moon rise',
+                        ],
+                        [
+                            'name' => 'nextmoonset',
+                            'type' => 'CheckBox',
+                            'caption' => 'next moon set',
+                        ],
+                        [
+                            'name' => 'moonprogress',
+                            'type' => 'CheckBox',
+                            'caption' => 'moon progress',
+                        ],
+                        [
                             'name' => 'moonphase',
                             'type' => 'CheckBox',
                             'caption' => 'moon phase',
@@ -2650,6 +2739,11 @@ class Astronomy extends IPSModuleStrict
                             'name' => 'nightlength',
                             'type' => 'CheckBox',
                             'caption' => 'night length',
+                        ],
+                        [
+                            'name' => 'sunprogress',
+                            'type' => 'CheckBox',
+                            'caption' => 'sun progress',
                         ],
                         [
                             'name' => 'goldenhourmorningstart',
@@ -3295,6 +3389,10 @@ class Astronomy extends IPSModuleStrict
                 'sunset' => $this->FormatVisualizationTimestamp((int) $astronomyInfo['Sunset']),
                 'moonrise' => $astronomyInfo['moonrisetime'],
                 'moonset' => $astronomyInfo['moonsettime'],
+                'nextMoonrise' => $astronomyInfo['nextmoonrisetime'],
+                'nextMoonset' => $astronomyInfo['nextmoonsettime'],
+                'sunProgress' => $this->FormatVisualizationFloat((float) $astronomyInfo['sunprogress'], 0, ' %'),
+                'moonProgress' => $this->FormatVisualizationFloat((float) $astronomyInfo['moonprogress'], 0, ' %'),
                 'phase' => $moonPhaseText . ' - ' . $astronomyInfo['moonphasepercent'] . '%',
             ],
             'panels' => [
@@ -3304,6 +3402,7 @@ class Astronomy extends IPSModuleStrict
                     'phasePercent' => (int) $astronomyInfo['moonphasepercent'],
                     'infoRows' => [
                         ['label' => $this->Translate('moon age'), 'value' => $this->FormatVisualizationFloat((float) $astronomyInfo['moonage'], 1, ' d')],
+                        ['label' => $this->Translate('moon progress'), 'value' => $this->FormatVisualizationFloat((float) $astronomyInfo['moonprogress'], 0, ' %')],
                         ['label' => $this->Translate('moon culmination'), 'value' => $this->FormatVisualizationTimestamp((int) $astronomyInfo['moonculmination'])],
                         ['label' => $this->Translate('moon lower culmination'), 'value' => $this->FormatVisualizationTimestamp((int) $astronomyInfo['moonlowerculmination'])],
                         ['label' => $this->Translate('moon above horizon'), 'value' => $this->GetBooleanText((bool) $astronomyInfo['moonabovehorizon'])],
@@ -3326,6 +3425,7 @@ class Astronomy extends IPSModuleStrict
                         ['label' => $this->Translate('Azimuth'), 'value' => $this->FormatVisualizationFloat((float) $astronomyInfo['sunazimut'], 2, '°')],
                         ['label' => $this->Translate('Direction'), 'value' => $sunDirection],
                         ['label' => $this->Translate('sun above horizon'), 'value' => $this->GetBooleanText((bool) $astronomyInfo['sunabovehorizon'])],
+                        ['label' => $this->Translate('sun progress'), 'value' => $this->FormatVisualizationFloat((float) $astronomyInfo['sunprogress'], 0, ' %')],
                         ['label' => $this->Translate('solar noon'), 'value' => $this->FormatVisualizationTimestamp((int) $astronomyInfo['solarnoon'])],
                     ],
                     'moonRows' => [
@@ -3374,8 +3474,12 @@ class Astronomy extends IPSModuleStrict
                 $this->Translate('Longitude') => $this->FormatVisualizationFloat((float) $astronomyInfo['longitude'], 4, '°'),
                 $this->Translate('Sunrise') => $this->FormatVisualizationTimestamp((int) $astronomyInfo['Sunrise']),
                 $this->Translate('Sunset') => $this->FormatVisualizationTimestamp((int) $astronomyInfo['Sunset']),
+                $this->Translate('sun progress') => $this->FormatVisualizationFloat((float) $astronomyInfo['sunprogress'], 0, ' %'),
                 $this->Translate('Moonrise') => $astronomyInfo['moonrisetime'],
                 $this->Translate('Moonset') => $astronomyInfo['moonsettime'],
+                $this->Translate('next moon rise') => $astronomyInfo['nextmoonrisetime'],
+                $this->Translate('next moon set') => $astronomyInfo['nextmoonsettime'],
+                $this->Translate('moon progress') => $this->FormatVisualizationFloat((float) $astronomyInfo['moonprogress'], 0, ' %'),
                 $this->Translate('Season') => $this->GetSeasonText((int) $astronomyInfo['season']),
                 $this->Translate('Moon phase') => $moonPhaseText . ' - ' . $astronomyInfo['moonphasepercent'] . '%',
                 $this->Translate('Sun azimuth') => $this->FormatVisualizationFloat((float) $astronomyInfo['sunazimut'], 2, '°'),
@@ -3434,6 +3538,10 @@ class Astronomy extends IPSModuleStrict
             'sunset' => $this->Translate('Sunset'),
             'moonrise' => $this->Translate('Moonrise'),
             'moonset' => $this->Translate('Moonset'),
+            'nextMoonRise' => $this->Translate('next moon rise'),
+            'nextMoonSet' => $this->Translate('next moon set'),
+            'sunProgress' => $this->Translate('sun progress'),
+            'moonProgress' => $this->Translate('moon progress'),
             'newMoon' => $this->Translate('New Moon'),
             'firstQuarter' => $this->Translate('First Quarter'),
             'fullMoon' => $this->Translate('Full Moon'),
@@ -4722,6 +4830,8 @@ class Astronomy extends IPSModuleStrict
         // $moonrisedate = $moonrise['moonrisedate'];
         // $moonrisetime = $moonrise['moonrisetime'];
         $moonset = $this->Monduntergang();
+        $nextMoonrise = $this->NextMondaufgang();
+        $nextMoonset = $this->NextMonduntergang();
         $moonsetdate = $moonset['moonsetdate'];
         $moonsettime = $moonset['moonsettime'];
         $mondphase = $this->MoonphasePercent();
@@ -4980,6 +5090,10 @@ class Astronomy extends IPSModuleStrict
         }
         $moonrisedate = $moonrise['moonrisedate'];
         $moonrisetime = $moonrise['moonrisetime'];
+        $nextmoonrisedate = $nextMoonrise['moonrisedate'];
+        $nextmoonrisetime = $nextMoonrise['moonrisetime'];
+        $nextmoonsetdate = $nextMoonset['moonsetdate'];
+        $nextmoonsettime = $nextMoonset['moonsettime'];
 
         $moonage = $this->CalculateMoonAgeDays($moonphasepercent);
         $solarnoon = 0;
@@ -5006,12 +5120,29 @@ class Astronomy extends IPSModuleStrict
         $bluehoureveningend = $this->HasValidTimestamp($civiltwilightend) ? $civiltwilightend : null;
         $sunabovehorizon = $sunaltitude > 0;
         $moonabovehorizon = $moonaltitude > 0;
-        $twilightphase = $this->GetTwilightPhaseText($locationinfo, time());
+        $now = time();
+        $sunprogress = $this->CalculateSunProgress($sunrise, $sunset, $isday, $now);
+        $moonprogress = $this->CalculateMoonProgress($moonabovehorizon, $now);
+        $twilightphase = $this->GetTwilightPhaseText($locationinfo, $now);
         $sunparallacticangle = $this->CalculateParallacticAngle($SunH, $SunDec, $Latitude);
         $moonparallacticangle = $this->CalculateParallacticAngle($MoonH, $MoonDec, $Latitude);
 
         if ($this->ReadPropertyBoolean('moonage') == true) {
             $this->SetValue('moonage', $moonage);
+        }
+        if ($this->ReadPropertyBoolean('nextmoonrise') == true) {
+            $this->SetValue('nextmoonrise', $nextMoonrise['timestamp']);
+            if ($this->ReadPropertyBoolean('extinfoselection') == true) {
+                $this->SetValue('nextmoonrisedate', $nextmoonrisedate);
+                $this->SetValue('nextmoonrisetime', $nextmoonrisetime);
+            }
+        }
+        if ($this->ReadPropertyBoolean('nextmoonset') == true) {
+            $this->SetValue('nextmoonset', $nextMoonset['timestamp']);
+            if ($this->ReadPropertyBoolean('extinfoselection') == true) {
+                $this->SetValue('nextmoonsetdate', $nextmoonsetdate);
+                $this->SetValue('nextmoonsettime', $nextmoonsettime);
+            }
         }
         if ($this->ReadPropertyBoolean('solarnoon') == true) {
             $this->SetValue('solarnoon', $solarnoon);
@@ -5021,6 +5152,12 @@ class Astronomy extends IPSModuleStrict
         }
         if ($this->ReadPropertyBoolean('nightlength') == true) {
             $this->SetValue('nightlength', $this->FormatDuration($nightlengthseconds));
+        }
+        if ($this->ReadPropertyBoolean('sunprogress') == true) {
+            $this->SetValue('sunprogress', $sunprogress);
+        }
+        if ($this->ReadPropertyBoolean('moonprogress') == true) {
+            $this->SetValue('moonprogress', $moonprogress);
         }
         $additionalTimes = [
             'goldenhourmorningstart' => $goldenhourmorningstart,
@@ -5073,10 +5210,10 @@ class Astronomy extends IPSModuleStrict
             $this->SetValue('moonparallacticangle', $moonparallacticangle);
         }
 
-        $astronomyinfo = ['IsDay' => $isday, 'Sunrise' => $sunrise, 'Sunset' => $sunset, 'moonsetdate' => $moonsetdate, 'moonsettime' => $moonsettime, 'moonrisedate' => $moonrisedate, 'moonrisetime' => $moonrisetime, 'CivilTwilightStart' => $civiltwilightstart, 'CivilTwilightEnd' => $civiltwilightend, 'NauticTwilightStart' => $nautictwilightstart, 'NauticTwilightEnd' => $nautictwilightend, 'AstronomicTwilightStart' => $astronomictwilightstart, 'AstronomicTwilightEnd' => $astronomictwilightend,
+        $astronomyinfo = ['IsDay' => $isday, 'Sunrise' => $sunrise, 'Sunset' => $sunset, 'moonsetdate' => $moonsetdate, 'moonsettime' => $moonsettime, 'moonrisedate' => $moonrisedate, 'moonrisetime' => $moonrisetime, 'nextmoonrisedate' => $nextmoonrisedate, 'nextmoonrisetime' => $nextmoonrisetime, 'nextmoonsetdate' => $nextmoonsetdate, 'nextmoonsettime' => $nextmoonsettime, 'CivilTwilightStart' => $civiltwilightstart, 'CivilTwilightEnd' => $civiltwilightend, 'NauticTwilightStart' => $nautictwilightstart, 'NauticTwilightEnd' => $nautictwilightend, 'AstronomicTwilightStart' => $astronomictwilightstart, 'AstronomicTwilightEnd' => $astronomictwilightend,
             'latitude' => $Latitude, 'longitude' => $Longitude, 'juliandate' => $JD, 'season' => $season, 'sunazimut' => $sunazimut, 'sundirection' => $SunDazimut, 'sunaltitude' => $sunaltitude, 'sundistance' => $rSun, 'moonazimut' => $moonazimut, 'moonaltitude' => $moonaltitude, 'moondirection' => $dazimut, 'moondistance' => $MoonDist, 'moonvisibility' => $Moonphase, 'moonbrightlimbangle' => $MoonBrightLimbAngle,
             'newmoon' => $currentnewmoonstring, 'firstquarter' => $currentfirstquarterstring, 'fullmoon' => $currentfullmoonstring, 'lastquarter' => $currentlastquarterstring, 'moonphasetext' => $moonphasetext, 'moonphasepercent' => $moonphasepercent, 'picid' => $picture['picid'], 'mediaid_twilight_year' => $mediaid_twilight_year, 'twilight_year_image_path' => $twilight_year_image_path, 'mediaid_twilight_day' => $mediaid_twilight_day, 'twilight_day_image_path' => $twilight_day_image_path,
-            'moonage' => $moonage, 'solarnoon' => $solarnoon, 'daylength' => $daylengthseconds, 'nightlength' => $nightlengthseconds, 'goldenhourmorningstart' => $goldenhourmorningstart, 'goldenhourmorningend' => $goldenhourmorningend, 'goldenhoureveningstart' => $goldenhoureveningstart, 'goldenhoureveningend' => $goldenhoureveningend,
+            'moonage' => $moonage, 'solarnoon' => $solarnoon, 'daylength' => $daylengthseconds, 'nightlength' => $nightlengthseconds, 'sunprogress' => $sunprogress, 'moonprogress' => $moonprogress, 'goldenhourmorningstart' => $goldenhourmorningstart, 'goldenhourmorningend' => $goldenhourmorningend, 'goldenhoureveningstart' => $goldenhoureveningstart, 'goldenhoureveningend' => $goldenhoureveningend,
             'bluehourmorningstart' => $bluehourmorningstart, 'bluehourmorningend' => $bluehourmorningend, 'bluehoureveningstart' => $bluehoureveningstart, 'bluehoureveningend' => $bluehoureveningend, 'moonculmination' => $moonTransit['upper'], 'moonlowerculmination' => $moonTransit['lower'], 'sunabovehorizon' => $sunabovehorizon, 'moonabovehorizon' => $moonabovehorizon,
             'twilightphase' => $twilightphase, 'sunrightascension' => $SunRAh, 'sundeclination' => $SunDec, 'moonrightascension' => $MoonRA, 'moondeclination' => $MoonDec, 'sunzodiaclongitude' => $Sunlong, 'moonzodiaclongitude' => $Moonlongcorr,
             'sunparallacticangle' => $sunparallacticangle, 'moonparallacticangle' => $moonparallacticangle];
@@ -5103,54 +5240,191 @@ class Astronomy extends IPSModuleStrict
 
     protected function Mondaufgang()
     {
-        $month = date('m');
-        $day = date('d');
-        $year = date('Y');
-        $location = $this->getlocation();
-        $latitude = $location['Latitude'];
-        $longitude = $location['Longitude'];
-        $data = (Moon::calculateMoonTimes($month, $day, $year, $latitude, $longitude));
-
-        $moonrise = $data->{'moonrise'}; //Aufgang
+        $data = $this->CalculateMoonTimesForOffset(0);
+        $moonrise = $this->NormalizeMoonEventTimestamp($data->moonrise ?? null);
         $timeformat = $this->GetTimeformat();
-        $moonrisedate = date('d.m.Y', $moonrise);
-        $moonrisetime = date($timeformat, $moonrise);
-        if ($this->ReadPropertyBoolean('moonrise') == true) { // float
+        $moonrisedate = $this->FormatOptionalTimestamp($moonrise, 'd.m.Y');
+        $moonrisetime = $this->FormatOptionalTimestamp($moonrise, $timeformat);
+        if ($moonrise !== null && $this->ReadPropertyBoolean('moonrise') == true) { // float
             $this->SetValue('moonrise', $moonrise);
             if ($this->ReadPropertyBoolean('extinfoselection') == true) { // float
                 $this->SetValue('moonrisedate', $moonrisedate);
                 $this->SetValue('moonrisetime', $moonrisetime);
             }
         }
-        $moonrisedata = ['moonrisedate' => $moonrisedate, 'moonrisetime' => $moonrisetime];
+        $moonrisedata = ['timestamp' => $moonrise ?? 0, 'moonrisedate' => $moonrisedate, 'moonrisetime' => $moonrisetime];
 
         return $moonrisedata;
     }
 
     protected function Monduntergang()
     {
-        $month = date('m');
-        $day = date('d');
-        $year = date('Y');
-        $location = $this->getlocation();
-        $latitude = $location['Latitude'];
-        $longitude = $location['Longitude'];
-        $data = (Moon::calculateMoonTimes($month, $day, $year, $latitude, $longitude));
-
-        $moonset = $data->{'moonset'}; //Untergang
+        $data = $this->CalculateMoonTimesForOffset(0);
+        $moonset = $this->NormalizeMoonEventTimestamp($data->moonset ?? null);
         $timeformat = $this->GetTimeformat();
-        $moonsetdate = date('d.m.Y', $moonset);
-        $moonsettime = date($timeformat, $moonset);
-        if ($this->ReadPropertyBoolean('moonset') == true) { // float
+        $moonsetdate = $this->FormatOptionalTimestamp($moonset, 'd.m.Y');
+        $moonsettime = $this->FormatOptionalTimestamp($moonset, $timeformat);
+        if ($moonset !== null && $this->ReadPropertyBoolean('moonset') == true) { // float
             $this->SetValue('moonset', $moonset);
             if ($this->ReadPropertyBoolean('extinfoselection') == true) { // float
                 $this->SetValue('moonsetdate', $moonsetdate);
                 $this->SetValue('moonsettime', $moonsettime);
             }
         }
-        $moonsetdata = ['moonsetdate' => $moonsetdate, 'moonsettime' => $moonsettime];
+        $moonsetdata = ['timestamp' => $moonset ?? 0, 'moonsetdate' => $moonsetdate, 'moonsettime' => $moonsettime];
 
         return $moonsetdata;
+    }
+
+    protected function NextMondaufgang(): array
+    {
+        return $this->FindNextMoonEvent('moonrise');
+    }
+
+    protected function NextMonduntergang(): array
+    {
+        return $this->FindNextMoonEvent('moonset');
+    }
+
+    protected function FindNextMoonEvent(string $eventKey): array
+    {
+        $now = time();
+        $timeformat = $this->GetTimeformat();
+
+        for ($offset = 0; $offset <= 3; $offset++) {
+            $data = $this->CalculateMoonTimesForOffset($offset);
+            $timestamp = $this->NormalizeMoonEventTimestamp($data->{$eventKey} ?? null);
+            if ($timestamp !== null && $timestamp > $now) {
+                return [
+                    'timestamp' => $timestamp,
+                    'moonrisedate' => $this->FormatOptionalTimestamp($timestamp, 'd.m.Y'),
+                    'moonrisetime' => $this->FormatOptionalTimestamp($timestamp, $timeformat),
+                    'moonsetdate' => $this->FormatOptionalTimestamp($timestamp, 'd.m.Y'),
+                    'moonsettime' => $this->FormatOptionalTimestamp($timestamp, $timeformat),
+                ];
+            }
+        }
+
+        return [
+            'timestamp' => 0,
+            'moonrisedate' => '',
+            'moonrisetime' => '',
+            'moonsetdate' => '',
+            'moonsettime' => '',
+        ];
+    }
+
+    protected function FindPreviousMoonEvent(string $eventKey): ?int
+    {
+        $now = time();
+
+        for ($offset = 0; $offset >= -3; $offset--) {
+            $data = $this->CalculateMoonTimesForOffset($offset);
+            $timestamp = $this->NormalizeMoonEventTimestamp($data->{$eventKey} ?? null);
+            if ($timestamp !== null && $timestamp <= $now) {
+                return $timestamp;
+            }
+        }
+
+        return null;
+    }
+
+    protected function CalculateMoonTimesForOffset(int $offset): object
+    {
+        $baseDate = new DateTimeImmutable('today');
+        if ($offset !== 0) {
+            $baseDate = $baseDate->modify(($offset > 0 ? '+' : '') . $offset . ' day');
+        }
+
+        $location = $this->getlocation();
+
+        return Moon::calculateMoonTimes(
+            (int) $baseDate->format('m'),
+            (int) $baseDate->format('d'),
+            (int) $baseDate->format('Y'),
+            $location['Latitude'],
+            $location['Longitude']
+        );
+    }
+
+    protected function NormalizeMoonEventTimestamp($value): ?int
+    {
+        if (!is_numeric($value)) {
+            return null;
+        }
+
+        $timestamp = (int) $value;
+        if ($timestamp <= 0) {
+            return null;
+        }
+
+        return $timestamp;
+    }
+
+    protected function CalculateProgressPercent(?int $start, ?int $end, int $referenceTime): int
+    {
+        if ($start === null || $end === null || $end <= $start) {
+            return 0;
+        }
+        if ($referenceTime <= $start) {
+            return 0;
+        }
+        if ($referenceTime >= $end) {
+            return 100;
+        }
+
+        return (int) round((($referenceTime - $start) / ($end - $start)) * 100);
+    }
+
+    protected function CalculateSunProgress(?int $sunrise, ?int $sunset, bool $isday, int $referenceTime): int
+    {
+        $sunWindow = $this->GetSunWindowForReferenceTime($referenceTime);
+        if ($sunWindow !== null) {
+            return $this->CalculateProgressPercent($sunWindow['sunrise'], $sunWindow['sunset'], $referenceTime);
+        }
+
+        if (!$this->HasValidTimestamp($sunrise) || !$this->HasValidTimestamp($sunset)) {
+            return $isday ? 100 : 0;
+        }
+
+        return $this->CalculateProgressPercent($sunrise, $sunset, $referenceTime);
+    }
+
+    protected function CalculateMoonProgress(bool $moonabovehorizon, int $referenceTime): int
+    {
+        if (!$moonabovehorizon) {
+            return 0;
+        }
+
+        $lastMoonrise = $this->FindPreviousMoonEvent('moonrise');
+        $nextMoonset = $this->FindNextMoonEvent('moonset');
+        $nextMoonsetTimestamp = (($nextMoonset['timestamp'] ?? 0) > 0) ? (int) $nextMoonset['timestamp'] : null;
+
+        return $this->CalculateProgressPercent($lastMoonrise, $nextMoonsetTimestamp, $referenceTime);
+    }
+
+    protected function GetSunWindowForReferenceTime(int $referenceTime): ?array
+    {
+        $location = $this->getlocation();
+        if (!isset($location['Latitude'], $location['Longitude'])) {
+            return null;
+        }
+
+        $sunInfo = date_sun_info($referenceTime, (float) $location['Latitude'], (float) $location['Longitude']);
+        if (!is_array($sunInfo)) {
+            return null;
+        }
+
+        $sunrise = $this->NormalizeOptionalTimestamp($sunInfo['sunrise'] ?? 0);
+        $sunset = $this->NormalizeOptionalTimestamp($sunInfo['sunset'] ?? 0);
+        if (!$this->HasValidTimestamp($sunrise) || !$this->HasValidTimestamp($sunset)) {
+            return null;
+        }
+
+        return [
+            'sunrise' => $sunrise,
+            'sunset' => $sunset
+        ];
     }
 
     public function Moon_CurrentNewmoon(): array

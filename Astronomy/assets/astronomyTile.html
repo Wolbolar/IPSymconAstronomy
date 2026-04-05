@@ -258,6 +258,7 @@
                 ${renderMetricRows([
                     { label: labels.sunrise, value: summary.sunrise },
                     { label: labels.sunset, value: summary.sunset },
+                    { label: labels.sunProgress, value: summary.sunProgress },
                     { label: labels.altitude, value: metrics.sun?.altitude },
                     { label: labels.azimuth, value: metrics.sun?.azimuth },
                     { label: labels.direction, value: metrics.sun?.direction },
@@ -269,6 +270,9 @@
                 ${renderMetricRows([
                     { label: labels.moonrise, value: summary.moonrise },
                     { label: labels.moonset, value: summary.moonset },
+                    { label: labels.nextMoonRise, value: summary.nextMoonrise },
+                    { label: labels.nextMoonSet, value: summary.nextMoonset },
+                    { label: labels.moonProgress, value: summary.moonProgress },
                     { label: labels.altitude, value: metrics.moon?.altitude },
                     { label: labels.azimuth, value: metrics.moon?.azimuth },
                     { label: labels.direction, value: metrics.moon?.direction },
@@ -296,6 +300,9 @@
                 <div class="astronomyTile__detailGrid">
                     ${renderMetricRows([
                         { label: labels.phase, value: summary.phase },
+                        { label: labels.nextMoonRise, value: summary.nextMoonrise },
+                        { label: labels.nextMoonSet, value: summary.nextMoonset },
+                        { label: labels.moonProgress, value: summary.moonProgress },
                         { label: labels.newMoon, value: panels.moon?.nextEvents?.newmoon },
                         { label: labels.firstQuarter, value: panels.moon?.nextEvents?.firstquarter },
                         { label: labels.fullMoon, value: panels.moon?.nextEvents?.fullmoon },

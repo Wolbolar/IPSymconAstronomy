@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
+  <title id="title">Sun</title>
+  <desc id="desc">Stylized sun with warm gradient and radial glow for astronomy visualizations.</desc>
+  <defs>
+    <radialGradient id="sunCore" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFF8BF"/>
+      <stop offset="58%" stop-color="#FFD45E"/>
+      <stop offset="100%" stop-color="#F29F05"/>
+    </radialGradient>
+    <radialGradient id="sunGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFD45E" stop-opacity="0.85"/>
+      <stop offset="65%" stop-color="#F29F05" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#F29F05" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="softGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="8"/>
+    </filter>
+  </defs>
+
+  <circle cx="128" cy="128" r="88" fill="url(#sunGlow)" filter="url(#softGlow)"/>
+
+  <g fill="#F6B11A">
+    <path d="M128 16l10 30h-20z"/>
+    <path d="M128 240l10-30h-20z"/>
+    <path d="M16 128l30-10v20z"/>
+    <path d="M240 128l-30-10v20z"/>
+    <path d="M49 49l27 16-14 14z"/>
+    <path d="M207 207l-27-16 14-14z"/>
+    <path d="M49 207l16-27 14 14z"/>
+    <path d="M207 49l-16 27-14-14z"/>
+  </g>
+
+  <circle cx="128" cy="128" r="58" fill="url(#sunCore)" stroke="#FFE08A" stroke-width="6"/>
+  <circle cx="108" cy="108" r="14" fill="#FFF4B8" fill-opacity="0.65"/>
+</svg>
