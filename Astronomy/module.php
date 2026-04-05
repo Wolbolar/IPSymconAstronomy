@@ -118,6 +118,18 @@ class Astronomy extends IPSModuleStrict
         $this->RegisterPropertyInteger('framewidthtype', 2);
         $this->RegisterPropertyBoolean('extinfoselection', false);
         $this->RegisterPropertyInteger('timeformat', 1);
+        $this->RegisterPropertyInteger('tileThemeMode', 0);
+        $this->RegisterPropertyInteger('tileCustomAccentColor', 0xF0B24F);
+        $this->RegisterPropertyInteger('tileCustomTextColor', 0xF2EBDB);
+        $this->RegisterPropertyInteger('tileCustomCardColor', 0x0A1625);
+        $this->RegisterPropertyInteger('tileCustomCardSecondaryColor', 0x061018);
+        $this->RegisterPropertyInteger('tileCustomBackgroundStart', 0x0C1A2E);
+        $this->RegisterPropertyInteger('tileCustomBackgroundEnd', 0x132132);
+        $this->RegisterPropertyInteger('tileCustomBorderColor', 0x3A4450);
+        $this->RegisterPropertyInteger('tileCustomFontSize', 14);
+        $this->RegisterPropertyInteger('tileCustomMarginTop', 16);
+        $this->RegisterPropertyInteger('tileCustomMarginSide', 12);
+        $this->RegisterPropertyInteger('tileCustomMarginBottom', 12);
         $this->RegisterPropertyInteger('Updateinterval', 0);
         $this->RegisterTimer('Update', 0, 'Astronomy_SetAstronomyValues(' . $this->InstanceID . ');');
         $this->RegisterPropertyInteger('zeropointy', 50);
@@ -172,7 +184,7 @@ class Astronomy extends IPSModuleStrict
      * Die folgenden Funktionen stehen automatisch zur Verfügung, wenn das Modul über die "Module Control" eingefügt wurden.
      * Die Funktionen werden, mit dem selbst eingerichteten Prefix, in PHP und JSON-RPC wiefolgt zur Verfügung gestellt:.
      */
-    private function ValidateConfiguration()
+    private function ValidateConfiguration(): void
     {
         $associations = [];
         if ($this->ReadPropertyBoolean('juliandate') == true) { // float
@@ -2316,6 +2328,7 @@ class Astronomy extends IPSModuleStrict
      */
     protected function FormHead(): array
     {
+        $tileThemeMode = $this->ReadPropertyInteger('tileThemeMode');
         $form = [
             [
                 'type' => 'Image',
@@ -2377,6 +2390,103 @@ class Astronomy extends IPSModuleStrict
                     'type' => 'ExpansionPanel',
                     'caption' => '🕒 Coordinated Universal Time (UTC):',
                     'items' => $this->FormUTCText($UTC),
+                ],
+            ]
+        );
+        $form = array_merge_recursive(
+            $form,
+            [
+                [
+                    'type' => 'ExpansionPanel',
+                    'caption' => '🎨 Tile design',
+                    'items' => [
+                        [
+                            'name' => 'tileThemeMode',
+                            'type' => 'Select',
+                            'caption' => 'Theme mode',
+                            'options' => [
+                                [
+                                    'label' => 'Auto (Symcon)',
+                                    'value' => 0,
+                                ],
+                                [
+                                    'label' => 'Custom',
+                                    'value' => 1,
+                                ],
+                            ],
+                        ],
+                        [
+                            'type' => 'Label',
+                            'caption' => 'Custom mode uses an own dark astronomy layout and ignores the visual defaults from Symcon as far as possible.',
+                            'visible' => $tileThemeMode === 1,
+                        ],
+                        [
+                            'name' => 'tileCustomAccentColor',
+                            'type' => 'SelectColor',
+                            'caption' => 'Accent color',
+                            'visible' => $tileThemeMode === 1,
+                        ],
+                        [
+                            'name' => 'tileCustomTextColor',
+                            'type' => 'SelectColor',
+                            'caption' => 'Text color',
+                            'visible' => $tileThemeMode === 1,
+                        ],
+                        [
+                            'name' => 'tileCustomCardColor',
+                            'type' => 'SelectColor',
+                            'caption' => 'Card color',
+                            'visible' => $tileThemeMode === 1,
+                        ],
+                        [
+                            'name' => 'tileCustomCardSecondaryColor',
+                            'type' => 'SelectColor',
+                            'caption' => 'Secondary card color',
+                            'visible' => $tileThemeMode === 1,
+                        ],
+                        [
+                            'name' => 'tileCustomBackgroundStart',
+                            'type' => 'SelectColor',
+                            'caption' => 'Background gradient start',
+                            'visible' => $tileThemeMode === 1,
+                        ],
+                        [
+                            'name' => 'tileCustomBackgroundEnd',
+                            'type' => 'SelectColor',
+                            'caption' => 'Background gradient end',
+                            'visible' => $tileThemeMode === 1,
+                        ],
+                        [
+                            'name' => 'tileCustomBorderColor',
+                            'type' => 'SelectColor',
+                            'caption' => 'Border color',
+                            'visible' => $tileThemeMode === 1,
+                        ],
+                        [
+                            'name' => 'tileCustomFontSize',
+                            'type' => 'NumberSpinner',
+                            'caption' => 'Font size',
+                            'visible' => $tileThemeMode === 1,
+                        ],
+                        [
+                            'name' => 'tileCustomMarginTop',
+                            'type' => 'NumberSpinner',
+                            'caption' => 'Top margin',
+                            'visible' => $tileThemeMode === 1,
+                        ],
+                        [
+                            'name' => 'tileCustomMarginSide',
+                            'type' => 'NumberSpinner',
+                            'caption' => 'Side margin',
+                            'visible' => $tileThemeMode === 1,
+                        ],
+                        [
+                            'name' => 'tileCustomMarginBottom',
+                            'type' => 'NumberSpinner',
+                            'caption' => 'Bottom margin',
+                            'visible' => $tileThemeMode === 1,
+                        ],
+                    ],
                 ],
             ]
         );
@@ -3175,6 +3285,7 @@ class Astronomy extends IPSModuleStrict
             'generatedAt' => time(),
             'language' => $language,
             'labels' => $labels,
+            'theme' => $this->GetVisualizationThemeConfig(),
             'status' => [
                 'isDay' => (bool) $astronomyInfo['IsDay'],
                 'season' => $this->GetSeasonText((int) $astronomyInfo['season']),
@@ -3327,6 +3438,9 @@ class Astronomy extends IPSModuleStrict
             'firstQuarter' => $this->Translate('First Quarter'),
             'fullMoon' => $this->Translate('Full Moon'),
             'lastQuarter' => $this->Translate('Last Quarter'),
+            'textColor' => $this->Translate('Text color'),
+            'backgroundColor' => $this->Translate('Background color'),
+            'fontFamily' => $this->Translate('Font family'),
         ];
     }
 
@@ -3338,6 +3452,31 @@ class Astronomy extends IPSModuleStrict
         }
 
         return base64_encode($content);
+    }
+
+    protected function GetVisualizationThemeConfig(): array
+    {
+        return [
+            'mode' => $this->ReadPropertyInteger('tileThemeMode') === 1 ? 'custom' : 'auto',
+            'custom' => [
+                'accentColor' => $this->ColorPropertyToHex($this->ReadPropertyInteger('tileCustomAccentColor')),
+                'textColor' => $this->ColorPropertyToHex($this->ReadPropertyInteger('tileCustomTextColor')),
+                'cardColor' => $this->ColorPropertyToHex($this->ReadPropertyInteger('tileCustomCardColor')),
+                'cardSecondaryColor' => $this->ColorPropertyToHex($this->ReadPropertyInteger('tileCustomCardSecondaryColor')),
+                'backgroundStart' => $this->ColorPropertyToHex($this->ReadPropertyInteger('tileCustomBackgroundStart')),
+                'backgroundEnd' => $this->ColorPropertyToHex($this->ReadPropertyInteger('tileCustomBackgroundEnd')),
+                'borderColor' => $this->ColorPropertyToHex($this->ReadPropertyInteger('tileCustomBorderColor')),
+                'fontSize' => max(10, $this->ReadPropertyInteger('tileCustomFontSize')),
+                'marginTop' => max(0, $this->ReadPropertyInteger('tileCustomMarginTop')),
+                'marginSide' => max(0, $this->ReadPropertyInteger('tileCustomMarginSide')),
+                'marginBottom' => max(0, $this->ReadPropertyInteger('tileCustomMarginBottom')),
+            ],
+        ];
+    }
+
+    protected function ColorPropertyToHex(int $value): string
+    {
+        return sprintf('#%06X', $value & 0xFFFFFF);
     }
 
     protected function ReadValueByIdent(string $ident)

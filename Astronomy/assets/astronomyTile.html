@@ -16,6 +16,11 @@
     const panels = state.panels || {};
     const status = state.status || {};
     const details = state.details || {};
+    const themeConfig = state.theme || {};
+    const searchParams = new URLSearchParams(window.location.search);
+    const hostMarginTop = Number.parseInt(searchParams.get("margintop") || "", 10);
+    const hostMarginSide = Number.parseInt(searchParams.get("marginside") || "", 10);
+    const hostMarginBottom = Number.parseInt(searchParams.get("marginbottom") || "", 10);
 
     const nav = [
         { key: "overview", icon: "☀️" },
@@ -31,6 +36,79 @@
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#39;");
+
+    const normalizeColor = (value, fallback) => {
+        const normalized = String(value || "").trim();
+        if (normalized === "") {
+            return fallback;
+        }
+        if (normalized.startsWith("#") || normalized.startsWith("rgb")) {
+            return normalized;
+        }
+        if (/^[0-9a-fA-F]{6}$/.test(normalized) || /^[0-9a-fA-F]{3}$/.test(normalized)) {
+            return `#${normalized}`;
+        }
+        return fallback;
+    };
+
+    const parseRgb = (value) => {
+        const color = String(value || "").trim();
+        if (color.startsWith("#")) {
+            const hex = color.slice(1);
+            if (hex.length === 3) {
+                return {
+                    r: parseInt(hex[0] + hex[0], 16),
+                    g: parseInt(hex[1] + hex[1], 16),
+                    b: parseInt(hex[2] + hex[2], 16)
+                };
+            }
+            if (hex.length === 6) {
+                return {
+                    r: parseInt(hex.slice(0, 2), 16),
+                    g: parseInt(hex.slice(2, 4), 16),
+                    b: parseInt(hex.slice(4, 6), 16)
+                };
+            }
+        }
+
+        const rgbMatch = color.match(/rgba?\(([^)]+)\)/i);
+        if (!rgbMatch) {
+            return null;
+        }
+
+        const parts = rgbMatch[1].split(",").map((part) => Number.parseFloat(part.trim()));
+        if (parts.length < 3 || parts.some((part) => !Number.isFinite(part))) {
+            return null;
+        }
+
+        return { r: parts[0], g: parts[1], b: parts[2] };
+    };
+
+    const toRgba = (value, alpha) => {
+        const rgb = parseRgb(value);
+        if (!rgb) {
+            return `rgba(0, 0, 0, ${alpha})`;
+        }
+        return `rgba(${Math.round(rgb.r)}, ${Math.round(rgb.g)}, ${Math.round(rgb.b)}, ${alpha})`;
+    };
+
+    const luminance = (value) => {
+        const rgb = parseRgb(value);
+        if (!rgb) {
+            return 1;
+        }
+
+        const channel = (component) => {
+            const normalized = component / 255;
+            return normalized <= 0.03928
+                ? normalized / 12.92
+                : ((normalized + 0.055) / 1.055) ** 2.4;
+        };
+
+        return 0.2126 * channel(rgb.r) + 0.7152 * channel(rgb.g) + 0.0722 * channel(rgb.b);
+    };
+
+    const hostTextColor = normalizeColor(searchParams.get("textcolor"), "#111111");
 
     const renderMetricRows = (rows) => rows.map((row) => `
         <div class="astronomyTile__metric">
@@ -64,6 +142,106 @@
     const renderImage = (src, className) => src
         ? `<img class="${className}" src="${src}" alt="">`
         : `<div class="astronomyTile__empty">${escapeHtml(labels.noImage)}</div>`;
+
+    const buildAutoTheme = () => {
+        const rootStyles = getComputedStyle(root);
+        const bodyStyles = getComputedStyle(document.body);
+        const accentColor = normalizeColor(rootStyles.getPropertyValue("--accent-color"), normalizeColor(searchParams.get("accentcolor"), "#00cdab"));
+        const contentColor = normalizeColor(rootStyles.getPropertyValue("--content-color"), normalizeColor(searchParams.get("textcolor"), bodyStyles.color || "#111111"));
+        const cardColor = normalizeColor(rootStyles.getPropertyValue("--card-color"), normalizeColor(searchParams.get("cardcolor"), "#ffffff"));
+        const fontFamily = bodyStyles.fontFamily || rootStyles.fontFamily || "sans-serif";
+        const fontSize = Number.parseInt(searchParams.get("fontsize") || "", 10);
+        const isDark = luminance(cardColor) < 0.45;
+
+        return {
+            variant: isDark ? "auto-dark" : "auto-light",
+            accentColor,
+            textColor: contentColor,
+            mutedTextColor: toRgba(contentColor, isDark ? 0.72 : 0.62),
+            panelColor: toRgba(cardColor, isDark ? 0.82 : 0.92),
+            panelStrongColor: toRgba(cardColor, isDark ? 0.9 : 0.97),
+            borderColor: toRgba(contentColor, isDark ? 0.16 : 0.1),
+            surfaceSoft: toRgba(contentColor, isDark ? 0.07 : 0.035),
+            surfaceBorder: toRgba(contentColor, isDark ? 0.12 : 0.06),
+            tileBgStart: toRgba(accentColor, isDark ? 0.08 : 0.045),
+            tileBgEnd: "rgba(0, 0, 0, 0)",
+            fontFamily,
+            fontSize: Number.isFinite(fontSize) ? fontSize : 14,
+            marginTop: Number.isFinite(hostMarginTop) ? hostMarginTop : 16,
+            marginSide: Number.isFinite(hostMarginSide) ? hostMarginSide : 12,
+            marginBottom: Number.isFinite(hostMarginBottom) ? hostMarginBottom : 12,
+            shadow: isDark ? "0 10px 26px rgba(0, 0, 0, 0.18)" : "0 10px 24px rgba(0, 0, 0, 0.05)",
+            moonFrameBg: toRgba(cardColor, isDark ? 0.96 : 0.98),
+            showHeaderChrome: false,
+            headerChromeBg: "transparent",
+            headerChromeBorder: "transparent"
+        };
+    };
+
+    const buildCustomTheme = () => {
+        const custom = themeConfig.custom || {};
+        const textColor = normalizeColor(custom.textColor, "#F2EBDB");
+        const borderColor = normalizeColor(custom.borderColor, "#3A4450");
+        const headerTextLuminance = luminance(hostTextColor);
+        const headerChromeBg = headerTextLuminance > 0.55
+            ? "rgba(10, 22, 37, 0.82)"
+            : "rgba(255, 255, 255, 0.82)";
+        const headerChromeBorder = headerTextLuminance > 0.55
+            ? "rgba(255, 255, 255, 0.12)"
+            : "rgba(10, 22, 37, 0.12)";
+        const customMarginTop = Number.isFinite(Number(custom.marginTop)) ? Number(custom.marginTop) : 16;
+        const customMarginSide = Number.isFinite(Number(custom.marginSide)) ? Number(custom.marginSide) : 12;
+        const customMarginBottom = Number.isFinite(Number(custom.marginBottom)) ? Number(custom.marginBottom) : 12;
+
+        return {
+            variant: "custom",
+            accentColor: normalizeColor(custom.accentColor, "#F0B24F"),
+            textColor,
+            mutedTextColor: toRgba(textColor, 0.72),
+            panelColor: toRgba(normalizeColor(custom.cardColor, "#0A1625"), 0.82),
+            panelStrongColor: toRgba(normalizeColor(custom.cardSecondaryColor, "#061018"), 0.92),
+            borderColor: toRgba(borderColor, 0.42),
+            surfaceSoft: toRgba(textColor, 0.08),
+            surfaceBorder: toRgba(borderColor, 0.28),
+            tileBgStart: normalizeColor(custom.backgroundStart, "#0C1A2E"),
+            tileBgEnd: normalizeColor(custom.backgroundEnd, "#132132"),
+            fontFamily: getComputedStyle(document.body).fontFamily || "sans-serif",
+            fontSize: Number.isFinite(Number(custom.fontSize)) ? Number(custom.fontSize) : 14,
+            marginTop: Math.max(Number.isFinite(hostMarginTop) ? hostMarginTop : 16, customMarginTop),
+            marginSide: Math.max(Number.isFinite(hostMarginSide) ? hostMarginSide : 12, customMarginSide),
+            marginBottom: Math.max(Number.isFinite(hostMarginBottom) ? hostMarginBottom : 12, customMarginBottom),
+            shadow: "0 12px 28px rgba(0, 0, 0, 0.24)",
+            moonFrameBg: toRgba(normalizeColor(custom.cardSecondaryColor, "#061018"), 0.9),
+            showHeaderChrome: true,
+            headerChromeBg,
+            headerChromeBorder
+        };
+    };
+
+    const theme = themeConfig.mode === "custom" ? buildCustomTheme() : buildAutoTheme();
+
+    const themeToStyleString = () => [
+        `--accent:${theme.accentColor}`,
+        `--accent-soft:${toRgba(theme.accentColor, theme.variant === "custom" ? 0.2 : 0.12)}`,
+        `--tile-bg-start:${theme.tileBgStart}`,
+        `--tile-bg-end:${theme.tileBgEnd}`,
+        `--panel:${theme.panelColor}`,
+        `--panel-strong:${theme.panelStrongColor}`,
+        `--panel-border:${theme.borderColor}`,
+        `--surface-soft:${theme.surfaceSoft}`,
+        `--surface-border:${theme.surfaceBorder}`,
+        `--text-main:${theme.textColor}`,
+        `--text-muted:${theme.mutedTextColor}`,
+        `--tile-font-family:${theme.fontFamily}`,
+        `--tile-font-size:${theme.fontSize}px`,
+        `--shell-padding-top:${theme.marginTop}px`,
+        `--shell-padding-side:${theme.marginSide}px`,
+        `--shell-padding-bottom:${theme.marginBottom}px`,
+        `--tile-shadow:${theme.shadow}`,
+        `--moon-frame-bg:${theme.moonFrameBg}`,
+        `--header-chrome-bg:${theme.headerChromeBg}`,
+        `--header-chrome-border:${theme.headerChromeBorder}`
+    ].join(";");
 
     const renderOverview = () => `
         <div class="astronomyTile__page astronomyTile__page--columns3">
@@ -232,17 +410,10 @@
                 }
 
                 .astronomyTile {
-                    --tile-bg: radial-gradient(circle at top right, rgba(255, 201, 107, 0.24), transparent 24%), linear-gradient(160deg, #0c1a2e 0%, #14314b 52%, #132132 100%);
-                    --panel: rgba(10, 22, 37, 0.76);
-                    --panel-strong: rgba(6, 14, 24, 0.9);
-                    --panel-border: rgba(210, 228, 246, 0.12);
-                    --text-main: #f2ebdb;
-                    --text-muted: rgba(242, 235, 219, 0.72);
-                    --accent: #f0b24f;
-                    --accent-soft: rgba(240, 178, 79, 0.18);
                     box-sizing: border-box;
                     color: var(--text-main);
-                    font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+                    font-family: var(--tile-font-family);
+                    font-size: var(--tile-font-size);
                     height: 100%;
                     margin: 0;
                     overflow: hidden;
@@ -260,9 +431,9 @@
 
                 .astronomyTile__chromeTitle,
                 .astronomyTile__chromeIcon {
-                    background: rgba(248, 244, 236, 0.94);
-                    border: 1px solid rgba(58, 68, 80, 0.12);
-                    box-shadow: 0 4px 14px rgba(7, 16, 28, 0.12);
+                    background: var(--header-chrome-bg);
+                    border: 1px solid var(--header-chrome-border);
+                    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
                     position: absolute;
                 }
 
@@ -271,6 +442,7 @@
                     height: 28px;
                     left: 0;
                     top: 0;
+                    width: 172px;
                 }
 
                 .astronomyTile__chromeIcon {
@@ -282,32 +454,30 @@
                 }
 
                 .astronomyTile__shell {
-                    background: var(--tile-bg);
+                    background: linear-gradient(180deg, var(--tile-bg-start) 0%, var(--tile-bg-end) 100%);
                     box-sizing: border-box;
                     display: grid;
-                    gap: 10px;
+                    gap: 12px;
                     grid-template-rows: auto auto 1fr;
                     height: 100%;
                     min-height: 0;
                     overflow: hidden;
-                    padding: 56px 12px 12px;
+                    padding: var(--shell-padding-top) var(--shell-padding-side) var(--shell-padding-bottom);
                     position: relative;
-                    z-index: 1;
                 }
 
                 .astronomyTile__nav {
                     display: grid;
                     gap: 8px;
                     grid-template-columns: repeat(5, minmax(0, 1fr));
-                    min-width: 0;
                     width: 100%;
                 }
 
                 .astronomyTile__navButton {
                     align-items: center;
                     appearance: none;
-                    background: rgba(255, 255, 255, 0.08);
-                    border: 1px solid transparent;
+                    background: var(--surface-soft);
+                    border: 1px solid var(--surface-border);
                     border-radius: 999px;
                     color: var(--text-main);
                     cursor: pointer;
@@ -315,14 +485,14 @@
                     gap: 8px;
                     justify-content: center;
                     min-width: 0;
-                    padding: 8px 10px;
-                    transition: transform 120ms ease, background 120ms ease, border-color 120ms ease;
+                    padding: 10px 12px;
+                    transition: background 120ms ease, border-color 120ms ease;
                 }
 
                 .astronomyTile__navButton.is-active {
                     background: var(--accent-soft);
-                    border-color: rgba(240, 178, 79, 0.35);
-                    color: #fff0cb;
+                    border-color: var(--accent);
+                    box-shadow: inset 0 0 0 1px var(--accent);
                 }
 
                 .astronomyTile__navIcon {
@@ -353,14 +523,14 @@
                     color: var(--text-muted);
                     display: inline-flex;
                     gap: 8px;
-                    font-size: 13px;
+                    font-size: 0.95em;
                     margin-top: 0;
                 }
 
                 .astronomyTile__stamp {
                     color: var(--text-muted);
                     display: grid;
-                    font-size: 12px;
+                    font-size: 0.86em;
                     gap: 4px;
                     text-align: right;
                     white-space: nowrap;
@@ -387,23 +557,19 @@
 
                 .astronomyTile__content {
                     min-height: 0;
-                    overflow: hidden;
+                    overflow: auto;
                 }
 
                 .astronomyTile__page {
                     box-sizing: border-box;
                     display: grid;
-                    gap: 10px;
+                    gap: 12px;
                     height: 100%;
                     min-height: 0;
                 }
 
                 .astronomyTile__page--columns3 {
                     grid-template-columns: repeat(3, minmax(0, 1fr));
-                }
-
-                .astronomyTile__page--columns2 {
-                    grid-template-columns: minmax(280px, 0.95fr) minmax(0, 1.05fr);
                 }
 
                 .astronomyTile__page--moon {
@@ -421,47 +587,33 @@
 
                 .astronomyTile__moonInfo {
                     display: grid;
-                    flex: 1 1 auto;
                     gap: 14px;
-                    grid-template-columns: 112px minmax(0, 1fr);
+                    grid-template-columns: 104px minmax(0, 1fr);
                     min-height: 0;
                 }
 
                 .astronomyTile__moonFigure {
                     align-items: center;
-                    background: var(--panel-strong);
+                    background: var(--moon-frame-bg);
                     border: 1px solid var(--panel-border);
                     border-radius: 16px;
                     display: flex;
                     justify-content: center;
                     min-height: 0;
-                    padding: 14px;
+                    padding: 12px;
                 }
 
-                .astronomyTile__moonFacts {
+                .astronomyTile__moonFacts,
+                .astronomyTile__twilightFacts {
                     display: grid;
-                    gap: 0 16px;
                     grid-template-columns: 1fr;
                     min-height: 0;
                 }
 
                 .astronomyTile__twilightInfo {
                     display: grid;
-                    flex: 1 1 auto;
                     gap: 14px;
                     grid-template-columns: 172px minmax(0, 1fr);
-                    min-height: 0;
-                }
-
-                .astronomyTile__twilightFigure {
-                    display: grid;
-                    min-height: 0;
-                }
-
-                .astronomyTile__twilightFacts {
-                    display: grid;
-                    gap: 0 16px;
-                    grid-template-columns: 1fr;
                     min-height: 0;
                 }
 
@@ -469,6 +621,7 @@
                     background: var(--panel);
                     border: 1px solid var(--panel-border);
                     border-radius: 18px;
+                    box-shadow: var(--tile-shadow);
                     box-sizing: border-box;
                     display: flex;
                     flex-direction: column;
@@ -482,14 +635,14 @@
                 }
 
                 .astronomyTile__cardTitle {
-                    font-size: 15px;
+                    font-size: 1.08em;
                     font-weight: 700;
                     margin-bottom: 10px;
                 }
 
                 .astronomyTile__metric {
                     align-items: baseline;
-                    border-top: 1px solid rgba(255, 255, 255, 0.08);
+                    border-top: 1px solid var(--panel-border);
                     display: flex;
                     gap: 14px;
                     justify-content: space-between;
@@ -503,11 +656,11 @@
 
                 .astronomyTile__metricName {
                     color: var(--text-muted);
-                    font-size: 13px;
+                    font-size: 0.95em;
                 }
 
                 .astronomyTile__metricValue {
-                    font-size: 13px;
+                    font-size: 0.95em;
                     font-weight: 600;
                     text-align: right;
                     word-break: break-word;
@@ -545,22 +698,14 @@
 
                 .astronomyTile__moonImage {
                     display: block;
-                    height: 100px;
-                    max-height: 100px;
-                    max-width: 100px;
+                    height: 92px;
+                    max-height: 92px;
+                    max-width: 92px;
                     object-fit: contain;
-                    width: 100px;
+                    width: 92px;
                 }
 
-                .astronomyTile__dayImage {
-                    display: block;
-                    height: auto;
-                    max-height: 150px;
-                    max-width: 100%;
-                    object-fit: contain;
-                    width: auto;
-                }
-
+                .astronomyTile__dayImage,
                 .astronomyTile__yearImage {
                     display: block;
                     height: auto;
@@ -581,33 +726,14 @@
                     width: 100%;
                 }
 
-                .astronomyTile__footerStats {
-                    display: grid;
-                    gap: 10px;
-                    grid-template-columns: repeat(2, minmax(0, 1fr));
-                    margin-top: 10px;
-                }
-
-                .astronomyTile__stat {
-                    background: rgba(255, 255, 255, 0.04);
-                    border: 1px solid rgba(255, 255, 255, 0.08);
-                    border-radius: 14px;
-                    padding: 10px 12px;
-                }
-
                 .astronomyTile__statLabel {
                     color: var(--text-muted);
                     display: block;
-                    font-size: 11px;
+                    font-size: 0.82em;
                     font-weight: 700;
                     letter-spacing: 0.04em;
                     margin-bottom: 4px;
                     text-transform: uppercase;
-                }
-
-                .astronomyTile__statValue {
-                    font-size: 14px;
-                    font-weight: 700;
                 }
 
                 .astronomyTile__detailGrid {
@@ -617,18 +743,15 @@
                     min-height: 0;
                 }
 
-                .astronomyTile__detailGrid--scroll {
+                .astronomyTile__detailGrid--scroll,
+                .astronomyTile__detailGrid--position {
                     flex: 1 1 auto;
-                    min-height: 0;
                     overflow: auto;
                     padding-right: 4px;
                 }
 
                 .astronomyTile__detailGrid--position {
-                    flex: 1 1 auto;
                     grid-template-columns: 1fr;
-                    overflow: auto;
-                    padding-right: 4px;
                 }
 
                 .astronomyTile__detailGrid--position .astronomyTile__metric {
@@ -637,7 +760,7 @@
 
                 .astronomyTile__detailGrid--position .astronomyTile__metricName,
                 .astronomyTile__detailGrid--position .astronomyTile__metricValue {
-                    font-size: 12px;
+                    font-size: 0.88em;
                 }
 
                 .astronomyTile iframe {
@@ -651,34 +774,24 @@
                 }
 
                 @media (max-width: 900px) {
-                    .astronomyTile__shell {
-                        grid-template-rows: auto auto 1fr;
-                    }
-
                     .astronomyTile__nav {
-                        grid-template-columns: repeat(5, minmax(0, 1fr));
+                        grid-template-columns: repeat(3, minmax(0, 1fr));
                     }
 
                     .astronomyTile__page--columns3,
-                    .astronomyTile__page--columns2,
                     .astronomyTile__page--position,
-                    .astronomyTile__detailGrid,
-                    .astronomyTile__footerStats {
+                    .astronomyTile__detailGrid {
                         grid-template-columns: 1fr;
                     }
-
-                    .astronomyTile__page--moon {
-                        grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
-                    }
-
                 }
-
             </style>
-            <section class="astronomyTile">
-                <div class="astronomyTile__chrome">
-                    <div class="astronomyTile__chromeTitle" style="width:${headerTitleWidth}px"></div>
-                    <div class="astronomyTile__chromeIcon"></div>
-                </div>
+            <section class="astronomyTile" style="${themeToStyleString()}">
+                ${theme.showHeaderChrome ? `
+                    <div class="astronomyTile__chrome">
+                        <div class="astronomyTile__chromeTitle" style="width:${headerTitleWidth}px"></div>
+                        <div class="astronomyTile__chromeIcon"></div>
+                    </div>
+                ` : ""}
                 <div class="astronomyTile__shell">
                     <nav class="astronomyTile__nav">
                         ${nav.map((item) => `
