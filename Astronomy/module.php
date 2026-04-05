@@ -3357,7 +3357,7 @@ class Astronomy extends IPSModuleStrict
             return;
         }
 
-        SetValue($variableId, $value);
+        $this->SetValue($ident, $value);
     }
 
     protected function GetVisualizationImageDataUri($path): ?string
